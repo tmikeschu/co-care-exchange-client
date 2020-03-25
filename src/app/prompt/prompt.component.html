@@ -1,0 +1,24 @@
+<div class="full-screen-prompt">
+    <div *ngIf="promptMap.size !== 0" class="question-container">
+        <div *ngIf="!inNeed && !surveyTime">
+            <h3 class="text-primary text-center">{{promptTypeQuestion}}</h3>
+
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <button class="text-white" mat-flat-button color="primary" (click)="onPromptTypeYes()">
+                    Yes
+                </button>
+
+                <button class="text-white" mat-flat-button color="primary" (click)="onPromptTypeNo()">
+                    No
+                </button>
+            </div>
+        </div>
+        <div *ngIf="inNeed">
+            <app-question [prompts]="this.prompts" (promptInNeed)="handleInNeed($event)"></app-question>
+        </div>
+        <div *ngIf="surveyTime">
+            <app-question [prompts]="this.surveyQuestions" survey="true"
+                (surveyFinished)="this.handleSurveyFinished($event)"></app-question>
+        </div>
+    </div>
+</div>

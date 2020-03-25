@@ -1,0 +1,53 @@
+<section class="section">
+  <div class="container">
+    <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+      <mat-card  class="box">
+        <mat-card-header>
+          <div fxLayout="column">
+            <a routerLink="/">
+              <img style="width: 50%; margin: auto" #image
+              src="../../../assets/kanso_logo.png"/>
+            </a>
+            <mat-card-title>Log in</mat-card-title>
+          </div>
+          
+        </mat-card-header>
+        
+        <form [formGroup]="loginForm" class="login-form">
+          <mat-card-content>
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Username" formControlName="username" type="text">
+            </mat-form-field>
+
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Password" formControlName="password" type="password">
+            </mat-form-field>
+          </mat-card-content>
+
+          <mat-error class="error-message" *ngIf="error===true">
+            <div *ngIf="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div *ngIf="!errorMessage">
+              Invalid username or password
+            </div>
+          </mat-error>
+
+          <mat-progress-bar *ngIf="signingIn" mode="indeterminate" color="accent"></mat-progress-bar>
+          
+          <button mat-flat-button color="primary" class="btn-block" (click)="onLoginSubmit()">
+            Log in
+          </button>
+
+          <div style="width: 100%; display: flex; flex-wrap: wrap; box-sizing: border-box;">
+            <a class="links" (click)="handleForgotPW()">Forgot password</a>
+            <a class="links" (click)="handleRegistration()">Don't have an account? Sign Up</a>
+          </div>
+
+
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</section>
+

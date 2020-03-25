@@ -1,0 +1,9 @@
+.radioGroup {
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}

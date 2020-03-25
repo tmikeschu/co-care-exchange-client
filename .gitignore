@@ -1,0 +1,124 @@
+# --------------------
+# OSX Files
+# --------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# --------------------
+# WebStorm Files
+# --------------------
+*.iml
+*.ipr
+*.iws
+.idea/
+
+
+# --------------------
+# VSCode Files
+# --------------------
+.vscode/
+build/
+
+# --------------------
+# Other Editor Files
+# --------------------
+.settings/
+
+# --------------------
+# Node Files
+# --------------------
+.nodemonignore
+npm-debug.log
+report.html
+node_modules/
+
+# --------------------
+# JSReport config files
+# --------------------
+dev.config.json
+prod.config.json
+
+# --------------------
+# SASS Files
+# --------------------
+.sass-cache/
+
+# --------------------
+# App Files
+# --------------------
+test/coverage/
+modules/public/
+modules/views/
+/public/build/
+/packages/contrib/
+/packages/**/**/public/assets/lib
+newrelic_agent.log
+test/results
+test/results.json
+/packages/**/*.js.map
+.env
+
+# --------------------
+# dynamically created file for environment variables
+# --------------------
+packages/custom/housingCore/public/services/configEnv.js
+
+# --------------------
+# vim Files
+# --------------------
+*.swp
+
+# --------------------
+# CSS Files (using LESS)
+# --------------------
+packages/custom/housingCore/public/assets/font-awesome*/less/*.css
+
+# ---------------------
+#   MEAN.js exclusions from before the switch
+# ---------------------
+app/tests/coverage/
+test-results.xml
+test/results
+test/results.json
+./reports/
+
+
+# ---------------------
+#   Data Files
+# ---------------------
+test/spreadsheets
+data/allCustomerData/
+xlsx-data-import/customer-data/
+xlsx-data-import/validation.txt
+xlsx-data-import/backup-data/
+
+# ---------------------
+#   MongoDB Data Dump
+# ---------------------
+./dump/
+
+
+# ---------------------
+#   yarn
+# ---------------------
+
+yarn-error.log
+yarn.lock
+
+# ---------------------
+# Scripts
+# ---------------------
+tools/scripts/connections.js
+tools/scripts/results.csv
+tools/scripts/results.json
+
+# ---------------------
+#   Onsite Installation Files
+# ---------------------
+ecosystem.config.js
+pm2-deploy.sh

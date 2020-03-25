@@ -1,0 +1,31 @@
+@import './theme.scss';
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 1024px;
+}
+
+.text {
+  &-center {
+    text-align: center;
+  }
+  &-primary {
+    color: mat-color(map-get($colorado-care-exchange-theme, primary));
+  }
+  &-accent {
+    color: mat-color(map-get($colorado-care-exchange-theme, accent));
+  }
+  &-uppercase {
+    text-transform: uppercase;
+  }
+  &-white {
+    color: white !important;
+  }
+}
+.w {
+  &-100 {
+    width: 100%;
+  }
+}

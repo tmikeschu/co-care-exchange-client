@@ -1,0 +1,56 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <form [formGroup]="organizationForm">
+    <div fxLayout="column">
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Organization Name" formControlName="orgName" type="text">
+        <mat-error *ngIf="organizationForm.get('orgName').hasError('required')">
+          Organization name is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Email" formControlName="email" type="text">
+        <mat-error *ngIf="organizationForm.get('email').hasError('required')">
+          Email is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Phone Number" formControlName="phone" type="text">
+        <mat-error *ngIf="organizationForm.get('phone').hasError('required')">
+          Phone number is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="City, State" formControlName="cityState" type="text">
+        <mat-error *ngIf="organizationForm.get('cityState').hasError('required')">
+          Phone number is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
+          type="text">
+        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
+          Delivery or pickup location is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number">
+        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
+          Delivery or pickup radius is a required field
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!organizationForm.valid">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </form>
+
+</div>

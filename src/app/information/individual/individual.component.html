@@ -1,0 +1,94 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <form [formGroup]="individualRegisterForm">
+    <div fxLayout="column">
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="First Name" formControlName="firstName" type="text">
+        <mat-error *ngIf="individualRegisterForm.get('firstName').hasError('required')">
+          First name is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Last Name" formControlName="lastName" type="text">
+        <mat-error *ngIf="individualRegisterForm.get('lastName').hasError('required')">
+          Last name is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Email" formControlName="email" type="text">
+        <mat-error *ngIf="individualRegisterForm.get('email').hasError('required')">
+          Email is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Phone Number" formControlName="phone" type="text">
+        <mat-error *ngIf="individualRegisterForm.get('phone').hasError('required')">
+          Phone number is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <!--              <mat-form-field class="login-full-width">-->
+      <!--                <input matInput placeholder="Email" formControlName="email" type="text">-->
+      <!--                <mat-error *ngIf="registerForm.get('email').hasError('required')">-->
+      <!--                  Email is a required field-->
+      <!--                </mat-error>-->
+      <!--                <mat-error *ngIf="registerForm.get('email').hasError('email')">-->
+      <!--                  The email address entered is not valid.-->
+      <!--                </mat-error>-->
+      <!--              </mat-form-field>-->
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Household Size" formControlName="householdSize" type="number">
+        <mat-error *ngIf="individualRegisterForm.get('householdSize').hasError('required')">
+          Phone number is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="City, State" formControlName="cityState" type="text">
+        <mat-error *ngIf="individualRegisterForm.get('cityState').hasError('required')">
+          Household Size is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
+          type="text">
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
+          Delivery or pickup location is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number">
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
+          Delivery or pickup radius is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <!--              <mat-form-field class="login-full-width">-->
+      <!--                <input matInput placeholder="Password" formControlName="password" type="password">-->
+      <!--                <mat-error *ngIf="registerForm.get('password').hasError('required')">-->
+      <!--                  Password is a required field-->
+      <!--                </mat-error>-->
+      <!--                <mat-error *ngIf="registerForm.get('password').hasError('minlength')">-->
+      <!--                  The password must be at least 6 characters long-->
+      <!--                </mat-error>-->
+      <!--                <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">-->
+      <!--                  The password must not be longer than 30 characters-->
+      <!--                </mat-error>-->
+      <!--              </mat-form-field>-->
+
+    </div>
+
+    <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!individualRegisterForm.valid">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </form>
+
+</div>

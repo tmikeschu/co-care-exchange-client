@@ -1,0 +1,77 @@
+<section class="section">
+  <div class="container">
+    <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+      <mat-card  class="box">
+        <mat-card-header>
+          <div fxLayout="column">
+            <a routerLink="/">
+              <img style="width: 50%; margin: auto;" #image
+                 src="../../../assets/kanso_logo.png"/>
+            </a>
+            <mat-card-title>Register</mat-card-title>
+          </div>
+
+        </mat-card-header>
+
+        <form [formGroup]="registerForm" class="login-form">
+          <mat-card-content>
+
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="First Name" formControlName="firstName" type="text">
+              <mat-error *ngIf="registerForm.get('firstName').hasError('required')">
+                First name is a required field
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Last Name" formControlName="lastName" type="text">
+              <mat-error *ngIf="registerForm.get('lastName').hasError('required')">
+                Last name is a required field
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Email" formControlName="email" type="text">
+              <mat-error *ngIf="registerForm.get('email').hasError('required')">
+                Email is a required field
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('email').hasError('email')">
+                The email address entered is not valid.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Password" formControlName="password" type="password">
+              <mat-error *ngIf="registerForm.get('password').hasError('required')">
+                Password is a required field
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('password').hasError('minlength')">
+                The password must be at least 6 characters long
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">
+                The password must not be longer than 30 characters
+              </mat-error>
+            </mat-form-field>
+          </mat-card-content>
+
+          <mat-error class="error-message" *ngIf="error===true">
+            <div *ngIf="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div *ngIf="!errorMessage">
+              Invalid username or password
+            </div>
+          </mat-error>
+
+          <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
+          <button mat-flat-button color="primary" (click)="onRegisterSubmit()" class="btn-block" [disabled]="!registerForm.valid">
+            Register
+          </button>
+
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</section>
+

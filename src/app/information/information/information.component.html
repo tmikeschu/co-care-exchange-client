@@ -1,0 +1,20 @@
+<div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
+  <div fxLayout="column">
+    <h3 class="text-primary">
+      We Just need a little bit more information...
+    </h3>
+    <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="registrantType">
+      <mat-radio-button value="Individual">Individual</mat-radio-button>
+      <mat-radio-button value="Organization">Organization</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+
+  <div *ngIf="registrantType === 'Individual'" class="w-100 vertical-rhythm">
+    <app-individual></app-individual>
+  </div>
+
+  <div *ngIf="registrantType === 'Organization'" class="w-100 vertical-rhythm">
+    <app-organization></app-organization>
+  </div>
+</div>

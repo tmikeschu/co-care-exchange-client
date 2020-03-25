@@ -1,0 +1,50 @@
+@import "~@angular/material/theming";
+@import "../styles/tools.scss";
+@import "../app/auth/login-shell/login-shell-theme";
+@import "../app/mat-nav/mat-navbar-theme";
+@include mat-core();
+
+$colorado-care-exchange-typography: mat-typography-config(
+  $font-family: "Roboto, sans-serif"
+);
+@include mat-core($colorado-care-exchange-typography);
+$font-config: mat-typography-config();
+
+@mixin custom-components-theme($theme) {
+  @include login-shell-theme($theme);
+  @include mat-navbar-theme($theme);
+}
+// #00B0F0
+$primary: mat-palette($mat-light-blue, 400);
+$accent: mat-palette($mat-orange, 400);
+$warn: mat-palette($mat-red);
+$colorado-care-exchange-theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($colorado-care-exchange-theme);
+@include custom-components-theme($colorado-care-exchange-theme);
+
+/*
+Following the Angular documentation for adding multiple themes
+did not work, so we will break the Angular way of multiple themes.
+For "light" themed components, all scss goes here
+*/
+.light-theme {
+  .how-it-works-item {
+    width: 400px;
+    padding: 1rem;
+    position: relative;
+
+    &:not(:first-child) {
+      @include vertical-rhythm(2);
+    }
+
+    &:not(:last-child):after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      height: calc(1.45rem * 2);
+      bottom: calc(1.45rem * -2);
+      width: 1px;
+    }
+  }
+}

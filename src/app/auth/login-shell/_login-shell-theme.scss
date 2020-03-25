@@ -1,0 +1,12 @@
+@import '~@angular/material/theming';
+
+@mixin login-shell-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  // app-login-shell {
+    // demo of how to add themeing to components
+    // .test-component-theme {
+    //   color: mat-color($primary);
+    // }
+  // }
+}
