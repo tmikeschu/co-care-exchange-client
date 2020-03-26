@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { RegistrationModel } from '../../models/cce/registrationModel';
 import { RegistrationService } from './registration.service';
 import { signIn } from '../../aws-cognito/cognito/signin';
-import { changePassword, forgetPassword } from '../../aws-cognito/cognito/password';
+import { changePassword, forgetPassword, forgetPasswordComplete } from '../../aws-cognito/cognito/password';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -25,6 +25,10 @@ export class AuthenticationService {
 
   async forgetPassword(username: string) {
     return forgetPassword(username);
+  }
+
+  async forgetPasswordComplete(username: string, code: string, newPassword: string) {
+    return forgetPasswordComplete(username, code, newPassword);
   }
 
   async changePassword(oldPassword: string, newPassword: string) {
