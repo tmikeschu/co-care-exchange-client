@@ -30,6 +30,14 @@ connectivity and assistance.
 
 • Resource coordination efforts need a platform that allows for quick contact with individuals via SMS
 
+## Client App Walkthrough
+
+[Individual User to Individual User](https://youtu.be/r9nYIZdoYQA)
+
+[Organization to Organization (mobile)](https://youtu.be/FB6MysnSfhc)
+
+[Organization to Organization (web)](https://youtu.be/ChFe3Fn5CR8)
+
   
 ## Technical Stuff
 
