@@ -41,6 +41,8 @@ connectivity and assistance.
   
 ## Technical Stuff
 
+This project is licensed under the terms of the MIT license
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
 
   
