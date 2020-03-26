@@ -122,3 +122,4 @@ tools/scripts/results.json
 # ---------------------
 ecosystem.config.js
 pm2-deploy.sh
+dist/

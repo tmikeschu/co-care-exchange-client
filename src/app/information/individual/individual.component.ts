@@ -55,12 +55,12 @@ export class IndividualComponent implements OnInit {
 
     console.log(registrationModel);
 
-    const result = await this.authenticationService.register(registrationModel);
-    if (result.errorMsg) {
-      // todo handle error
-    } else {
-      this.router.navigate(['/prompt']);
-    }
+    // const result = await this.authenticationService.register(registrationModel);
+    // if (result.errorMsg) {
+    //   // todo handle error
+    // } else {
+       this.router.navigate(['/prompt']);
+    // }
 
     // uncomment this out when services are in place
     // this.authenticationService.register(registrationModel)
