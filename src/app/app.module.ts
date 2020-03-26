@@ -30,6 +30,8 @@ import { SummaryComponent } from './prompt/summary/summary.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
 import { StatusDialogComponent } from './dashboard/status-dialog/status-dialog.component';
+import { SiteHeaderComponent } from './shared/site-header/site-header.component';
+import { DashboardFooterComponent } from './dashboard/dashboard-footer/dashboard-footer.component';
 
 const appRoutes: Routes = [
   { path: 'password-forgot', component: PasswordForgotComponent },
@@ -72,7 +74,8 @@ const appRoutes: Routes = [
     ContactUsComponent,
     SummaryComponent,
     DashboardComponent,
-    StatusDialogComponent
+    StatusDialogComponent,
+    DashboardFooterComponent,
   ],
   providers: [
     GreetingService,
@@ -80,7 +83,7 @@ const appRoutes: Routes = [
     // StripeService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  exports: [
+  exports: [    
   ],
   entryComponents: [StatusDialogComponent],
   bootstrap: [AppComponent]

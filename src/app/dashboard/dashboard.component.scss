@@ -1,3 +1,7 @@
+.dasboardcontent{
+    width: 100%;
+}
+
 h2{
     color: #00bcd4;
     font-size: 1em;
@@ -26,4 +30,11 @@ h2{
 .contentstatuspending{
     color: #f2a50a;
     font-weight: 500;
+}
+
+.footercontainer {    
+    
+    vertical-align: bottom;
+    
+    bottom: 0;
 }

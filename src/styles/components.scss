@@ -5,13 +5,6 @@
   overflow: hidden;
   position: relative;
 
-  &.has-image {
-    background-image: url("../assets/proshot-hero-2-flipped.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
   &-inner {
     @include breakpoint(gtHandset) {
       width: 45vw;
