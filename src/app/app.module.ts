@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { GreetingService } from './services/greeting.service';
 import { TopNavShellComponent } from './auth/top-nav-shell/top-nav-shell.component';
 import { LoginShellComponent } from './auth/login-shell/login-shell.component';
+import { MatNavComponent } from './mat-nav/mat-nav.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 import { PasswordForgotComponent } from './auth/password-forgot/password-forgot.component';
@@ -69,6 +70,7 @@ const appRoutes: Routes = [
     ValidateEmailComponent,
     SignInComponent,
     RegisterComponent,
+    MatNavComponent,
     ContactUsComponent,
     SummaryComponent,
     DashboardComponent,
