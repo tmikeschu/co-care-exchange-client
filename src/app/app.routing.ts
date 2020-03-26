@@ -10,8 +10,8 @@ import {RegisterComponent} from './auth/register/register.component';
 import {ContactUsComponent} from './contact-us/contact-us.component';
 import {InformationComponent} from './information/information/information.component';
 import {PromptComponent} from './prompt/prompt.component';
-import {SummaryComponent} from './summary/summary.component';
-import {CceHomeComponent} from './cce-home/cce-home.component';
+import {SummaryComponent} from './prompt/summary/summary.component';
+import { DashboardComponent} from './dashboard/dashboard.component';
 import {PantryLocatorComponent} from './pantry-locator/pantry-locator.component'
 
 
@@ -45,8 +45,8 @@ const appRoutes: Routes = [
     component: SummaryComponent
   },
   {
-    path: 'ccehome',
-    component: CceHomeComponent
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: 'password-reset',

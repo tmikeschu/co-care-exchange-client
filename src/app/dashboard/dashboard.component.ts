@@ -1,12 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import { StatusDialogComponent, Status } from './status-dialog/status-dialog.component';
 
 @Component({
   selector: 'app-cce-home',
-  templateUrl: './cce-home.component.html',
-  styleUrls: ['./cce-home.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class CceHomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
 
   requests: Status[] = [{name: 'Meals', status: 'On its way!'}, {name: 'Diapers', status: 'New Match!'}];
   shares: Status[] = [{name: 'Toilet Paper', status: 'New Match!'}, {name: 'Toothpaste', status: 'New Match!'}];
@@ -29,23 +30,4 @@ export class CceHomeComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'app-status-dialog',
-  templateUrl: 'status-dialog.html',
-})
-export class StatusDialogComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<StatusDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Status) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-export interface Status {
-  name: string;
-  status: string;
-}

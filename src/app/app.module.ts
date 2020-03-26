@@ -22,14 +22,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { ValidateEmailComponent } from './auth/validate-email/validate-email.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { MatNavComponent } from './mat-nav/mat-nav.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { InformationModule } from './information/information.module';
 import { PromptModule } from './prompt/prompt.module';
 import { AwsCognitoModule } from './aws-cognito/aws-cognito.module';
-import { SummaryComponent } from './summary/summary.component';
-import { CceHomeComponent, StatusDialogComponent } from './cce-home/cce-home.component';
+import { SummaryComponent } from './prompt/summary/summary.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
+import { StatusDialogComponent } from './dashboard/status-dialog/status-dialog.component';
 
 const appRoutes: Routes = [
   { path: 'password-forgot', component: PasswordForgotComponent },
@@ -69,10 +69,9 @@ const appRoutes: Routes = [
     ValidateEmailComponent,
     SignInComponent,
     RegisterComponent,
-    MatNavComponent,
     ContactUsComponent,
     SummaryComponent,
-    CceHomeComponent,
+    DashboardComponent,
     StatusDialogComponent
   ],
   providers: [
