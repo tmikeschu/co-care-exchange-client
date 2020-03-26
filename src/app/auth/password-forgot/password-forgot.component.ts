@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PasswordService } from '../../services/password.service';
 import { AuthenticationService } from '../../services/cce/authentication.service';
+import { Router } from '@angular/router';
+import { RESET_PASSWORD_ROUTE } from '../../constants/routes';
 
 @Component({
   selector: 'app-password-forgot',
@@ -13,7 +14,7 @@ export class PasswordForgotComponent implements OnInit {
   passwordResponse;
   error = false;
 
-  constructor(private fb: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(private fb: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {
     this.createForm();
   }
 
@@ -28,10 +29,12 @@ export class PasswordForgotComponent implements OnInit {
   async onSubmit() {
     this.error = false;
     try {
-      const result = await this.authenticationService.forgetPassword(this.forgotPwFormGroup.get('email').value);
+      const email = this.forgotPwFormGroup.get('email').value;
+      const result = await this.authenticationService.forgetPassword(email);
       console.log('DEBUG forget passwd result ', result);
       // todo --notify user that an email has been sent
       this.passwordResponse = result;
+      await this.router.navigate(['/', RESET_PASSWORD_ROUTE], { queryParams: { email: email } });
     } catch (err) {
       console.log('Forget Password error ', err);
       this.error = true;

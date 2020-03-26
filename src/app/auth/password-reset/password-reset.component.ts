@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
-import { PasswordService } from '../../services/password.service';
-import { User } from '../../models/User';
+import { ActivatedRoute, Router} from '@angular/router';;
+import { AuthenticationService } from '../../services/cce/authentication.service';
+import { FORGET_PASSWORD_ROUTE, RESET_PASSWORD_ROUTE, SIGNIN_ROUTE} from '../../constants/routes';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,25 +24,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class PasswordResetComponent implements OnInit {
   pwResetForm: FormGroup;
   hide = true;
-  user: User = new User({ // TODO: removed this temp user (for testing)
-    id: 234,
-    // firstName: string;
-    // lastName: string;
-    email: 'josh.blair@gmail.com'
-    // password: string;
-    // name: string;
-    // roles: Role[];
-    // token: string;
-    // navToLessons: boolean;
-    // resetToken: string;
-    // verificationToken: string;
-  });
+  email = null;
 
   success = null;
 
   errorStateMatcher = new MyErrorStateMatcher();
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private passwordService: PasswordService
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService
   ) {
     this.createForm();
   }
@@ -57,22 +45,25 @@ export class PasswordResetComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(val => {
-      this.passwordService.getUserByToken(val.token).subscribe(user => {
-        if (user.hasOwnProperty('email')) {
-          this.user = user;
-        }
-      });
+      console.log('DEBUG reset email ', val);
+      this.email = val.email;
+      if (!this.email) {
+        // TODO -- error, route back to forget password?
+      }
     });
   }
 
-  onLoginSubmit() {
-    this.passwordService.update(this.user.resetToken, this.pwResetForm.controls.passwordConfirm.value).subscribe(val => {
-      if (val.hasOwnProperty('email')) {
-        this.success = true;
-      } else {
-        this.success = false;
-      }
-    });
+  async onLoginSubmit() {
+    if (!this.email) {
+      return  await this.router.navigate(['/', FORGET_PASSWORD_ROUTE]);
+    }
+    try {
+      const result = await this.authenticationService.forgetPasswordComplete(this.email, this.pwResetForm.controls.resetCode.value, this.pwResetForm.controls.passwordConfirm.value);
+      this.success = true;
+      await this.router.navigate(['/', SIGNIN_ROUTE]);
+    } catch (err) {
+      console.error('Error resetting password ', err);
+    }
   }
 
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
