@@ -1,24 +1,21 @@
-﻿import {fromRoleName} from '../../models/user-role-type.enum';
+﻿import { fromRoleName } from '../../models/user-role-type.enum';
 
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import { Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { NavbarService } from '../../services/navbar.service';
 
-import {UserService} from '../../services/auth/user.service';
-import {NavbarService} from '../../services/navbar.service';
-
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-
   store = localStorage;
 
-  constructor(
-    private router: Router,
-    private navBarService: NavbarService
-  ) {
-  }
+  constructor(private router: Router, private navBarService: NavbarService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
     // const loggedInUser = !this.store.getItem('user') ? undefined : JSON.parse(this.store.getItem('user'));
     // if (loggedInUser) {
     //   this.userService.setUser(loggedInUser);
