@@ -7,6 +7,8 @@ import { CustomMaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
+import { SummaryComponent } from './components/prompt/summary/summary.component';
+import { PromptModule } from './components/prompt/prompt.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +16,12 @@ import { DashboardRoutingModule } from './routes/dashboard-routing.module';
     DashboardFooterComponent,
     MetricsComponent,
     StatusDialogComponent,
+    SummaryComponent,
   ],
   imports: [
     CommonModule,
     CustomMaterialModule,
+    PromptModule,
     DashboardRoutingModule,
     SharedModule,
   ],
