@@ -13,7 +13,6 @@ import { SharedModule } from './shared/shared.module';
 import { GreetingService } from './services/greeting.service';
 import { TopNavShellComponent } from './auth/top-nav-shell/top-nav-shell.component';
 import { LoginShellComponent } from './auth/login-shell/login-shell.component';
-import { MatNavComponent } from './mat-nav/mat-nav.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 import { PasswordForgotComponent } from './auth/password-forgot/password-forgot.component';
@@ -33,6 +32,8 @@ import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
 import { StatusDialogComponent } from './dashboard/status-dialog/status-dialog.component';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { ResourcesComponent } from './resources/resources.component';
+import { SiteHeaderComponent } from './shared/site-header/site-header.component';
+import { DashboardFooterComponent } from './dashboard/dashboard-footer/dashboard-footer.component';
 
 const appRoutes: Routes = [
   { path: 'password-forgot', component: PasswordForgotComponent },
@@ -72,13 +73,13 @@ const appRoutes: Routes = [
     ValidateEmailComponent,
     SignInComponent,
     RegisterComponent,
-    MatNavComponent,
     ContactUsComponent,
     SummaryComponent,
     DashboardComponent,
     StatusDialogComponent,
     PersonalDashboardComponent,
-    ResourcesComponent
+    ResourcesComponent,
+    DashboardFooterComponent,
   ],
   providers: [
     GreetingService,
@@ -86,7 +87,7 @@ const appRoutes: Routes = [
     // StripeService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  exports: [
+  exports: [    
   ],
   entryComponents: [StatusDialogComponent],
   bootstrap: [AppComponent]

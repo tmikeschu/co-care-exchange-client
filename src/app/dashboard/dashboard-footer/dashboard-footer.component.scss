@@ -1,0 +1,34 @@
+.footercontainer {    
+    width: 100%;
+    vertical-align: bottom;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}
+
+.footerdiv{
+    display:inline-block;
+    width: 50px;
+}
+
+.footerimage{    
+    width: 100%;     
+}
+
+.footerimageright{
+    height:45px;
+}
+
+.iconleft{
+    float:left;
+    margin-left: 5px;
+}
+
+.iconright{    
+    float:right;
+    margin-right: 5px;
+}
+
+.iconmiddle{    
+    text-align: center;
+}

@@ -1,7 +1,6 @@
 @import "~@angular/material/theming";
 @import "../styles/tools.scss";
 @import "../app/auth/login-shell/login-shell-theme";
-@import "../app/mat-nav/mat-navbar-theme";
 @include mat-core();
 
 $colorado-care-exchange-typography: mat-typography-config(
@@ -12,7 +11,6 @@ $font-config: mat-typography-config();
 
 @mixin custom-components-theme($theme) {
   @include login-shell-theme($theme);
-  @include mat-navbar-theme($theme);
 }
 // #00B0F0
 $primary: mat-palette($mat-light-blue, 400);

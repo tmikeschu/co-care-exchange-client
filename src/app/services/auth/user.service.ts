@@ -10,7 +10,7 @@ import {User} from '../../models/User';
 @Injectable({ providedIn: 'root' })
 export class UserService {
   user: User;
-  private serverUrl: string = environment.serverUrl;
+  //private serverUrl: string = environment.serverUrl;
 
   constructor (
     private router: Router,
