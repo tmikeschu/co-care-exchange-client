@@ -11,6 +11,10 @@ export class AuthenticationService {
   private user: any;
   constructor(private router: Router, private http: HttpClient, private registrationService: RegistrationService) {}
 
+  getIdToken(): string {
+    return this.user ? this.user.getSignInUserSession().getIdToken() : '';
+  }
+
   async register(registrationModel: RegistrationModel) {
     // TODO: re-eval...get ride of reg service?
     return this.registrationService.register(registrationModel);
