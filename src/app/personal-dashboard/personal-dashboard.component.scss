@@ -1,49 +1,36 @@
 @import '../../styles/utilities.scss';
-.radioGroup {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 10px;
-  margin-bottom: 20px;
-}
 
 :host {
-  p {
-    color: grey;
-    font-size: .9em;
-  }
-  h2 {
-    margin: 0;
-  }
-  mat-icon.add {
-    color: white;
-  }
-  mat-icon.add { 
-    @extend .text-primary;
-  }
-  .center-text {
-    text-align: center;
-  }
-  .mt-20 {
-      margin-top: 1.45rem;
-  }
-  .headercontainer {    
-    vertical-align: top;
-    position: absolute;
-    top: 10px;
-    width: 100%;
-}
-.headerdiv{
-    display:inline-block;
-    width: 50px;
-}
-.headerimage{
-    width: 60%; 
-}
-.closeimage{
-    width: 25px;
-    height: 25px;  
-    mat-icon {
-        margin-top: -32px;
+
+    mat-icon.add {
+        color: white;
+        margin-bottom: 2px;
+    }
+    
+    mat-icon.add { 
+        @extend .text-primary;
+    }
+
+    .center-text {
+        text-align: center;
+    }
+
+    .mt-20 {
+        margin-top: 1.45rem;
+    }
+    .headerlayout{
+        display:inline-block;
+        width: 45px;
+        vertical-align: middle;
+    }
+
+    .headerimage{
+        width: 60%; 
+    }
+
+    .headerclose{
+        float: right;
+        color: #919191;
     }
 }
-}
+

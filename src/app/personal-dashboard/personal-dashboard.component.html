@@ -1,8 +1,7 @@
-<div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="flex-start center">
-    <div class="headerdiv"><img class="headerimage" #image src="../../assets/messages.png" /></div>
-    <button class="text-white closeimage" mat-flat-button color="primary" mat-fab color="primary" (click)="close()">
-        <mat-icon class="next" [color]="accent">cancel</mat-icon>
-    </button>
+
+<div class="headeralign">
+    <div class="headerlayout"><img class="headerimage" #image src="../../assets/messages.png" /></div>
+    <div class="headerlayout headerclose" (click)="close()"><mat-icon>cancel</mat-icon></div>
 </div>
 
 
