@@ -31,6 +31,8 @@ import { SummaryComponent } from './prompt/summary/summary.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
 import { StatusDialogComponent } from './dashboard/status-dialog/status-dialog.component';
+import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { ResourcesComponent } from './resources/resources.component';
 
 const appRoutes: Routes = [
   { path: 'password-forgot', component: PasswordForgotComponent },
@@ -74,7 +76,9 @@ const appRoutes: Routes = [
     ContactUsComponent,
     SummaryComponent,
     DashboardComponent,
-    StatusDialogComponent
+    StatusDialogComponent,
+    PersonalDashboardComponent,
+    ResourcesComponent
   ],
   providers: [
     GreetingService,

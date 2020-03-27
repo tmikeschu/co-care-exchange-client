@@ -1,0 +1,43 @@
+@import '../../styles/utilities.scss';
+.radioGroup {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+:host {
+  p {
+    color: grey;
+    font-size: .9em;
+  }
+  h2 {
+    margin: 0;
+  }
+  mat-icon.add {
+    color: white;
+  }
+  mat-icon.add { 
+    @extend .text-primary;
+  }
+  .headercontainer {    
+    vertical-align: top;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+}
+.headerdiv{
+    display:inline-block;
+    width: 50px;
+}
+.headerimage{
+    width: 60%; 
+}
+.closeimage{
+    width: 25px;
+    height: 25px;  
+    mat-icon {
+        margin-top: -32px;
+    }
+}
+}
