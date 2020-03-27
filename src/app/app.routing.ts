@@ -1,20 +1,21 @@
 ﻿import { RouterModule, Routes } from '@angular/router';
 
-import { TopNavShellComponent } from './auth/top-nav-shell/top-nav-shell.component';
-import { LoginShellComponent } from './auth/login-shell/login-shell.component';
-import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
-import { PasswordForgotComponent } from './auth/password-forgot/password-forgot.component';
-import { ValidateEmailComponent } from './auth/validate-email/validate-email.component';
-import { SignInComponent } from './auth/sign-in/sign-in.component';
-import { RegisterComponent } from './auth/register/register.component';
+import { TopNavShellComponent } from './auth/components/top-nav-shell/top-nav-shell.component';
+import { LoginShellComponent } from './auth/components/login-shell/login-shell.component';
+import { PasswordResetComponent } from './auth/components/password-reset/password-reset.component';
+import { PasswordForgotComponent } from './auth/components/password-forgot/password-forgot.component';
+import { ValidateEmailComponent } from './auth/components/validate-email/validate-email.component';
+import { SignInComponent } from './auth/components/sign-in/sign-in.component';
+import { RegisterComponent } from './registration/components/register/register.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { InformationComponent } from './information/information/information.component';
 import { PromptComponent } from './prompt/prompt.component';
 import { SummaryComponent } from './prompt/summary/summary.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component'
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component'
 import { ResourcesComponent } from './resources/resources.component'
+import {ModuleWithProviders} from '@angular/core';
 
 
 const appRoutes: Routes = [
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
     component: ResourcesComponent
   },
   {
-    path: 'personal-dashboard',
+    path: 'personaldashboard',
     component: PersonalDashboardComponent
   },
   {
@@ -31,7 +32,7 @@ const appRoutes: Routes = [
     component: PantryLocatorComponent
   },
   {
-    path: 'signIn',
+    path: 'signin',
     component: SignInComponent
   },
   {
@@ -59,11 +60,11 @@ const appRoutes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'password-reset',
+    path: 'passwordreset',
     component: PasswordResetComponent
   },
   {
-    path: 'password-forgot',
+    path: 'passwordforgot',
     component: PasswordForgotComponent
   },
   {
@@ -83,10 +84,17 @@ const appRoutes: Routes = [
       // everything behind login goes here
     ]
   },
+  {
+    path: '**',
+    redirectTo: '/',
+    pathMatch: 'full',
+  },
 ];
 
-export const routing = RouterModule.forRoot(appRoutes, {
-  enableTracing: false,
-  scrollPositionRestoration: 'enabled',
-  anchorScrolling: 'enabled'
-});
+
+export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+// export const routing = RouterModule.forRoot(appRoutes, {
+//   enableTracing: false,
+//   scrollPositionRestoration: 'enabled',
+//   anchorScrolling: 'enabled'
+// });
