@@ -12,11 +12,11 @@ import { InformationComponent } from './information/information/information.comp
 import { PromptComponent } from './prompt/prompt.component';
 import { SummaryComponent } from './prompt/summary/summary.component';
 import { DashboardComponent } from './dashboard/components/dashboard.component';
-import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component'
-import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component'
-import { ResourcesComponent } from './resources/resources.component'
-import {ModuleWithProviders} from '@angular/core';
-import { MetricsComponent } from './metrics/metrics.component'
+import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component';
+import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { ResourcesComponent } from './resources/resources.component';
+import { ModuleWithProviders } from '@angular/core';
+import { MetricsComponent } from './dashboard/components/metrics/metrics.component';
 
 
 const appRoutes: Routes = [
