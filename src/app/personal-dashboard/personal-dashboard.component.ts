@@ -9,23 +9,22 @@ import { Router } from '@angular/router';
 export class PersonalDashboardComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    // private navbarService: NavbarService
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
-  edit(){
+  edit() {
     this.router.navigate(['/info']);
   }
-  add(){
+  add() {
     this.router.navigate(['/prompt']);
   }
-  close(){
+  close() {
     this.router.navigate(['/dashboard']);
   }
-  resource(){
+  resource() {
     this.router.navigate(['/resources']);
   }
 
