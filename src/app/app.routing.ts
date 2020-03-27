@@ -16,9 +16,14 @@ import { PantryLocatorComponent } from './pantry-locator/pantry-locator.componen
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component'
 import { ResourcesComponent } from './resources/resources.component'
 import {ModuleWithProviders} from '@angular/core';
+import { MetricsComponent } from './metrics/metrics.component'
 
 
 const appRoutes: Routes = [
+  {
+    path: 'metrics',
+    component: MetricsComponent
+  },
   {
     path: 'resources',
     component: ResourcesComponent

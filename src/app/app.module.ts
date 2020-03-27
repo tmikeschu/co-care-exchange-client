@@ -27,10 +27,10 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
 import {RegistrationModule} from './registration/registration.module';
+// import { SiteHeaderComponent } from './shared/site-header/site-header.component';
+// import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
+import { MetricsComponent } from './metrics/metrics.component';
 
-// const appRoutes: Routes = [
-//   { path: 'passwordforgot', component: PasswordForgotComponent },
-// ];
 
 @NgModule({
   imports: [
@@ -66,6 +66,8 @@ import {RegistrationModule} from './registration/registration.module';
     SummaryComponent,
     PersonalDashboardComponent,
     ResourcesComponent,
+    // DashboardFooterComponent,
+    MetricsComponent,
   ],
   providers: [
     GreetingService,
