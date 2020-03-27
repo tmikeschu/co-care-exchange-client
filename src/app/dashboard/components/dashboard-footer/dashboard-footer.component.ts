@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-footer.component.scss']
 })
 export class DashboardFooterComponent implements OnInit {
+  messageCount: number;
 
   constructor() { }
 
   ngOnInit() {
+    this.messageCount = 8;
   }
 
 }
