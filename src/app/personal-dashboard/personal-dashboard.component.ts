@@ -20,7 +20,7 @@ export class PersonalDashboardComponent implements OnInit {
     this.router.navigate(['/info']);
   }
   add(){
-
+    this.router.navigate(['/prompt']);
   }
   close(){
     this.router.navigate(['/dashboard']);
