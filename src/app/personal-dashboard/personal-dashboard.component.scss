@@ -20,6 +20,12 @@
   mat-icon.add { 
     @extend .text-primary;
   }
+  .center-text {
+    text-align: center;
+  }
+  .mt-20 {
+      margin-top: 1.45rem;
+  }
   .headercontainer {    
     vertical-align: top;
     position: absolute;

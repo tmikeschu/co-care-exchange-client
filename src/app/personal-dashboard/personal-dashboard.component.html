@@ -1,13 +1,14 @@
 <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="flex-start center">
-    <div class="headerdiv"><img class="headerimage" #image src="../../assets/messages.png"/></div>
+    <div class="headerdiv"><img class="headerimage" #image src="../../assets/messages.png" /></div>
     <button class="text-white closeimage" mat-flat-button color="primary" mat-fab color="primary" (click)="close()">
-        <mat-icon class="next">cancel</mat-icon>
+        <mat-icon class="next" [color]="accent">cancel</mat-icon>
     </button>
 </div>
 
+
 <div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
     <div fxLayout="column">
-        <h3 class="text-primary">
+        <h3 class="text-primary center">
             Updates on requests or shares?<br>
             Start a new questionnaire.
         </h3>
@@ -19,7 +20,7 @@
         </button>
     </div>
 
-    <div fxLayout="column">
+    <div fxLayout="column" class="mt-20">
         <h3 class="text-primary">
             Edit your information.
         </h3>
@@ -31,7 +32,7 @@
         </button>
     </div>
 
-    <div fxLayout="column">
+    <div fxLayout="column" class="mt-20">
         <h3 class="text-primary">
             Resources
         </h3>
