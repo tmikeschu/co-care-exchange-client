@@ -1,14 +1,21 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {PromptComponent} from '../prompt.component';
-import {Prompt} from '../../models/cce/prompt';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { PromptComponent } from '../prompt.component';
+import { Prompt } from '../../../../models/cce/prompt';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent implements OnInit, OnChanges {
-
   @Input()
   prompts: Prompt[];
 
@@ -20,7 +27,6 @@ export class QuestionComponent implements OnInit, OnChanges {
   @Output()
   surveyFinished = new EventEmitter();
 
-
   @Input()
   survey = false;
 
@@ -28,13 +34,9 @@ export class QuestionComponent implements OnInit, OnChanges {
 
   promptIndex = 0;
 
-  constructor() {
+  constructor() {}
 
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   onPromptYes() {
     if (!this.survey) {
@@ -75,5 +77,4 @@ export class QuestionComponent implements OnInit, OnChanges {
     this.prompt = this.prompts[0];
     this.promptIndex = 0;
   }
-
 }

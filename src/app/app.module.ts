@@ -17,19 +17,16 @@ import { NavbarService } from './services/navbar.service';
 import { ToastrModule } from 'ngx-toastr';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { InformationModule } from './information/information.module';
-import { PromptModule } from './prompt/prompt.module';
 import { AwsCognitoModule } from './aws-cognito/aws-cognito.module';
-import { SummaryComponent } from './prompt/summary/summary.component';
 import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
-import {RegistrationModule} from './registration/registration.module';
+import { RegistrationModule } from './registration/registration.module';
 // import { SiteHeaderComponent } from './shared/site-header/site-header.component';
 // import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
-import { MetricsComponent } from './metrics/metrics.component';
 
 
 @NgModule({
@@ -51,7 +48,6 @@ import { MetricsComponent } from './metrics/metrics.component';
     SharedModule,
     InformationModule,
     AwsCognitoModule,
-    PromptModule,
     // RouterModule.forRoot(
     //   appRoutes,
     //   { enableTracing: false } // <-- debugging purposes only
@@ -63,11 +59,9 @@ import { MetricsComponent } from './metrics/metrics.component';
   declarations: [
     AppComponent,
     ContactUsComponent,
-    SummaryComponent,
     PersonalDashboardComponent,
     ResourcesComponent,
     // DashboardFooterComponent,
-    MetricsComponent,
   ],
   providers: [
     GreetingService,

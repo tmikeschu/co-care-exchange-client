@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Prompt} from '../models/cce/prompt';
-import {PromptService} from '../services/cce/prompt.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Prompt } from '../../../models/cce/prompt';
+import { PromptService } from '../../../services/cce/prompt.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prompt',
   templateUrl: './prompt.component.html',
-  styleUrls: ['./prompt.component.scss']
+  styleUrls: ['./prompt.component.scss'],
 })
 export class PromptComponent implements OnInit {
   prompts: Prompt[];
@@ -24,11 +24,11 @@ export class PromptComponent implements OnInit {
 
   inNeed: boolean;
 
-  constructor(private promptService: PromptService, private router: Router) { }
+  constructor(private promptService: PromptService, private router: Router) {}
 
   ngOnInit() {
     this.promptMap = new Map();
-    this.promptService.getPrompts().subscribe(val => {
+    this.promptService.getPrompts().subscribe((val) => {
       this.buildPrompts(val);
     });
   }
@@ -51,7 +51,8 @@ export class PromptComponent implements OnInit {
   }
 
   getPromptTypeQuestion() {
-    this.promptTypeQuestion = 'Are you in need of ' + this.promptKeys[this.promptTypeIndex] + '?';
+    this.promptTypeQuestion =
+      'Are you in need of ' + this.promptKeys[this.promptTypeIndex] + '?';
   }
 
   handleInNeed(inNeed) {
@@ -69,8 +70,7 @@ export class PromptComponent implements OnInit {
   }
 
   private buildPrompts(promptData: any) {
-    promptData.data.prompts.forEach(val => {
-
+    promptData.data.prompts.forEach((val) => {
       // save the survey questions for last.
       if (val.promptType === 'Survey Questions') {
         this.surveyQuestions.push(val);
@@ -92,6 +92,4 @@ export class PromptComponent implements OnInit {
     console.log(this.promptMap);
     console.log(this.surveyQuestions);
   }
-
-
 }

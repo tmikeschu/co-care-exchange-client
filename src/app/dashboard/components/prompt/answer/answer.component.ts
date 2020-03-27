@@ -1,16 +1,23 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Prompt} from '../../models/cce/prompt';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AnswerService} from '../../services/cce/answer.service';
-import {AnswerModel} from '../../models/cce/answer-model';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Prompt } from '../../../../models/cce/prompt';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnswerService } from '../../../../services/cce/answer.service';
+import { AnswerModel } from '../../../../models/cce/answer-model';
 
 @Component({
   selector: 'app-answer',
   templateUrl: './answer.component.html',
-  styleUrls: ['./answer.component.scss']
+  styleUrls: ['./answer.component.scss'],
 })
 export class AnswerComponent implements OnInit, OnChanges {
-
   answerForm: FormGroup;
 
   @Input()
@@ -28,7 +35,10 @@ export class AnswerComponent implements OnInit, OnChanges {
   @Output()
   nextQuestion = new EventEmitter();
 
-  constructor(private answerService: AnswerService, private formBuilder: FormBuilder) { }
+  constructor(
+    private answerService: AnswerService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.answerForm = this.formBuilder.group({
@@ -53,14 +63,13 @@ export class AnswerComponent implements OnInit, OnChanges {
       clientMutationId: '123456',
       numberValue: numberValue,
       unitOfIssue: this.unitsOfIssue,
-      userId: '22201103-DEC0-466F-B44F-1926BC1687C1'
+      userId: '22201103-DEC0-466F-B44F-1926BC1687C1',
     };
 
-    this.answerService.postAnswer(answer).subscribe(val => {
+    this.answerService.postAnswer(answer).subscribe((val) => {
       // go to the next question
       this.nextQuestion.emit('next');
     });
-
   }
 
   onCancel() {
@@ -96,7 +105,8 @@ export class AnswerComponent implements OnInit, OnChanges {
   }
 
   getQuestion() {
-    this.question = 'How many ' + this.prompt.item + 's  are you requesting or sharing?';
+    this.question =
+      'How many ' + this.prompt.item + 's  are you requesting or sharing?';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -109,5 +119,4 @@ export class AnswerComponent implements OnInit, OnChanges {
       }
     }
   }
-
 }

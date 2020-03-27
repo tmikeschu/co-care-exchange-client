@@ -5,7 +5,7 @@ import { AnswerComponent } from './answer/answer.component';
 import { PromptComponent } from './prompt.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CustomMaterialModule } from '../material/material.module';
+import { CustomMaterialModule } from '../../../material/material.module';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule],
