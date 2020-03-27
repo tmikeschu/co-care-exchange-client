@@ -1,0 +1,56 @@
+@import '../../styles/utilities.scss';
+
+// app-pantry-locator {
+//     background: linear-gradient(to bottom, black 0%,black 50%,#000000 50%,white 50%,white 100%) /* W3C */
+// }
+
+.mat-app-background {
+    background-image: linear-gradient(to bottom, red, red 50%, white 50%);
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+  }
+
+:host {
+
+    p {
+      color: grey;
+      font-size: .9em;
+    }
+    h2 {
+      margin: 0;
+    }
+    mat-icon.back {
+      color: white;
+    }
+    mat-icon.arrows { 
+      @extend .text-primary;
+    }
+  }
+
+  .food-banks {
+    margin: 0 0 2em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 15em;
+  }
+  .food-banks li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    margin: .5em;
+    padding: .3em 0;
+    // height: 1.6em;
+    border-radius: 4px;
+  }
+  .food-banks div.name {
+    color: rgb(144, 147, 148);
+    font-size: larger;
+  }
+  .food-banks div.address {
+    color: rgb(144, 147, 148);
+    margin-left: 1.5em;
+  }
+  .food-banks div.notes {
+    color: rgb(35, 138, 52);
+    margin-left: 1.5em;
+  }
