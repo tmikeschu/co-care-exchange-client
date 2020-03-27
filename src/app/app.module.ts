@@ -78,8 +78,7 @@ const appRoutes: Routes = [
     DashboardComponent,
     StatusDialogComponent,
     PersonalDashboardComponent,
-    ResourcesComponent
-    StatusDialogComponent,
+    ResourcesComponent,
     DashboardFooterComponent,
   ],
   providers: [

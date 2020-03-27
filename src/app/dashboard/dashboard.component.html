@@ -1,44 +1,34 @@
+<div class="dashboard-container" >
 
+    <app-site-header></app-site-header>
 
-
-
-
-<app-site-header></app-site-header>
-
-<div class="dasboardcontent" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
-    <div class="">        
-
-        <div *ngIf="requests.length > 0">
-            <mat-card-content>
-                <h2>Needs</h2>
-                <mat-list>
-                    <mat-list-item *ngFor="let request of requests" (click)="handleStatusClick(request)" class="contentborder">
-                            <mat-label class="contentlabel">{{request.name}}</mat-label>
-                            <mat-label class="contentstatuspending" style="margin-left: auto">{{request.status}}</mat-label>
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-        </div>
-
-        <div *ngIf="shares.length > 0">
-            <mat-card-content>
-                <h2>Can Give</h2>
-                <mat-list>
-                    <mat-list-item *ngFor="let share of shares" (click)="handleStatusClick(share)" class="contentborder">
-                        <mat-label class="contentlabel">{{share.name}}</mat-label>
-                        <mat-label class="contentstatuscancelled" style="margin-left: auto">{{share.status}}</mat-label>
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-        </div>
-
-        
+    <div class="dasboardcontent" *ngIf="requests.length > 0">
+        <mat-card-content>
+            <h2>Needs</h2>
+            <mat-list>
+                <mat-list-item *ngFor="let request of requests" (click)="handleStatusClick(request)" class="contentborder">
+                        <mat-label class="contentlabel">{{request.name}}</mat-label>
+                        <mat-label class="contentstatuspending" style="margin-left: auto">{{request.status}}</mat-label>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
     </div>
 
-    
-</div>
+    <div class="dasboardcontent" *ngIf="shares.length > 0">
+        <mat-card-content>
+            <h2>Can Give</h2>
+            <mat-list>
+                <mat-list-item *ngFor="let share of shares" (click)="handleStatusClick(share)" class="contentborder">
+                    <mat-label class="contentlabel">{{share.name}}</mat-label>
+                    <mat-label class="contentstatuscancelled" style="margin-left: auto">{{share.status}}</mat-label>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </div>
 
-<div class="footercontainer">
-    <app-dashboard-footer></app-dashboard-footer>  
-</div>
 
+    <div class="footercontainer">
+        <app-dashboard-footer></app-dashboard-footer>  
+    </div>
+
+</div>
