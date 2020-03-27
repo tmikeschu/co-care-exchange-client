@@ -1,6 +1,6 @@
 @import "~@angular/material/theming";
 @import "../styles/tools.scss";
-@import "../app/auth/login-shell/login-shell-theme";
+@import "../app/auth/components/login-shell/login-shell-theme";
 @include mat-core();
 
 $colorado-care-exchange-typography: mat-typography-config(

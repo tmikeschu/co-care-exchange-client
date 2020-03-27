@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../../services/cce/authentication.service';
-import { NavbarService } from '../../services/navbar.service';
-import { SignInResult } from '../../models/cce/sign-in-result.model';
+import { AuthenticationService } from '../../../services/cce/authentication.service';
+import { NavbarService } from '../../../services/navbar.service';
+import { SignInResult } from '../../../models/cce/sign-in-result.model';
 
 @Component({
   selector: 'app-sign-in',
@@ -71,7 +70,7 @@ export class SignInComponent implements OnInit {
   }
 
   handleForgotPW() {
-    this.router.navigate(['/password-forgot']);
+    this.router.navigate(['/passwordforgot']);
   }
 
   handleRegistration() {
