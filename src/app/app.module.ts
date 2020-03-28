@@ -25,6 +25,7 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
 import { RegistrationModule } from './registration/registration.module';
+// import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 // import { SiteHeaderComponent } from './shared/site-header/site-header.component';
 // import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
 
@@ -61,6 +62,7 @@ import { RegistrationModule } from './registration/registration.module';
     ContactUsComponent,
     PersonalDashboardComponent,
     ResourcesComponent,
+    // PopupDialogComponent,
     // DashboardFooterComponent,
   ],
   providers: [
