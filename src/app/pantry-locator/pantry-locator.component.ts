@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SIGNIN_ROUTE } from '../core/constants/routes';
 
 @Component({
   selector: 'app-pantry-locator',
@@ -7,22 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PantryLocatorComponent implements OnInit {
 
-  constructor() { }
-  // constructor(private elementRef: ElementRef) { }
-  // constructor(private el: ElementRef, private renderer: Renderer) { }
-
-  ngOnInit() {
-  }
+  constructor(
+    private router: Router
+  ) { }
 
   foodBanks = FOODBANKS;
 
-  // ngAfterViewInit(){
-  //   // this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'red';
-  //   this.renderer.setElementStyle(this.el.nativeElement, 'background-color', '#5789D8');
-  //   this.renderer.setElementStyle(this.el.nativeElement, 'color', '#FFFFFF');
-  // }
+  ngOnInit() {
+  }
+  //await this.router.navigate(['/', SIGNIN_ROUTE]);
 
 
+  async back() {
+    await this.router.navigate(['/', SIGNIN_ROUTE]);
+  }
 
 }
 
