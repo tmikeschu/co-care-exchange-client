@@ -8,11 +8,10 @@ import { Router } from '@angular/router';
 })
 export class PersonalDashboardComponent implements OnInit {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router ) { }
 
   ngOnInit() {
+    window.scrollTo(0, 0)
   }
 
   edit() {

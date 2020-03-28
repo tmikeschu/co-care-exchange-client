@@ -1,36 +1,8 @@
-@import '../../styles/utilities.scss';
+.dashboard-container{
+    text-align: center;
+}
 
-:host {
-
-    mat-icon.add {
-        color: white;
-        margin-bottom: 2px;
-    }
-    
-    mat-icon.add { 
-        @extend .text-primary;
-    }
-
-    .center-text {
-        text-align: center;
-    }
-
-    .mt-20 {
-        margin-top: 1.45rem;
-    }
-    .headerlayout{
-        display:inline-block;
-        width: 45px;
-        vertical-align: middle;
-    }
-
-    .headerimage{
-        width: 100%; 
-    }
-
-    .headerclose{
-        float: right;
-        color: #919191;
-    }
+.contentspacing{
+    margin-top: 60px;
 }
 
