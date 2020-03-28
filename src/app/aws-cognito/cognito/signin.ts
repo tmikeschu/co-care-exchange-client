@@ -43,7 +43,8 @@ export const signIn = async (username, password) => {
       // Auth.setupTOTP(user);
     } else {
       // The user directly signs in
-      console.log(user);
+      console.log("DEBUG signin user ", user);
+      // let user = await Auth.currentAuthenticatedUser();
     }
     return result;
   } catch (err) {

@@ -15,6 +15,18 @@ export class AuthenticationService {
     return this.user ? this.user.getSignInUserSession().getIdToken() : '';
   }
 
+  getFirstName(): string {
+    return this.user ? this.user.attributes.given_name : '';
+  }
+
+  getLastName(): string {
+    return this.user ? this.user.attributes.family_name : '';
+  }
+
+  getEmail(): string {
+    return this.user ? this.user.attributes.email : '';
+  }
+
   async register(registrationModel: BasicRegistrationModel) {
     // TODO: re-eval...get ride of reg service?
     // return this.registrationService.register(registrationModel);
