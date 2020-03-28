@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from '../components/dashboard.component';
-import {PromptComponent} from '../components/prompt/prompt.component';
-import {SummaryComponent} from '../components/prompt/summary/summary.component';
-import {MetricsComponent} from '../components/metrics/metrics.component';
+import { PromptComponent } from '../components/prompt/prompt.component';
+import { SummaryComponent } from '../components/prompt/summary/summary.component';
+import { MetricsComponent } from '../components/metrics/metrics.component';
 
 const routes: Routes = [
   // {
