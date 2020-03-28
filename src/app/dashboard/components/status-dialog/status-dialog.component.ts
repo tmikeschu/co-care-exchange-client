@@ -11,6 +11,7 @@ import { Status } from '../models/dasboard';
     message: string;
     sharemessage: string = 'Are you able to pick up {0} from {1}?';
     needmessage: string = 'You matched as a sharer for {0} {1} of {2}.  Can you drop the items off at this location?  ';
+    confirmmessage: string = 'Did you pickup {0} from {1}? ';
   
     constructor(public dialogRef: MatDialogRef<StatusDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Status) {
       this.data.confirm = null;
@@ -23,6 +24,10 @@ import { Status } from '../models/dasboard';
       if(data.statusTypeId == 2){
         this.message = this.needmessage.replace('{0}', data.quantity.toString()).replace('{1}', data.itemType).replace('{2}', data.name);
       }
+
+      // if(data.statusId == 4){
+
+      // }
     }
   
     confirm(): void {

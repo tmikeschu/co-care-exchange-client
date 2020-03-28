@@ -2,8 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 import { Status } from './models/dasboard';
-import { BreakPoint } from '@angular/flex-layout';
-import { request } from 'http';
 import { DashboardService } from 'src/app/services/cce/dashboard.service';
 import { Observable, Subscription } from 'rxjs';
 
@@ -20,6 +18,8 @@ export class DashboardComponent implements OnInit {
   subscription: Subscription;
   
   constructor(public dialog: MatDialog, dashboardservice: DashboardService) { 
+
+    //TODO: this will need to maybe update a store or some such, so that the rest of the app knows to update counts and details...
     this.subscription = dashboardservice.getRequests().subscribe(response => {
       console.log('response', response)
       if (response) {
@@ -31,8 +31,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    
+    window.scrollTo(0, 0);   
   }
 
   setlabelstyles(){

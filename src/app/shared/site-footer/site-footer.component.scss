@@ -1,9 +1,11 @@
-.footercontainer {    
-    width: 100%;
-    vertical-align: bottom;
-    position: absolute;
+.footercontainer {   
+    background-color: #fafafa;
+    position: fixed;
+    left: 0;
     bottom: 0;
+    width: 100%;    
     text-align: center;
+    z-index: 10000;
 }
 
 .footerdiv{
