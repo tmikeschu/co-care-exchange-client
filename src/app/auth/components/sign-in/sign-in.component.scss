@@ -48,6 +48,7 @@
 
 .login-wrapper .login-full-width, .login-wrapper .btn-block {
   width: 100%;
+  color: white;
 }
 
 .login-wrapper mat-card-header {
@@ -79,6 +80,15 @@ mat-error {
   flex-grow: 1;
   max-width: 100%;
   flex-basis: 0
+}
+
+.pantry-link {
+  color: orange;
+  font-size: larger;
+}
+
+.center {
+  text-align: center;
 }
 
 
