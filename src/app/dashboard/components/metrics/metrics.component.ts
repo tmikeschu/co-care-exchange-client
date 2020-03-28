@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as c3 from 'c3'
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
-  styleUrls: ['./metrics.component.scss']
+  styleUrls: ['./metrics.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MetricsComponent implements OnInit {
 
@@ -41,7 +42,10 @@ export class MetricsComponent implements OnInit {
 
         ],
         type: 'bar',
-        labels: true
+        labels: true,
+        colors: {
+          data1: '#00bcd4'
+        }
       },
       bar: {
         width: {
@@ -51,7 +55,15 @@ export class MetricsComponent implements OnInit {
       size: {
         height: 200,
         width: 300
-    },
+      },
+      axis: {
+        x: {
+          show: true,
+        },
+        y: {
+          show: true
+        }
+      },
       legend: {
         show: false
       }
