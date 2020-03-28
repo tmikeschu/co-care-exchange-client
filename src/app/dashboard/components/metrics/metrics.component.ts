@@ -45,9 +45,13 @@ export class MetricsComponent implements OnInit {
       },
       bar: {
         width: {
-          ratio: 0.65 // this makes bar width 50% of length between ticks
+          ratio: 0.3 // this makes bar width 50% of length between ticks
         }
       },
+      size: {
+        height: 200,
+        width: 300
+    },
       legend: {
         show: false
       }
