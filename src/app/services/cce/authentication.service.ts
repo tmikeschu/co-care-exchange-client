@@ -5,6 +5,7 @@ import { RegistrationModel } from '../../models/cce/registrationModel';
 import { RegistrationService } from './registration.service';
 import { signIn } from '../../aws-cognito/cognito/signin';
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../aws-cognito/cognito/password';
+import {BasicRegistrationModel} from '../../models/cce/basic-registration.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -15,7 +16,7 @@ export class AuthenticationService {
     return this.user ? this.user.getSignInUserSession().getIdToken() : '';
   }
 
-  async register(registrationModel: RegistrationModel) {
+  async register(registrationModel: BasicRegistrationModel) {
     // TODO: re-eval...get ride of reg service?
     return this.registrationService.register(registrationModel);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { NavbarService } from '../../../services/navbar.service';
@@ -19,6 +19,7 @@ export class SignInComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private navbarService: NavbarService
   ) {}
@@ -27,6 +28,13 @@ export class SignInComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+    });
+    this.route.queryParams.subscribe(val => {
+      console.log('DEBUG signin email ', val);
+      const email = val.email;
+      if (email) {
+        this.loginForm.get('username').setValue(email);
+      }
     });
   }
 
@@ -47,11 +55,15 @@ export class SignInComponent implements OnInit {
         this.error = true;
         this.errorMessage = result.errorMsg;
         // todo: handle errors
+        alert(result.errorMsg);
         return;
       }
+      // TODO is navbar service needed...dont think so
       this.navbarService.setLogin(true);
+      await this.router.navigate(['/', 'info']);
     } catch (err) {
       console.log('SignIn error ', err);
+      alert('Error signing in, try again later');
     }
     // this.authenticationService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
     //   .pipe(first())
