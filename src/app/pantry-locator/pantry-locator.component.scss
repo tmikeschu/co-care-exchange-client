@@ -25,13 +25,30 @@
     mat-icon.arrows { 
       @extend .text-primary;
     }
+    .center {
+        text-align: center;
+    }
   }
+  .fb-container {
+    position: relative;
+    float: right;
+    width: 95%;
+    height: 225px;
+    background-color: white;
+    margin-top: 30px;
+    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.15);
+    text-align: left;
+    border-radius: 4px;
+    box-sizing: border-box; /****** NEW *****/
+    max-height: 225px;   /****** NEW *****/
+    overflow-y: scroll;  /****** NEW *****/
+    overflow-x : hidden; /****** NEW *****/
+ }
 
   .food-banks {
     margin: 0 0 2em 0;
     list-style-type: none;
     padding: 0;
-    width: 15em;
   }
   .food-banks li {
     cursor: pointer;
@@ -39,11 +56,11 @@
     left: 0;
     margin: .5em;
     padding: .3em 0;
-    // height: 1.6em;
     border-radius: 4px;
   }
   .food-banks div.name {
     color: rgb(144, 147, 148);
+    margin-left: .5em;
     font-size: larger;
   }
   .food-banks div.address {
