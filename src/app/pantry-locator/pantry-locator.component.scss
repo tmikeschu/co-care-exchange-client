@@ -1,15 +1,5 @@
 @import '../../styles/utilities.scss';
 
-// app-pantry-locator {
-//     background: linear-gradient(to bottom, black 0%,black 50%,#000000 50%,white 50%,white 100%) /* W3C */
-// }
-
-.mat-app-background {
-    background-image: linear-gradient(to bottom, red, red 50%, white 50%);
-    background-attachment:fixed;
-    background-repeat: no-repeat;
-  }
-
 :host {
 
     p {
