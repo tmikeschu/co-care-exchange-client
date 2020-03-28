@@ -1,16 +1,15 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { RegistrationModel } from '../../models/cce/registrationModel';
-import { RegistrationService } from './registration.service';
 import { signIn } from '../../aws-cognito/cognito/signin';
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../aws-cognito/cognito/password';
-import {BasicRegistrationModel} from '../../models/cce/basic-registration.model';
+import { BasicRegistrationModel } from '../../models/cce/basic-registration.model';
+import { register } from '../../aws-cognito/cognito/register';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private user: any;
-  constructor(private router: Router, private http: HttpClient, private registrationService: RegistrationService) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   getIdToken(): string {
     return this.user ? this.user.getSignInUserSession().getIdToken() : '';
@@ -18,7 +17,8 @@ export class AuthenticationService {
 
   async register(registrationModel: BasicRegistrationModel) {
     // TODO: re-eval...get ride of reg service?
-    return this.registrationService.register(registrationModel);
+    // return this.registrationService.register(registrationModel);
+    return await register(registrationModel);
   }
 
   async signIn(username: string, password: string) {

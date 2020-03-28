@@ -1,5 +1,7 @@
 export interface BasicRegistrationModel {
   email: string;
-  phone?: string;
+  phoneNumber?: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
 }
