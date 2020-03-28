@@ -1,25 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { RegisterComponent } from '../components/register/register.component';
 const routes: Routes = [
-    // TODO
-  // {
-  //   path: '',
-  //   component: VerifyComponent,
-  // },
-  // {
-  //   path: 'setup',
-  //   component: AccountSetupComponent,
-  //   canActivate: [AccountSetupGuard],
-  // },
-  // {
-  //   path: 'confirm',
-  //   component: AccountConfirmationComponent,
-  //   canActivate: [AccountSetupGuard],
-  // },
-  // {
-  //   path: 'register',
-  //   component: RegisterComponent
-  // },
+  {
+    path: '',
+    component: RegisterComponent,
+  },
 ];
 
 @NgModule({

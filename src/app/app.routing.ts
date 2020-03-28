@@ -1,93 +1,85 @@
 ﻿import { RouterModule, Routes } from '@angular/router';
-
-import { TopNavShellComponent } from './auth/components/top-nav-shell/top-nav-shell.component';
 import { LoginShellComponent } from './auth/components/login-shell/login-shell.component';
-import { PasswordResetComponent } from './auth/components/password-reset/password-reset.component';
-import { PasswordForgotComponent } from './auth/components/password-forgot/password-forgot.component';
-import { ValidateEmailComponent } from './auth/components/validate-email/validate-email.component';
 import { SignInComponent } from './auth/components/sign-in/sign-in.component';
 import { RegisterComponent } from './registration/components/register/register.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
-import { InformationComponent } from './information/information/information.component';
-import { PromptComponent } from './dashboard/components/prompt/prompt.component';
-import { SummaryComponent } from './dashboard/components/prompt/summary/summary.component';
 import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { ModuleWithProviders } from '@angular/core';
-import { MetricsComponent } from './dashboard/components/metrics/metrics.component';
 
 
 const appRoutes: Routes = [
-  {
-    path: 'metrics',
-    component: MetricsComponent
-  },
+  // {
+  //   path: 'metrics',
+  //   component: MetricsComponent
+  // },
   {
     path: 'resources',
-    component: ResourcesComponent
+    component: ResourcesComponent,
   },
   {
     path: 'personaldashboard',
-    component: PersonalDashboardComponent
+    component: PersonalDashboardComponent,
   },
   {
     path: 'pantry',
-    component: PantryLocatorComponent
+    component: PantryLocatorComponent,
   },
   {
     path: 'signin',
-    component: SignInComponent
+    component: SignInComponent,
   },
   {
     path: 'contact',
-    component: ContactUsComponent
+    component: ContactUsComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'info',
-    component: InformationComponent
-  },
-  {
-    path: 'prompt',
-    component: PromptComponent
-  },
-  {
-    path: 'summary',
-    component: SummaryComponent
+    component: RegisterComponent,
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    // TODO -- auth guard
   },
-  {
-    path: 'passwordreset',
-    component: PasswordResetComponent
-  },
-  {
-    path: 'passwordforgot',
-    component: PasswordForgotComponent
-  },
-  {
-    path: 'validateemailaddress',
-    component: ValidateEmailComponent
-  },
-  {
-    path: '',
-    component: TopNavShellComponent,
-    children: [
-    ]
-  },
+  // {
+  //   path: 'info',
+  //   component: InformationComponent
+  // },
+  // {
+  //   path: 'prompt',
+  //   component: PromptComponent
+  // },
+  // {
+  //   path: 'summary',
+  //   component: SummaryComponent
+  // },
+  // {
+  //   path: 'passwordreset',
+  //   component: PasswordResetComponent
+  // },
+  // {
+  //   path: 'passwordforgot',
+  //   component: PasswordForgotComponent
+  // },
+  // {
+  //   path: 'validateemailaddress',
+  //   component: ValidateEmailComponent
+  // },
+  // {
+  //   path: '',
+  //   component: TopNavShellComponent,
+  //   children: [
+  //   ]
+  // },
   {
     path: '',
     component: LoginShellComponent,
     children: [
       // everything behind login goes here
-    ]
+    ],
   },
   {
     path: '**',
