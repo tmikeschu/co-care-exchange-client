@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { NavbarService } from '../../../services/navbar.service';
@@ -29,7 +29,7 @@ export class SignInComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.route.queryParams.subscribe(val => {
+    this.route.queryParams.subscribe((val) => {
       console.log('DEBUG signin email ', val);
       const email = val.email;
       if (email) {
@@ -60,7 +60,7 @@ export class SignInComponent implements OnInit {
       }
       // TODO is navbar service needed...dont think so
       this.navbarService.setLogin(true);
-      await this.router.navigate(['/', 'info']);
+      await this.navigateToNextRoute();
     } catch (err) {
       console.log('SignIn error ', err);
       alert('Error signing in, try again later');
@@ -79,6 +79,13 @@ export class SignInComponent implements OnInit {
     //       this.error = true;
     //       this.signingIn = false;
     //     });
+  }
+
+  private async navigateToNextRoute() {
+    // TODO -- check if user profile exists
+    //  return await this.router.navigate(['/', 'dashboard']);
+    // if so , nav to dashboard, else
+    return await this.router.navigate(['/', 'info']);
   }
 
   handleForgotPW() {
