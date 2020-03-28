@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { GreetingComponent } from './greeting/greeting.component';
 import {CustomMaterialModule} from '../material/material.module';
 import { SiteHeaderComponent } from './site-header/site-header.component';
+import { SiteFooterComponent } from './site-footer/site-footer.component';
 
 @NgModule({
   imports: [
@@ -18,10 +19,12 @@ import { SiteHeaderComponent } from './site-header/site-header.component';
   declarations: [
     GreetingComponent,
     SiteHeaderComponent,
+    SiteFooterComponent
   ],
   exports: [
     GreetingComponent,
-    SiteHeaderComponent
+    SiteHeaderComponent,
+    SiteFooterComponent
   ],
 })
 export class SharedModule {

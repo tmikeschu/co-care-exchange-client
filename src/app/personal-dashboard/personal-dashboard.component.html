@@ -1,46 +1,43 @@
+<app-site-header></app-site-header>
 
-<div class="headeralign">
-    <div class="headerlayout"><img class="headerimage" #image src="../../assets/personal.png" /></div>
-    <div class="headerlayout headerclose" (click)="close()"><mat-icon>cancel</mat-icon></div>
-</div>
-
-
-<div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout="column">
-        <h3 class="text-primary center">
+<div class="dashboard-container">
+    <div>
+        <h2>
             Updates on requests or shares?<br>
             Start a new questionnaire.
-        </h3>
+        </h2>
     </div>
 
-    <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
-        <button class="text-white" mat-flat-button color="primary" mat-fab color="primary" (click)="add()">
+    <div>
+        <button mat-flat-button color="primary" mat-fab color="primary" (click)="add()">
             <mat-icon class="next">add</mat-icon>
         </button>
     </div>
 
-    <div fxLayout="column" class="mt-20">
-        <h3 class="text-primary">
+    <div>
+        <h2>
             Edit your information.
-        </h3>
+        </h2>
     </div>
 
-    <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
-        <button class="text-white" mat-flat-button color="primary" mat-fab color="primary" (click)="edit()">
+    <div>
+        <button  mat-flat-button color="primary" mat-fab color="primary" (click)="edit()">
             <mat-icon class="next">edit</mat-icon>
         </button>
     </div>
 
-    <div fxLayout="column" class="mt-20">
-        <h3 class="text-primary">
+    <div>
+        <h2>
             Resources
-        </h3>
+        </h2>
     </div>
 
-    <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
-        <button class="text-white" mat-flat-button color="primary" mat-fab color="primary" (click)="resource()">
+    <div>
+        <button  mat-flat-button color="primary" mat-fab color="primary" (click)="resource()">
             <mat-icon class="next">help</mat-icon>
         </button>
     </div>
 
 </div>
+
+<app-site-footer></app-site-footer>  
