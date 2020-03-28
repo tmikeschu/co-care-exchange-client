@@ -27,6 +27,19 @@ export class AuthenticationService {
     return this.user ? this.user.attributes.email : '';
   }
 
+  getGroups(): string[] {
+    // TODO move cognito specific stuff out of here and consider using a proxy/lens
+    const userGroups = this.user.signInUserSession.accessToken.payload['cognito:groups'];
+    return userGroups || [];
+  }
+
+  isInGroup(group: string): boolean {
+    if (!group) {
+      return false;
+    }
+    return this.getGroups().includes(group);
+  }
+
   async register(registrationModel: BasicRegistrationModel) {
     // TODO: re-eval...get ride of reg service?
     // return this.registrationService.register(registrationModel);
