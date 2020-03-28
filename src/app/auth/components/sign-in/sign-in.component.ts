@@ -76,4 +76,8 @@ export class SignInComponent implements OnInit {
   handleRegistration() {
     this.router.navigate(['/register']);
   }
+
+  handlePantry() {
+    this.router.navigate(['/pantry']);
+  }
 }

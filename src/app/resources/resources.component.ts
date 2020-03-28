@@ -12,4 +12,8 @@ export class ResourcesComponent implements OnInit {
   ngOnInit() {
   }
 
+  openNewTab(url: string) {
+    window.open(url, '_blank');
+  }
+
 }

@@ -1,4 +1,14 @@
     <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+      <div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="column">
+            <h3 class="text-primary center">
+                Welcome back.<br>
+                Let's do some good today!
+            </h3>
+        </div>
+    </div>
+
       <mat-card class="box">
         <mat-card-header>
           <div fxLayout="column">
@@ -39,7 +49,11 @@
 
           <div style="width: 100%; display: flex; flex-wrap: wrap; box-sizing: border-box;">
             <a class="links" (click)="handleForgotPW()">Forgot password</a>
-            <a class="links" (click)="handleRegistration()">Don't have an account? Sign Up</a>
+            <a class="links" (click)="handleRegistration()">No account? Sign Up</a>
+          </div>
+
+          <div style="margin-top: 40px; width: 100%; display: flex; flex-wrap: wrap; box-sizing: border-box;">
+            <a class="links pantry-link center" (click)="handlePantry()">Food Pantries Near Me</a>
           </div>
 
 

@@ -50,6 +50,10 @@
   width: 100%;
 }
 
+button.btn-block {
+  color: white;
+}
+
 .login-wrapper mat-card-header {
   text-align: center;
   width: 100%;
@@ -79,6 +83,15 @@ mat-error {
   flex-grow: 1;
   max-width: 100%;
   flex-basis: 0
+}
+
+.pantry-link {
+  color: orange;
+  font-size: larger;
+}
+
+.center {
+  text-align: center;
 }
 
 
