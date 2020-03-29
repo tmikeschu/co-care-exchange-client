@@ -1,5 +1,5 @@
 <div class="footercontainer">
     <div class="footerdiv iconleft"   [routerLink]="['/personaldashboard']"><img class="footerimage" #image src="../../../assets/personal.png"/></div>
-    <div class="footerdiv iconmiddle" [routerLink]="['/dashboard']"matBadge="{{messageCount}}" matBadgePosition="after" matBadgeColor="accent"><img class="footerimage" #image src="../../../assets/messages.png"/></div>
+    <div class="footerdiv iconmiddle" [routerLink]="['/dashboard']"matBadge="{{dashboardService.messageCount}}" matBadgePosition="after" matBadgeColor="accent"><img class="footerimage" #image src="../../../assets/messages.png"/></div>
     <div class="footerdiv iconright"  [routerLink]="['/metrics']"><img class="footerimage footerimageright" #image src="../../../assets/analytics.png"/></div>
 </div>
