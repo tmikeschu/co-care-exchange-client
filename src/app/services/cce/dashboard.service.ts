@@ -16,26 +16,23 @@ export class DashboardService {
   hasShares: boolean= false;
 
   requests: Status[] = [
-      {requestId: '1', statusType: 'need', statusTypeId: 1, quantity: 1, itemType:'units', name: 'Meals', status: 'On its way!', statusId: 1, sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '2', statusType: 'need', statusTypeId: 1, quantity: 5, itemType:'boxes', name: 'Diapers', status: 'New Match!', statusId: 2, sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '3', statusType: 'share', statusTypeId: 2, quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Pick up Pending', statusId: 4, sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '4', statusType: 'share', statusTypeId: 2, quantity: 2, itemType:'boxes', name: 'Toothpaste', status: 'Cancelled.', statusId: 3, sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"}];
+      {requestId: '1', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 1,  itemType:'food',     name: 'Meals',        status: 'Looking for Supplier', statusId: 0, dialogmessage: 'A supplier of your request has not yet been found.', sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '2', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 5,  itemType:'boxes',    name: 'Diapers',      status: 'New Match!',           statusId: 1, dialogmessage: 'A supplier has been found. Awaiting their confirmation.', sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '3', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Delivery Pending',     statusId: 2, dialogmessage: 'Supplier has confirmed your request and sent it out for delivery. Have you received this item?', sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '4', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 2,  itemType:'food',     name: 'Apples',       status: 'Fulfilled!',           statusId: 3, dialogmessage: 'Your request has been delivered and is complete.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
+      {requestId: '5', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 2,  itemType:'boxes',    name: 'Toothpaste',   status: 'Cancelled',            statusId: 4, dialogmessage: 'Your request has been cancelled by *REQUESTOR OR SUPPLIER*.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
     
-  temp = [
-      {requestId: '1', statusType: 'need', statusTypeId: 1, quantity: 1, itemType:'units', name: 'APPLES', status: 'On its way!', statusId: 1, sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '2', statusType: 'need', statusTypeId: 1, quantity: 5, itemType:'boxes', name: 'Diapers', status: 'New Match!', statusId: 2, sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '3', statusType: 'share', statusTypeId: 2, quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Pick up Pending', statusId: 4, sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '4', statusType: 'share', statusTypeId: 2, quantity: 2, itemType:'boxes', name: 'Toothpaste', status: 'Cancelled.', statusId: 3, sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"}];
+      {requestId: '1', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 1,  itemType:'food',     name: 'Meals',        status: 'No requestors yet',    statusId: 0, dialogmessage: 'No Requestors yet', sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '2', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 5,  itemType:'boxes',    name: 'Diapers',      status: 'New Match!',           statusId: 1, dialogmessage: 'A requestor at the following address needs these goods.  Are you still able to supply and deliver them?', sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '3', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Delivery Pending',     statusId: 2, dialogmessage: 'You have sent items out for delivery to this requestor at this address.', sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
+      {requestId: '4', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 2,  itemType:'food',     name: 'Apples',       status: 'Fulfilled!',           statusId: 3, dialogmessage: 'Requestor has confirmed delivery.  This order is completed.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
+      {requestId: '5', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 2,  itemType:'boxes',    name: 'Toothpaste',   status: 'Cancelled',            statusId: 4, dialogmessage: 'This request has been cancelled by *REQUESTOR OR SUPPLIER*.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"}];
+    
+  temp = [];
         
   constructor(private http: HttpClient) {        
     this.init();
   }
-
-  // getRequests(): Observable<any> {        
-  //   return new Observable((observer) => {        
-  //       observer.next(this.requests)
-  //     });
-  // } 
   
   getRequests2() {   
     console.log('getRequests2');
@@ -73,28 +70,39 @@ export class DashboardService {
       }
 
       switch(this.requests[x].statusId){
-        case 1:
+        case -1://Error
+        {
+          this.requests[x].styleclass = 'contentstatusred';
+          break;
+        }
+        case 0://Proposed
+        {
+          this.requests[x].styleclass = 'contentstatusyellow';
+          break;
+        }
+        case 1://New Match
         {
           this.requests[x].styleclass = 'contentstatusgreen';
           break;
         }
-        case 2:
-          {
-            this.requests[x].styleclass = 'contentstatusgreen';
-            break;
-          }
-        case 3:
-          {
-            this.requests[x].styleclass = 'contentstatusred';
-            break;
-          }
-        case 4:
-          {
-            this.requests[x].styleclass = 'contentstatusyellow';
-            break;
-          }
-        default:
-            break;
+        case 2://Pending Delivery
+        {
+          this.requests[x].styleclass = 'contentstatusyellow';
+          break;
+        }
+        case 3://Fulfilled
+        {
+          this.requests[x].styleclass = 'contentstatusgreen';
+          break;
+        }
+        case 4://Cancelled
+        {
+          this.requests[x].styleclass = 'contentstatusred';
+          break;
+        }        
+        default://there is no default, so error
+          this.requests[x].styleclass = 'contentstatusred';
+          break;
       }
     } 
 

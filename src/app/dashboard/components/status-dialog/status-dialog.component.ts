@@ -12,32 +12,49 @@ import { Status } from '../models/dasboard';
     sharemessage: string = 'Are you able to pick up {0} from {1}?';
     needmessage: string = 'You matched as a sharer for {0} {1} of {2}.  Can you drop the items off at this location?  ';
     confirmmessage: string = 'Did you pickup {0} from {1}? ';
+    okButtonText: string = 'OK';
+    showNoButton: boolean = false;
+    showMap: boolean = false;
+    showCancelButton: boolean = false;
   
     constructor(public dialogRef: MatDialogRef<StatusDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Status) {
-      this.data.confirm = null;
-      this.data.deny = null;
+      console.log('StatusDialogComponent', data)
+      this.message = data.dialogmessage;
+      this.showMap = false;
+      this.showNoButton = false;
+      this.showCancelButton = false;
 
-      if(data.statusTypeId == 1){        
-        this.message = this.sharemessage.replace('{0}', data.name).replace('{1}', data.sourceName);
+      if(data.statusTypeId == 1 && data.statusId == 2){
+        this.okButtonText = 'Yes';
+        this.showNoButton = true;
+      }else{
+        this.okButtonText = 'OK';        
       }
 
       if(data.statusTypeId == 2){
-        this.message = this.needmessage.replace('{0}', data.quantity.toString()).replace('{1}', data.itemType).replace('{2}', data.name);
+        this.showMap = true;
+        this.okButtonText = 'Yes';        
+      }    
+      
+      if(data.statusTypeId == 1 && data.statusId < 2){
+        this.showCancelButton = true;
       }
 
-      // if(data.statusId == 4){
-
-      // }
+      if(data.statusTypeId == 2 && data.statusId < 3){
+        this.showCancelButton = true;
+      }
     }
   
-    confirm(): void {
-      this.data.confirm = true;
-      this.dialogRef.close(this.data);
+    confirm(): void {      
+      this.dialogRef.close(true);
     }
 
-    deny(){
-      this.data.deny = true;
-      this.dialogRef.close(this.data);
+    no(){
+      this.dialogRef.close(false);
+    }
+
+    cancel(){      
+      this.dialogRef.close(false);
     }
   
   }

@@ -28,38 +28,26 @@ export class DashboardComponent implements OnInit {
   }
 
   test(){      
-    this.dashboardservice.getRequests2();
-    // this.dashboardservice.testgraphQL().subscribe(data => {
-    //   console.log('testgraphQL', data);
-    // });
+    //this.dashboardservice.getRequests2();
+    this.dashboardservice.testgraphQL().subscribe(data => {
+      console.log('testgraphQL', data);
+    });
   }
 
   handleStatusClick(status: Status) {
     const dialogRef = this.dialog.open(StatusDialogComponent, {
-      width: '250px',
+      width: '300px',
       data: status
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      //TODO: this will need to call serivce and update the item...
-      console.log('The dialog was closed', result);      
-      if(result){
-        if(result.deny){
-          // this.requests.find(x => x.requestId === result.requestId).deny = result.confirm;
-          // this.requests.find(x => x.requestId === result.requestId).status = 'Cancelled';
-          // this.requests.find(x => x.requestId === result.requestId).statusId = 3;
-          // this.setlabelstyles();
-        }
+    dialogRef.afterClosed().subscribe(confirm => { 
+      //TODO: Check to see if this is a request or a supply result...
 
-        if(result.confirm){
-          // this.requests.find(x => x.requestId === result.requestId).confirm = result.confirm;
-          // this.requests.find(x => x.requestId === result.requestId).status = 'Pickup Pending';
-          // this.requests.find(x => x.requestId === result.requestId).statusId = 4;
-          // this.setlabelstyles();
-        }
+      if(confirm){
+        //TODO: this will need to call serivce and update the item...
+      }else{
+        //TODO: this will need to call serivce and update the item...
       }
-
-      //console.log('updated', this.requests);
     });
   }
 
