@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { NavbarService } from '../../../services/navbar.service';
 import { SignInResult } from '../../../models/cce/sign-in-result.model';
+import {UserService} from '../../../core/services/user.service';
+import {defer, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,6 +23,7 @@ export class SignInComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
+    private userService: UserService,
     private navbarService: NavbarService
   ) {}
 
@@ -83,9 +86,21 @@ export class SignInComponent implements OnInit {
 
   private async navigateToNextRoute() {
     // TODO -- check if user profile exists
+    const self = this;
+      defer(async function()  {
+         return await self.userService.getUser('scarlet@dfb.org');
+      }).subscribe(user => {
+        console.log('DEBUG user profile ', user);
+        if (user) {
+          return this.router.navigate(['/', 'dashboard']);
+        } else {
+          return this.router.navigate(['/', 'info']);
+        }
+      });
+
     //  return await this.router.navigate(['/', 'dashboard']);
     // if so , nav to dashboard, else
-    return await this.router.navigate(['/', 'info']);
+
   }
 
   handleForgotPW() {

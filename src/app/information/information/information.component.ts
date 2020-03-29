@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/cce/authentication.service';
+import {UserService} from '../../core/services/user.service';
+import {OrganizationService} from '../../core/services/organization.service';
 
 @Component({
   selector: 'app-register',
@@ -11,10 +13,12 @@ export class InformationComponent implements OnInit {
   xx;
   error = false;
 
-  constructor(private authenticationService: AuthenticationService) {}
+  // TODO -- combine the authservice user stuff with user service
+  constructor(private authenticationService: AuthenticationService, private orgService: OrganizationService) {}
 
   ngOnInit() {
     this.registrantType = 'Individual';
+    this.orgService.getOrganizations().subscribe(orgs => console.log(orgs));
   }
 
   get email(): string {

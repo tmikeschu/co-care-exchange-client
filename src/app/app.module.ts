@@ -25,10 +25,11 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
 import { RegistrationModule } from './registration/registration.module';
+import { GraphQLModule } from './graphql/graphql.module';
+import {PopupDialogComponent} from './resources/popup-dialog/popup-dialog.component';
 // import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 // import { SiteHeaderComponent } from './shared/site-header/site-header.component';
 // import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
-
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { RegistrationModule } from './registration/registration.module';
     PantryLocatorModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    GraphQLModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CustomMaterialModule,
@@ -62,7 +64,7 @@ import { RegistrationModule } from './registration/registration.module';
     ContactUsComponent,
     PersonalDashboardComponent,
     ResourcesComponent,
-    // PopupDialogComponent,
+    PopupDialogComponent,
     // DashboardFooterComponent,
   ],
   providers: [
