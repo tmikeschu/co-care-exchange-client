@@ -26,6 +26,7 @@ import { SiteFooterComponent } from './site-footer/site-footer.component';
     SiteHeaderComponent,
     SiteFooterComponent
   ],
+  providers: [SiteFooterComponent]
 })
 export class SharedModule {
 }

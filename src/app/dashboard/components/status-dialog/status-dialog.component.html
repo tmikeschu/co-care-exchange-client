@@ -1,10 +1,15 @@
 <div class="statuscontentarea">
     <h2>{{message}}</h2>
-    <img class="statusimage" #image src="../../assets/map.png"/>
-    <h2 >{{data.address}}</h2>
+
+    <div *ngIf="showMap">
+        <img class="statusimage" #image src="../../assets/map.png"/>
+        <h2 >{{data.address}}</h2>
+    </div>    
 </div>
-<hr>
+
 <div>
-    <button mat-button class="mat-flat-button" color="primary" (click)="confirm()">Yes</button>
-    <button mat-button class="mat-flat-button cancelbtn" color="primary" (click)="deny()">No</button>
+    <hr>
+    <button mat-button class="mat-flat-button" color="primary" (click)="confirm()">{{okButtonText}}</button>
+    <button mat-button class="mat-flat-button" color="primary" *ngIf="showNoButton"  (click)="no()">No</button>
+    <button mat-button class="mat-flat-button cancelbtn" color="primary" *ngIf="showCancelButton" (click)="cancel()">Cancel Request</button>
 </div>

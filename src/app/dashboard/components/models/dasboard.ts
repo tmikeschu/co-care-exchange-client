@@ -12,4 +12,7 @@ export class Status {
     deny?: boolean;
     statusType: string;
     statusTypeId: number;
+    dialogmessage: string;
+    lat: string;
+    long: string;
 }
