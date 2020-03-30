@@ -7,7 +7,6 @@ import {commonEnv} from './commonEnv';
 export const environment = {
   ...commonEnv,
   production: false,
-  serverUrl: 'https://7teahidmgk.execute-api.us-west-2.amazonaws.com/dev/graphql?',
 };
 
 
