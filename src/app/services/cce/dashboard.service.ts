@@ -52,8 +52,10 @@ export class DashboardService {
       headers: new HttpHeaders({'x-api-key': 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1'})
     };
     const query = {
-      'query':'query View { dashboard {requested{name, statusText, agreementId}, shared{name, statusText, agreementId}}}',
-      'variables': {}
+      'query':'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, status, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
+      'variables':{       
+        "userId": "22201103-DEC0-466F-B44F-1926BC1687C1"
+        }      
     };
     return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
   }
