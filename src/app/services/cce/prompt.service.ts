@@ -11,15 +11,16 @@ export class PromptService {
   ) {}
 
 
-  getPrompts(): any {
+  getPrompts(userType:string): any {
 
     const httpOptions = {
       headers: new HttpHeaders({'x-api-key': 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1'})
     };
+
     const query = {
-      'query': 'query GetPrompts {prompts{id,audience,display,groupName,promptType,sizes,item,unitsOfIssue}}',
-      'variables': {}
-    };
+      'query':'query GetPrompts { prompts(where: { audience_contains: "' + userType + '"}) { id, promptType, groupName, item, unitsOfIssue, sizes, display } }',
+      'variables':{}};
+
     return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
   }
 }

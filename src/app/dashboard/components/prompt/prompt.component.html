@@ -17,8 +17,7 @@
             <app-question [prompts]="this.prompts" (promptInNeed)="handleInNeed($event)"></app-question>
         </div>
         <div *ngIf="surveyTime">
-            <app-question [prompts]="this.surveyQuestions" survey="true"
-                (surveyFinished)="this.handleSurveyFinished($event)"></app-question>
+            <app-question [prompts]="this.surveyQuestions" survey="true" (surveyFinished)="this.handleSurveyFinished($event)"></app-question>
         </div>
     </div>
 </div>
