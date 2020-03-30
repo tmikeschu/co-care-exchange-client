@@ -2,28 +2,36 @@
   <form [formGroup]="individualRegisterForm">
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="First Name" formControlName="firstName" type="text">
+        <label>
+          <input matInput placeholder="First Name" formControlName="firstName" type="text" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('firstName').hasError('required')">
           First name is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Last Name" formControlName="lastName" type="text">
+        <label>
+          <input matInput placeholder="Last Name" formControlName="lastName" type="text" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('lastName').hasError('required')">
           Last name is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Email" formControlName="email" type="text">
+        <label>
+          <input matInput placeholder="Email" formControlName="email" type="text" readonly />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('email').hasError('required')">
           Email is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Phone Number" formControlName="phone" type="text">
+        <label>
+          <input matInput placeholder="Phone Number" formControlName="phone" type="text" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('phone').hasError('required')">
           Phone number is a required field
         </mat-error>
@@ -40,29 +48,54 @@
       <!--              </mat-form-field>-->
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Household Size" formControlName="householdSize" type="number">
+        <label>
+          <input matInput placeholder="Household Size" formControlName="householdSize" type="number" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('householdSize').hasError('required')">
           Phone number is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="City, State" formControlName="cityState" type="text">
-        <mat-error *ngIf="individualRegisterForm.get('cityState').hasError('required')">
-          Household Size is a required field
+        <label>
+          <input matInput placeholder="City" formControlName="city" type="text" />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('city').hasError('required')">
+          City is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
-          type="text">
+        <label>
+          <input matInput placeholder="State" formControlName="state" type="text" />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('state').hasError('required')">
+          State is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <label>
+          <input matInput placeholder="Postal Code" formControlName="postalCode" type="text" />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('postalCode').hasError('required')">
+          Postal Code is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <label>
+          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation" type="text" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
           Delivery or pickup location is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number">
+        <label>
+          <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number" />
+        </label>
         <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
           Delivery or pickup radius is a required field
         </mat-error>
@@ -80,7 +113,6 @@
       <!--                  The password must not be longer than 30 characters-->
       <!--                </mat-error>-->
       <!--              </mat-form-field>-->
-
     </div>
 
     <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
@@ -90,5 +122,4 @@
       </button>
     </div>
   </form>
-
 </div>

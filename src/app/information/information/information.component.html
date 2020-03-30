@@ -3,18 +3,25 @@
     <h3 class="text-primary">
       We Just need a little bit more information...
     </h3>
-    <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="registrantType">
-      <mat-radio-button value="Individual">Individual</mat-radio-button>
-      <mat-radio-button value="Organization">Organization</mat-radio-button>
-    </mat-radio-group>
+<!--    <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="registrantType">-->
+<!--      <mat-radio-button value="Individual">Individual</mat-radio-button>-->
+<!--      <mat-radio-button value="Organization">Organization</mat-radio-button>-->
+<!--    </mat-radio-group>-->
   </div>
 
-
   <div *ngIf="registrantType === 'Individual'" class="w-100 vertical-rhythm">
+    <h2>Individual Profile</h2>
     <app-individual [email]="email" [lastName]="lastName" [firstName]="firstName" (submit)="onInfoSubmit($event)"></app-individual>
   </div>
 
   <div *ngIf="registrantType === 'Organization'" class="w-100 vertical-rhythm">
-    <app-organization [email]="email" [organizationName]="organizationName" (submit)="onInfoSubmit($event)"></app-organization>
+    <h2>Organization Profile</h2>
+    <app-organization
+      [email]="email"
+      [lastName]="lastName"
+      [firstName]="firstName"
+      [organizationName]="organizationName"
+      (submit)="onInfoSubmit($event)"
+    ></app-organization>
   </div>
 </div>

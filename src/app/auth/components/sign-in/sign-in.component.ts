@@ -105,12 +105,9 @@ export class SignInComponent implements OnInit {
   private async navigateToNextRoute(username: String, org?: any) {
     // TODO -- check if user profile exists
     const self = this;
-    // defer(async function () {
-    //   return self.userService.getUser(username);
-    // })
     const user = await self.userService.getUser(username).pipe(first()).toPromise();
-     //   .subscribe((user) => {
       console.log('DEBUG user profile ', user);
+      // TODO -- also check if user is part of an org if they signed in with an org?
       if (user && user.emailAddress) {
         return this.router.navigate(['/', 'dashboard']);
       } else {
@@ -121,7 +118,6 @@ export class SignInComponent implements OnInit {
         }
         return this.router.navigate(['/', 'info'], { queryParams });
       }
-  //  });
 
     //  return await this.router.navigate(['/', 'dashboard']);
     // if so , nav to dashboard, else
