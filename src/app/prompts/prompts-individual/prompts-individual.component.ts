@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Prompt } from '../../../models/cce/prompt';
-import { PromptService } from '../../../services/cce/prompt.service';
+import { Prompt } from '../../models/cce/prompt';
+import { PromptService } from '../../services/cce/prompt.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-prompt',
-  templateUrl: './prompt.component.html',
-  styleUrls: ['./prompt.component.scss'],
+  selector: 'app-prompts-individual',
+  templateUrl: './prompts-individual.component.html',
+  styleUrls: ['./prompts-individual.component.scss'],
 })
-export class PromptComponent implements OnInit {
+export class PromptsIndividualComponent implements OnInit {
   prompts: Prompt[];
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];

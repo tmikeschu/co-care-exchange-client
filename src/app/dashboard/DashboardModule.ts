@@ -6,21 +6,20 @@ import { CustomMaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
-import { SummaryComponent } from './components/prompt/summary/summary.component';
-import { PromptModule } from './components/prompt/prompt.module';
+import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
+
 
 @NgModule({
   declarations: [
     DashboardComponent,
     MetricsComponent,
-    StatusDialogComponent,
-    SummaryComponent,
+    StatusDialogComponent
   ],
   imports: [
     CommonModule,
     CustomMaterialModule,
-    PromptModule,
     DashboardRoutingModule,
+    PromptsRoutingModule,
     SharedModule,
   ],
   entryComponents: [StatusDialogComponent],

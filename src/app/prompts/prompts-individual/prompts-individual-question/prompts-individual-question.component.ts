@@ -7,15 +7,15 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { PromptComponent } from '../prompt.component';
-import { Prompt } from '../../../../models/cce/prompt';
+
+import { Prompt } from '../../../models/cce/prompt';
 
 @Component({
-  selector: 'app-question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss'],
+  selector: 'app-prompts-individual-question',
+  templateUrl: './prompts-individual-question.component.html',
+  styleUrls: ['./prompts-individual-question.component.scss'],
 })
-export class QuestionComponent implements OnInit, OnChanges {
+export class PromptsIndividualQuestionComponent implements OnInit, OnChanges {
   @Input()
   prompts: Prompt[];
 

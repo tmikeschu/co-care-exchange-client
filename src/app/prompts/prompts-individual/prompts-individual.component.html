@@ -14,10 +14,10 @@
             </div>
         </div>
         <div *ngIf="inNeed">
-            <app-question [prompts]="this.prompts" (promptInNeed)="handleInNeed($event)"></app-question>
+            <app-prompts-individual-question [prompts]="this.prompts" (promptInNeed)="handleInNeed($event)"></app-prompts-individual-question>
         </div>
         <div *ngIf="surveyTime">
-            <app-question [prompts]="this.surveyQuestions" survey="true" (surveyFinished)="this.handleSurveyFinished($event)"></app-question>
+            <app-prompts-individual-question [prompts]="this.surveyQuestions" survey="true" (surveyFinished)="this.handleSurveyFinished($event)"></app-prompts-individual-question>
         </div>
     </div>
 </div>

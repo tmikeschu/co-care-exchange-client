@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-summary',
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.scss']
+  selector: 'app-prompts-individual-summary',
+  templateUrl: './prompts-individual-summary.component.html',
+  styleUrls: ['./prompts-individual-summary.component.scss']
 })
-export class SummaryComponent implements OnInit {
+export class PromptsIndividualSummaryComponent implements OnInit {
 
   requests = ['Meals', 'Diapers'];
   shares = ['Toilet Paper', 'Toothpaste'];
