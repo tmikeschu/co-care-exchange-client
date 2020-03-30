@@ -14,15 +14,14 @@ export class PromptsOrganizationComponent implements OnInit {
   promptKeys: string[];
   promptTypeQuestion: string;
   showConfirm: boolean = false;
+  showConfirmBtn: boolean = false;
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: string[] = [];
   requests: string[] = [];
   prompt: Prompt;
   promptIndex = 0;
-
-  surveyTime = false;
-  
+  surveyTime = false;  
   inNeed: boolean;
 
   constructor(private promptService: PromptService, private router: Router) {}
@@ -30,7 +29,7 @@ export class PromptsOrganizationComponent implements OnInit {
   ngOnInit() {
     //TODO: get the grouptype from the logged in user type
     this.promptService.getPrompts('org').subscribe((val) => {
-      console.log('ngOnInit', val);
+      //console.log('ngOnInit', val);
       this.prompts = val.data.prompts;
 
       for(let x = 0; x < val.data.prompts.length; x++){
@@ -72,7 +71,7 @@ export class PromptsOrganizationComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('showdata', this.prompts);
+    //console.log('showdata', this.prompts);
     this.shares = [];
     this.requests = [];
 
@@ -90,12 +89,19 @@ export class PromptsOrganizationComponent implements OnInit {
       }
     }  
     this.showConfirm = true;
+    if(this.requests.length < 1 && this.shares.length < 1){
+      this.showConfirmBtn = false;
+    }
+    else{
+      this.showConfirmBtn = true;
+    }
+    
   }
 
   onConfirm() {    
     for(let x = 0; x < this.prompts.length; x++){
       this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {
-        console.log('savePrompts', val);
+        //console.log('savePrompts', val);
         this.router.navigate(['/dashboard']);
       });
     }     

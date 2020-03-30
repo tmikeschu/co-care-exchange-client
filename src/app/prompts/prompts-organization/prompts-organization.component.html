@@ -53,6 +53,10 @@
             Based upon your answers it looks like you are...
         </h2>
 
+        <div *ngIf="!showConfirmBtn" class="contentborder questionarea"> 
+            <h2>You have chosen no shares or needs.  Please return and select an item.</h2>
+        </div>
+
         <div *ngIf="requests.length > 0" class="contentborder questionarea">            
             <h2>Requesting</h2>
             <mat-list>
@@ -70,9 +74,14 @@
                 </mat-list-item>
             </mat-list>            
         </div> 
-           
-        <button mat-flat-button color="primary" (click)="onChangeAnswers()" class="action-btn">Change</button>
-        <button mat-flat-button color="primary" (click)="onConfirm()" class="action-btn confirmbtn">Confirm</button>                  
-        
+        <button mat-fab color="primary" (click)="onChangeAnswers()">
+            <div class="btnBack">Change</div>
+            <div class="btnNext"><mat-icon>arrow_back</mat-icon></div>         
+        </button>
+
+        <button mat-fab class="confirmbtn" color="primary" *ngIf="showConfirmBtn" (click)="onConfirm()">
+            <div class="btnBack">Confirm</div>
+            <div class="btnNext"><mat-icon>arrow_forward</mat-icon></div>             
+        </button>
     </div>    
 </div>

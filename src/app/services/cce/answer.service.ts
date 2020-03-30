@@ -18,7 +18,7 @@ export class AnswerService {
     console.log(answer);
 
     const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1' })
+      headers: new HttpHeaders({ 'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm' })
     };
 
     const input = {
