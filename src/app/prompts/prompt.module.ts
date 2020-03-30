@@ -10,22 +10,19 @@ import { PromptsOrganizationComponent } from './prompts-organization/prompts-org
 import { PromptsOrganizationSummaryComponent } from './prompts-organization/prompts-organization-summary/prompts-organization-summary.component';
 import { PromptsOrganizationQuestionComponent } from './prompts-organization/prompts-organization-question/prompts-organization-question.component';
 import { PromptsOrganizationAnswerComponent } from './prompts-organization/prompts-organization-answer/prompts-organization-answer.component';
-
+import { PromptsIndividualSummaryComponent } from './prompts-individual/prompts-individual-summary/prompts-individual-summary.component';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    FlexLayoutModule, 
-    CustomMaterialModule, 
-    FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule],
   declarations: [
-    PromptsIndividualComponent, 
-    PromptsIndividualQuestionComponent, 
-    PromptsIndividualAnswerComponent, 
+    PromptsIndividualComponent,
+    PromptsIndividualQuestionComponent,
+    PromptsIndividualSummaryComponent,
+    PromptsIndividualAnswerComponent,
     PromptsOrganizationComponent,
     PromptsOrganizationSummaryComponent,
     PromptsOrganizationQuestionComponent,
-    PromptsOrganizationAnswerComponent],
+    PromptsOrganizationAnswerComponent,
+  ],
 })
 export class PromptModule {}

@@ -9,4 +9,7 @@ import { PantryLocatorComponent } from './pantry-locator.component';
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule],
   declarations: [PantryLocatorComponent],
 })
-export class PantryLocatorModule {}
+export class PantryLocatorModule {
+  requesting = 0;
+  sharing = 0;
+}
