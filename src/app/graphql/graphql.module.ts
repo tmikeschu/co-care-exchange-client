@@ -10,7 +10,7 @@ const TOKEN_HEADER_KEY = 'x-api-key';
 const uri = environment.serverUrl; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink) {
   const authMiddleware = new ApolloLink((operation, forward) => {
-    // add the authorization to the headers
+    // TODO -- replace key with idToken when ready
     operation.setContext({
       headers: new HttpHeaders().set(TOKEN_HEADER_KEY, 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1'),
     });
@@ -21,12 +21,7 @@ export function createApollo(httpLink: HttpLink) {
   const http = httpLink.create({ uri });
 
   return {
-    // apollo.create({
-    //   link: concat(authMiddleware, http),
-    // });
     link: from([authMiddleware, http]),
-    // link: httpLink.create(authMiddleware, http),
-    //   link: httpLink.create({ uri }),
     cache: new InMemoryCache(),
   };
 }
