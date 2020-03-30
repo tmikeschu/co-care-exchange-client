@@ -1,52 +1,78 @@
 <div class="pagecontent">
-    
-    <div *ngFor="let question of prompts" class="contentborder questionarea">                          
-        <h2 class="contentlabel">{{question.display}}</h2>   
+    <div *ngIf="!showConfirm">
+        <div *ngFor="let question of prompts" class="contentborder questionarea">                          
+            <h2 class="contentlabel">{{question.display}}</h2>   
 
-        <div class="radioGroup" >
-        <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unitsOfIssue">     
-            <mat-radio-button class="radioGroupBtn" *ngFor="let unit of question.unitsOfIssueChoices" [value]="unit">{{unit}}</mat-radio-button>
-        </mat-radio-group>
-        </div>
-
-        <div style="width: 150px; float: left;">
-            <div>Requesting</div>        
-           
-            <div style="width: 75px; float: left;text-align: right;">
-                <h2>{{ question.requesting }}</h2>    
+            <div class="radioGroup" >
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unitsOfIssue">     
+                <mat-radio-button class="radioGroupBtn" *ngFor="let unit of question.unitsOfIssueChoices" [value]="unit">{{unit}}</mat-radio-button>
+            </mat-radio-group>
             </div>
-            <div style="margin-left: 75px;text-align: left;">
-                <div>
-                    <mat-icon (click)="handleRequesting(question, 'up')" class="arrows">expand_less</mat-icon>
-                </div>
-                <div>
-                    <mat-icon (click)="handleRequesting(question, 'down')" class="arrows">expand_more</mat-icon>
-                </div>
-            </div>
-        </div>
-        
-        <div style="margin-left: 150px;">  
-            <div>Sharing</div>   
 
-            <div style="width: 75px; float: left;text-align: right;">             
-                <h2>{{ question.sharing }}</h2> 
-            </div>  
-            <div style="margin-left: 75px;text-align: left;">     
-                <div>
-                    <mat-icon (click)="handleSharing(question, 'up')" class="arrows">expand_less</mat-icon>
+            <div style="width: 150px; float: left;">
+                <div>Requesting</div>        
+            
+                <div style="width: 75px; float: left;text-align: right;">
+                    <h2>{{ question.requesting }}</h2>    
                 </div>
-                <div>
-                    <mat-icon (click)="handleSharing(question, 'down')" class="arrows">expand_more</mat-icon>
+                <div style="margin-left: 75px;text-align: left;">
+                    <div>
+                        <mat-icon (click)="handleRequesting(question, 'up')" class="arrows">expand_less</mat-icon>
+                    </div>
+                    <div>
+                        <mat-icon (click)="handleRequesting(question, 'down')" class="arrows">expand_more</mat-icon>
+                    </div>
                 </div>
             </div>
+            
+            <div style="margin-left: 150px;">  
+                <div>Sharing</div>   
+
+                <div style="width: 75px; float: left;text-align: right;">             
+                    <h2>{{ question.sharing }}</h2> 
+                </div>  
+                <div style="margin-left: 75px;text-align: left;">     
+                    <div>
+                        <mat-icon (click)="handleSharing(question, 'up')" class="arrows">expand_less</mat-icon>
+                    </div>
+                    <div>
+                        <mat-icon (click)="handleSharing(question, 'down')" class="arrows">expand_more</mat-icon>
+                    </div>
+                </div>
+            </div>                    
         </div>
-                
+
+        <button mat-fab color="primary" (click)="onSubmit()">
+            <mat-icon class="next">arrow_forward</mat-icon>
+        </button>
     </div>
 
-    
+    <div *ngIf="showConfirm">
+        
+        <h2>
+            Based upon your answers it looks like you are...
+        </h2>
 
-    <button mat-fab color="primary" (click)="onSubmit()">
-        <mat-icon class="next">arrow_forward</mat-icon>
-    </button>
-    
+        <div *ngIf="requests.length > 0" class="contentborder questionarea">            
+            <h2>Requesting</h2>
+            <mat-list>
+                <mat-list-item *ngFor="let request of requests">
+                    <mat-label>{{request}}</mat-label>
+                </mat-list-item>
+            </mat-list>            
+        </div>
+
+        <div *ngIf="shares.length > 0" class="contentborder questionarea">            
+            <h2>Sharing</h2>
+            <mat-list>
+                <mat-list-item *ngFor="let share of shares">
+                    <mat-label>{{share}}</mat-label>
+                </mat-list-item>
+            </mat-list>            
+        </div> 
+           
+        <button mat-flat-button color="primary" (click)="onChangeAnswers()" class="action-btn">Change</button>
+        <button mat-flat-button color="primary" (click)="onConfirm()" class="action-btn confirmbtn">Confirm</button>                  
+        
+    </div>    
 </div>

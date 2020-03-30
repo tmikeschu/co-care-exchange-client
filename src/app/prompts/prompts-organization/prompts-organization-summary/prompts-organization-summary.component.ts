@@ -7,16 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./prompts-organization-summary.component.scss']
 })
 export class PromptsOrganizationSummaryComponent implements OnInit {
-  requests = ['Meals', 'Diapers'];
-  shares = ['Toilet Paper', 'Toothpaste'];
 
   constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  onContinue() {
-    console.log('continue');
-    this.router.navigate(['/ccehome']);
+  onConfirm() {    
+    this.router.navigate(['/dashboard']);
   }
 }

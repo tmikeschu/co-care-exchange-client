@@ -13,10 +13,11 @@ export class PromptsOrganizationComponent implements OnInit {
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
   promptTypeQuestion: string;
-
+  showConfirm: boolean = false;
   promptMap: any = new Map();
   promptTypeIndex = 0;
-
+  shares: string[] = [];
+  requests: string[] = [];
   prompt: Prompt;
   promptIndex = 0;
 
@@ -71,13 +72,37 @@ export class PromptsOrganizationComponent implements OnInit {
   }
 
   onSubmit(){
-    //console.log('showdata', this.prompts);
+    console.log('showdata', this.prompts);
+    this.shares = [];
+    this.requests = [];
+
+    for(let x = 0; x < this.prompts.length; x++){
+      if(this.prompts[x].sharing > 0){        
+        if(!this.shares.find(element => element == this.prompts[x].groupName)){
+          this.shares.push(this.prompts[x].groupName);
+        }        
+      }
+
+      if(this.prompts[x].requesting > 0){
+        if(!this.requests.find(element => element == this.prompts[x].groupName)){
+          this.requests.push(this.prompts[x].groupName);
+        }        
+      }
+    }  
+    this.showConfirm = true;
+  }
+
+  onConfirm() {    
     for(let x = 0; x < this.prompts.length; x++){
       this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {
         console.log('savePrompts', val);
-  
+        this.router.navigate(['/dashboard']);
       });
-    }
-    
+    }     
   }
+
+  onChangeAnswers(){
+    this.showConfirm = false;
+  }
+
 }
