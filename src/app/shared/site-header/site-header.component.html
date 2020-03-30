@@ -1,4 +1,5 @@
-<div class="headercontainer">
-    <div class="headerlayout" [routerLink]="['/dashboard']"><img class="headerimage" #image src="../../../assets/cce-logo.png"/></div>
-    <div class="headerlayout headerlogout" (click)="logout()">Log Out</div>
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxFlex="33"></div>
+    <a fxFlex="33" [routerLink]="['/dashboard']"><img #image src="../../../assets/cce-logo.png"/></a>
+    <a fxFlex="33" class="logout" (click)="logout()">Log Out</a>
 </div>
