@@ -1,0 +1,18 @@
+@import '../../../styles/theme.scss';
+
+:host {
+  button {
+    color: white;
+  }
+  .full-screen-prompt {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .question-container {
+    width: auto;
+    max-width: 350px;
+  }
+}

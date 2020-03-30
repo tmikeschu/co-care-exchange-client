@@ -1,1 +1,58 @@
-<p>prompts-organization-answer works!</p>
+<h3 class="text-center text-primary">{{question}}</h3>
+<div class="vertical-rhythm w-100" fxLayout="column" fxLayoutAlign="center center">
+    <div class="w-100" fxLayout="column" fxFlexAlign="center center">
+
+        <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="unitsOfIssue">
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div *ngFor="let unit of unitsOfIssueChoices">
+                    <mat-radio-button [value]="unit">{{unit}}</mat-radio-button>
+                </div>
+            </div>
+
+        </mat-radio-group>
+
+
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxLayout="column">
+                <p class="text-center">Requesting</p>
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <h2 class="text-primary">{{ requesting }}</h2>
+                    <div fxLayout="column">
+                        <div>
+                            <mat-icon (click)="handleRequesting('up')" class="arrows">expand_less</mat-icon>
+                        </div>
+                        <div>
+                            <mat-icon (click)="handleRequesting('down')" class="arrows">expand_more</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <p class="text-center">Sharing</p>
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <h2 class="text-primary">{{ sharing }}</h2>
+                    <div fxLayout="column">
+                        <div>
+                            <mat-icon (click)="handleSharing('up')" class="arrows">expand_less</mat-icon>
+                        </div>
+                        <div>
+                            <mat-icon (click)="handleSharing('down')" class="arrows">expand_more</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-fab color="primary" (click)="onSubmit()" [disabled]="(requesting === 0 && sharing ===0)">
+        <mat-icon class="next">arrow_forward</mat-icon>
+    </button>
+</div>
+<div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-flat-button (click)="onCancel()">
+        Cancel
+    </button>
+</div>

@@ -1,1 +1,19 @@
-<p>prompts-organization-question works!</p>
+<div *ngIf="!inNeed" class="full-screen-prompt">
+    <div class="question-container">
+      <h3 class="text-primary text-center">{{prompt.display}}</h3>
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <button class="text-white" mat-flat-button color="primary" (click)="onPromptYes()">
+          Yes
+        </button>
+      
+        <button class="text-white" mat-flat-button color="primary" (click)="onPromptNo(true)">
+          No
+        </button>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div *ngIf="inNeed">
+    <app-prompts-individual-answer [prompt]="prompt" (nextQuestion)="nextQuestion($event)"></app-prompts-individual-answer>
+  </div>
