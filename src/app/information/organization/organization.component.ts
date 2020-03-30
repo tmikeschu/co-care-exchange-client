@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/cce/authentication.service';
 import {RegistrationModel} from '../../models/cce/registrationModel';
+import {InitialCreateInformation} from '../models/info-create.model';
 
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss']
 })
-export class OrganizationComponent implements OnInit {
-
+export class OrganizationComponent implements OnInit, AfterViewInit {
+  @Input() email;
+  @Input() organizationName;
+  @Output() submit = new EventEmitter<InitialCreateInformation>();
   organizationForm: FormGroup;
   errorMessage: string;
   error = false;
@@ -32,6 +35,11 @@ export class OrganizationComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.organizationForm.get('orgName').setValue(this.organizationName);
+    this.organizationForm.get('email').setValue(this.email);
+  }
+
   onRegisterSubmit() {
     this.organizationForm.disable();
     this.isRegistering = true;
@@ -48,8 +56,11 @@ export class OrganizationComponent implements OnInit {
     };
 
     console.log(registrationModel);
+    // TODO
+    const payload: InitialCreateInformation = {userInput: null };
+    this.submit.emit(payload);
 
-    this.router.navigate(['/prompt']);
+    // this.router.navigate(['/prompt']);
 
     // uncomment this out when services are in place
     // this.authenticationService.register(registrationModel)

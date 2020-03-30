@@ -20,7 +20,7 @@ export class OrganizationService {
   organizations: any[];
   constructor(private apollo: Apollo) {}
 
-  public getOrganizations(): Observable<any> {
+  public getOrganizations$(): Observable<any> {
     return this.apollo
       .query({
         query: Organizations,
@@ -42,7 +42,7 @@ export class OrganizationService {
     }
     // TODO consolidate with some inner observable magic
     if (!this.organizations) {
-      return this.getOrganizations().pipe(
+      return this.getOrganizations$().pipe(
         map((allOrgs) => {
           return allOrgs.filter((ao) => orgs.includes(ao.name));
         })
