@@ -12,9 +12,15 @@
 
     a {
       cursor: pointer;
+
+      &.active {
+        mat-icon {
+          @extend .text-primary;
+        }
+      }
     }
 }
 
 mat-icon {
-  @extend .text-primary;
+  color: #919191;
 }
