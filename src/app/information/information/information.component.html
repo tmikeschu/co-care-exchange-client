@@ -11,10 +11,10 @@
 
 
   <div *ngIf="registrantType === 'Individual'" class="w-100 vertical-rhythm">
-    <app-individual [email]="email" [lastName]="lastName" [firstName]="firstName"></app-individual>
+    <app-individual [email]="email" [lastName]="lastName" [firstName]="firstName" (submit)="onInfoSubmit($event)"></app-individual>
   </div>
 
   <div *ngIf="registrantType === 'Organization'" class="w-100 vertical-rhythm">
-    <app-organization></app-organization>
+    <app-organization [email]="email" [organizationName]="organizationName" (submit)="onInfoSubmit($event)"></app-organization>
   </div>
 </div>

@@ -37,15 +37,6 @@
 
 .section {
   padding: 2rem;
-
-  &.has-angle {
-    &:not(.light-theme) {
-      @include sloped(mat-color(map-get($colorado-care-exchange-theme, primary)));
-    }
-    &.light-theme {
-      @include sloped(mat-color(map-get($colorado-care-exchange-theme, primary)));
-    }
-  }
 }
 
 .responsive-table {

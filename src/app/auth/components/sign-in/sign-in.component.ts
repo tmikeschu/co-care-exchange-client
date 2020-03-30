@@ -7,6 +7,7 @@ import { SignInResult } from '../../../models/cce/sign-in-result.model';
 import { UserService } from '../../../core/services/user.service';
 import { OrganizationService } from '../../../core/services/organization.service';
 import { defer, Observable } from 'rxjs';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-in',
@@ -44,7 +45,7 @@ export class SignInComponent implements OnInit {
         this.loginForm.get('username').setValue(email);
       }
     });
-    this.orgService.getOrganizations().subscribe((orgs) => {
+    this.orgService.getOrganizations$().subscribe((orgs) => {
       const orgList = [...orgs];
       orgList.unshift(this.INDIVIDUAL);
       this.organizations = orgList;
@@ -59,7 +60,7 @@ export class SignInComponent implements OnInit {
     console.log('DEBUG signin org ', this.loginForm.get('organization').value);
     let org = this.loginForm.get('organization').value;
     // if org is the individual, then no org
-    if (!org.id) {
+    if (org && !org.id) {
       org = null;
     }
     try {
@@ -79,7 +80,8 @@ export class SignInComponent implements OnInit {
       }
       // TODO is navbar service needed...dont think so
       this.navbarService.setLogin(true);
-      await this.navigateToNextRoute();
+      // the email is the username
+      await this.navigateToNextRoute(this.loginForm.get('username').value, org);
     } catch (err) {
       console.log('SignIn error ', err);
       alert('Error signing in, try again later');
@@ -100,19 +102,26 @@ export class SignInComponent implements OnInit {
     //     });
   }
 
-  private async navigateToNextRoute() {
+  private async navigateToNextRoute(username: String, org?: any) {
     // TODO -- check if user profile exists
     const self = this;
-    defer(async function () {
-      return await self.userService.getUser('scarlet@dfb.org');
-    }).subscribe((user) => {
+    // defer(async function () {
+    //   return self.userService.getUser(username);
+    // })
+    const user = await self.userService.getUser(username).pipe(first()).toPromise();
+     //   .subscribe((user) => {
       console.log('DEBUG user profile ', user);
-      if (user) {
+      if (user && user.emailAddress) {
         return this.router.navigate(['/', 'dashboard']);
       } else {
-        return this.router.navigate(['/', 'info']);
+        const queryParams = { newUser: true };
+        if (org) {
+          queryParams['organizationId'] = org.id;
+          queryParams['organizationName'] = org.name;
+        }
+        return this.router.navigate(['/', 'info'], { queryParams });
       }
-    });
+  //  });
 
     //  return await this.router.navigate(['/', 'dashboard']);
     // if so , nav to dashboard, else
