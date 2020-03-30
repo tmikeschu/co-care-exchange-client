@@ -1,37 +1,20 @@
-.footercontainer {   
+@import '../../../styles/utilities.scss';
+
+.footer-container {   
     background-color: #fafafa;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;    
+    height: 75px;
     text-align: center;
     z-index: 10000;
+
+    a {
+      cursor: pointer;
+    }
 }
 
-.footerdiv{
-    display:inline-block;
-    width: 50px;
-}
-
-.footerimage{    
-    width: 100%;   
-    cursor: pointer;  
-}
-
-.footerimageright{
-    height:50px;
-}
-
-.iconleft{
-    float:left;
-    margin-left: 5px;
-}
-
-.iconright{    
-    float:right;
-    margin-right: 5px;
-}
-
-.iconmiddle{    
-    text-align: center;
+mat-icon {
+  @extend .text-primary;
 }
