@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {CreateUserInput} from '../../graphql/models/create-user-input.model';
+import { Observable } from 'rxjs';
+import { CreateUserInput } from '../../graphql/models/create-user-input.model';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
@@ -33,9 +31,15 @@ const CreateUser = gql`
   providedIn: 'root',
 })
 export class UserService {
+  currentUserProfile = null;
   constructor(private apollo: Apollo) {}
 
-  getUser(emailAddress: String): Observable<object> {
+  getCurrentUserProfile() {
+    return this.currentUserProfile;
+  }
+
+  getUser(emailAddress: String): Observable<any> {
+    console.log('DEBUG getUser ', emailAddress);
     return this.apollo
       .query({
         query: UserForEmail,
@@ -47,7 +51,8 @@ export class UserService {
         map((response: any) => {
           console.log('DEBUG DATA ', response);
           const data = response.data;
-          return data.users && data.users.length ? data.users[0] : null;
+          this.currentUserProfile = data.users && data.users.length ? data.users[0] : null;
+          return this.currentUserProfile;
         })
       );
     // this.apollo
@@ -70,21 +75,21 @@ export class UserService {
   }
 
   saveUser(userProfile: CreateUserInput) {
-      console.log('DEBUG save user ', userProfile);
-      return this.apollo
-          .mutate({
-              mutation: CreateUser,
-              variables: {
-                  input: userProfile,
-              },
-          })
-          .pipe(
-              map((response: any) => {
-                  console.log('DEBUG CREATE USER DATA ', response);
-                  const data = response.data;
-                  return data.users && data.users.length ? data.users[0] : null;
-              })
-          );
+    console.log('DEBUG save user ', userProfile);
+    return this.apollo
+      .mutate({
+        mutation: CreateUser,
+        variables: {
+          input: userProfile,
+        },
+      })
+      .pipe(
+        map((response: any) => {
+          console.log('DEBUG CREATE USER DATA ', response);
+          const data = response.data;
+          return data.users && data.users.length ? data.users[0] : null;
+        })
+      );
   }
 }
 

@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { RegistrationModel } from '../../models/cce/registrationModel';
 import {CreateUserInput} from '../../graphql/models/create-user-input.model';
+import {InitialCreateInformation} from '../models/info-create.model';
 
 @Component({
   selector: 'app-individual',
@@ -14,6 +15,7 @@ export class IndividualComponent implements OnInit, AfterViewInit {
   @Input() firstName;
   @Input() lastName;
   @Input() email;
+  @Output() submit = new EventEmitter<InitialCreateInformation>();
 
   individualRegisterForm: FormGroup;
   errorMessage: string;
@@ -79,11 +81,14 @@ export class IndividualComponent implements OnInit, AfterViewInit {
 
     console.log(profile);
 
+    const payload: InitialCreateInformation = {userInput: profile };
+    this.submit.emit(payload);
+
     // const result = await this.authenticationService.register(registrationModel);
     // if (result.errorMsg) {
     //   // todo handle error
     // } else {
-    this.router.navigate(['/prompt']);
+   // this.router.navigate(['/prompt']);
     // }
 
     // uncomment this out when services are in place

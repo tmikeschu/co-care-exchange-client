@@ -9,6 +9,6 @@ export interface CreateUserInput {
     postalCode?: string;
     city: string;
     state;
-    organization?: unknown;
+    organizationId?: unknown;
     createdBy?: string;
 }
