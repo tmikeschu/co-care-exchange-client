@@ -2,7 +2,7 @@
 
 The server-side interface is exposed through a GraphQL API. The development environment url is:
 
-[Development GraphQL Server](https://7teahidmgk.execute-api.us-west-2.amazonaws.com/dev/graphql)
+[Development GraphQL Server](https://4atq1c83vc.execute-api.us-west-2.amazonaws.com/dev/graphql)
 
 Through that endpoint, you can perform a GraphQL query to inspect the data schema as well as exposed queries and mutations. For more information on the GraphQL specification, please visit [GraphQL.org](https://graphql.org). 
 

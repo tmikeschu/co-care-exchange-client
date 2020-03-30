@@ -14,15 +14,14 @@ export class PromptsOrganizationComponent implements OnInit {
   promptKeys: string[];
   promptTypeQuestion: string;
   showConfirm: boolean = false;
+  showConfirmBtn: boolean = false;
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: string[] = [];
   requests: string[] = [];
   prompt: Prompt;
   promptIndex = 0;
-
-  surveyTime = false;
-  
+  surveyTime = false;  
   inNeed: boolean;
 
   constructor(private promptService: PromptService, private router: Router) {}
@@ -90,6 +89,13 @@ export class PromptsOrganizationComponent implements OnInit {
       }
     }  
     this.showConfirm = true;
+    if(this.requests.length < 1 && this.shares.length < 1){
+      this.showConfirmBtn = false;
+    }
+    else{
+      this.showConfirmBtn = true;
+    }
+    
   }
 
   onConfirm() {    

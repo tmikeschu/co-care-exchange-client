@@ -1,5 +1,5 @@
 export const commonEnv = {
-    serverUrl: 'https://7teahidmgk.execute-api.us-west-2.amazonaws.com/dev/graphql?',
+    serverUrl: 'https://4atq1c83vc.execute-api.us-west-2.amazonaws.com/dev/graphql?',
     passwordPolicy: {
         minLength: 8,
         requireNumber: true,

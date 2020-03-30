@@ -12,7 +12,7 @@ export function createApollo(httpLink: HttpLink) {
   const authMiddleware = new ApolloLink((operation, forward) => {
     // TODO -- replace key with idToken when ready
     operation.setContext({
-      headers: new HttpHeaders().set(TOKEN_HEADER_KEY, 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1'),
+      headers: new HttpHeaders().set(TOKEN_HEADER_KEY, 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm'),
     });
 
     return forward(operation);

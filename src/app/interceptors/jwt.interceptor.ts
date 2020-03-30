@@ -15,7 +15,7 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const idToken = this.authenticationService.getIdToken();
     // TODO -- remove api key
-    const headers = request.headers.set(JwtInterceptor.TOKEN_HEADER_KEY, 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1');
+    const headers = request.headers.set(JwtInterceptor.TOKEN_HEADER_KEY, 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm');
     headers.append(JwtInterceptor.COG_TOKEN_KEY, idToken);
     const authReq = request.clone({headers});
     return next.handle(authReq);

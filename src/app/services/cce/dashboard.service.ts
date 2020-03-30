@@ -49,10 +49,10 @@ export class DashboardService {
 
   testgraphQL():Observable<any>{
     const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': 'KmFXIagDOypuL6YtCMzuaOyhs9cFodW2n6MK1eS1'})
+      headers: new HttpHeaders({'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm'})
     };
     const query = {
-      'query':'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, status, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
+      'query':'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
       'variables':{       
         "userId": "22201103-DEC0-466F-B44F-1926BC1687C1"
         }      
