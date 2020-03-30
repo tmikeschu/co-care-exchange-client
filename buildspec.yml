@@ -28,7 +28,7 @@ phases:
             - TEST_SUCCESS=false
             - echo Build started
 #            - ng build --configuration=${BUILD_ENV}
-            - ng build
+            - npm run build -- -c production
             - |
             - if [ ${CODEBUILD_BUILD_SUCCEEDING} = 1 ]; then
                 echo Build Success;
