@@ -10,7 +10,8 @@
 <div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
     <div fxLayout="column">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12270.549256201513!2d-104.9877171924434!3d39.74779711477854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x876c78d7860b24d9%3A0x854a5f0d10e5c87f!2s1999%20Broadway%2C%201999%20N%20Broadway%2C%20Denver%2C%20CO%2080202!5e0!3m2!1sen!2sus!4v1585353847518!5m2!1sen!2sus"
+            class="e2e-iframe-trusted-src"
+            [src]="getSelectedMapUrl()">
             width="350" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
             tabindex="0">
         </iframe>
@@ -20,7 +21,7 @@
 <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
     <div class="fb-container">
         <ul class="food-banks">
-            <li *ngFor="let fb of foodBanks">
+            <li *ngFor="let fb of foodBanks; let i = index;" (click)="selectLocation(i)" [ngClass]="{'highlight': selectedIndex === i}">
                 <div class="name">{{fb.name}}</div>
                 <div class="address">{{fb.address}}</div>
                 <div class="notes">{{fb.notes}}</div>
