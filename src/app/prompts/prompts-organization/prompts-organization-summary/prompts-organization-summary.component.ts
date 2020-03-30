@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-prompts-organization-summary',
   templateUrl: './prompts-organization-summary.component.html',
-  styleUrls: ['./prompts-organization-summary.component.scss']
+  styleUrls: ['./prompts-organization-summary.component.scss'],
 })
 export class PromptsOrganizationSummaryComponent implements OnInit {
+  requests = [];
+  shares = [];
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  onConfirm() {    
+  onConfirm() {
     this.router.navigate(['/dashboard']);
   }
 }
