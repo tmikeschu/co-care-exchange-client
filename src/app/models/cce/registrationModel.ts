@@ -3,8 +3,8 @@ export interface RegistrationModel {
   lastName?: string;
   orgName?: string;
   isOrganization: boolean;
-  email?: string;
-  phone: string;
+  email: string;
+  phone?: string;
   houseHoldSize?: number;
   cityState: string;
   deliveryOrPickupLocation: string;

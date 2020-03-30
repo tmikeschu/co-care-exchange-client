@@ -1,24 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../../services/cce/authentication.service';
-import {RegistrationModel} from '../../models/cce/registrationModel';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/cce/authentication.service';
+import { RegistrationModel } from '../../models/cce/registrationModel';
+import {CreateUserInput} from '../../graphql/models/create-user-input.model';
 
 @Component({
   selector: 'app-individual',
   templateUrl: './individual.component.html',
-  styleUrls: ['./individual.component.scss']
+  styleUrls: ['./individual.component.scss'],
 })
-export class IndividualComponent implements OnInit {
+export class IndividualComponent implements OnInit, AfterViewInit {
+  @Input() firstName;
+  @Input() lastName;
+  @Input() email;
 
   individualRegisterForm: FormGroup;
   errorMessage: string;
   error = false;
   isRegistering = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private authenticationService: AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
 
   ngOnInit() {
     this.individualRegisterForm = this.formBuilder.group({
@@ -31,35 +33,57 @@ export class IndividualComponent implements OnInit {
       deliveryOrPickupLocation: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.required],
       // password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
-      password: ['']
+      password: [''],
     });
+  }
 
+  ngAfterViewInit(): void {
+    this.individualRegisterForm.get('firstName').setValue(this.firstName);
+    this.individualRegisterForm.get('lastName').setValue(this.lastName);
+    this.individualRegisterForm.get('email').setValue(this.email);
   }
 
   async onRegisterSubmit() {
     this.individualRegisterForm.disable();
     this.isRegistering = true;
 
-    const registrationModel: RegistrationModel = {
-      firstName: this.individualRegisterForm.get('firstName').value,
-      lastName: this.individualRegisterForm.get('lastName').value,
-      isOrganization: false,
-      email: this.individualRegisterForm.get('email').value,
-      // password: this.registerForm.get('password').value,
-      deliveryOrPickupLocation: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
-      deliveryOrPickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
-      houseHoldSize: this.individualRegisterForm.get('householdSize').value,
-      cityState: this.individualRegisterForm.get('cityState').value,
-      phone: this.individualRegisterForm.get('phone').value,
-    };
+    // reconcile these models
+    // const registrationModel: RegistrationModel = {
+    //   firstName: this.individualRegisterForm.get('firstName').value,
+    //   lastName: this.individualRegisterForm.get('lastName').value,
+    //   isOrganization: false,
+    //   email: this.individualRegisterForm.get('email').value,
+    //   // password: this.registerForm.get('password').value,
+    //   deliveryOrPickupLocation: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
+    //   deliveryOrPickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+    //   houseHoldSize: this.individualRegisterForm.get('householdSize').value,
+    //   cityState: this.individualRegisterForm.get('cityState').value,
+    //   phone: this.individualRegisterForm.get('phone').value,
+    // };
 
-    console.log(registrationModel);
+    //TEST
+    const profile: CreateUserInput = {
+      address: '123 Main',
+      city: 'Parker',
+      dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      emailAddress: this.individualRegisterForm.get('email').value,
+      firstName:  this.individualRegisterForm.get('firstName').value,
+      lastName: this.individualRegisterForm.get('lastName').value,
+      pickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      state: 'CO',
+      postalCode: '80134',
+      phoneNumber: this.individualRegisterForm.get('phone').value,
+      createdBy: this.individualRegisterForm.get('email').value,
+    };
+   // this.userService.saveUser(profile).subscribe(x => console.log(x));
+
+    console.log(profile);
 
     // const result = await this.authenticationService.register(registrationModel);
     // if (result.errorMsg) {
     //   // todo handle error
     // } else {
-       this.router.navigate(['/prompt']);
+    this.router.navigate(['/prompt']);
     // }
 
     // uncomment this out when services are in place
@@ -72,5 +96,4 @@ export class IndividualComponent implements OnInit {
     //       alert(error);
     //     });
   }
-
 }

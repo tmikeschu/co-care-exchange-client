@@ -2,20 +2,23 @@
 
 import { Auth } from 'aws-amplify';
 import { RegistrationResult } from '../../models/cce/registration-result.model';
-export const register = async (username, password, email, phone_number?): Promise<RegistrationResult> => {
+import { BasicRegistrationModel } from '../../models/cce/basic-registration.model';
+export const register = async (regModel: BasicRegistrationModel): Promise<RegistrationResult> => {
   const result: RegistrationResult = {};
   const attributes = {
-    email, // optional
+    email: regModel.email,
+    given_name: regModel.firstName,
+    family_name: regModel.lastName,
     //  phone_number,   // optional - E.164 number convention
     // other custom attributes
   };
-  if (phone_number) {
-    attributes[phone_number] = phone_number;
+  if (regModel.phoneNumber) {
+    attributes['phone_number'] = regModel.phoneNumber;
   }
   try {
     const registerResult = await Auth.signUp({
-      username,
-      password,
+      username: regModel.email,
+      password: regModel.password,
       attributes,
       validationData: [], // optional
     });
