@@ -45,7 +45,7 @@ export class SignInComponent implements OnInit {
       }
     });
     this.orgService.getOrganizations().subscribe((orgs) => {
-      const orgList = orgs;
+      const orgList = [...orgs];
       orgList.unshift(this.INDIVIDUAL);
       this.organizations = orgList;
     });
