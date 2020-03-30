@@ -6,10 +6,13 @@ import { PromptsIndividualComponent } from '../prompts/prompts-individual/prompt
 import { PromptsOrganizationComponent } from 'src/app/prompts/prompts-organization/prompts-organization.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: DashboardComponent,
-  // },
+  {
+    // TODO -- temp fix for routing to prompt for org data
+    // Real solution...maybe consider a resolver on the prompt route and the resolver than determines org or indiv
+    // and routes to the proper component
+    path: 'prompt',
+    component: PromptsOrganizationComponent,
+  },
   {
     path: 'promptind',
     component: PromptsIndividualComponent,
