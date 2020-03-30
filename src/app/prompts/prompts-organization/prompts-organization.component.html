@@ -3,11 +3,11 @@
     <div *ngFor="let question of prompts" class="contentborder questionarea">                          
         <h2 class="contentlabel">{{question.display}}</h2>   
 
-        <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="question.unitsOfIssue">            
-            <div *ngFor="let unit of question.unitsOfIssueChoices">
-                <mat-radio-button [value]="unit">{{unit}}</mat-radio-button>
-            </div>           
+        <div class="radioGroup" >
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unitsOfIssue">     
+            <mat-radio-button class="radioGroupBtn" *ngFor="let unit of question.unitsOfIssueChoices" [value]="unit">{{unit}}</mat-radio-button>
         </mat-radio-group>
+        </div>
 
         <div style="width: 150px; float: left;">
             <div>Requesting</div>        
