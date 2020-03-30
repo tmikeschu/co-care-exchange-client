@@ -26,10 +26,8 @@ import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
 import { RegistrationModule } from './registration/registration.module';
 import { GraphQLModule } from './graphql/graphql.module';
-import {PopupDialogComponent} from './resources/popup-dialog/popup-dialog.component';
-// import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
-// import { SiteHeaderComponent } from './shared/site-header/site-header.component';
-// import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
+import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
+import { PromptModule } from './prompts/prompt.module';
 
 @NgModule({
   imports: [
@@ -39,6 +37,7 @@ import {PopupDialogComponent} from './resources/popup-dialog/popup-dialog.compon
     AuthModule,
     RegistrationModule,
     DashboardModule,
+    PromptModule,
     PantryLocatorModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -51,11 +50,6 @@ import {PopupDialogComponent} from './resources/popup-dialog/popup-dialog.compon
     SharedModule,
     InformationModule,
     AwsCognitoModule,
-    // RouterModule.forRoot(
-    //   appRoutes,
-    //   { enableTracing: false } // <-- debugging purposes only
-    // ),
-    // NgxStripeModule.forRoot('pk_test_YnfmX19Af1lUde9Aopuc4fsD0020Mzmc6U'),
     ToastrModule.forRoot(),
     LayoutModule,
   ],
@@ -64,13 +58,11 @@ import {PopupDialogComponent} from './resources/popup-dialog/popup-dialog.compon
     ContactUsComponent,
     PersonalDashboardComponent,
     ResourcesComponent,
-    PopupDialogComponent,
-    // DashboardFooterComponent,
+    PopupDialogComponent
   ],
   providers: [
     GreetingService,
     NavbarService,
-    // StripeService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   exports: [],

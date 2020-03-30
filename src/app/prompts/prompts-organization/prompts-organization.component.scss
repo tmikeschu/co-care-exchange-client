@@ -1,0 +1,38 @@
+@import '../../../styles/utilities.scss';
+
+mat-icon.next {
+    color: white;
+}
+
+mat-icon.arrows { 
+    @extend .text-primary;
+}
+
+.pagecontent{
+    width: 100%;
+    text-align: center;
+}
+
+.contentborder{
+    border-radius: 8px;
+    border: 1px solid #ccc!important;
+}
+
+.questionarea{
+    margin-bottom: 20px;
+}
+
+.radioGroup{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.radioGroupBtn {
+    padding-left: 20px;
+}
+
+.confirmbtn{
+    margin-left: 50px;
+ }
+ 

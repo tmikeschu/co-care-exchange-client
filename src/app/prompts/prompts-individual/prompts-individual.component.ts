@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Prompt } from '../../../models/cce/prompt';
-import { PromptService } from '../../../services/cce/prompt.service';
+import { Prompt } from '../../models/cce/prompt';
+import { PromptService } from '../../services/cce/prompt.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-prompt',
-  templateUrl: './prompt.component.html',
-  styleUrls: ['./prompt.component.scss'],
+  selector: 'app-prompts-individual',
+  templateUrl: './prompts-individual.component.html',
+  styleUrls: ['./prompts-individual.component.scss'],
 })
-export class PromptComponent implements OnInit {
+export class PromptsIndividualComponent implements OnInit {
   prompts: Prompt[];
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
   promptTypeQuestion: string;
 
-  promptMap;
+  promptMap: any = new Map();
   promptTypeIndex = 0;
 
   prompt: Prompt;
@@ -27,8 +27,9 @@ export class PromptComponent implements OnInit {
   constructor(private promptService: PromptService, private router: Router) {}
 
   ngOnInit() {
-    this.promptMap = new Map();
-    this.promptService.getPrompts().subscribe((val) => {
+    //TODO: get the grouptype from the logged in user type
+    this.promptService.getPrompts('ind').subscribe((val) => {
+      console.log('ngOnInit', val);
       this.buildPrompts(val);
     });
   }
@@ -51,8 +52,8 @@ export class PromptComponent implements OnInit {
   }
 
   getPromptTypeQuestion() {
-    this.promptTypeQuestion =
-      'Are you in need of ' + this.promptKeys[this.promptTypeIndex] + '?';
+    console.log('getPromptTypeQuestion', this.promptKeys);
+    this.promptTypeQuestion = 'Are you in need of ' + this.promptKeys[this.promptTypeIndex] + '?';
   }
 
   handleInNeed(inNeed) {
@@ -70,17 +71,18 @@ export class PromptComponent implements OnInit {
   }
 
   private buildPrompts(promptData: any) {
+    
     promptData.data.prompts.forEach((val) => {
       // save the survey questions for last.
       if (val.promptType === 'Survey Questions') {
         this.surveyQuestions.push(val);
       } else {
-        let prompts: Prompt[] = this.promptMap.get(val.promptType);
+        let prompts: Prompt[] = this.promptMap.get(val.groupName);
 
         if (!prompts) {
           prompts = [];
           prompts.push(val);
-          this.promptMap.set(val.promptType, prompts);
+          this.promptMap.set(val.groupName, prompts);
         } else {
           prompts.push(val);
         }
@@ -89,7 +91,7 @@ export class PromptComponent implements OnInit {
 
     this.promptKeys = Array.from(this.promptMap.keys());
     this.getPromptTypeQuestion();
-    console.log(this.promptMap);
-    console.log(this.surveyQuestions);
+    console.log('this.promptMap', this.promptMap);
+    console.log('this.surveyQuestions', this.surveyQuestions);
   }
 }

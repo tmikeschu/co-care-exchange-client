@@ -20,4 +20,8 @@ export interface Prompt {
 
   // who can see this prompt
   audience: string;
+
+  unitsOfIssueChoices: string[];
+  requesting: number;
+  sharing:number;
 }

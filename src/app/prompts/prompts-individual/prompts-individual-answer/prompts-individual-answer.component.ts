@@ -7,17 +7,17 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Prompt } from '../../../../models/cce/prompt';
+import { Prompt } from '../../../models/cce/prompt';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AnswerService } from '../../../../services/cce/answer.service';
-import { AnswerModel } from '../../../../models/cce/answer-model';
+import { AnswerService } from '../../../services/cce/answer.service';
+import { AnswerModel } from '../../../models/cce/answer-model';
 
 @Component({
-  selector: 'app-answer',
-  templateUrl: './answer.component.html',
-  styleUrls: ['./answer.component.scss'],
+  selector: 'app-prompts-individual-answer',
+  templateUrl: './prompts-individual-answer.component.html',
+  styleUrls: ['./prompts-individual-answer.component.scss'],
 })
-export class AnswerComponent implements OnInit, OnChanges {
+export class PromptsIndividualAnswerComponent implements OnInit, OnChanges {
   answerForm: FormGroup;
 
   @Input()
