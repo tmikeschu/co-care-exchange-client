@@ -1,18 +1,23 @@
-@import '../../../styles/theme.scss';
+@import '../../../styles/utilities.scss';
 
-:host {
-  button {
+mat-icon.next {
     color: white;
-  }
-  .full-screen-prompt {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+}
 
-  .question-container {
-    width: auto;
-    max-width: 350px;
-  }
+mat-icon.arrows { 
+    @extend .text-primary;
+}
+
+.pagecontent{
+    width: 100%;
+    text-align: center;
+}
+
+.contentborder{
+    border-radius: 8px;
+    border: 1px solid #ccc!important;
+}
+
+.questionarea{
+    margin-bottom: 20px;
 }

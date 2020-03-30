@@ -97,18 +97,17 @@ export class PromptsOrganizationAnswerComponent implements OnInit {
   }
 
   getQuestion() {
-    this.question =
-      'How many ' + this.prompt.item + 's  are you requesting or sharing?';
+    this.question = 'How many ' + this.prompt.item + 's  are you requesting or sharing?';
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.prompt = changes.prompt.currentValue;
-    if (this.prompt.unitsOfIssue && this.prompt.unitsOfIssue.length > 0) {
-      const parts = this.prompt.unitsOfIssue.split(',');
-      if (parts.length > 1) {
-        this.unitsOfIssueChoices = parts;
-        this.unitsOfIssue = this.unitsOfIssueChoices[0];
-      }
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.prompt = changes.prompt.currentValue;
+  //   if (this.prompt.unitsOfIssue && this.prompt.unitsOfIssue.length > 0) {
+  //     const parts = this.prompt.unitsOfIssue.split(',');
+  //     if (parts.length > 1) {
+  //       this.unitsOfIssueChoices = parts;
+  //       this.unitsOfIssue = this.unitsOfIssueChoices[0];
+  //     }
+  //   }
+  // }
 }

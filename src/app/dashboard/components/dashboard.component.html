@@ -6,7 +6,7 @@
             <h2>Needs</h2>
             <div *ngFor="let request of dashboardservice.agreements | async">
                 <mat-list-item *ngIf="request.statusTypeId == 1" (click)="handleStatusClick(request)" class="contentborder dashboardlist"> 
-                    <div class="dashboardlistitem">                        
+                    <div class="dashboardlistitem">                                          
                         <mat-label class="contentlabel">{{request.name}}</mat-label>
                         <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.status}}</mat-label>     
                     </div>              

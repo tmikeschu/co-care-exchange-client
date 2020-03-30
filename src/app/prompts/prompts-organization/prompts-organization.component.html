@@ -1,23 +1,52 @@
-<div class="full-screen-prompt">
-    <div *ngIf="promptMap.size !== 0" class="question-container">
-        <div *ngIf="!inNeed && !surveyTime">
-            <h3 class="text-primary text-center">{{promptTypeQuestion}}</h3>
+<div class="pagecontent">
+    
+    <div *ngFor="let question of prompts" class="contentborder questionarea">                          
+        <h2 class="contentlabel">{{question.display}}</h2>   
 
-            <div fxLayout="row" fxLayoutAlign="space-around center">
-                <button class="text-white" mat-flat-button color="primary" (click)="onPromptTypeYes()">
-                    Yes
-                </button>
+        <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="question.unitsOfIssue">            
+            <div *ngFor="let unit of question.unitsOfIssueChoices">
+                <mat-radio-button [value]="unit">{{unit}}</mat-radio-button>
+            </div>           
+        </mat-radio-group>
 
-                <button class="text-white" mat-flat-button color="primary" (click)="onPromptTypeNo()">
-                    No
-                </button>
+        <div style="width: 150px; float: left;">
+            <div>Requesting</div>        
+           
+            <div style="width: 75px; float: left;text-align: right;">
+                <h2>{{ question.requesting }}</h2>    
+            </div>
+            <div style="margin-left: 75px;text-align: left;">
+                <div>
+                    <mat-icon (click)="handleRequesting(question, 'up')" class="arrows">expand_less</mat-icon>
+                </div>
+                <div>
+                    <mat-icon (click)="handleRequesting(question, 'down')" class="arrows">expand_more</mat-icon>
+                </div>
             </div>
         </div>
-        <div *ngIf="inNeed">
-            <app-prompts-individual-question [prompts]="this.prompts" (promptInNeed)="handleInNeed($event)"></app-prompts-individual-question>
+        
+        <div style="margin-left: 150px;">  
+            <div>Sharing</div>   
+
+            <div style="width: 75px; float: left;text-align: right;">             
+                <h2>{{ question.sharing }}</h2> 
+            </div>  
+            <div style="margin-left: 75px;text-align: left;">     
+                <div>
+                    <mat-icon (click)="handleSharing(question, 'up')" class="arrows">expand_less</mat-icon>
+                </div>
+                <div>
+                    <mat-icon (click)="handleSharing(question, 'down')" class="arrows">expand_more</mat-icon>
+                </div>
+            </div>
         </div>
-        <div *ngIf="surveyTime">
-            <app-prompts-individual-question [prompts]="this.surveyQuestions" survey="true" (surveyFinished)="this.handleSurveyFinished($event)"></app-prompts-individual-question>
-        </div>
+                
     </div>
+
+    
+
+    <button mat-fab color="primary" (click)="onSubmit()">
+        <mat-icon class="next">arrow_forward</mat-icon>
+    </button>
+    
 </div>
