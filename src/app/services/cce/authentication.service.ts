@@ -29,6 +29,9 @@ export class AuthenticationService {
 
   getGroups(): string[] {
     // TODO move cognito specific stuff out of here and consider using a proxy/lens
+    if (!this.user || !this.user.signInUserSession) {
+      return [];
+    }
     const userGroups = this.user.signInUserSession.accessToken.payload['cognito:groups'];
     return userGroups || [];
   }
@@ -46,11 +49,31 @@ export class AuthenticationService {
     return await register(registrationModel);
   }
 
-  async signIn(username: string, password: string) {
+  async signIn(username: string, password: string, organization?: any) {
     const result = await signIn(username, password);
+    this.user = result.user;
+    // check if user is in org
+    if (organization) {
+      const inOrg = this.isInOrg(result.user, organization);
+      if (!inOrg) {
+        // error
+        this.user = null;
+        result.user = null;
+        result.errorMsg = 'Invalid username, password, or organization';
+        return result;
+      }
+    }
     // store user object for user operations like change password
     this.user = result.user;
     return result;
+  }
+
+  private isInOrg(user: any, organization: any): boolean {
+    const userGroups = this.getGroups();
+    const orgInCognitoFormat = organization.name.replace(/ /g, '_');
+    console.log('DEBUG orgInCognitoFormat ', orgInCognitoFormat);
+    console.log('DEBUG userGroups ', userGroups);
+    return userGroups.some((e) => e === orgInCognitoFormat);
   }
 
   async forgetPassword(username: string) {

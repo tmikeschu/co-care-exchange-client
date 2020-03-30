@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { NavbarService } from '../../../services/navbar.service';
 import { SignInResult } from '../../../models/cce/sign-in-result.model';
-import {UserService} from '../../../core/services/user.service';
-import {defer, Observable} from 'rxjs';
+import { UserService } from '../../../core/services/user.service';
+import { OrganizationService } from '../../../core/services/organization.service';
+import { defer, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,10 +14,12 @@ import {defer, Observable} from 'rxjs';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit {
+  INDIVIDUAL = { name: 'Individual', id: null };
   loginForm: FormGroup;
   errorMessage: string;
   error = false;
   signingIn = false;
+  organizations = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,6 +27,7 @@ export class SignInComponent implements OnInit {
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private userService: UserService,
+    private orgService: OrganizationService,
     private navbarService: NavbarService
   ) {}
 
@@ -31,6 +35,7 @@ export class SignInComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      organization: [''],
     });
     this.route.queryParams.subscribe((val) => {
       console.log('DEBUG signin email ', val);
@@ -39,6 +44,11 @@ export class SignInComponent implements OnInit {
         this.loginForm.get('username').setValue(email);
       }
     });
+    this.orgService.getOrganizations().subscribe((orgs) => {
+      const orgList = orgs;
+      orgList.unshift(this.INDIVIDUAL);
+      this.organizations = orgList;
+    });
   }
 
   async onLoginSubmit() {
@@ -46,11 +56,17 @@ export class SignInComponent implements OnInit {
     this.errorMessage = undefined;
     this.signingIn = true;
     // this.loginForm.disable();
-
+    console.log('DEBUG signin org ', this.loginForm.get('organization').value);
+    let org = this.loginForm.get('organization').value;
+    // if org is the individual, then no org
+    if (!org.id) {
+      org = null;
+    }
     try {
       const result: SignInResult = await this.authenticationService.signIn(
         this.loginForm.get('username').value,
-        this.loginForm.get('password').value
+        this.loginForm.get('password').value,
+        org
       );
       console.log('DEBUG: signin result ', result);
       this.signingIn = false;
@@ -87,20 +103,19 @@ export class SignInComponent implements OnInit {
   private async navigateToNextRoute() {
     // TODO -- check if user profile exists
     const self = this;
-      defer(async function()  {
-         return await self.userService.getUser('scarlet@dfb.org');
-      }).subscribe(user => {
-        console.log('DEBUG user profile ', user);
-        if (user) {
-          return this.router.navigate(['/', 'dashboard']);
-        } else {
-          return this.router.navigate(['/', 'info']);
-        }
-      });
+    defer(async function () {
+      return await self.userService.getUser('scarlet@dfb.org');
+    }).subscribe((user) => {
+      console.log('DEBUG user profile ', user);
+      if (user) {
+        return this.router.navigate(['/', 'dashboard']);
+      } else {
+        return this.router.navigate(['/', 'info']);
+      }
+    });
 
     //  return await this.router.navigate(['/', 'dashboard']);
     // if so , nav to dashboard, else
-
   }
 
   handleForgotPW() {
