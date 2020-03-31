@@ -1,6 +1,6 @@
 # Colorado Care Exchange
 
-  
+![CO CareExchange](/Colorado Care Exchange Logo.png)  
 
 # Connecting Care with Need
 
