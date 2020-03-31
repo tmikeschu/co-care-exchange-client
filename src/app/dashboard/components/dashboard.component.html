@@ -1,10 +1,10 @@
 <app-site-header></app-site-header>
 
 <div class="dasboardcontent">
-    <div *ngIf="dashboardservice.hasNeeds">
+    <div *ngIf="dashboardService.hasNeeds">
         <mat-card-content>
             <h2>Needs</h2>
-            <div *ngFor="let request of dashboardservice.agreementNeeds | async">
+            <div *ngFor="let request of dashboardService.agreementNeeds | async">
                 <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
                     <div class="dashboardlistitem">
                         <mat-label class="contentlabel">{{request.name}}</mat-label>
@@ -16,10 +16,10 @@
         </mat-card-content>
     </div>
 
-    <div *ngIf="dashboardservice.hasShares">
+    <div *ngIf="dashboardService.hasShares">
         <mat-card-content>
             <h2>Can Give</h2>
-            <div *ngFor="let request of dashboardservice.agreementShares | async">
+            <div *ngFor="let request of dashboardService.agreementShares | async">
                 <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
                     <div class="dashboardlistitem">
                         <mat-label class="contentlabel">{{request.name}}</mat-label>
