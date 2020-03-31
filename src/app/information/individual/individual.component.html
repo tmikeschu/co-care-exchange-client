@@ -96,7 +96,7 @@
         <label>
           <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number" />
         </label>
-        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('required')">
           Delivery or pickup radius is a required field
         </mat-error>
       </mat-form-field>

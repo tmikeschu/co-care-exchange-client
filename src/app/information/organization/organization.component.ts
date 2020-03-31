@@ -2,8 +2,8 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
-import { RegistrationModel } from '../../models/cce/registrationModel';
 import { InitialCreateInformation } from '../models/info-create.model';
+import { CreateUserInput } from '../../graphql/models/create-user-input.model';
 
 @Component({
   selector: 'app-organization',
@@ -15,13 +15,32 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
   @Input() firstName;
   @Input() lastName;
   @Input() organizationName;
+  @Input() organizationId;
   @Output() submit = new EventEmitter<InitialCreateInformation>();
   organizationForm: FormGroup;
   errorMessage: string;
   error = false;
-  isRegistering = false;
+  private _isRegistering = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
+
+  @Input()
+  set isRegistering(state: boolean) {
+    console.log('DEBUG org isRegistering ', state);
+    this._isRegistering = state;
+    if (!this.organizationForm) {
+      return;
+    }
+    if (this._isRegistering) {
+      this.organizationForm.disable();
+    } else {
+      this.organizationForm.enable();
+    }
+  }
+
+  get isRegistering() {
+    return this._isRegistering;
+  }
 
   ngOnInit() {
     this.organizationForm = this.formBuilder.group({
@@ -46,22 +65,35 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
   }
 
   onRegisterSubmit() {
-    this.organizationForm.disable();
-    this.isRegistering = true;
+    // this.isRegistering = true;
 
-    const registrationModel: RegistrationModel = {
-      orgName: this.organizationForm.get('orgName').value,
-      isOrganization: true,
-      email: this.organizationForm.get('email').value,
-      deliveryOrPickupLocation: this.organizationForm.get('deliveryOrPickupLocation').value,
-      deliveryOrPickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
-      cityState: this.organizationForm.get('cityState').value,
-      phone: this.organizationForm.get('phone').value,
+    // const registrationModel: RegistrationModel = {
+    //   orgName: this.organizationForm.get('orgName').value,
+    //   isOrganization: true,
+    //   email: this.organizationForm.get('email').value,
+    //   deliveryOrPickupLocation: this.organizationForm.get('deliveryOrPickupLocation').value,
+    //   deliveryOrPickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+    //   cityState: this.organizationForm.get('cityState').value,
+    //   phone: this.organizationForm.get('phone').value,
+    // };
+
+    const profile: CreateUserInput = {
+      address: this.organizationForm.get('deliveryOrPickupLocation').value,
+      city: this.organizationForm.get('city').value,
+      dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      emailAddress: this.organizationForm.get('email').value,
+      firstName: this.organizationForm.get('firstName').value,
+      lastName: this.organizationForm.get('lastName').value,
+      pickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      state: this.organizationForm.get('state').value,
+      postalCode: this.organizationForm.get('postalCode').value,
+      phoneNumber: this.organizationForm.get('phone').value,
+      createdBy: this.organizationForm.get('email').value,
+      organizationId: this.organizationId,
     };
 
-    console.log(registrationModel);
-    // TODO
-    const payload: InitialCreateInformation = { userInput: null };
+    console.log(profile);
+    const payload: InitialCreateInformation = { userInput: profile };
     this.submit.emit(payload);
 
     // this.router.navigate(['/prompt']);

@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { RegistrationModel } from '../../models/cce/registrationModel';
-import {CreateUserInput} from '../../graphql/models/create-user-input.model';
-import {InitialCreateInformation} from '../models/info-create.model';
+import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { InitialCreateInformation } from '../models/info-create.model';
 
 @Component({
   selector: 'app-individual',
@@ -20,7 +20,7 @@ export class IndividualComponent implements OnInit, AfterViewInit {
   individualRegisterForm: FormGroup;
   errorMessage: string;
   error = false;
-  isRegistering = false;
+  private _isRegistering = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
 
@@ -47,10 +47,25 @@ export class IndividualComponent implements OnInit, AfterViewInit {
     this.individualRegisterForm.get('email').setValue(this.email);
   }
 
-  async onRegisterSubmit() {
-    this.individualRegisterForm.disable();
-    this.isRegistering = true;
+  @Input()
+  set isRegistering(state: boolean) {
+    console.log('DEBUG org isRegistering ', state);
+    this._isRegistering = state;
+    if (!this.individualRegisterForm) {
+      return;
+    }
+    if (this._isRegistering) {
+      this.individualRegisterForm.disable();
+    } else {
+      this.individualRegisterForm.enable();
+    }
+  }
 
+  get isRegistering() {
+    return this._isRegistering;
+  }
+
+  async onRegisterSubmit() {
     // reconcile these models
     // const registrationModel: RegistrationModel = {
     //   firstName: this.individualRegisterForm.get('firstName').value,
@@ -65,32 +80,32 @@ export class IndividualComponent implements OnInit, AfterViewInit {
     //   phone: this.individualRegisterForm.get('phone').value,
     // };
 
-    //TEST
+    // TEST
     const profile: CreateUserInput = {
-      address: '123 Main',
-      city: 'Parker',
+      address: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
+      city: this.individualRegisterForm.get('city').value,
       dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.individualRegisterForm.get('email').value,
-      firstName:  this.individualRegisterForm.get('firstName').value,
+      firstName: this.individualRegisterForm.get('firstName').value,
       lastName: this.individualRegisterForm.get('lastName').value,
       pickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
-      state: 'CO',
-      postalCode: '80134',
+      state: this.individualRegisterForm.get('state').value,
+      postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
       createdBy: this.individualRegisterForm.get('email').value,
     };
-   // this.userService.saveUser(profile).subscribe(x => console.log(x));
+    // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
     console.log(profile);
 
-    const payload: InitialCreateInformation = {userInput: profile };
+    const payload: InitialCreateInformation = { userInput: profile };
     this.submit.emit(payload);
 
     // const result = await this.authenticationService.register(registrationModel);
     // if (result.errorMsg) {
     //   // todo handle error
     // } else {
-   // this.router.navigate(['/prompt']);
+    // this.router.navigate(['/prompt']);
     // }
 
     // uncomment this out when services are in place

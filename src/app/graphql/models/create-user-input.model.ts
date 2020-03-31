@@ -8,7 +8,7 @@ export interface CreateUserInput {
     phoneNumber: string;
     postalCode?: string;
     city: string;
-    state;
+    state: string;
     organizationId?: unknown;
     createdBy?: string;
 }
