@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
+import { OrderCancelModel } from 'src/app/models/cce/order-model';
 
 @Injectable({
   providedIn: 'root'
@@ -187,6 +188,22 @@ export class DashboardService {
       }
     };
     return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
+  }
+
+  postOrderCancelResponse(answer: OrderCancelModel): Observable<any> {
+
+    console.log(answer);
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'x-api-key': '${environment.apiKey}' })
+    };
+
+    const input = {
+      'operationName': 'PromptAnswerMutations',
+      'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }\', \'variables\': { \'input\': answer } }'
+    };
+
+    return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
   }
 
   setlabelstyles(list) {
