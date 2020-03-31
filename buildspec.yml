@@ -52,7 +52,7 @@ phases:
                 aws s3 rm s3://${S3_BUCKET}/ --recursive;
               else
                 echo "Build failed, NOT deleting previous version";
-            - fi
+              fi
 #            - echo TEST_SUCCESS value $TEST_SUCCESS
             - |
 #            - if [ ${CODEBUILD_BUILD_SUCCEEDING} = 1 ]; then
