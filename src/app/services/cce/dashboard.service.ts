@@ -1,118 +1,250 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Status } from 'src/app/dashboard/components/models/dasboard';
+import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
-import { map, subscribeOn } from 'rxjs/operators';
+import { OrderCancelModel } from 'src/app/models/cce/order-model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DashboardService {
-  agreements: Subject<any> = new BehaviorSubject<any[]>([]);
+  agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
+  agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
   messageCount: number = 0;
-  hasNeeds: boolean= false;
-  hasShares: boolean= false;
+  hasNeeds: boolean = false;
+  hasShares: boolean = false;
 
-  requests: Status[] = [
-      {requestId: '1', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 1,  itemType:'food',     name: 'Meals',        status: 'Looking for Supplier', statusId: 0, dialogmessage: 'A supplier of your request has not yet been found.', sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '2', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 5,  itemType:'boxes',    name: 'Diapers',      status: 'New Match!',           statusId: 1, dialogmessage: 'A supplier has been found. Awaiting their confirmation.', sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '3', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Delivery Pending',     statusId: 2, dialogmessage: 'Supplier has confirmed your request and sent it out for delivery. Have you received this item?', sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '4', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 2,  itemType:'food',     name: 'Apples',       status: 'Fulfilled!',           statusId: 3, dialogmessage: 'Your request has been delivered and is complete.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
-      {requestId: '5', statusType: 'need',    statusTypeId: 1, lat:'', long:'',  quantity: 2,  itemType:'boxes',    name: 'Toothpaste',   status: 'Cancelled',            statusId: 4, dialogmessage: 'Your request has been cancelled by *REQUESTOR OR SUPPLIER*.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
-    
-      {requestId: '1', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 1,  itemType:'food',     name: 'Meals',        status: 'No requestors yet',    statusId: 0, dialogmessage: 'No Requestors yet', sourceName: 'Colorado Care Center', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '2', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 5,  itemType:'boxes',    name: 'Diapers',      status: 'New Match!',           statusId: 1, dialogmessage: 'A requestor at the following address needs these goods.  Are you still able to supply and deliver them?', sourceName: 'Health Providers', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '3', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 12, itemType:'packages', name: 'Toilet Paper', status: 'Delivery Pending',     statusId: 2, dialogmessage: 'You have sent items out for delivery to this requestor at this address.', sourceName: 'Safeway Store', address: "2345 Weston st., Denver, CO 80211"}, 
-      {requestId: '4', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 2,  itemType:'food',     name: 'Apples',       status: 'Fulfilled!',           statusId: 3, dialogmessage: 'Requestor has confirmed delivery.  This order is completed.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"},
-      {requestId: '5', statusType: 'supply',  statusTypeId: 2, lat:'', long:'',  quantity: 2,  itemType:'boxes',    name: 'Toothpaste',   status: 'Cancelled',            statusId: 4, dialogmessage: 'This request has been cancelled by *REQUESTOR OR SUPPLIER*.', sourceName: 'Denver Health Hospital', address: "2345 Weston st., Denver, CO 80211"}];
-    
-  temp = [];
-        
-  constructor(private http: HttpClient) {        
+  result: any;
+
+  constructor(private http: HttpClient) {
     this.init();
   }
-  
-  getRequests2() {   
-    console.log('getRequests2');
-    this.requests = this.requests.concat(this.temp);
-    this.setlabelstyles();
-    this.agreements.next(this.requests);
-  } 
 
-  init() {     
-    console.log('init', this.requests);
-    this.agreements.next(this.requests);
-    this.setlabelstyles();
-  } 
+  init() {
+    console.log('init', this.result);
 
-  testgraphQL():Observable<any>{
+    this.getDashboard().subscribe(result => {
+      console.log('dashboard results:', result);
+
+      if (!result.data.dashboard.requested.length) {
+
+        // TODO: remove once graphql API returns data
+        result =
+        {
+          "data": {
+            "dashboard": {
+              "requested": [
+                {
+                  "name": "Diapers",
+                  "statusId": 0,
+                  "statusText": "Looking for Supplier",
+                  "agreementId": "41d18d0501c14cc89e190667c45f3c57",
+                  "dialogMessage": "A supplier of your request has not yet been found.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": null
+                },
+                {
+                  "name": "Tampons",
+                  "statusId": 1,
+                  "statusText": "New Match!",
+                  "agreementId": "1d9e1eeffbac40db94e062ac00718e12",
+                  "dialogMessage": "A supplier has been found. Awaiting their confirmation.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": null
+                },
+                {
+                  "name": "Adult Meal(s)",
+                  "statusId": 2,
+                  "statusText": "Delivery Pending",
+                  "agreementId": "1d1e1eeffbac40db94e062ac00718e12",
+                  "dialogMessage": "Supplier has confirmed your request and sent it out for delivery. Have you received this item?",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": null
+                },
+                {
+                  "name": "Child Meal(s)",
+                  "statusId": 3,
+                  "statusText": "Fulfilled",
+                  "agreementId": "1d1e1eeffbac40db94e062ac00718e02",
+                  "dialogMessage": "Your request has been delivered and is complete.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": null
+                },
+                {
+                  "name": "Something",
+                  "statusId": 4,
+                  "statusText": "Cancelled",
+                  "agreementId": "1d1e10effbac40db94e062ac00718e02",
+                  "dialogMessage": "Your request has been cancelled.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": null
+                }
+              ],
+              "shared": [
+                {
+                  "name": "Diapers",
+                  "statusId": 0,
+                  "statusText": "Looking for match",
+                  "agreementId": "41d18a0501c14cc89e190667c45f3c57",
+                  "dialogMessage": "No requests yet.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": "1999 N Broadway Denver CO"
+                },
+                {
+                  "name": "Tampons",
+                  "statusId": 1,
+                  "statusText": "New Match!",
+                  "agreementId": "0d9e1eeffbac40db94e062ac00718e12",
+                  "dialogMessage": "Someone is in need at the following address. Are you still able to supply and deliver them?",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": "1999 N Broadway Denver CO"
+                },
+                {
+                  "name": "Adult Meal(s)",
+                  "statusId": 2,
+                  "statusText": "Delivery Pending",
+                  "agreementId": "1b1e1eeffbac40db94e062ac00718e12",
+                  "dialogMessage": "You have sent items out for delivery to this address.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": "1999 N Broadway Denver CO"
+                },
+                {
+                  "name": "Child Meal(s)",
+                  "statusId": 3,
+                  "statusText": "Fulfilled",
+                  "agreementId": "1d6e1eeffbac40db94e062ac00718e02",
+                  "dialogMessage": "Receiver has confirmed delivery.  This order is completed.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": "1999 N Broadway Denver CO"
+                },
+                {
+                  "name": "Something",
+                  "statusId": 4,
+                  "statusText": "Cancelled",
+                  "agreementId": "1d1e10effbac90db94e062ac00718e02",
+                  "dialogMessage": "This request has been cancelled.",
+                  "deliveryCoordinates": {
+                    "latitude": 39.7481,
+                    "longitude": -104.98742
+                  },
+                  "deliveryAddress": "1999 N Broadway Denver CO"
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      this.hasNeeds = result.data.dashboard.requested.length;
+      this.hasShares = result.data.dashboard.shared.length
+
+      if (this.hasNeeds) {
+        result.data.dashboard.requested.map(need => need.statusTypeId = 1);
+        result.data.dashboard.shared.map(share => share.statusTypeId = 2);
+      }
+
+      this.agreementNeeds.next(this.setlabelstyles(result.data.dashboard.requested));
+      this.agreementShares.next(this.setlabelstyles(result.data.dashboard.shared));
+    });
+  }
+
+  getDashboard(): Observable<Result> {
     const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm'})
+      headers: new HttpHeaders({ 'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm' })
     };
     const query = {
-      'query':'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
-      'variables':{       
+      'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
+      'variables': {
         "userId": "22201103-DEC0-466F-B44F-1926BC1687C1"
-        }      
+      }
     };
     return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
   }
 
-  setlabelstyles(){
+  postOrderCancelResponse(answer: OrderCancelModel): Observable<any> {
+
+    console.log(answer);
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'x-api-key': '${environment.apiKey}' })
+    };
+
+    const input = {
+      'operationName': 'PromptAnswerMutations',
+      'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }\', \'variables\': { \'input\': answer } }'
+    };
+
+    return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
+  }
+
+  setlabelstyles(list) {
     console.log('setlabelstyles')
-    for(let x = 0; x < this.requests.length; x++){
-      if(this.requests[x].statusTypeId == 1){
-        this.hasNeeds = true;
-      }
 
-      if(this.requests[x].statusTypeId == 2){
-        this.hasShares = true;
-      }
+    this.messageCount += (list.filter(a => a.statusId === 2)).length;
 
-      switch(this.requests[x].statusId){
-        case -1://Error
-        {
-          this.requests[x].styleclass = 'contentstatusred';
-          break;
-        }
-        case 0://Proposed
-        {
-          this.requests[x].styleclass = 'contentstatusyellow';
-          break;
-        }
-        case 1://New Match
-        {
-          this.requests[x].styleclass = 'contentstatusgreen';
-          break;
-        }
-        case 2://Pending Delivery
-        {
-          this.requests[x].styleclass = 'contentstatusyellow';
-          break;
-        }
-        case 3://Fulfilled
-        {
-          this.requests[x].styleclass = 'contentstatusgreen';
-          break;
-        }
-        case 4://Cancelled
-        {
-          this.requests[x].styleclass = 'contentstatusred';
-          break;
-        }        
-        default://there is no default, so error
-          this.requests[x].styleclass = 'contentstatusred';
-          break;
-      }
-    } 
+    return list.map(a => {
+      a.styleclass = this.getStyle(a.statusId);
+      return a;
+    });
+  }
 
-    this.messageCount = 0;
-    for(let x = 0; x < this.requests.length; x++){
-      if(this.requests[x].statusId == 2){
-        this.messageCount++;
-      }
+  getStyle(statusId): string {
+    switch (statusId) {
+      case -1://Error
+        {
+          return 'contentstatusred';
+        }
+      case 0://Proposed
+        {
+          return 'contentstatusyellow';
+        }
+      case 1://New Match
+        {
+          return 'contentstatusgreen';
+        }
+      case 2://Pending Delivery
+        {
+          return 'contentstatusyellow';
+        }
+      case 3://Fulfilled
+        {
+          return 'contentstatusgreen';
+        }
+      case 4://Cancelled
+        {
+          return 'contentstatusred';
+        }
+      default://there is no default, so error
+        return 'contentstatusred';
     }
   }
 }

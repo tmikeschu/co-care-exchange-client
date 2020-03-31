@@ -1,35 +1,35 @@
 <app-site-header></app-site-header>
 
 <div class="dasboardcontent">
-    <div  *ngIf="dashboardservice.hasNeeds">
+    <div *ngIf="dashboardService.hasNeeds">
         <mat-card-content>
             <h2>Needs</h2>
-            <div *ngFor="let request of dashboardservice.agreements | async">
-                <mat-list-item *ngIf="request.statusTypeId == 1" (click)="handleStatusClick(request)" class="contentborder dashboardlist"> 
-                    <div class="dashboardlistitem">                                          
+            <div *ngFor="let request of dashboardService.agreementNeeds | async">
+                <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
+                    <div class="dashboardlistitem">
                         <mat-label class="contentlabel">{{request.name}}</mat-label>
-                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.status}}</mat-label>     
-                    </div>              
+                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                        </mat-label>
+                    </div>
                 </mat-list-item>
             </div>
         </mat-card-content>
     </div>
 
-    <div *ngIf="dashboardservice.hasShares">
+    <div *ngIf="dashboardService.hasShares">
         <mat-card-content>
             <h2>Can Give</h2>
-            <div *ngFor="let request of dashboardservice.agreements | async">
-                <mat-list-item *ngIf="request.statusTypeId == 2" (click)="handleStatusClick(request)" class="contentborder dashboardlist"> 
-                    <div class="dashboardlistitem">                        
+            <div *ngFor="let request of dashboardService.agreementShares | async">
+                <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
+                    <div class="dashboardlistitem">
                         <mat-label class="contentlabel">{{request.name}}</mat-label>
-                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.status}}</mat-label>     
-                    </div>              
+                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                        </mat-label>
+                    </div>
                 </mat-list-item>
             </div>
         </mat-card-content>
-    </div>       
-    
-    <button (click)="test()">test</button>
+    </div>
 </div>
 
-<app-site-footer></app-site-footer>  
+<app-site-footer></app-site-footer>

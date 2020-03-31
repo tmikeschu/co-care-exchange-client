@@ -14,39 +14,17 @@ export class SiteFooterComponent implements OnInit {
   agreements: any;
   dashboardService: DashboardService;
 
-  constructor(dashboardservice: DashboardService) {
-     this.dashboardService = dashboardservice;
-     this.messageCount = this.dashboardService.messageCount;
-    // this.subscription = dashboardservice.getRequests().subscribe(response => {
-    //   console.log('SiteFooterComponent', response)
-    //   if (response) {
-    //     this.agreements = response;
-    //     for(let x = 0; x < this.agreements.length; x++){
-    //       if(this.agreements[x].statusId == 2){
-    //         this.messageCount++;
-    //       }
-    //     }
-        
-    //   }
-    // });
-   }
-
-  ngOnInit() {
-    
+  constructor(dashboardService: DashboardService) {
+    this.dashboardService = dashboardService;
+    this.messageCount = this.dashboardService.messageCount;
   }
 
-  // updateCount(){
-  //   console.log('updateCount - this.agreements', this.agreements);
-  //   for(let x = 0; x < this.agreements.length; x++){
-  //     if(this.agreements[x].statusId == 2){
-  //       this.messageCount++;
-  //     }
-  //   }
-  // }
+  ngOnInit() {
+
+  }
 
   ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    //this.subscription.unsubscribe();
+
   }
 
 }
