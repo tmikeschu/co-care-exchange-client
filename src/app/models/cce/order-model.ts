@@ -1,6 +1,6 @@
 export interface OrderCancelModel {
     orderId: string;
     cancellingUserId: string;
-    cancellationReason: string;
+    reason: string;
     clientMutationId: string;
 }
