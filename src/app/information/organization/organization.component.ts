@@ -16,7 +16,7 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
   @Input() lastName;
   @Input() organizationName;
   @Input() organizationId;
-  @Output() submit = new EventEmitter<InitialCreateInformation>();
+  @Output() infoSubmit = new EventEmitter<InitialCreateInformation>();
   organizationForm: FormGroup;
   errorMessage: string;
   error = false;
@@ -94,7 +94,7 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
 
     console.log(profile);
     const payload: InitialCreateInformation = { userInput: profile };
-    this.submit.emit(payload);
+    this.infoSubmit.emit(payload);
 
     // this.router.navigate(['/prompt']);
 

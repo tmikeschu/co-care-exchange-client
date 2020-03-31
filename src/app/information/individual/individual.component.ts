@@ -15,7 +15,7 @@ export class IndividualComponent implements OnInit, AfterViewInit {
   @Input() firstName;
   @Input() lastName;
   @Input() email;
-  @Output() submit = new EventEmitter<InitialCreateInformation>();
+  @Output() infoSubmit = new EventEmitter<InitialCreateInformation>();
 
   individualRegisterForm: FormGroup;
   errorMessage: string;
@@ -99,7 +99,7 @@ export class IndividualComponent implements OnInit, AfterViewInit {
     console.log(profile);
 
     const payload: InitialCreateInformation = { userInput: profile };
-    this.submit.emit(payload);
+    this.infoSubmit.emit(payload);
 
     // const result = await this.authenticationService.register(registrationModel);
     // if (result.errorMsg) {
