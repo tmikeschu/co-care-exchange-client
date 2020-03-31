@@ -1,75 +1,96 @@
+<div class="hero">
+  <div class="content text-center">
+    <a routerLink="/">
+      <img #image src="../../../assets/cce-logo.png" />
+    </a>
+    <h3 class="text-center">
+      Hello!<br>
+      We've all been there.<br>
+      Your community is here to help.
+    </h3>
+    <div class="cta w-100" fxLayout="row" fxLayoutAlign="center center">
+      <a routerLink="/">
+        Login
+      </a>
+      <a routerLink="/register">
+        Sign Up
+      </a>
+    </div>
+  </div>
+</div>
 
-    <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<section class="section">
+  <div class="page-content">
+    <mat-card class="mat-elevation-z10">
 
-      <mat-card  class="box">
-        <mat-card-header>
-          <div fxLayout="column">
-            <a routerLink="/">
-              <img style="width: 50%; margin: auto;" #image
-                 src="../../../assets/cce-logo.png"/>
-            </a>
-            <mat-card-title>Register</mat-card-title>
+      <form [formGroup]="registerForm" class="login-form">
+        <mat-card-content>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="First Name" formControlName="firstName" type="text">
+            <mat-error *ngIf="registerForm.get('firstName').hasError('required')">
+              First name is a required field
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Last Name" formControlName="lastName" type="text">
+            <mat-error *ngIf="registerForm.get('lastName').hasError('required')">
+              Last name is a required field
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Email" formControlName="email" type="text">
+            <mat-error *ngIf="registerForm.get('email').hasError('required')">
+              Email is a required field
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('email').hasError('email')">
+              The email address entered is not valid.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Password" formControlName="password" type="password">
+            <mat-error *ngIf="registerForm.get('password').hasError('required')">
+              Password is a required field
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('password').hasError('minlength')">
+              The password must be at least 6 characters long
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">
+              The password must not be longer than 30 characters
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+
+        <mat-error class="error-message" *ngIf="error===true">
+          <div *ngIf="errorMessage">
+            {{errorMessage}}
           </div>
+          <div *ngIf="!errorMessage">
+            Invalid username or password
+          </div>
+        </mat-error>
 
-        </mat-card-header>
+        <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
 
-        <form [formGroup]="registerForm" class="login-form">
-          <mat-card-content>
+      </form>
+    </mat-card>
 
-            <mat-form-field class="login-full-width">
-              <input matInput placeholder="First Name" formControlName="firstName" type="text">
-              <mat-error *ngIf="registerForm.get('firstName').hasError('required')">
-                First name is a required field
-              </mat-error>
-            </mat-form-field>
+    <p class=" vertical-rhythm-two text-primary text-center">
+      Simplifying things that matter for <br>people who care.
+    </p>
 
-            <mat-form-field class="login-full-width">
-              <input matInput placeholder="Last Name" formControlName="lastName" type="text">
-              <mat-error *ngIf="registerForm.get('lastName').hasError('required')">
-                Last name is a required field
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="login-full-width">
-              <input matInput placeholder="Email" formControlName="email" type="text">
-              <mat-error *ngIf="registerForm.get('email').hasError('required')">
-                Email is a required field
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('email').hasError('email')">
-                The email address entered is not valid.
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="login-full-width">
-              <input matInput placeholder="Password" formControlName="password" type="password">
-              <mat-error *ngIf="registerForm.get('password').hasError('required')">
-                Password is a required field
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('password').hasError('minlength')">
-                The password must be at least 6 characters long
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">
-                The password must not be longer than 30 characters
-              </mat-error>
-            </mat-form-field>
-          </mat-card-content>
-
-          <mat-error class="error-message" *ngIf="error===true">
-            <div *ngIf="errorMessage">
-              {{errorMessage}}
-            </div>
-            <div *ngIf="!errorMessage">
-              Invalid username or password
-            </div>
-          </mat-error>
-
-          <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
-          <button mat-flat-button color="primary" (click)="onRegisterSubmit()" class="btn-block" [disabled]="!registerForm.valid">
-            Register
-          </button>
-
-        </form>
-      </mat-card>
+    <div class="vertical-rhythm-two" fxLayout="row" fxLayoutAlign="center center">
+      <button [disabled]="!registerForm.valid" mat-fab color="primary" (click)="onRegisterSubmit()">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
     </div>
 
+    <div class="vertical-rhythm-two text-center">
+      <a class="links pantry-link" (click)="handlePantry()">Food Pantries Near Me</a>
+    </div>
 
+  </div>
+</section>

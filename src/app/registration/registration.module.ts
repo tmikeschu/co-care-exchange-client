@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
 import { CustomMaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [RegisterComponent],
@@ -10,7 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     CustomMaterialModule,
     ReactiveFormsModule,
+    SharedModule,
     FormsModule,
+    FlexLayoutModule
   ],
 })
 export class RegistrationModule {}
