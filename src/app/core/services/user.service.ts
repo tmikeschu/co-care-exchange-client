@@ -87,7 +87,7 @@ export class UserService {
         map((response: any) => {
           console.log('DEBUG CREATE USER DATA ', response);
           const data = response.data;
-          return data.users && data.users.length ? data.users[0] : null;
+          return data.createUser && data.createUser.user ? data.createUser.user : null;
         })
       );
   }

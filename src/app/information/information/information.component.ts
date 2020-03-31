@@ -57,6 +57,7 @@ export class InformationComponent implements OnInit {
     this.isRegistering = true;
     // WIP --save profile
     const profile = payload.userInput;
+    console.log('DEBUG profile to save ', profile);
     this.userService.saveUser(profile).subscribe(
       (x) => {
         console.log('save user success ', x);
