@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { PasswordForgotComponent } from './components/password-forgot/password-forgot.component';
 import { LoginShellComponent } from './components/login-shell/login-shell.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
@@ -35,6 +36,7 @@ import {CustomMaterialModule} from '../material/material.module';
     CustomMaterialModule,
     ReactiveFormsModule,
     FormsModule,
+    FlexLayoutModule
   ],
 })
 export class AuthModule {}
