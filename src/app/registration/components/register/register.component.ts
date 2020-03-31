@@ -28,6 +28,10 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  handlePantry() {
+    this.router.navigate(['/pantry']);
+  }
+
   async onRegisterSubmit() {
     this.registerForm.disable();
     this.isRegistering = true;
