@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
@@ -13,6 +13,7 @@ import {first} from 'rxjs/operators';
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
+  encapsulation: ViewEncapsulation.None // override mat tab classes in component stylesheet
 })
 export class SignInComponent implements OnInit {
   INDIVIDUAL = { name: 'Individual', id: null };

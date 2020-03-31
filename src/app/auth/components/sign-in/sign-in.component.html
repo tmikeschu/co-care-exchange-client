@@ -1,69 +1,76 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-
-  <div class="vertical-rhythm" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout="column">
-      <h3 class="text-primary center">
-        Welcome back.<br>
-        Let's do some good today!
-      </h3>
+<div class="hero">
+  <div class="content text-center">
+    <a routerLink="/">
+      <img #image src="../../../assets/cce-logo.png" />
+    </a>
+    <h3 class="text-center">
+      Welcome back.<br>
+      Let's do some good today!
+    </h3>
+    <div class="cta w-100" fxLayout="row" fxLayoutAlign="center center">
+      <a routerLink="/">
+        Login
+      </a>
+      <a routerLink="/register">
+        Sign Up
+      </a>
     </div>
   </div>
-
-  <mat-card class="box">
-    <mat-card-header>
-      <div fxLayout="column">
-        <a routerLink="/">
-          <img style="width: 50%; margin: auto" #image src="../../../assets/cce-logo.png" />
-        </a>
-        <mat-card-title>Log in</mat-card-title>
-      </div>
-
-    </mat-card-header>
-
-    <form [formGroup]="loginForm" class="login-form">
-      <mat-form-field class="full-width">
-        <mat-select placeholder="Organization" formControlName="organization">
-          <mat-option>--</mat-option>
-          <mat-option *ngFor="let organization of organizations" [value]="organization">
-            {{organization.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-card-content>
-        <mat-form-field class="login-full-width">
-          <input matInput placeholder="Username" formControlName="username" type="text">
-        </mat-form-field>
-
-        <mat-form-field class="login-full-width">
-          <input matInput placeholder="Password" formControlName="password" type="password">
-        </mat-form-field>
-      </mat-card-content>
-
-      <mat-error class="error-message" *ngIf="error===true">
-        <div *ngIf="errorMessage">
-          {{errorMessage}}
-        </div>
-        <div *ngIf="!errorMessage">
-          Invalid username or password
-        </div>
-      </mat-error>
-
-      <mat-progress-bar *ngIf="signingIn" mode="indeterminate" color="accent"></mat-progress-bar>
-
-      <button mat-flat-button color="primary" class="btn-block" (click)="onLoginSubmit()">
-        Log in
-      </button>
-
-      <div style="width: 100%; display: flex; flex-wrap: wrap; box-sizing: border-box;">
-        <a class="links" (click)="handleForgotPW()">Forgot password</a>
-        <a class="links" (click)="handleRegistration()">No account? Sign Up</a>
-      </div>
-
-      <div style="margin-top: 40px; width: 100%; display: flex; flex-wrap: wrap; box-sizing: border-box;">
-        <a class="links pantry-link center" (click)="handlePantry()">Food Pantries Near Me</a>
-      </div>
-
-
-    </form>
-  </mat-card>
 </div>
+
+<section class="section">
+  <div class="page-content">
+    <mat-card class="mat-elevation-z10">
+      <form [formGroup]="loginForm" class="login-form">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Organization" formControlName="organization">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let organization of organizations" [value]="organization">
+              {{organization.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-card-content>
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Username" formControlName="username" type="text">
+          </mat-form-field>
+
+          <mat-form-field class="login-full-width">
+            <input matInput placeholder="Password" formControlName="password" type="password">
+          </mat-form-field>
+        </mat-card-content>
+
+        <mat-error class="error-message" *ngIf="error===true">
+          <div *ngIf="errorMessage">
+            {{errorMessage}}
+          </div>
+          <div *ngIf="!errorMessage">
+            Invalid username or password
+          </div>
+        </mat-error>
+
+        <mat-progress-bar *ngIf="signingIn" mode="indeterminate" color="accent"></mat-progress-bar>
+
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <a class="links" (click)="handleForgotPW()">Forgot your password?</a>
+        </div>
+      </form>
+    </mat-card>
+
+    <p class=" vertical-rhythm-two text-primary text-center">
+      Simplifying things that matter for <br>people who care.
+    </p>
+
+    <div class="vertical-rhythm-two" fxLayout="row" fxLayoutAlign="center center">
+      <button mat-fab color="primary" (click)="onLoginSubmit()">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <div class="vertical-rhythm-two text-center">
+      <a class="links pantry-link" (click)="handlePantry()">Food Pantries Near Me</a>
+    </div>
+
+  </div>
+
+</section>

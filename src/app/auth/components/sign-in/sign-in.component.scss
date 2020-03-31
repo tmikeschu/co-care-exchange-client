@@ -1,43 +1,28 @@
-.login-wrapper {
-  height: 100%;
-  width:300px; 
-  margin:0 auto;
+@import '../../../../styles/theme.scss';
+
+img {
+  width: 25%;
 }
 
-.box {
-  position: relative;
-  top: 0;
-  opacity: 1;
-  float: left;
-  border-radius: 10px;
-  transform: scale(1);
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  z-index: 5;
-  max-width: 330px;
+h3 {
+  color: #fafafa;
 }
 
-.box.back {
-  transform: scale(.95);
-  -webkit-transform: scale(.95);
-  -ms-transform: scale(.95);
-  top: -20px;
-  opacity: .8;
-  z-index: -1;
+mat-icon {
+  color: #fafafa;
 }
 
-.box:before {
-  content: "";
+.mat-form-field {
   width: 100%;
-  height: 30px;
-  border-radius: 10px;
-  position: absolute;
-  top: -10px;
-  left: 0;
-  transform: scale(.95);
-  -webkit-transform: scale(.95);
-  -ms-transform: scale(.95);
-  z-index: -1;
+}
+.page-content {
+  position: relative;
+  bottom: 6.5rem;
+}
+
+.mat-card-header {
+  justify-content: center;
+  align-items: center;
 }
 
 .login-wrapper .login-form {
@@ -80,18 +65,9 @@ mat-error {
   cursor: pointer;
   padding-top: 6px;
   font-size: x-small;
-  flex-grow: 1;
-  max-width: 100%;
-  flex-basis: 0
 }
 
 .pantry-link {
-  color: orange;
+  color: mat-color(map-get($colorado-care-exchange-theme, accent));
   font-size: larger;
 }
-
-.center {
-  text-align: center;
-}
-
-
