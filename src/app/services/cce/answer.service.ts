@@ -18,7 +18,7 @@ export class AnswerService {
     console.log(answer);
 
     const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm' })
+      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
     };
 
     const input = {
@@ -28,7 +28,6 @@ export class AnswerService {
         'input': answer
       }
     };
-
 
     return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
   }
