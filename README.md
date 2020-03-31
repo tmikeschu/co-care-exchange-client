@@ -1,6 +1,6 @@
 # Colorado Care Exchange
 
-![CO CareExchange](/Colorado Care Exchange Logo.png)  
+![CO CareExchange](https://github.com/HDSLabs/co-care-exchange-client/blob/master/Colorado%20Care%20Exchange%20Logo.png)  
 
 # Connecting Care with Need
 
