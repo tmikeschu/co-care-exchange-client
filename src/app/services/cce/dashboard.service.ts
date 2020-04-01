@@ -178,25 +178,18 @@ export class DashboardService {
   }
 
   getDashboard(): Observable<Result> {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
-    };
     const query = {
       'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
       'variables': {
         "userId": "22201103-DEC0-466F-B44F-1926BC1687C1"
       }
     };
-    return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
   postOrderCancelResponse(answer: OrderCancelModel): Observable<any> {
 
     console.log(answer);
-
-    const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
-    };
 
     const input = {
       'operationName': 'OrderMutations',
@@ -206,7 +199,7 @@ export class DashboardService {
       }
     };
 
-    return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}`, input);
   }
 
   setlabelstyles(list) {

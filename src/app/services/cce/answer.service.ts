@@ -16,11 +16,6 @@ export class AnswerService {
   postAnswer(answer: AnswerModel): Observable<any> {
 
     console.log(answer);
-
-    const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
-    };
-
     const input = {
       'operationName': 'PromptAnswerMutations',
       'query': 'mutation PromptAnswerMutations($input: CreateAnswerInput!) {createAnswer(input: $input) {answer {\n id\n promptId\n }\n clientMutationId\n}\n}\n',
@@ -29,6 +24,6 @@ export class AnswerService {
       }
     };
 
-    return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}`, input);
   }
 }
