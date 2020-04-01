@@ -11,7 +11,7 @@ export class PromptService {
 
   getPrompts(userType:string): any {
     const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm'})
+      headers: new HttpHeaders({'x-api-key': `${environment.apiKey}`})
     };
 
     const query = {
@@ -24,7 +24,7 @@ export class PromptService {
   savePrompts(prompt:Prompt): any {
 
     const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm'})
+      headers: new HttpHeaders({'x-api-key': `${environment.apiKey}`})
     };
 
     const query = {

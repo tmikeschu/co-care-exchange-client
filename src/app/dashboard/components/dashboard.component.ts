@@ -48,9 +48,9 @@ export class DashboardComponent implements OnInit {
         //TODO: this will need to call serivce and update the item...
 
         const cancelOrder: OrderCancelModel = {
-          orderId: 'xxxxxxxxx',
+          orderId: agreement.agreementId,
           cancellingUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
-          cancellationReason: 'No longer needed',
+          reason: 'No longer needed',
           clientMutationId: '123456'
         };
 

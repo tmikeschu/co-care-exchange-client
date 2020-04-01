@@ -179,7 +179,7 @@ export class DashboardService {
 
   getDashboard(): Observable<Result> {
     const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': 'S9QuqK35427hOdIrD41fp8ThyA9zMxWa4I7sC2bm' })
+      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
     };
     const query = {
       'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
@@ -195,12 +195,15 @@ export class DashboardService {
     console.log(answer);
 
     const httpOptions = {
-      headers: new HttpHeaders({ 'x-api-key': '${environment.apiKey}' })
+      headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
     };
 
     const input = {
-      'operationName': 'PromptAnswerMutations',
-      'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }\', \'variables\': { \'input\': answer } }'
+      'operationName': 'OrderMutations',
+      'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }',
+      'variables' : {
+        input: answer
+      }
     };
 
     return this.http.post<any>(`${environment.serverUrl}`, input, httpOptions);
