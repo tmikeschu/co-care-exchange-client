@@ -17,8 +17,8 @@ export class PromptsOrganizationComponent implements OnInit {
   showConfirmBtn: boolean = false;
   promptMap: any = new Map();
   promptTypeIndex = 0;
-  shares: string[] = [];
-  requests: string[] = [];
+  shares: any[] = [];
+  requests: any[] = [];
   prompt: Prompt;
   promptIndex = 0;
   surveyTime = false;  
@@ -78,13 +78,13 @@ export class PromptsOrganizationComponent implements OnInit {
     for(let x = 0; x < this.prompts.length; x++){
       if(this.prompts[x].sharing > 0){        
         if(!this.shares.find(element => element == this.prompts[x].groupName)){
-          this.shares.push(this.prompts[x].groupName);
+          this.shares.push(this.prompts[x]);
         }        
       }
 
       if(this.prompts[x].requesting > 0){
         if(!this.requests.find(element => element == this.prompts[x].groupName)){
-          this.requests.push(this.prompts[x].groupName);
+          this.requests.push(this.prompts[x]);
         }        
       }
     }  
@@ -95,13 +95,14 @@ export class PromptsOrganizationComponent implements OnInit {
     else{
       this.showConfirmBtn = true;
     }
+
+    console.log('savePrompts', this.requests);
     
   }
 
   onConfirm() {    
     for(let x = 0; x < this.prompts.length; x++){
-      this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {
-        //console.log('savePrompts', val);
+      this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {        
         this.router.navigate(['/dashboard']);
       });
     }     

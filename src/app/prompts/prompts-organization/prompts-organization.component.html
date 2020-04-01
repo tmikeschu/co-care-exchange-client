@@ -61,7 +61,8 @@
             <h2>Requesting</h2>
             <mat-list>
                 <mat-list-item *ngFor="let request of requests">
-                    <mat-label>{{request}}</mat-label>
+                    <mat-label>{{request.groupName}}</mat-label>
+                    <mat-label class="resultcount">{{request.requesting}}</mat-label>
                 </mat-list-item>
             </mat-list>            
         </div>
@@ -70,7 +71,8 @@
             <h2>Sharing</h2>
             <mat-list>
                 <mat-list-item *ngFor="let share of shares">
-                    <mat-label>{{share}}</mat-label>
+                    <mat-label>{{share.groupName}}</mat-label>
+                    <mat-label class="resultcount">{{share.sharing}}</mat-label>
                 </mat-list-item>
             </mat-list>            
         </div> 
