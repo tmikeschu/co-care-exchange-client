@@ -39,7 +39,7 @@ export class PromptsOrganizationComponent implements OnInit {
         this.prompts[x].requesting = 0;
       }     
       
-    });    
+    });     
   }
 
   handleRequesting(question, direction) {
