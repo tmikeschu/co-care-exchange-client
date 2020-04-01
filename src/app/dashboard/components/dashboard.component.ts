@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, fadeInItems } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 // import { Status } from './models/dasboard';
 import { DashboardService } from 'src/app/services/cce/dashboard.service';
@@ -7,7 +7,8 @@ import { Observable, Subscription } from 'rxjs';
 import { SiteFooterComponent } from 'src/app/shared/site-footer/site-footer.component';
 import { map } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
-import { OrderCancelModel } from 'src/app/models/cce/order-model';
+import { OrderCancelModel, OrderChangeStatusModel } from 'src/app/models/cce/order-model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cce-home',
@@ -23,7 +24,11 @@ export class DashboardComponent implements OnInit {
   agreementNeeds: any[];
   agreementShares: any[];
 
-  constructor(public dialog: MatDialog, dashboardService: DashboardService, footer: SiteFooterComponent) {
+  constructor(
+    public dialog: MatDialog,
+    dashboardService: DashboardService,
+    footer: SiteFooterComponent,
+    private toastrService: ToastrService) {
     this.dashboardService = dashboardService;
     this.subscriptionNeeds = this.dashboardService.agreementNeeds.subscribe();
     this.subscriptionShares = this.dashboardService.agreementShares.subscribe();
@@ -40,24 +45,73 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(confirm => {
-      //TODO: Check to see if this is a request or a supply result...
 
       if (confirm) {
-        //TODO: this will need to call serivce and update the item...
+
+        if (agreement.statusId >= 3) return; // fulfilled or cancelled already; noop
+
+        try {
+          const orderChangeStatus: OrderChangeStatusModel = {
+            orderId: agreement.agreementId,
+            agreementUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
+            newStatusId: agreement.statusId++,
+            clientMutationId: '123456'
+          };
+
+          let status = this.dashboardService.updateOrderStatus(orderChangeStatus).subscribe((val) => {
+            console.log(val);
+            if (val && val.errors && val.errors.length) {
+              val.errors.forEach(e => {
+                console.log('ORDER UPDATE ERROR', e.message);
+                throw new Error(e.message);
+              });
+            } else {
+              this.dashboardService.init();
+            }
+          });
+
+          console.log('status', status);
+
+        } catch (error) {
+          this.toastrService.error(`Error: order status update request for ${agreement.name} failed.`, null, {
+            enableHtml: true,
+            disableTimeOut: true
+          });
+        }
+
       } else {
-        //TODO: this will need to call serivce and update the item...
 
-        const cancelOrder: OrderCancelModel = {
-          orderId: agreement.agreementId,
-          cancellingUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
-          reason: 'No longer needed',
-          clientMutationId: '123456'
-        };
+        try {
+          const orderToCancel: OrderCancelModel = {
+            orderId: agreement.agreementId,
+            cancellingUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
+            reason: 'No longer needed',
+            clientMutationId: '123456'
+          };
 
-        this.dashboardService.postOrderCancelResponse(cancelOrder).subscribe((val) => {
-          // TODO: figure out what to do here
-          console.log(val);
-        });
+          let status = this.dashboardService.cancelOrder(orderToCancel).subscribe((val) => {
+            // TODO: figure out what to do here
+            console.log(val);
+            if (val && val.errors && val.errors.length) {
+              val.errors.forEach(e => {
+                console.log('ORDER CANCEL ERROR', e.message);
+                this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
+                  enableHtml: true,
+                  disableTimeOut: true
+                });
+              });
+            } else {
+              this.dashboardService.init();
+            }
+          });
+          console.log('status', status);
+        } catch (error) {
+          this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
+            enableHtml: true,
+            disableTimeOut: true
+          });
+        }
+
       }
     });
   }
@@ -68,5 +122,3 @@ export class DashboardComponent implements OnInit {
     this.subscriptionShares.unsubscribe();
   }
 }
-
-
