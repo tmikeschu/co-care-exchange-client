@@ -2,12 +2,17 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import { Prompt } from 'src/app/models/cce/prompt';
+import { UserService } from 'src/app/core/services/user.service';
+import { User } from 'src/app/models/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromptService {
-  constructor(private http: HttpClient) {}
+  user: User;
+  constructor(private http: HttpClient, userservice: UserService) {
+    this.user = userservice.getCurrentUserProfile();
+  }
 
   getPrompts(userType:string): any {
     const httpOptions = {
@@ -41,7 +46,7 @@ export class PromptService {
       }`,
       'variables':{'input':{
         "promptId": prompt.id,
-        "userId": "22201103-DEC0-466F-B44F-1926BC1687C1",
+        "userId": this.user.id,
         "numberValue": (prompt.sharing > 0)?prompt.sharing:prompt.requesting,
         "unitOfIssue": prompt.unitsOfIssue,
         "clientMutationId": "123474"
