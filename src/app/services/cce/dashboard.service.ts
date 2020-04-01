@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
-import { OrderCancelModel } from 'src/app/models/cce/order-model';
+import { OrderCancelModel, OrderChangeStatusModel } from 'src/app/models/cce/order-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +18,13 @@ export class DashboardService {
 
   result: any;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient
+  ) {
     this.init();
   }
 
-  init() {
+  async init() {
     console.log('init', this.result);
 
     this.getDashboard().subscribe(result => {
@@ -187,15 +189,26 @@ export class DashboardService {
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  postOrderCancelResponse(answer: OrderCancelModel): Observable<any> {
+  httpOptions = {
+    headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
+  };
 
-    console.log(answer);
+  updateOrderStatus(status: OrderChangeStatusModel): Observable<any> {
+    const input = {
+    }
+    throw new Error('Order Update Failed.');
+    return this.http.post<any>(`${environment.serverUrl}`, input, this.httpOptions);
+  }
+
+  cancelOrder(orderToCancel: OrderCancelModel): Observable<any> {
+
+    console.log('orderToCancel: ', orderToCancel);
 
     const input = {
       'operationName': 'OrderMutations',
       'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }',
-      'variables' : {
-        input: answer
+      'variables': {
+        input: orderToCancel
       }
     };
 
@@ -215,19 +228,19 @@ export class DashboardService {
 
   getStyle(statusId): string {
     switch (statusId) {
-      case -1://Error
+      case -1:// Error
         {
           return 'contentstatusred';
         }
-      case 0://Proposed
+      case 0:// Pending
         {
           return 'contentstatusyellow';
         }
-      case 1://New Match
+      case 1:// Matched
         {
           return 'contentstatusgreen';
         }
-      case 2://Pending Delivery
+      case 2://Confirmed
         {
           return 'contentstatusyellow';
         }
