@@ -12,6 +12,14 @@ mat-icon {
   color: #fafafa;
 }
 
+a {
+  font-weight: lighter;
+
+  &.active {
+    font-weight: bolder;
+  }
+}
+
 .mat-form-field {
   width: 100%;
 }
