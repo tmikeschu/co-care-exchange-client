@@ -96,7 +96,7 @@ export class PromptsOrganizationComponent implements OnInit {
       this.showConfirmBtn = true;
     }
 
-    console.log('savePrompts', this.requests);
+    //console.log('savePrompts', this.requests);
     
   }
 

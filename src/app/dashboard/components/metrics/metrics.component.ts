@@ -1,6 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import * as c3 from 'c3'
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable, combineLatest } from 'rxjs';
+import * as c3 from 'c3';
+import { map, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-metrics',
@@ -8,14 +11,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./metrics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MetricsComponent implements OnInit {
-
+export class MetricsComponent implements OnInit, AfterViewInit, OnDestroy {
+  chartReceived;
+  chartShared;
+  isAlive: boolean;
+  isMobile$: Observable<boolean>;
+  isTablet$: Observable<boolean>;
+  isDesktop$: Observable<boolean>;
+  chartResizePayload$: Observable<{ width: number, height: number }>;
   constructor(
-    private router: Router
+    private router: Router,
+    private breakPointObserver: BreakpointObserver
   ) { }
 
   ngOnInit() {
+    this.isAlive = true;
     window.scrollTo(0, 0);
+    this.isMobile$ = this.breakPointObserver
+      .observe(Breakpoints.Handset)
+      .pipe(map(result => result.matches), takeWhile(() => this.isAlive));
+
+    this.isTablet$ = this.breakPointObserver
+      .observe(Breakpoints.Tablet)
+      .pipe(map(result => result.matches), takeWhile(() => this.isAlive));
+
+    this.isDesktop$ = this.breakPointObserver
+      .observe([Breakpoints.Medium, Breakpoints.Large, Breakpoints.Web])
+      .pipe(map(result => result.matches), takeWhile(() => this.isAlive));
   }
 
   close() {
@@ -23,14 +45,37 @@ export class MetricsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    var chartReceived;
-    var receivedData = ['data1', 3, 20, 10, 40, 15, 25];
-    chartReceived = this.generateChart('chartReceived', receivedData);
+    const receivedData = ['data1', 3, 20, 10, 40, 15, 25];
+    this.chartReceived = this.generateChart('chartReceived', receivedData);
 
-    var chartShared;
-    var sharedData = ['data1', 10, 4.5, 0, 6, 8.5, 5.5];
-    chartShared = this.generateChart('chartShared', sharedData);
+    const sharedData = ['data1', 10, 4.5, 0, 6, 8.5, 5.5];
+    this.chartShared = this.generateChart('chartShared', sharedData);
 
+    this.chartResizePayload$ = combineLatest([this.isMobile$, this.isTablet$, this.isDesktop$])
+      .pipe(
+        map(([isMobile, isTablet, isDesktop]) => {
+          const adjustedDeviceWidth = window.innerWidth - 32;
+          if (isMobile) {
+            return {
+              width: adjustedDeviceWidth || 350,
+              height: adjustedDeviceWidth || 350
+            };
+          }
+          if (isTablet) { return { width: 650, height: 650 }; }
+          if (isDesktop) { return { width: 960, height: 960 }; }
+          return { width: adjustedDeviceWidth, height: adjustedDeviceWidth };
+        }),
+        takeWhile(() => this.isAlive)
+      );
+
+    this.chartResizePayload$.subscribe(payLoad => {
+      this.chartReceived.resize(payLoad);
+      this.chartShared.resize(payLoad);
+    });
+  }
+
+  ngOnDestroy() {
+    this.isAlive = false;
   }
 
   generateChart(chartId, data) {

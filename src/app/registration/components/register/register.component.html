@@ -1,7 +1,7 @@
 <div class="hero">
   <div class="content text-center">
     <a routerLink="/">
-      <img #image src="../../../assets/cce-logo.png" />
+      <img #image src="../../../assets/cce-logo.svg" />
     </a>
     <h3 class="text-center">
       Hello!<br>
@@ -9,10 +9,10 @@
       Your community is here to help.
     </h3>
     <div class="cta w-100" fxLayout="row" fxLayoutAlign="center center">
-      <a routerLink="/">
+      <a [routerLink]="['/signin']">
         Login
       </a>
-      <a routerLink="/register">
+      <a class="active" routerLink="/register">
         Sign Up
       </a>
     </div>

@@ -1,11 +1,7 @@
-.dasboardcontent{
-    width: 100%;  
-    padding-bottom: 60px;
-}
-
-h2{
-    color: #00bcd4;
-    font-size: 1em;
+.section {
+  > div {
+    padding-bottom: 75px;
+  }
 }
 
 .contentborder{
@@ -33,13 +29,14 @@ h2{
     font-weight: 500;
 }
 
-.dashboardlist{
+.dashboard-list-item {
     display: block;
     height: 48px;
     -webkit-tap-highlight-color: transparent;
     width: 100%;
     padding: 10 0 0 0;
     font-size: 16px;
+    margin-bottom: 4px;
 }
 
 .dashboardlistitem{    

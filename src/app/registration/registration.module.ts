@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
@@ -14,7 +15,8 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RouterModule
   ],
 })
 export class RegistrationModule {}

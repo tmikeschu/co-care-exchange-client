@@ -1,5 +1,9 @@
-@import "~c3/c3.min.css";
+@import '~c3/c3.min.css';
 
 .c3-axis-x .tick {
-    display: none;
- }
+  display: none;
+}
+
+.page-content {
+  margin-bottom: 75px
+}

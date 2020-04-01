@@ -15,22 +15,15 @@ export class PromptService {
   }
 
   getPrompts(userType:string): any {
-    const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': `${environment.apiKey}`})
-    };
 
     const query = {
       'query':'query GetPrompts { prompts(where: { audience_contains: "' + userType + '"}) { id, promptType, groupName, item, unitsOfIssue, sizes, display } }',
       'variables':{}};
 
-    return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
   savePrompts(prompt:Prompt): any {
-
-    const httpOptions = {
-      headers: new HttpHeaders({'x-api-key': `${environment.apiKey}`})
-    };
 
     const query = {
       'operationName': 'PromptAnswerMutations',
@@ -54,6 +47,6 @@ export class PromptService {
       }
     };
 
-    return this.http.post<any>(`${environment.serverUrl}`, query, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 }

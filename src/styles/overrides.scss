@@ -1,3 +1,16 @@
+
+@import '../styles/theme.scss';
+
+mat-icon {
+  &.cce-white {
+    color: #fafafa
+  }
+
+  &.cce-blue {
+    color: mat-color(map-get($colorado-care-exchange-theme, primary));
+  }
+}
+
 .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
-  color: white;
+  color: #fafafa;
 }

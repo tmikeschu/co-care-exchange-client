@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './components/dashboard.component';
@@ -21,6 +22,7 @@ import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
     DashboardRoutingModule,
     PromptsRoutingModule,
     SharedModule,
+    FlexLayoutModule
   ],
   entryComponents: [StatusDialogComponent],
 })
