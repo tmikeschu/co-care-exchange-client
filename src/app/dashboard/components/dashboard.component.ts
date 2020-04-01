@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { SiteFooterComponent } from 'src/app/shared/site-footer/site-footer.component';
 import { map } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
-import { OrderCancelModel, OrderChangeStatusModel } from 'src/app/models/cce/order-model';
+import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -51,10 +51,11 @@ export class DashboardComponent implements OnInit {
         if (agreement.statusId >= 3) return; // fulfilled or cancelled already; noop
 
         try {
-          const orderChangeStatus: OrderChangeStatusModel = {
-            orderId: agreement.agreementId,
-            agreementUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
-            newStatusId: agreement.statusId++,
+          const orderChangeStatus: OrderStatusChangeModel = {
+            id: agreement.agreementId,
+            requesterUserId: this.dashboardService.userProfile.id,
+            status: agreement.statusId++,
+            cancellationReason: 'unknown',
             clientMutationId: '123456'
           };
 
@@ -82,15 +83,15 @@ export class DashboardComponent implements OnInit {
       } else {
 
         try {
-          const orderToCancel: OrderCancelModel = {
-            orderId: agreement.agreementId,
-            cancellingUserId: '22201103-DEC0-466F-B44F-1926BC1687C1',
-            reason: 'No longer needed',
+          const orderToCancel: OrderStatusChangeModel = {
+            id: agreement.agreementId,
+            requesterUserId: this.dashboardService.userService.currentUserProfile.id,
+            status: 4, // cancel
+            cancellationReason: 'No longer needed',
             clientMutationId: '123456'
           };
 
           let status = this.dashboardService.cancelOrder(orderToCancel).subscribe((val) => {
-            // TODO: figure out what to do here
             console.log(val);
             if (val && val.errors && val.errors.length) {
               val.errors.forEach(e => {
