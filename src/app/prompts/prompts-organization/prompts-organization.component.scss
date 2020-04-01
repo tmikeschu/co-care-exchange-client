@@ -1,49 +1,43 @@
 @import '../../../styles/utilities.scss';
 
+:host {
+  color: #919191;
+}
+
 mat-icon.next {
-    color: white;
+    color: #fafafa;
 }
 
 mat-icon.arrows { 
     @extend .text-primary;
 }
 
-.pagecontent{
-    width: 100%;
-    text-align: center;
+.prompt {
+  margin-bottom: 4rem;
 }
 
-.contentborder{
-    border-radius: 8px;
-    border: 1px solid #ccc!important;
+.radio-group-container {
+  margin-top: 1.5rem;
 }
 
-.questionarea{
-    margin-bottom: 20px;
+.btn {
+  &.radio-group {
+    padding: 0 1rem;
+  }
 }
 
-.radioGroup{
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+.counter {
+  font-size: 2rem;
 }
 
-.radioGroupBtn {
-    padding-left: 20px;
-}
+// .btnBack{
+//     position:relative;
+//     bottom:5px;
+//     color:#ffffff;
+// }
 
-.confirmbtn{
-    margin-left: 50px;
-}
-
-.btnBack{
-    position:relative;
-    bottom:5px;
-    color:#ffffff;
-}
-
-.btnNext{
-    position:relative;
-    bottom:12px;
-    color:#ffffff;
-}
+// .btnNext{
+//     position:relative;
+//     bottom:12px;
+//     color:#ffffff;
+// }
