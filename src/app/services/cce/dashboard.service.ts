@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
-import { OrderCancelModel, OrderChangeStatusModel } from 'src/app/models/cce/order-model';
+import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
+import { UserService } from '../../core/services/user.service'
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,19 @@ export class DashboardService {
   hasShares: boolean = false;
 
   result: any;
+  userProfile;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    public userService: UserService
   ) {
     this.init();
   }
 
   async init() {
     console.log('init', this.result);
+
+    this.userProfile = this.userService.currentUserProfile;
 
     this.getDashboard().subscribe(result => {
       console.log('dashboard results:', result);
@@ -183,7 +188,7 @@ export class DashboardService {
     const query = {
       'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
       'variables': {
-        "userId": "22201103-DEC0-466F-B44F-1926BC1687C1"
+        "userId": this.userProfile && this.userProfile.id ? this.userProfile.id : '22201103dec0466fb44f1926bc1687c1'
       }
     };
     return this.http.post<any>(`${environment.serverUrl}`, query);
@@ -193,20 +198,26 @@ export class DashboardService {
     headers: new HttpHeaders({ 'x-api-key': `${environment.apiKey}` })
   };
 
-  updateOrderStatus(status: OrderChangeStatusModel): Observable<any> {
+  updateOrderStatus(status: OrderStatusChangeModel): Observable<any> {
     const input = {
     }
     throw new Error('Order Update Failed.');
     return this.http.post<any>(`${environment.serverUrl}`, input, this.httpOptions);
   }
 
-  cancelOrder(orderToCancel: OrderCancelModel): Observable<any> {
+  cancelOrder(orderToCancel: OrderStatusChangeModel): Observable<any> {
 
     console.log('orderToCancel: ', orderToCancel);
 
+    // const input = {
+    //   'operationName': 'OrderMutations',
+    //   'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }',
+    //   'variables': {
+    //     input: orderToCancel
+    //   }
     const input = {
       'operationName': 'OrderMutations',
-      'query': 'mutation OrderMutations($input: CancelOrderInput!) { cancelOrder(input: $input) { order { id, cancelledBy, cancellationReason } } }',
+      'query': 'mutation OrderMutations($input: OrderStatusChangeInput!) { changeStatus(input: $input) { order { id, status, cancellationReason, requesterUserId } } }',
       'variables': {
         input: orderToCancel
       }
