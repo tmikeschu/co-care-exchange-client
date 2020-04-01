@@ -1,35 +1,37 @@
 <app-site-header></app-site-header>
 
-<div class="dasboardcontent">
-    <div *ngIf="dashboardService.hasNeeds">
-        <mat-card-content>
-            <h2>Needs</h2>
-            <div *ngFor="let request of dashboardService.agreementNeeds | async">
-                <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
-                    <div class="dashboardlistitem">
-                        <mat-label class="contentlabel">{{request.name}}</mat-label>
-                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
-                        </mat-label>
-                    </div>
-                </mat-list-item>
-            </div>
-        </mat-card-content>
+<section class="section">
+    <div>
+        <div *ngIf="dashboardService.hasNeeds">
+            <mat-card-content>
+                <h2>Needs</h2>
+                <div *ngFor="let request of dashboardService.agreementNeeds | async">
+                    <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+                        <div class="dashboardlistitem">
+                            <mat-label class="contentlabel">{{request.name}}</mat-label>
+                            <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                            </mat-label>
+                        </div>
+                    </mat-list-item>
+                </div>
+            </mat-card-content>
+        </div>
+    
+        <div *ngIf="dashboardService.hasShares">
+            <mat-card-content>
+                <h2>Can Give</h2>
+                <div *ngFor="let request of dashboardService.agreementShares | async">
+                    <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+                        <div class="dashboardlistitem">
+                            <mat-label class="contentlabel">{{request.name}}</mat-label>
+                            <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                            </mat-label>
+                        </div>
+                    </mat-list-item>
+                </div>
+            </mat-card-content>
+        </div>
     </div>
-
-    <div *ngIf="dashboardService.hasShares">
-        <mat-card-content>
-            <h2>Can Give</h2>
-            <div *ngFor="let request of dashboardService.agreementShares | async">
-                <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboardlist">
-                    <div class="dashboardlistitem">
-                        <mat-label class="contentlabel">{{request.name}}</mat-label>
-                        <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
-                        </mat-label>
-                    </div>
-                </mat-list-item>
-            </div>
-        </mat-card-content>
-    </div>
-</div>
+</section>
 
 <app-site-footer></app-site-footer>
