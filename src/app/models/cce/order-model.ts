@@ -4,3 +4,10 @@ export interface OrderCancelModel {
     reason: string;
     clientMutationId: string;
 }
+
+export interface OrderChangeStatusModel {
+    orderId: string;
+    agreementUserId: string;
+    newStatusId: number;
+    clientMutationId: string;
+}
