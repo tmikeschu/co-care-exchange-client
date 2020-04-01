@@ -28,6 +28,7 @@ import { RegistrationModule } from './registration/registration.module';
 import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   imports: [
@@ -53,17 +54,12 @@ import { PromptModule } from './prompts/prompt.module';
     ToastrModule.forRoot(),
     LayoutModule,
   ],
-  declarations: [
-    AppComponent,
-    ContactUsComponent,
-    PersonalDashboardComponent,
-    ResourcesComponent,
-    PopupDialogComponent
-  ],
+  declarations: [AppComponent, ContactUsComponent, PersonalDashboardComponent, ResourcesComponent, PopupDialogComponent],
   providers: [
     GreetingService,
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   exports: [],
   bootstrap: [AppComponent],
