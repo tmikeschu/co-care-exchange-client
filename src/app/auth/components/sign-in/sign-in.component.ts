@@ -85,7 +85,9 @@ export class SignInComponent implements OnInit {
       await this.navigateToNextRoute(this.loginForm.get('username').value, org);
     } catch (err) {
       console.log('SignIn error ', err);
-      alert('Error signing in, try again later');
+      this.toastrService.error('An unexpected error has occurred. please try again later');
+    } finally {
+      this.signingIn = false;
     }
     // this.authenticationService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
     //   .pipe(first())
