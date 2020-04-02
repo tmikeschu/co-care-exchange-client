@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { NavbarService } from '../../../services/navbar.service';
 import { SignInResult } from '../../../models/cce/sign-in-result.model';
 import { UserService } from '../../../core/services/user.service';
 import { OrganizationService } from '../../../core/services/organization.service';
-import { defer, Observable } from 'rxjs';
-import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-in',
@@ -30,8 +30,9 @@ export class SignInComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private orgService: OrganizationService,
-    private navbarService: NavbarService
-  ) {}
+    private navbarService: NavbarService,
+    private toastrService: ToastrService
+  ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -57,7 +58,6 @@ export class SignInComponent implements OnInit {
     this.error = false;
     this.errorMessage = undefined;
     this.signingIn = true;
-    // this.loginForm.disable();
     console.log('DEBUG signin org ', this.loginForm.get('organization').value);
     let org = this.loginForm.get('organization').value;
     // if org is the individual, then no org
@@ -75,8 +75,7 @@ export class SignInComponent implements OnInit {
       if (result.errorMsg) {
         this.error = true;
         this.errorMessage = result.errorMsg;
-        // todo: handle errors
-        alert(result.errorMsg);
+        this.toastrService.error(result.errorMsg);
         return;
       }
       // TODO is navbar service needed...dont think so
@@ -85,43 +84,28 @@ export class SignInComponent implements OnInit {
       await this.navigateToNextRoute(this.loginForm.get('username').value, org);
     } catch (err) {
       console.log('SignIn error ', err);
-      alert('Error signing in, try again later');
+      this.toastrService.error('An unexpected error has occurred. please try again later');
+    } finally {
+      this.signingIn = false;
     }
-    // this.authenticationService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
-    //   .pipe(first())
-    //   .subscribe((val) => {
-    //       this.navbarService.setLogin(true);
-    //       this.signingIn = false;
-    //     },
-    //     (error: string) => {
-    //       if (error === 'Please verify your account before logging in.  ' +
-    //         'You should have received a verification email when you registered') {
-    //         this.errorMessage = error;
-    //       }
-    //       this.error = true;
-    //       this.signingIn = false;
-    //     });
   }
 
   private async navigateToNextRoute(username: String, org?: any) {
     // TODO -- check if user profile exists
     const self = this;
     const user = await self.userService.getUser(username).pipe(first()).toPromise();
-      console.log('DEBUG user profile ', user);
-      // TODO -- also check if user is part of an org if they signed in with an org?
-      if (user && user.emailAddress) {
-        return this.router.navigate(['/', 'dashboard']);
-      } else {
-        const queryParams = { newUser: true };
-        if (org) {
-          queryParams['organizationId'] = org.id;
-          queryParams['organizationName'] = org.name;
-        }
-        return this.router.navigate(['/', 'info'], { queryParams });
+    console.log('DEBUG user profile ', user);
+    // TODO -- also check if user is part of an org if they signed in with an org?
+    if (user && user.emailAddress) {
+      return this.router.navigate(['/', 'dashboard']);
+    } else {
+      const queryParams = { newUser: true };
+      if (org) {
+        queryParams['organizationId'] = org.id;
+        queryParams['organizationName'] = org.name;
       }
-
-    //  return await this.router.navigate(['/', 'dashboard']);
-    // if so , nav to dashboard, else
+      return this.router.navigate(['/', 'info'], { queryParams });
+    }
   }
 
   handleForgotPW() {

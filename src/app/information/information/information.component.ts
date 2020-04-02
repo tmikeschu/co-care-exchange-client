@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +25,8 @@ export class InformationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private userService: UserService
+    private userService: UserService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -67,7 +70,7 @@ export class InformationComponent implements OnInit {
       (error) => {
         this.isRegistering = false;
         console.error('Save user error ', error);
-        alert('Unable to save profile ' + error);
+        this.toastrService.error('Unable to save profile. Please try again later');
       }
     );
   }

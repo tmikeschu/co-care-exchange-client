@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import { AuthenticationService } from '../../../services/cce/authentication.service';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { environment } from '../../../../environments/environment';
@@ -16,7 +18,12 @@ export class RegisterComponent implements OnInit {
   error = false;
   isRegistering = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private toastrService: ToastrService
+  ) { }
 
   ngOnInit() {
     const minPasswordLength = environment.passwordPolicy.minLength || 8;
@@ -45,14 +52,14 @@ export class RegisterComponent implements OnInit {
       };
       const result = await this.authenticationService.register(regModel);
       if (result.errorMsg) {
-        alert(result.errorMsg);
+        this.toastrService.error(result.errorMsg);
         return;
       }
-      alert('Please check your email for a verification and then complete signin');
+      this.toastrService.success('Please check your email for a verification and then complete signin');
       await this.router.navigate(['/', 'signin'], { queryParams: { email: email } });
     } catch (err) {
       console.error(err);
-      alert('Unknown error');
+      this.toastrService.error('An unexpected error has occurred. Please try again later.');
     } finally {
       this.registerForm.enable();
       this.isRegistering = false;
