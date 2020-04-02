@@ -29,7 +29,7 @@ export class PromptsOrganizationComponent implements OnInit {
   ngOnInit() {
     //TODO: get the grouptype from the logged in user type
     this.promptService.getPrompts('org').subscribe((val) => {
-      //console.log('ngOnInit', val);
+      console.log('ngOnInit', val);
       this.prompts = val.data.prompts;
 
       for(let x = 0; x < val.data.prompts.length; x++){
