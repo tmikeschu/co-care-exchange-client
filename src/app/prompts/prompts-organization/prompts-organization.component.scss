@@ -56,3 +56,21 @@
 .nav-action {
   margin: 0 1em;
 }
+ 
+.itemborder{
+  border-radius: 8px;
+  border: 1px solid #ccc!important;
+  padding: 5px;
+  width: 200px;
+  margin: auto;
+}
+
+::ng-deep .mat-select-value{  
+  color: #919191!important;  
+  font-weight: 600;
+}
+
+::ng-deep .mat-option{
+  color: #919191!important; 
+  font-weight: 600;
+}
