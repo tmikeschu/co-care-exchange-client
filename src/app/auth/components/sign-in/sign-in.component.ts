@@ -75,7 +75,7 @@ export class SignInComponent implements OnInit {
       if (result.errorMsg) {
         this.error = true;
         this.errorMessage = result.errorMsg;
-        alert(result.errorMsg);
+        this.toastrService.error(result.errorMsg);
         return;
       }
       // TODO is navbar service needed...dont think so
