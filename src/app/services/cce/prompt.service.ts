@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { Prompt } from 'src/app/models/cce/prompt';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/models/User';
@@ -14,20 +14,21 @@ export class PromptService {
     this.user = userservice.getCurrentUserProfile();
   }
 
-  getPrompts(userType:string): any {
+  getPrompts(userType: string): any {
 
     const query = {
-      'query':'query GetPrompts { prompts(where: { audience_contains: "' + userType + '"}) { id, promptType, groupName, item, unitsOfIssue, sizes, display } }',
-      'variables':{}};
+      'query': 'query GetPrompts { prompts(where: { audience_contains: "' + userType + '"}) { id, promptType, groupName, item, unitsOfIssue, sizes, display } }',
+      'variables': {}
+    };
 
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  savePrompts(prompt:Prompt): any {
+  savePrompts(prompt: Prompt): any {
 
     const query = {
       'operationName': 'PromptAnswerMutations',
-      'query':`mutation PromptAnswerMutations($input: CreateAnswerInput!) {
+      'query': `mutation PromptAnswerMutations($input: CreateAnswerInput!) {
         createAnswer(input: $input) {
           answer {
             id,
@@ -37,15 +38,18 @@ export class PromptService {
           clientMutationId
         }
       }`,
-      'variables':{'input':{
-        "promptId": prompt.id,
-        "userId": this.user.id,
-        "numberValue": (prompt.sharing > 0)?prompt.sharing:prompt.requesting,
-        "unitOfIssue": prompt.unitsOfIssue,
-        "clientMutationId": "123474"
+      'variables': {
+        'input': {
+          "promptId": prompt.id,
+          "userId": this.user.id,
+          "numberValue": (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
+          "unitOfIssue": prompt.unitsOfIssue,
+          "clientMutationId": "123474"
         }
       }
     };
+
+    console.log('query: ', query);
 
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
