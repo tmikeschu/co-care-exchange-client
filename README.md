@@ -43,7 +43,13 @@ connectivity and assistance.
 
 This project is licensed under the terms of the MIT license
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
+
+• Angular CLI: 8.3.25
+
+• Node: 10.16.3
+
+• Angular: 8.2.14
 
   
 

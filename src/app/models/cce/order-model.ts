@@ -1,6 +1,7 @@
-export interface OrderCancelModel {
+export interface OrderStatusChangeModel {
     orderId: string;
-    cancellingUserId: string;
+    userId: string;
+    newStatus: number;
     reason: string;
     clientMutationId: string;
 }

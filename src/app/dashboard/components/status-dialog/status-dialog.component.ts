@@ -25,8 +25,8 @@ export class StatusDialogComponent {
     this.showCancelButton = false;
 
     if (data.statusTypeId == 1 && data.statusId == 2) {
-      this.okButtonText = 'Yes';
-      this.showNoButton = true;
+      this.okButtonText = 'Ok';
+      this.showNoButton = false;
     } else {
       this.okButtonText = 'OK';
     }
