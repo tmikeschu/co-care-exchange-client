@@ -87,7 +87,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             userId: this.dashboardService.userProfile.id,
             newStatus: agreement.statusId++,
             reason: 'unknown',
-            clientMutationId: '123456'
+            clientMutationId: '123456',
+            requestId: agreement.requestId,
+            shareId: agreement.shareId
           };
 
           let status = this.dashboardService.updateOrderStatus(orderChangeStatus).subscribe((val) => {
@@ -121,8 +123,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             // userId: "B8350BCF-B6A3-4239-82D9-3BAA7B1C83E3",
             newStatus: 4, // cancel
             reason: 'No longer needed',
-            clientMutationId: '123456'
+            clientMutationId: '123456',
+            requestId: agreement.requestId,
+            shareId: agreement.shareId,
           };
+          // requestId
+          // shareId
+          // agreementId
 
 
           let status = this.dashboardService.updateOrderStatus(orderToCancel).subscribe((val) => {
