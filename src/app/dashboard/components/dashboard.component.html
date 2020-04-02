@@ -16,6 +16,10 @@
                 </div>
             </mat-card-content>
         </div>
+        <div *ngIf="!dashboardService.hasNeeds">
+            <h2>Needs</h2>
+            You have not specified any needs.
+        </div>
     
         <div *ngIf="dashboardService.hasShares">
             <mat-card-content>
@@ -30,6 +34,10 @@
                     </mat-list-item>
                 </div>
             </mat-card-content>
+        </div>
+        <div *ngIf="!dashboardService.hasShares">
+            <h2>Can Give</h2>
+            You have not specified any items to share.
         </div>
     </div>
 </section>
