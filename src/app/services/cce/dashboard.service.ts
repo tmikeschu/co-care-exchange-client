@@ -189,7 +189,7 @@ export class DashboardService {
 
   getDashboard(): Observable<Result> {
     const query = {
-      'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress}}}',
+      'query': 'query View ($userId:ID!){ dashboard(userId:$userId) {requested{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress, requestId, shareId}, shared{name, statusText, agreementId, dialogMessage, statusId, deliveryAddress, shareId, requestId}}}',
       'variables': {
         "userId": this.userProfile && this.userProfile.id ? this.userProfile.id : '22201103dec0466fb44f1926bc1687c1' // TODO: just in case no items return for the demo
       }

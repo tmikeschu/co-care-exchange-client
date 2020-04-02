@@ -4,4 +4,6 @@ export interface OrderStatusChangeModel {
     newStatus: number;
     reason: string;
     clientMutationId: string;
+    requestId: string;
+    shareId: string;
 }

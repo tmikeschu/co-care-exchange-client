@@ -1,5 +1,6 @@
 export class Agreement{
     agreementId: string;
+    
     discriminator: string;
     deliveryCoordinates : {
         "latitude": number,
@@ -13,5 +14,6 @@ export class Agreement{
     statusText: string;
     dialogMessage: string;
     statusTypeId: number; // 1=need;2=share
-
+    shareId: string;
+    requestId: string;
 }
