@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, fadeInItems } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 // import { Status } from './models/dasboard';
 import { DashboardService } from 'src/app/services/cce/dashboard.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { SiteFooterComponent } from 'src/app/shared/site-footer/site-footer.component';
-import { map } from 'rxjs/operators';
+import { map, switchMap, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,14 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  dashboardPoll$: Observable<any>;
+  dashboardData$: Observable<any>;
+  needs$: Observable<any>;
+  shares$: Observable<any>;
+  isAlive: boolean;
+
+
   // localrequests: Status[];
   subscriptionNeeds: Subscription;
   subscriptionShares: Subscription;
@@ -35,7 +42,26 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
+    this.isAlive = true;
+    this.dashboardPoll$ = timer(0, 5000).pipe(
+      takeWhile(() => this.isAlive),
+      switchMap(_ => this.dashboardService.getDashboard())
+    );
+    this.dashboardData$ = this.dashboardPoll$
+        .pipe(
+          map((results: any) => results.data.dashboard)
+        );
+    // this.dashboardData$ = this
+    //   .dashboardService
+    //   .getDashboard()
+    //   .pipe(
+    //     map((results: any) => results.data.dashboard)
+    //   );
+    this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
+    this.shares$ = this.dashboardData$.pipe(map(dashboard => dashboard.shared));
+    this.needs$.subscribe(d => {
+      console.log("DDDD", d);
+    })
   }
 
   // getNewStatus(agreement: Agreement, confirm: boolean) {
@@ -129,5 +155,6 @@ export class DashboardComponent implements OnInit {
     // unsubscribe to ensure no memory leaks
     this.subscriptionNeeds.unsubscribe();
     this.subscriptionShares.unsubscribe();
+    this.isAlive = false;
   }
 }
