@@ -6,6 +6,7 @@ import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { UserService } from '../../core/services/user.service'
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -23,154 +24,155 @@ export class DashboardService {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     public userService: UserService
   ) {
     this.init();
   }
 
   async init() {      
-    console.log('init', this.result);
 
-    this.userProfile = this.userService.currentUserProfile;
+    this.userProfile = this.userService.getCurrentUserProfile();
+    if (!this.userProfile) this.router.navigate([ '/signIn' ]);
 
     this.getDashboard().subscribe(result => {
       console.log('dashboard results:', result);
 
-      if (!result.data.dashboard.requested.length) {
+      // if (!result.data.dashboard.requested.length) {
 
-        // TODO: remove once graphql API returns data
-        result =
-        {
-          "data": {
-            "dashboard": {
-              "requested": [
-                {
-                  "name": "Diapers",
-                  "statusId": 0,
-                  "statusText": "Looking for Supplier",
-                  "agreementId": "41d18d0501c14cc89e190667c45f3c57",
-                  "dialogMessage": "A supplier of your request has not yet been found.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": null
-                },
-                {
-                  "name": "Tampons",
-                  "statusId": 1,
-                  "statusText": "New Match!",
-                  "agreementId": "1d9e1eeffbac40db94e062ac00718e12",
-                  "dialogMessage": "A supplier has been found. Awaiting their confirmation.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": null
-                },
-                {
-                  "name": "Adult Meal(s)",
-                  "statusId": 2,
-                  "statusText": "Delivery Pending",
-                  "agreementId": "1d1e1eeffbac40db94e062ac00718e12",
-                  "dialogMessage": "Supplier has confirmed your request and sent it out for delivery. Have you received this item?",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": null
-                },
-                {
-                  "name": "Child Meal(s)",
-                  "statusId": 3,
-                  "statusText": "Fulfilled",
-                  "agreementId": "1d1e1eeffbac40db94e062ac00718e02",
-                  "dialogMessage": "Your request has been delivered and is complete.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": null
-                },
-                {
-                  "name": "Something",
-                  "statusId": 4,
-                  "statusText": "Cancelled",
-                  "agreementId": "1d1e10effbac40db94e062ac00718e02",
-                  "dialogMessage": "Your request has been cancelled.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": null
-                }
-              ],
-              "shared": [
-                {
-                  "name": "Diapers",
-                  "statusId": 0,
-                  "statusText": "Looking for match",
-                  "agreementId": "41d18a0501c14cc89e190667c45f3c57",
-                  "dialogMessage": "No requests yet.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": "1999 N Broadway Denver CO"
-                },
-                {
-                  "name": "Tampons",
-                  "statusId": 1,
-                  "statusText": "New Match!",
-                  "agreementId": "0d9e1eeffbac40db94e062ac00718e12",
-                  "dialogMessage": "Someone is in need at the following address. Are you still able to supply and deliver them?",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": "1999 N Broadway Denver CO"
-                },
-                {
-                  "name": "Adult Meal(s)",
-                  "statusId": 2,
-                  "statusText": "Delivery Pending",
-                  "agreementId": "1b1e1eeffbac40db94e062ac00718e12",
-                  "dialogMessage": "You have sent items out for delivery to this address.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": "1999 N Broadway Denver CO"
-                },
-                {
-                  "name": "Child Meal(s)",
-                  "statusId": 3,
-                  "statusText": "Fulfilled",
-                  "agreementId": "1d6e1eeffbac40db94e062ac00718e02",
-                  "dialogMessage": "Receiver has confirmed delivery.  This order is completed.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": "1999 N Broadway Denver CO"
-                },
-                {
-                  "name": "Something",
-                  "statusId": 4,
-                  "statusText": "Cancelled",
-                  "agreementId": "1d1e10effbac90db94e062ac00718e02",
-                  "dialogMessage": "This request has been cancelled.",
-                  "deliveryCoordinates": {
-                    "latitude": 39.7481,
-                    "longitude": -104.98742
-                  },
-                  "deliveryAddress": "1999 N Broadway Denver CO"
-                }
-              ]
-            }
-          }
-        }
-      };
+      //   // TODO: remove once graphql API returns data
+      //   result =
+      //   {
+      //     "data": {
+      //       "dashboard": {
+      //         "requested": [
+      //           {
+      //             "name": "Diapers",
+      //             "statusId": 0,
+      //             "statusText": "Looking for Supplier",
+      //             "agreementId": "41d18d0501c14cc89e190667c45f3c57",
+      //             "dialogMessage": "A supplier of your request has not yet been found.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": null
+      //           },
+      //           {
+      //             "name": "Tampons",
+      //             "statusId": 1,
+      //             "statusText": "New Match!",
+      //             "agreementId": "1d9e1eeffbac40db94e062ac00718e12",
+      //             "dialogMessage": "A supplier has been found. Awaiting their confirmation.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": null
+      //           },
+      //           {
+      //             "name": "Adult Meal(s)",
+      //             "statusId": 2,
+      //             "statusText": "Delivery Pending",
+      //             "agreementId": "1d1e1eeffbac40db94e062ac00718e12",
+      //             "dialogMessage": "Supplier has confirmed your request and sent it out for delivery. Have you received this item?",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": null
+      //           },
+      //           {
+      //             "name": "Child Meal(s)",
+      //             "statusId": 3,
+      //             "statusText": "Fulfilled",
+      //             "agreementId": "1d1e1eeffbac40db94e062ac00718e02",
+      //             "dialogMessage": "Your request has been delivered and is complete.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": null
+      //           },
+      //           {
+      //             "name": "Something",
+      //             "statusId": 4,
+      //             "statusText": "Cancelled",
+      //             "agreementId": "1d1e10effbac40db94e062ac00718e02",
+      //             "dialogMessage": "Your request has been cancelled.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": null
+      //           }
+      //         ],
+      //         "shared": [
+      //           {
+      //             "name": "Diapers",
+      //             "statusId": 0,
+      //             "statusText": "Looking for match",
+      //             "agreementId": "41d18a0501c14cc89e190667c45f3c57",
+      //             "dialogMessage": "No requests yet.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": "1999 N Broadway Denver CO"
+      //           },
+      //           {
+      //             "name": "Tampons",
+      //             "statusId": 1,
+      //             "statusText": "New Match!",
+      //             "agreementId": "0d9e1eeffbac40db94e062ac00718e12",
+      //             "dialogMessage": "Someone is in need at the following address. Are you still able to supply and deliver them?",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": "1999 N Broadway Denver CO"
+      //           },
+      //           {
+      //             "name": "Adult Meal(s)",
+      //             "statusId": 2,
+      //             "statusText": "Delivery Pending",
+      //             "agreementId": "1b1e1eeffbac40db94e062ac00718e12",
+      //             "dialogMessage": "You have sent items out for delivery to this address.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": "1999 N Broadway Denver CO"
+      //           },
+      //           {
+      //             "name": "Child Meal(s)",
+      //             "statusId": 3,
+      //             "statusText": "Fulfilled",
+      //             "agreementId": "1d6e1eeffbac40db94e062ac00718e02",
+      //             "dialogMessage": "Receiver has confirmed delivery.  This order is completed.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": "1999 N Broadway Denver CO"
+      //           },
+      //           {
+      //             "name": "Something",
+      //             "statusId": 4,
+      //             "statusText": "Cancelled",
+      //             "agreementId": "1d1e10effbac90db94e062ac00718e02",
+      //             "dialogMessage": "This request has been cancelled.",
+      //             "deliveryCoordinates": {
+      //               "latitude": 39.7481,
+      //               "longitude": -104.98742
+      //             },
+      //             "deliveryAddress": "1999 N Broadway Denver CO"
+      //           }
+      //         ]
+      //       }
+      //     }
+      //   }
+      // };
 
       this.hasNeeds = result.data.dashboard.requested.length;
       this.hasShares = result.data.dashboard.shared.length
