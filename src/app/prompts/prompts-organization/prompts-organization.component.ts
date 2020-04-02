@@ -33,8 +33,16 @@ export class PromptsOrganizationComponent implements OnInit {
       this.prompts = val.data.prompts;
 
       for(let x = 0; x < val.data.prompts.length; x++){
-        this.prompts[x].unitsOfIssueChoices = val.data.prompts[x].unitsOfIssue.split(', ');
-        this.prompts[x].unitsOfIssue = this.prompts[x].unitsOfIssueChoices[0];
+        if(typeof val.data.prompts[x].unitsOfIssue !='undefined' && val.data.prompts[x].unitsOfIssue){
+          this.prompts[x].unitsOfIssueChoices = val.data.prompts[x].unitsOfIssue.split(', ');
+          this.prompts[x].unitsOfIssue = this.prompts[x].unitsOfIssueChoices[0];
+        }
+
+        if(typeof val.data.prompts[x].sizes !='undefined' && val.data.prompts[x].sizes){
+          this.prompts[x].sizeChoices = val.data.prompts[x].sizes.split(', ');
+          this.prompts[x].size = this.prompts[x].sizeChoices[0];
+        }
+
         this.prompts[x].sharing = 0;
         this.prompts[x].requesting = 0;
       }     
@@ -71,7 +79,7 @@ export class PromptsOrganizationComponent implements OnInit {
   }
 
   onSubmit(){
-    //console.log('showdata', this.prompts);
+    
     this.shares = [];
     this.requests = [];
 
@@ -96,13 +104,15 @@ export class PromptsOrganizationComponent implements OnInit {
       this.showConfirmBtn = true;
     }
 
-    //console.log('savePrompts', this.requests);
-    
+    // console.log('prompts', this.prompts);
+    // console.log('requests', this.requests);
+    // console.log('shares', this.shares);
   }
 
   onConfirm() {    
     for(let x = 0; x < this.prompts.length; x++){
-      this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {        
+      this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {   
+        // console.log('savePrompts', val);     
         this.router.navigate(['/dashboard']);
       });
     }     

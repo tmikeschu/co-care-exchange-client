@@ -24,4 +24,6 @@ export interface Prompt {
   unitsOfIssueChoices: string[];
   requesting: number;
   sharing:number;
+  sizeChoices: string[];
+  size: string;
 }
