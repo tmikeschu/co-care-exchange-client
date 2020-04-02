@@ -10,6 +10,9 @@ const UserForEmail = gql`
     users(where: { emailAddress: $emailAddress }) {
       id
       emailAddress
+      phoneNumber
+      firstName
+      lastName
     }
   }
 `;
@@ -19,6 +22,8 @@ const CreateUser = gql`
     createUser(input: $input) {
       user {
         id
+        emailAddress
+        phoneNumber
         firstName
         lastName
       }
@@ -87,7 +92,8 @@ export class UserService {
         map((response: any) => {
           console.log('DEBUG CREATE USER DATA ', response);
           const data = response.data;
-          return data.createUser && data.createUser.user ? data.createUser.user : null;
+          this.currentUserProfile = data.createUser && data.createUser.user ? data.createUser.user : null;
+          return this.currentUserProfile;
         })
       );
   }
