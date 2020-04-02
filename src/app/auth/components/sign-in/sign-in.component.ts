@@ -58,7 +58,6 @@ export class SignInComponent implements OnInit {
     this.error = false;
     this.errorMessage = undefined;
     this.signingIn = true;
-    // this.loginForm.disable();
     console.log('DEBUG signin org ', this.loginForm.get('organization').value);
     let org = this.loginForm.get('organization').value;
     // if org is the individual, then no org
@@ -89,20 +88,6 @@ export class SignInComponent implements OnInit {
     } finally {
       this.signingIn = false;
     }
-    // this.authenticationService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
-    //   .pipe(first())
-    //   .subscribe((val) => {
-    //       this.navbarService.setLogin(true);
-    //       this.signingIn = false;
-    //     },
-    //     (error: string) => {
-    //       if (error === 'Please verify your account before logging in.  ' +
-    //         'You should have received a verification email when you registered') {
-    //         this.errorMessage = error;
-    //       }
-    //       this.error = true;
-    //       this.signingIn = false;
-    //     });
   }
 
   private async navigateToNextRoute(username: String, org?: any) {
@@ -121,9 +106,6 @@ export class SignInComponent implements OnInit {
       }
       return this.router.navigate(['/', 'info'], { queryParams });
     }
-
-    //  return await this.router.navigate(['/', 'dashboard']);
-    // if so , nav to dashboard, else
   }
 
   handleForgotPW() {
