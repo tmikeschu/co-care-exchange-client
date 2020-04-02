@@ -38,6 +38,9 @@ export class DashboardComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
+  // getNewStatus(agreement: Agreement, confirm: boolean) {
+  // }
+
   handleStatusClick(agreement: Agreement) {
     const dialogRef = this.dialog.open(StatusDialogComponent, {
       width: '300px',
@@ -48,14 +51,16 @@ export class DashboardComponent implements OnInit {
 
       if (confirm) {
 
+        // if they hit OK/Yes, only update status if changing from 1=matched to 2=confirmed
+        if (agreement.statusId === 0 || agreement.statusId === 2) return; // if pending or confirmed, noop
         if (agreement.statusId >= 3) return; // fulfilled or cancelled already; noop
 
         try {
           const orderChangeStatus: OrderStatusChangeModel = {
-            id: agreement.agreementId,
-            requesterUserId: this.dashboardService.userProfile.id,
-            status: agreement.statusId++,
-            cancellationReason: 'unknown',
+            orderId: agreement.agreementId,
+            userId: this.dashboardService.userProfile.id,
+            newStatus: agreement.statusId++,
+            reason: 'unknown',
             clientMutationId: '123456'
           };
 
@@ -84,14 +89,17 @@ export class DashboardComponent implements OnInit {
 
         try {
           const orderToCancel: OrderStatusChangeModel = {
-            id: agreement.agreementId,
-            requesterUserId: this.dashboardService.userService.currentUserProfile.id,
-            status: 4, // cancel
-            cancellationReason: 'No longer needed',
+            // orderId: agreement.agreementId,
+            // userId: this.dashboardService.userService.currentUserProfile.id,
+            orderId: "E6907B91-FCE4-4FD4-99AE-401733DE3AB9",
+            userId: "B8350BCF-B6A3-4239-82D9-3BAA7B1C83E3",
+            newStatus: 4, // cancel
+            reason: 'No longer needed',
             clientMutationId: '123456'
           };
 
-          let status = this.dashboardService.cancelOrder(orderToCancel).subscribe((val) => {
+
+          let status = this.dashboardService.updateOrderStatus(orderToCancel).subscribe((val) => {
             console.log(val);
             if (val && val.errors && val.errors.length) {
               val.errors.forEach(e => {
