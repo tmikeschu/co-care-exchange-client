@@ -104,7 +104,7 @@ export class PromptsOrganizationComponent implements OnInit {
       this.showConfirmBtn = true;
     }
 
-    // console.log('prompts', this.prompts);
+    console.log('prompts', this.prompts);
     // console.log('requests', this.requests);
     // console.log('shares', this.shares);
   }
@@ -112,7 +112,7 @@ export class PromptsOrganizationComponent implements OnInit {
   onConfirm() {    
     for(let x = 0; x < this.prompts.length; x++){
       this.promptService.savePrompts(this.prompts[x]).subscribe((val) => {   
-        // console.log('savePrompts', val);     
+        console.log('savePrompts return', val);     
         this.router.navigate(['/dashboard']);
       });
     }     
