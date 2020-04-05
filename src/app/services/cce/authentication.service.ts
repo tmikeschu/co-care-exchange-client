@@ -50,7 +50,7 @@ export class AuthenticationService {
   }
 
   async signIn(username: string, password: string, organization?: any) {
-    const result = await signIn(username, password);
+    const result = await signIn(username, password, organization);
     this.user = result.user;
     // check if user is in org
     if (organization) {

@@ -1,10 +1,16 @@
 import { Auth } from 'aws-amplify';
 import { SignInResult } from '../../models/cce/sign-in-result.model';
 
-export const signIn = async (username, password) => {
+export const signIn = async (username, password, organization?) => {
   const result: SignInResult = {};
   try {
-    const user = await Auth.signIn(username, password);
+    let user = null;
+    if (organization) {
+      const clientMetadata = { organization: organization.name };
+      user = await Auth.signIn(username, password, clientMetadata);
+    } else {
+      user = await Auth.signIn(username, password);
+    }
     result.user = user;
     if (user.challengeName === 'SMS_MFA' || user.challengeName === 'SOFTWARE_TOKEN_MFA') {
       // todo: support MFA...for now, it's an error
@@ -43,7 +49,7 @@ export const signIn = async (username, password) => {
       // Auth.setupTOTP(user);
     } else {
       // The user directly signs in
-      console.log("DEBUG signin user ", user);
+      console.log('DEBUG signin user ', user);
       // let user = await Auth.currentAuthenticatedUser();
     }
     return result;
