@@ -30,7 +30,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Email" formControlName="email" type="text" readonly/>
+          <input matInput placeholder="Email" formControlName="email" type="text" readonly />
         </label>
         <mat-error *ngIf="organizationForm.get('email').hasError('required')">
           Email is a required field
@@ -75,7 +75,8 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation" type="text" />
+          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
+            type="text" />
         </label>
         <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
           Delivery or pickup location is a required field
@@ -83,13 +84,21 @@
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <label>
-          <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number" />
-        </label>
-        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
+        <mat-label>Choose an option</mat-label>
+        <mat-select [formControl]="deliveryOrPickupRadius">
+          <mat-option value="1">1 mile</mat-option>
+          <mat-option value="5">5 miles</mat-option>
+          <mat-option value="10">10 miles</mat-option>
+          <mat-option value="15">15 miles</mat-option>
+          <mat-option value="20">20 miles</mat-option>
+          <mat-option value="25">25 miles</mat-option>
+          <mat-option value="50">+50 miles</mat-option>
+        </mat-select>
+        <mat-error *ngIf="organizationForm.get('deliveryOrPickupRadius').hasError('required')">
           Delivery or pickup radius is a required field
         </mat-error>
       </mat-form-field>
+
     </div>
 
     <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>

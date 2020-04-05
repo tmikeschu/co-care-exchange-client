@@ -36,7 +36,6 @@ export class IndividualComponent implements OnInit, AfterViewInit {
       postalCode: ['', Validators.required],
       deliveryOrPickupLocation: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.required],
-      // password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
       password: [''],
     });
   }
