@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
@@ -11,7 +11,7 @@ import { InitialCreateInformation } from '../models/info-create.model';
   templateUrl: './individual.component.html',
   styleUrls: ['./individual.component.scss'],
 })
-export class IndividualComponent implements OnInit, AfterViewInit {
+export class IndividualComponent implements OnInit, AfterContentInit {
   @Input() firstName;
   @Input() lastName;
   @Input() email;
@@ -41,7 +41,17 @@ export class IndividualComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  radiusOptions = [
+    {id: 1, name: '1 Mile'},
+    {id: 5, name: '5 Miles'},
+    {id: 10, name: '10 Miles'},
+    {id: 15, name: '15 Miles'},
+    {id: 20, name: '20 Miles'},
+    {id: 25, name: '25 Miles'},
+    {id: 50, name: '50+ Miles'},
+  ];
+
+  ngAfterContentInit(): void {
     this.individualRegisterForm.get('firstName').setValue(this.firstName);
     this.individualRegisterForm.get('lastName').setValue(this.lastName);
     this.individualRegisterForm.get('email').setValue(this.email);
