@@ -47,25 +47,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       takeWhile(() => this.isAlive),
       switchMap(_ => this.dashboardService.getDashboard())
     );
-    this.dashboardData$ = this.dashboardPoll$
-        .pipe(
-          map((results: any) => results.data.dashboard)
-        );
-    // this.dashboardData$ = this
-    //   .dashboardService
-    //   .getDashboard()
-    //   .pipe(
-    //     map((results: any) => results.data.dashboard)
-    //   );
+    this.dashboardData$ = this.dashboardPoll$.pipe(map((results: any) => results.data.dashboard));
     this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
     this.shares$ = this.dashboardData$.pipe(map(dashboard => dashboard.shared));
-    this.needs$.subscribe(d => {
-      console.log("DDDD", d);
-    })
   }
-
-  // getNewStatus(agreement: Agreement, confirm: boolean) {
-  // }
 
   handleStatusClick(agreement: Agreement) {
     const dialogRef = this.dialog.open(StatusDialogComponent, {
