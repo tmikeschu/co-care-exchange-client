@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { RegistrationModel } from '../../models/cce/registrationModel';
+import { UserService } from '../../core/services/user.service'
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
 
@@ -21,8 +22,14 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   errorMessage: string;
   error = false;
   private _isRegistering = false;
+  userProfile
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private userService: UserService
+    ) {}
 
   ngOnInit() {
     this.individualRegisterForm = this.formBuilder.group({
@@ -39,6 +46,8 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       // password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
       password: [''],
     });
+
+    this.userProfile = this.userService.getCurrentUserProfile();
   }
 
   radiusOptions = [
@@ -105,6 +114,10 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       phoneNumber: this.individualRegisterForm.get('phone').value,
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
+
+    if (!this._isRegistering && this.userProfile){
+      profile.userId = this.userProfile.id
+    }
 
     console.log(profile);
 
