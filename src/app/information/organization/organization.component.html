@@ -85,7 +85,7 @@
 
       <mat-form-field class="login-full-width">
         <mat-label>Delivery or Pickup Radius</mat-label>
-        <mat-select formControl="deliveryOrPickupRadius" [(value)]="selectedRadius">
+        <mat-select formControlName="deliveryOrPickupRadius">
           <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
             {{ o.name }}
           </mat-option>

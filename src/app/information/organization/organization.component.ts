@@ -65,7 +65,7 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       deliveryOrPickupLocation: ['', Validators.required],
-      // deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
+      deliveryOrPickupRadius: [1],
     });
 
     this.selectedRadius = this.radiusOptions[0].id; 
@@ -94,11 +94,11 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
     const profile: CreateUserInput = {
       address: this.organizationForm.get('deliveryOrPickupLocation').value,
       city: this.organizationForm.get('city').value,
-      dropOffRadius: this.selectedRadius,
+      dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.organizationForm.get('email').value,
       firstName: this.organizationForm.get('firstName').value,
       lastName: this.organizationForm.get('lastName').value,
-      pickupRadius: this.selectedRadius,
+      pickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
