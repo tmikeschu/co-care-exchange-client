@@ -29,9 +29,14 @@ export class InformationComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
+  profile;
+
   ngOnInit() {
     this.registrantType = 'Individual';
     // this.orgService.getOrganizations$().subscribe((orgs) => console.log(orgs));
+    this.profile = this.userService.currentUserProfile();
+
+
     this.route.queryParams.subscribe((val) => {
       console.log('DEBUG info newuser, org ', val);
       this.newUser = val && val.newUser ? !!val.newUser : false;
