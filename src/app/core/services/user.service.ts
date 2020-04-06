@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { CreateUserInput, UpdateUserInput } from '../../graphql/models/create-user-input.model';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
@@ -20,6 +20,21 @@ const UserForEmail = gql`
 const CreateUser = gql`
   mutation UserMutation($input: CreateUserInput!) {
     createUser(input: $input) {
+      user {
+        id
+        emailAddress
+        phoneNumber
+        firstName
+        lastName
+      }
+      clientMutationId
+    }
+  }
+`;
+
+const UpdateUser = gql`
+  mutation UserMutation($input: UpdateUserInput!) {
+    updateUser(input: $input) {
       user {
         id
         emailAddress
@@ -79,7 +94,7 @@ export class UserService {
     // return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  saveUser(userProfile: CreateUserInput) {
+  createUser(userProfile: CreateUserInput) {
     console.log('DEBUG save user ', userProfile);
     return this.apollo
       .mutate({
@@ -91,6 +106,25 @@ export class UserService {
       .pipe(
         map((response: any) => {
           console.log('DEBUG CREATE USER DATA ', response);
+          const data = response.data;
+          this.currentUserProfile = data.createUser && data.createUser.user ? data.createUser.user : null;
+          return this.currentUserProfile;
+        })
+      );
+  }
+
+  updateUser(userProfile: UpdateUserInput) {
+    console.log('DEBUG update user ', userProfile);
+    return this.apollo
+      .mutate({
+        mutation: UpdateUser,
+        variables: {
+          input: userProfile,
+        },
+      })
+      .pipe(
+        map((response: any) => {
+          console.log('DEBUG UPDATE USER DATA ', response);
           const data = response.data;
           this.currentUserProfile = data.createUser && data.createUser.user ? data.createUser.user : null;
           return this.currentUserProfile;
