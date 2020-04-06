@@ -5,7 +5,7 @@
         <label>
           <input matInput placeholder="Organization Name" formControlName="orgName" type="text" readonly />
         </label>
-        <mat-error [hidden]="!organizationForm.get('orgName').hasError('required')"> <!--*ngIf="organizationForm.get('orgName') && organizationForm.get('orgName').hasError('required')"-->
+        <mat-error [hidden]="!organizationForm.get('orgName').hasError('required')">
           Organization name is a required field
         </mat-error>
       </mat-form-field>
@@ -99,7 +99,7 @@
 
     <mat-progress-bar [hidden]="!isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
     <div fxLayout="row" fxLayoutAlign="center center">
-      <button mat-fab color="primary" (click)="onRegisterSubmit()"> <!-- [disabled]="!organizationForm.valid" -->
+      <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!organizationForm.valid">
         <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
