@@ -1,4 +1,4 @@
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { CreateUserInput } from '../../graphql/models/user-input.model';
 
 export interface InitialCreateInformation {
   userInput: CreateUserInput;
