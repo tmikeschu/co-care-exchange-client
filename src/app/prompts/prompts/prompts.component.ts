@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Prompt } from 'src/app/models/cce/prompt';
 import { PromptService } from 'src/app/services/cce/prompt.service';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/core/services/user.service';
+import { User } from 'src/app/models/User';
 
 @Component({
-  selector: 'app-prompts-organization',
-  templateUrl: './prompts-organization.component.html',
-  styleUrls: ['./prompts-organization.component.scss']
+  selector: 'app-prompts',
+  templateUrl: './prompts.component.html',
+  styleUrls: ['./prompts.component.scss']
 })
-export class PromptsOrganizationComponent implements OnInit {
+export class PromptsComponent implements OnInit {
   prompts: Prompt[];
   selectedPrompts: any[] = [];
   surveyQuestions: Prompt[] = [];
@@ -19,8 +21,10 @@ export class PromptsOrganizationComponent implements OnInit {
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: any[] = [];
+  userType: string;
   requests: any[] = [];
   prompt: Prompt;
+  user: User;
   promptIndex = 0;
   surveyTime = false;  
   inNeed: boolean;
@@ -42,11 +46,18 @@ export class PromptsOrganizationComponent implements OnInit {
     }
   ];
 
-  constructor(private promptService: PromptService, private router: Router) {}
+  constructor(private promptService: PromptService, private router: Router, userservice: UserService) {
+    this.user = userservice.getCurrentUserProfile();
+  }
 
   ngOnInit() {
     //TODO: get the grouptype from the logged in user type
-    this.promptService.getPrompts('org').subscribe((val) => {
+    this.userType = 'ind';
+    // if(this.user.organizationId != null){
+    //   this.userType = 'org';
+    // }
+
+    this.promptService.getPrompts(this.userType).subscribe((val) => {
       console.log('ngOnInit', val);
       this.prompts = val.data.prompts;
       
@@ -156,18 +167,20 @@ export class PromptsOrganizationComponent implements OnInit {
     }
     
     for(let x = 0; x < this.prompts.length; x++){
+      this.prompts[x].unitsOfIssueChoices = [];
+      this.prompts[x].sizeChoices = [];
       
       for(let y = 0; y < this.selectedPrompts.length; y++){        
         
         if(this.prompts[x].promptType == this.selectedPrompts[y]['promptType'] && this.selectedPrompts[y]['showQuestions'] == 'Yes'){
           
           if(typeof this.prompts[x].unitsOfIssue !='undefined' && this.prompts[x].unitsOfIssue){
-            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(', ');
-            this.prompts[x].unitsOfIssue = this.prompts[x].unitsOfIssueChoices[0];
+            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
+            this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
           }
           
           if(typeof this.prompts[x].sizes !='undefined' && this.prompts[x].sizes){
-            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(', ');
+            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
             this.prompts[x].size = this.prompts[x].sizeChoices[0];
           }
 

@@ -27,4 +27,5 @@ export interface Prompt {
   sizeChoices: string[];
   size: string;
   sizes: string;
+  unit: string;
 }
