@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CreateUserInput, UpdateUserInput } from '../../graphql/models/create-user-input.model';
+import { CreateUserInput, UpdateUserInput } from '../../graphql/models/user-input.model';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
