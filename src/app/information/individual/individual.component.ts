@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { RegistrationModel } from '../../models/cce/registrationModel';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { CreateUserInput } from '../../graphql/models/user-input.model';
 import { InitialCreateInformation } from '../models/info-create.model';
 
 @Component({
@@ -35,10 +35,24 @@ export class IndividualComponent implements OnInit, AfterViewInit {
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       deliveryOrPickupLocation: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.required],
+      // deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
       password: [''],
     });
+
+     this.selectedRadius = this.radiusOptions[0].id; 
   }
+
+  radiusOptions = [
+    {id: 1, name: '1 Mile'},
+    {id: 5, name: '5 Miles'},
+    {id: 10, name: '10 Miles'},
+    {id: 15, name: '15 Miles'},
+    {id: 20, name: '20 Miles'},
+    {id: 25, name: '25 Miles'},
+    {id: 50, name: '50+ Miles'},
+  ];
+
+  selectedRadius = 0;
 
   ngAfterViewInit(): void {
     this.individualRegisterForm.get('firstName').setValue(this.firstName);
@@ -83,15 +97,15 @@ export class IndividualComponent implements OnInit, AfterViewInit {
     const profile: CreateUserInput = {
       address: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
       city: this.individualRegisterForm.get('city').value,
-      dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      dropOffRadius: this.selectedRadius,
       emailAddress: this.individualRegisterForm.get('email').value,
       firstName: this.individualRegisterForm.get('firstName').value,
       lastName: this.individualRegisterForm.get('lastName').value,
-      pickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      pickupRadius: this.selectedRadius,
       state: this.individualRegisterForm.get('state').value,
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
-      createdBy: this.individualRegisterForm.get('email').value,
+      // createdBy: this.individualRegisterForm.get('email').value,
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 

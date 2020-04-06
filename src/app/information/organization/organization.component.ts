@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { InitialCreateInformation } from '../models/info-create.model';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { CreateUserInput } from '../../graphql/models/user-input.model';
 
 @Component({
   selector: 'app-organization',
@@ -42,6 +42,18 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
     return this._isRegistering;
   }
 
+  radiusOptions = [
+    {id: 1, name: '1 Mile'},
+    {id: 5, name: '5 Miles'},
+    {id: 10, name: '10 Miles'},
+    {id: 15, name: '15 Miles'},
+    {id: 20, name: '20 Miles'},
+    {id: 25, name: '25 Miles'},
+    {id: 50, name: '50+ Miles'},
+  ];
+
+  selectedRadius = 0;
+
   ngOnInit() {
     this.organizationForm = this.formBuilder.group({
       orgName: ['', Validators.required],
@@ -53,8 +65,10 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       deliveryOrPickupLocation: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.required],
+      // deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
+
+    this.selectedRadius = this.radiusOptions[0].id; 
   }
 
   ngAfterViewInit(): void {
@@ -80,11 +94,11 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
     const profile: CreateUserInput = {
       address: this.organizationForm.get('deliveryOrPickupLocation').value,
       city: this.organizationForm.get('city').value,
-      dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      dropOffRadius: this.selectedRadius,
       emailAddress: this.organizationForm.get('email').value,
       firstName: this.organizationForm.get('firstName').value,
       lastName: this.organizationForm.get('lastName').value,
-      pickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      pickupRadius: this.selectedRadius,
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
