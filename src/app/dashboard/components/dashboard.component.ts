@@ -1,10 +1,8 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, fadeInItems } from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
-// import { Status } from './models/dasboard';
 import { DashboardService } from 'src/app/services/cce/dashboard.service';
 import { Observable, Subscription, timer } from 'rxjs';
-import { SiteFooterComponent } from 'src/app/shared/site-footer/site-footer.component';
 import { map, switchMap, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
@@ -22,19 +20,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   shares$: Observable<any>;
   isAlive: boolean;
 
-
-  // localrequests: Status[];
   subscriptionNeeds: Subscription;
   subscriptionShares: Subscription;
   dashboardService: DashboardService;
-  footer: SiteFooterComponent;
   agreementNeeds: any[];
   agreementShares: any[];
 
   constructor(
     public dialog: MatDialog,
     dashboardService: DashboardService,
-    footer: SiteFooterComponent,
     private toastrService: ToastrService) {
     this.dashboardService = dashboardService;
     this.subscriptionNeeds = this.dashboardService.agreementNeeds.subscribe();
