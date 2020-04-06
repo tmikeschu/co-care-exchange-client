@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
@@ -10,7 +10,7 @@ import { CreateUserInput } from '../../graphql/models/create-user-input.model';
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
 })
-export class OrganizationComponent implements OnInit, AfterViewInit {
+export class OrganizationComponent implements OnInit, AfterContentInit {
   @Input() email;
   @Input() firstName;
   @Input() lastName;
@@ -53,11 +53,21 @@ export class OrganizationComponent implements OnInit, AfterViewInit {
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       deliveryOrPickupLocation: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.required],
+      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
   }
 
-  ngAfterViewInit(): void {
+  radiusOptions = [
+    {id: 1, name: '1 Mile'},
+    {id: 5, name: '5 Miles'},
+    {id: 10, name: '10 Miles'},
+    {id: 15, name: '15 Miles'},
+    {id: 20, name: '20 Miles'},
+    {id: 25, name: '25 Miles'},
+    {id: 50, name: '50+ Miles'},
+  ];
+
+  ngAfterContentInit(): void {
     this.organizationForm.get('orgName').setValue(this.organizationName);
     this.organizationForm.get('email').setValue(this.email);
     this.organizationForm.get('firstName').setValue(this.firstName);
