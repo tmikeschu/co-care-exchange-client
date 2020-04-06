@@ -85,7 +85,8 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation" type="text" />
+          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
+            type="text" />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
           Delivery or pickup location is a required field
@@ -93,26 +94,17 @@
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <label>
-          <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number" />
-        </label>
-        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('required')">
-          Delivery or pickup radius is a required field
+        <mat-label>Delivery or Pickup Radius</mat-label>
+        <mat-select formControlName="deliveryOrPickupRadius">
+          <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
+            {{ o.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('min')">
+          Delivery or pickup radius selection is required
         </mat-error>
       </mat-form-field>
 
-      <!--              <mat-form-field class="login-full-width">-->
-      <!--                <input matInput placeholder="Password" formControlName="password" type="password">-->
-      <!--                <mat-error *ngIf="registerForm.get('password').hasError('required')">-->
-      <!--                  Password is a required field-->
-      <!--                </mat-error>-->
-      <!--                <mat-error *ngIf="registerForm.get('password').hasError('minlength')">-->
-      <!--                  The password must be at least 6 characters long-->
-      <!--                </mat-error>-->
-      <!--                <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">-->
-      <!--                  The password must not be longer than 30 characters-->
-      <!--                </mat-error>-->
-      <!--              </mat-form-field>-->
     </div>
 
     <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
