@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { RegistrationModel } from '../../models/cce/registrationModel';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
-import { InitialCreateInformation } from '../models/info-create.model';
+import { SaveUserInput } from '../../graphql/models/save-user-input.model';
+import { UserProfileInformation } from '../models/info-create.model';
 
 @Component({
   selector: 'app-individual',
@@ -15,7 +15,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   @Input() firstName;
   @Input() lastName;
   @Input() email;
-  @Output() infoSubmit = new EventEmitter<InitialCreateInformation>();
+  @Output() infoSubmit = new EventEmitter<UserProfileInformation>();
 
   individualRegisterForm: FormGroup;
   errorMessage: string;
@@ -91,24 +91,24 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     // };
 
     // TEST
-    const profile: CreateUserInput = {
+    const profile: SaveUserInput = {
       address: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
       city: this.individualRegisterForm.get('city').value,
       dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.individualRegisterForm.get('email').value,
+      currentUserEmail: this.email,
       firstName: this.individualRegisterForm.get('firstName').value,
       lastName: this.individualRegisterForm.get('lastName').value,
       pickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
       state: this.individualRegisterForm.get('state').value,
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
-      createdBy: this.individualRegisterForm.get('email').value,
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
     console.log(profile);
 
-    const payload: InitialCreateInformation = { userInput: profile };
+    const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
 
     // const result = await this.authenticationService.register(registrationModel);

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InitialCreateInformation } from '../models/info-create.model';
+import { UserProfileInformation } from '../models/info-create.model';
 
 @Component({
   selector: 'app-register',
@@ -55,7 +55,7 @@ export class InformationComponent implements OnInit {
     return this.authenticationService.getFirstName();
   }
 
-  onInfoSubmit(payload: InitialCreateInformation) {
+  onInfoSubmit(payload: UserProfileInformation) {
     console.log('DEBUG create user profile ', payload);
     this.isRegistering = true;
     // WIP --save profile
