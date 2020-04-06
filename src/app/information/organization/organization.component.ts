@@ -48,20 +48,22 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
+    this.userProfile = this.userService.getCurrentUserProfile();
+
     this.organizationForm = this.formBuilder.group({
       orgName: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      deliveryOrPickupLocation: ['', Validators.required],
-      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
+      phone: [this.userProfile ? this.userProfile.phone : '', Validators.required],
+      city: [this.userProfile ? this.userProfile.city : '', Validators.required],
+      state: [this.userProfile ? this.userProfile.state : '', Validators.required],
+      postalCode: [this.userProfile ? this.userProfile.postalCode : '', Validators.required],
+      deliveryOrPickupLocation: [this.userProfile ? this.userProfile.address : '', Validators.required],
+      deliveryOrPickupRadius: [this.userProfile ? this.userProfile.deliveryOrPickupRadius : 0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
 
-    this.userProfile = this.userService.getCurrentUserProfile();
+    console.log('DEBUG incoming form', this.organizationForm.value)
   }
 
   radiusOptions = [
