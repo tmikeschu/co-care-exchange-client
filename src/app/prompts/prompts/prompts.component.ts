@@ -71,8 +71,8 @@ export class PromptsComponent implements OnInit {
         this.prompts = prompts.data.prompts;  
                 
         for(let x = 0; x < prompts.data.prompts.length; x++){  
-          if(!this.selectedPrompts.find(element => element['promptType'] == this.prompts[x].promptType)){
-            this.selectedPrompts.push({'promptType':this.prompts[x].promptType, 'showQuestions':'No', 'prompts': []});
+          if(!this.selectedPrompts.find(element => element['groupName'] == this.prompts[x].groupName)){
+            this.selectedPrompts.push({'groupName':this.prompts[x].groupName, 'showQuestions':'No', 'prompts': []});
           }
         }     
       });  
@@ -180,7 +180,7 @@ export class PromptsComponent implements OnInit {
       
       for(let y = 0; y < this.selectedPrompts.length; y++){        
         
-        if(this.prompts[x].promptType == this.selectedPrompts[y]['promptType'] && this.selectedPrompts[y]['showQuestions'] == 'Yes'){
+        if(this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes'){
           
           if(typeof this.prompts[x].unitsOfIssue !='undefined' && this.prompts[x].unitsOfIssue){
             this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
