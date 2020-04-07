@@ -5,6 +5,8 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 import { debounceTime } from 'rxjs/operators';
 
+import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-match.component';
+
 @Component({
     selector: 'app-answer-detail',
     templateUrl: 'answer-detail.component.html',
@@ -42,6 +44,17 @@ export class AnswerDetailComponent implements OnInit {
     constructor(private dialog: MatDialog) { }
 
     ngOnInit() {
+        /**
+         * TODO: conditional if agreement is a NEED for the current user
+         * and the agreement is in a state of "New Match" (some id for this?)
+         */
+        const ref = this.dialog.open(ConfirmMatchDialogComponent, {
+            width: '300px',
+            data: this.answer
+        });
+        ref.afterClosed().subscribe(dialogData => {
+            console.log('dialog data: ', dialogData);
+        });
         this.descriptionFC = new FormControl(this.answer.description);
         this.descriptionFC.valueChanges.pipe(debounceTime(400))
             .subscribe(desc => {
