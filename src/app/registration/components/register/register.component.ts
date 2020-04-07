@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-import { AuthenticationService } from '../../../services/cce/authentication.service';
+import { AuthenticationService } from '../../../core/services/cce/authentication.service';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { environment } from '../../../../environments/environment';
 

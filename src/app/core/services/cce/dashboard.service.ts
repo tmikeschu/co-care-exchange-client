@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
-import { UserService } from '../../core/services/user.service'
+import { UserService } from '../user.service'
 import { Router } from '@angular/router';
 
 @Injectable({

@@ -1,6 +1,6 @@
-import {Role} from './role.model';
+import { Role } from './role.model';
 
-export class User {
+export class CognitoUser {
   id: number;
   firstName: string;
   lastName: string;

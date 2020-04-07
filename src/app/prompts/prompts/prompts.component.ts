@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Prompt } from 'src/app/models/cce/prompt';
-import { PromptService } from 'src/app/services/cce/prompt.service';
+import { PromptService } from 'src/app/core/services/cce/prompt.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
+import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 
 @Component({
   selector: 'app-prompts',
@@ -16,8 +17,7 @@ export class PromptsComponent implements OnInit {
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
   promptTypeQuestion: string;
-  showConfirm: boolean = false;
-  showConfirmBtn: boolean = false;
+  showConfirm: boolean = false;  
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: any[] = [];
@@ -31,10 +31,13 @@ export class PromptsComponent implements OnInit {
   showSpecificQuestions:boolean = false;
   showGroupTypeQuestions: boolean = true;
   groupTypeList: {}[] = [];
+  showConfirmBtn: boolean = false;
   showGoToQuestionsBtn: boolean = true;
   showGoBackToGroupTypesBtn: boolean = false;
   showSubmitAnswersBtn: boolean = false;
   showChangeAnswersBtn: boolean = false;
+  userService: UserService;
+  userEmail: string;
   groupTypeRdo: any[] = [
     {
       key: 'Yes',
@@ -46,21 +49,38 @@ export class PromptsComponent implements OnInit {
     }
   ];
 
-  constructor(private promptService: PromptService, private router: Router, userservice: UserService) {
-    this.user = userservice.getCurrentUserProfile();
+  constructor(private promptService: PromptService, private router: Router, userservice: UserService, authenticationService: AuthenticationService) {
+    this.userEmail = authenticationService.getEmail();
+    this.userService = userservice;
+
+    this.userService.getUser(this.userEmail).subscribe(user => {
+
+      this.userType = 'ind';
+
+      if(user == null){
+        this.router.navigate(['/']);
+        return true;
+      }
+
+      if(user.organization != null){
+        this.userType = 'org';
+      }
+
+      this.promptService.getPrompts(this.userType).subscribe((prompts) => {
+        console.log('getPrompts', prompts);
+        this.prompts = prompts.data.prompts;  
+                
+        for(let x = 0; x < prompts.data.prompts.length; x++){  
+          if(!this.selectedPrompts.find(element => element['promptType'] == this.prompts[x].promptType)){
+            this.selectedPrompts.push({'promptType':this.prompts[x].promptType, 'showQuestions':'No', 'prompts': []});
+          }
+        }     
+      });  
+
+    });
   }
 
   ngOnInit() {
-    
-    this.userType = 'ind';
-    if(this.user.organizationId != null){
-      this.userType = 'org';
-    }
-
-    this.promptService.getPrompts(this.userType).subscribe((prompts) => {
-      console.log('getPrompts', prompts);
-      this.prompts = prompts.data.prompts;      
-    });     
   }
 
   handleRequesting(question, direction) {
@@ -92,7 +112,7 @@ export class PromptsComponent implements OnInit {
   }
 
   onSubmit(){
-    
+    console.log('onSubmit prompts', this.prompts);
     this.shares = [];
     this.requests = [];
 
@@ -145,7 +165,11 @@ export class PromptsComponent implements OnInit {
   }
 
   onGoToQuestions(){
+    console.log('onGoToQuestions prompts', this.prompts);
+    console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+
     let addedprompt = false;
+
     for(let y = 0; y < this.selectedPrompts.length; y++){
       this.selectedPrompts[y]['prompts'] = [];
     }

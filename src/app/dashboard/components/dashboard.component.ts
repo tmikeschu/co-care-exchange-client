@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
-import { DashboardService } from 'src/app/services/cce/dashboard.service';
+import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, switchMap, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';

@@ -7,7 +7,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { NavbarService } from '../../services/navbar.service';
+import { NavbarService } from '../services/navbar.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../../services/cce/authentication.service';
+import { AuthenticationService } from '../../core/services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfileInformation } from '../models/info-create.model';

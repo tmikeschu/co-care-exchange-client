@@ -1,10 +1,12 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { signIn } from '../../aws-cognito/cognito/signin';
-import { changePassword, forgetPassword, forgetPasswordComplete } from '../../aws-cognito/cognito/password';
-import { BasicRegistrationModel } from '../../models/cce/basic-registration.model';
-import { register } from '../../aws-cognito/cognito/register';
+import { signIn } from '../../../aws-cognito/cognito/signin';
+import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
+import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
+import { register } from '../../../aws-cognito/cognito/register';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -89,5 +91,19 @@ export class AuthenticationService {
       throw new Error('Please signin before changing password');
     }
     return changePassword(this.user, oldPassword, newPassword);
+  }
+
+  login(email: string, password: string) {
+    console.log(environment.serverUrl);
+    return this.http.post(`${environment.serverUrl}authenticate`, {email, password})
+      .pipe(map((response: any) => {
+      })); 
+  }
+
+  logout() {
+    // remove user from local storage to log user ou
+    localStorage.removeItem('user');
+    //this.userService.setUser(null);
+    this.router.navigate(['/']);
   }
 }
