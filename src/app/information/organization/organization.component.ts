@@ -22,6 +22,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   errorMessage: string;
   error = false;
   private _isRegistering = false;
+  userProfile;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,30 +43,6 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.enable();
     }
   }
-  userProfile;
-
-  get isRegistering() {
-    return this._isRegistering;
-  }
-
-  async ngOnInit() {
-    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
-
-    this.organizationForm = this.formBuilder.group({
-      orgName: [this.userProfile ? this.userProfile.organizationName : 'Metro Caring', Validators.required],
-      firstName: [this.userProfile ? this.userProfile.firstName : '', Validators.required],
-      lastName: [this.userProfile ? this.userProfile.lastName : '', Validators.required],
-      email: [this.userProfile ? this.userProfile.emailAddress : '', [Validators.required, Validators.email]],
-      phone: [this.userProfile ? this.userProfile.phone : '', Validators.required],
-      city: [this.userProfile ? this.userProfile.city : '', Validators.required],
-      state: [this.userProfile ? this.userProfile.state : '', Validators.required],
-      postalCode: [this.userProfile ? this.userProfile.postalCode : '', Validators.required],
-      deliveryOrPickupLocation: [this.userProfile ? this.userProfile.address : '', Validators.required],
-      deliveryOrPickupRadius: [this.userProfile ? this.userProfile.deliveryOrPickupRadius : 0, Validators.compose([Validators.min(1), Validators.max(50)])],
-    });
-
-    console.log('DEBUG incoming form', this.organizationForm.value)
-  }
 
   radiusOptions = [
     {id: 1, name: '1 Mile'},
@@ -77,31 +54,54 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     {id: 50, name: '50+ Miles'},
   ];
 
-  ngAfterContentInit(): void {
+  get isRegistering() {
+    return this._isRegistering;
+  }
+
+  async ngOnInit() {
+
+  }
+
+  async ngAfterContentInit() {
+
+    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+
+    this.organizationForm = this.formBuilder.group({
+      orgName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      postalCode: ['', Validators.required],
+      deliveryOrPickupLocation: ['', Validators.required],
+      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
+    });
+
     this.organizationForm.get('orgName').setValue(this.organizationName);
     this.organizationForm.get('email').setValue(this.email);
     this.organizationForm.get('firstName').setValue(this.firstName);
     this.organizationForm.get('lastName').setValue(this.lastName);
+
+    if (this.userProfile) {
+      this.organizationForm.get('phone').setValue(this.userProfile.phone || '');
+      this.organizationForm.get('deliveryOrPickupLocation').setValue(this.userProfile.address || '');
+      this.organizationForm.get('city').setValue(this.userProfile.city || '');
+      this.organizationForm.get('state').setValue(this.userProfile.state || '');
+      this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
+      this.organizationForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+    }
+
   }
 
   onRegisterSubmit() {
-    // this.isRegistering = true;
-
-    // const registrationModel: RegistrationModel = {
-    //   orgName: this.organizationForm.get('orgName').value,
-    //   isOrganization: true,
-    //   email: this.organizationForm.get('email').value,
-    //   deliveryOrPickupLocation: this.organizationForm.get('deliveryOrPickupLocation').value,
-    //   deliveryOrPickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
-    //   cityState: this.organizationForm.get('cityState').value,
-    //   phone: this.organizationForm.get('phone').value,
-    // };
 
     let profile: SaveUserInput = {
       address: this.organizationForm.get('deliveryOrPickupLocation').value,
       city: this.organizationForm.get('city').value,
       dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
-      emailAddress: this.organizationForm.get('email').value,
+      emailAddress: this.email, // read-only, not allowed to change
       currentUserEmail: this.email,
       firstName: this.organizationForm.get('firstName').value,
       lastName: this.organizationForm.get('lastName').value,
@@ -109,7 +109,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
-      organizationId: this.organizationId || "707FB6A6-3067-4FC7-AED0-DEE58A276269",
+      organizationId: this.organizationId,
     };
 
     if (!this._isRegistering && this.userProfile){
@@ -120,16 +120,5 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
 
-    // this.router.navigate(['/prompt']);
-
-    // uncomment this out when services are in place
-    // this.authenticationService.register(registrationModel)
-    //   .subscribe(() => {
-    //       this.router.navigate(['/signIn']);
-    //       this.isRegistering = false;
-    //     },
-    //     error => {
-    //       alert(error);
-    //     });
   }
 }
