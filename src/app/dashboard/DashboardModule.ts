@@ -10,6 +10,7 @@ import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
 import { AnswerDetailComponent } from './components/answer-detail/answer-detail.component';
+import { ConfirmMatchDialogComponent } from './components/confirm-new-match/confirm-new-match.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { AnswerDetailComponent } from './components/answer-detail/answer-detail.
     DashboardComponent,
     MetricsComponent,
     StatusDialogComponent,
+    ConfirmMatchDialogComponent,
     AnswerDetailComponent
   ],
   imports: [
@@ -29,6 +31,6 @@ import { AnswerDetailComponent } from './components/answer-detail/answer-detail.
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [StatusDialogComponent],
+  entryComponents: [StatusDialogComponent, ConfirmMatchDialogComponent],
 })
 export class DashboardModule {}
