@@ -1,6 +1,7 @@
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard.component';
 import { StatusDialogComponent } from './components/status-dialog/status-dialog.component';
 import { CustomMaterialModule } from '../material/material.module';
@@ -24,7 +25,9 @@ import { AnswerDetailComponent } from './components/answer-detail/answer-detail.
     DashboardRoutingModule,
     PromptsRoutingModule,
     SharedModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   entryComponents: [StatusDialogComponent],
 })
