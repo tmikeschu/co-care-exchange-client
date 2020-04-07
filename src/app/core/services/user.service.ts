@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
@@ -17,9 +17,9 @@ const UserForEmail = gql`
   }
 `;
 
-const CreateUser = gql`
-  mutation UserMutation($input: CreateUserInput!) {
-    createUser(input: $input) {
+const SaveUser = gql`
+  mutation UserMutation($input: SaveUserInput!) {
+    saveUser(input: $input) {
       user {
         id
         emailAddress
@@ -79,11 +79,11 @@ export class UserService {
     // return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  saveUser(userProfile: CreateUserInput) {
+  saveUser(userProfile: SaveUserInput) {
     console.log('DEBUG save user ', userProfile);
     return this.apollo
       .mutate({
-        mutation: CreateUser,
+        mutation: SaveUser,
         variables: {
           input: userProfile,
         },

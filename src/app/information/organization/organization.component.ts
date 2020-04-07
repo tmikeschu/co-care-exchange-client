@@ -1,9 +1,10 @@
 import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/cce/authentication.service';
-import { InitialCreateInformation } from '../models/info-create.model';
-import { CreateUserInput } from '../../graphql/models/create-user-input.model';
+import { first } from 'rxjs/operators';
+import { UserProfileInformation } from '../models/info-create.model';
+import { SaveUserInput } from '../../graphql/models/save-user-input.model';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-organization',
@@ -16,13 +17,17 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   @Input() lastName;
   @Input() organizationName;
   @Input() organizationId;
-  @Output() infoSubmit = new EventEmitter<InitialCreateInformation>();
+  @Output() infoSubmit = new EventEmitter<UserProfileInformation>();
   organizationForm: FormGroup;
   errorMessage: string;
   error = false;
   private _isRegistering = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userService: UserService
+    ) {}
 
   @Input()
   set isRegistering(state: boolean) {
@@ -37,24 +42,29 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.enable();
     }
   }
+  userProfile;
 
   get isRegistering() {
     return this._isRegistering;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+
     this.organizationForm = this.formBuilder.group({
-      orgName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      deliveryOrPickupLocation: ['', Validators.required],
-      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
+      orgName: [this.userProfile ? this.userProfile.organizationName : 'Metro Caring', Validators.required],
+      firstName: [this.userProfile ? this.userProfile.firstName : '', Validators.required],
+      lastName: [this.userProfile ? this.userProfile.lastName : '', Validators.required],
+      email: [this.userProfile ? this.userProfile.emailAddress : '', [Validators.required, Validators.email]],
+      phone: [this.userProfile ? this.userProfile.phone : '', Validators.required],
+      city: [this.userProfile ? this.userProfile.city : '', Validators.required],
+      state: [this.userProfile ? this.userProfile.state : '', Validators.required],
+      postalCode: [this.userProfile ? this.userProfile.postalCode : '', Validators.required],
+      deliveryOrPickupLocation: [this.userProfile ? this.userProfile.address : '', Validators.required],
+      deliveryOrPickupRadius: [this.userProfile ? this.userProfile.deliveryOrPickupRadius : 0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
+
+    console.log('DEBUG incoming form', this.organizationForm.value)
   }
 
   radiusOptions = [
@@ -87,23 +97,27 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     //   phone: this.organizationForm.get('phone').value,
     // };
 
-    const profile: CreateUserInput = {
+    let profile: SaveUserInput = {
       address: this.organizationForm.get('deliveryOrPickupLocation').value,
       city: this.organizationForm.get('city').value,
       dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.organizationForm.get('email').value,
+      currentUserEmail: this.email,
       firstName: this.organizationForm.get('firstName').value,
       lastName: this.organizationForm.get('lastName').value,
       pickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
-      createdBy: this.organizationForm.get('email').value,
-      organizationId: this.organizationId,
+      organizationId: this.organizationId || "707FB6A6-3067-4FC7-AED0-DEE58A276269",
     };
 
+    if (!this._isRegistering && this.userProfile){
+      profile.userId = this.userProfile.id
+    }
+
     console.log(profile);
-    const payload: InitialCreateInformation = { userInput: profile };
+    const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
 
     // this.router.navigate(['/prompt']);
