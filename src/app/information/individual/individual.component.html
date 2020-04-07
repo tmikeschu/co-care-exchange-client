@@ -58,6 +58,16 @@
 
       <mat-form-field class="login-full-width">
         <label>
+          <input matInput placeholder="Address" formControlName="address"
+            type="text" />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('address').hasError('required')">
+          Address is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <label>
           <input matInput placeholder="City" formControlName="city" type="text" />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('city').hasError('required')">
@@ -80,16 +90,6 @@
         </label>
         <mat-error *ngIf="individualRegisterForm.get('postalCode').hasError('required')">
           Postal Code is a required field
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="login-full-width">
-        <label>
-          <input matInput placeholder="Address" formControlName="address"
-            type="text" />
-        </label>
-        <mat-error *ngIf="individualRegisterForm.get('address').hasError('required')">
-          Address is a required field
         </mat-error>
       </mat-form-field>
 
