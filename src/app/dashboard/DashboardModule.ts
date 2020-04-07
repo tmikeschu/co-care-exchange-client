@@ -8,13 +8,15 @@ import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
+import { AnswerDetailComponent } from './components/answer-detail/answer-detail.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     MetricsComponent,
-    StatusDialogComponent
+    StatusDialogComponent,
+    AnswerDetailComponent
   ],
   imports: [
     CommonModule,
