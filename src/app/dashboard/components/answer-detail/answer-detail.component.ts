@@ -1,17 +1,25 @@
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Component, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { Agreement } from '../models/agreement';
-
-
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'app-answer-detail',
     templateUrl: 'answer-detail.component.html',
     styleUrls: ['./answer-detail.component.scss']
 })
-export class AnswerDetailComponent {
-    answer: Agreement = {
+export class AnswerDetailComponent implements OnInit {
+    @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+
+    editDescription = false;
+    descriptionFC: FormControl;
+    descriptionCurrentVal: String;
+
+    userId = '1234';
+
+    answer: any = {
         agreementId: '1234',
         discriminator: 'test',
         deliveryCoordinates: {
@@ -19,6 +27,7 @@ export class AnswerDetailComponent {
             longitude: 450
         },
         deliveryAddress: '980 Newton St, A',
+        description: 'testing description',
         cancelledOn: null,
         cancelledBy: null,
         name: 'Milk',
@@ -30,8 +39,25 @@ export class AnswerDetailComponent {
         requestId: '44950'
     };
 
-    constructor() { }
+    constructor(private dialog: MatDialog) { }
 
+    ngOnInit() {
+        this.descriptionFC = new FormControl(this.answer.description);
+        this.descriptionFC.valueChanges.pipe(debounceTime(400))
+            .subscribe(desc => {
+                this.descriptionCurrentVal = desc;
+            });
+    }
+
+    onCancelEdit() {
+        console.log('edit description cancelled. Revert value');
+        this.editDescription = false;
+        this.descriptionCurrentVal = '';
+    }
+
+    onSubmitEdit() {
+        console.log('edit description submitted, go update the description with: ', this.descriptionCurrentVal);
+    }
 
     onCancelMatch() {
         console.log('cancel match called');
@@ -39,6 +65,10 @@ export class AnswerDetailComponent {
 
     onReportIssue() {
         console.log('report an issue called');
+    }
+
+    onConfirmPickup() {
+        console.log('confirm pick up called');
     }
 
 
