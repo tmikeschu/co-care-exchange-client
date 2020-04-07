@@ -53,7 +53,7 @@ export class UserService {
   currentUserProfile = null;
   constructor(private apollo: Apollo) {}
 
-  getCurrentUserProfile() {
+  getCurrentUserProfile(): SaveUserInput {
     return this.currentUserProfile;
   }
 

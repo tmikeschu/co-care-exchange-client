@@ -4,12 +4,13 @@ import { environment } from '../../../environments/environment';
 import { Prompt } from 'src/app/models/cce/prompt';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/models/User';
+import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromptService {
-  user: User;
+  user: SaveUserInput;
   constructor(private http: HttpClient, userservice: UserService) {
     this.user = userservice.getCurrentUserProfile();
   }
@@ -41,7 +42,7 @@ export class PromptService {
       'variables': {
         'input': {
           "promptId": prompt.id,
-          "userId": this.user.id,
+          "userId": this.user.userId,
           "numberValue": (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
           "unitOfIssue": prompt.unitsOfIssue,
           "clientMutationId": "123474",

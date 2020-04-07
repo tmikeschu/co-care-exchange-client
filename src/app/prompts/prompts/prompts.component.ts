@@ -3,7 +3,7 @@ import { Prompt } from 'src/app/models/cce/prompt';
 import { PromptService } from 'src/app/services/cce/prompt.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
-import { User } from 'src/app/models/User';
+import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
 
 @Component({
   selector: 'app-prompts',
@@ -24,7 +24,7 @@ export class PromptsComponent implements OnInit {
   userType: string;
   requests: any[] = [];
   prompt: Prompt;
-  user: User;
+  user: SaveUserInput;
   promptIndex = 0;
   surveyTime = false;  
   inNeed: boolean;
@@ -51,29 +51,15 @@ export class PromptsComponent implements OnInit {
   }
 
   ngOnInit() {
-    //TODO: get the grouptype from the logged in user type
+    
     this.userType = 'ind';
-    // if(this.user.organizationId != null){
-    //   this.userType = 'org';
-    // }
+    if(this.user.organizationId != null){
+      this.userType = 'org';
+    }
 
-    this.promptService.getPrompts(this.userType).subscribe((val) => {
-      console.log('ngOnInit', val);
-      this.prompts = val.data.prompts;
-      
-      //for test data
-      let counter = 4;
-      for(let x = 0; x < val.data.prompts.length; x++){   
-        if(counter > 0){          
-          this.prompts[x].promptType = 'Meat';
-          counter--;
-        }
-
-        if(!this.selectedPrompts.find(element => element['promptType'] == this.prompts[x].promptType)){
-          this.selectedPrompts.push({'promptType':this.prompts[x].promptType, 'showQuestions':'No', 'prompts': []});
-        }
-      }     
-      console.log('this.selectedPrompts', this.selectedPrompts);
+    this.promptService.getPrompts(this.userType).subscribe((prompts) => {
+      console.log('getPrompts', prompts);
+      this.prompts = prompts.data.prompts;      
     });     
   }
 
@@ -137,9 +123,7 @@ export class PromptsComponent implements OnInit {
       this.showConfirmBtn = true;
     }
 
-    console.log('prompts', this.prompts);
-    // console.log('requests', this.requests);
-    // console.log('shares', this.shares);
+    console.log('submitted prompts', this.prompts);
   }
 
   onConfirm() {    
