@@ -1,6 +1,7 @@
 import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { UserProfileInformation } from '../models/info-create.model';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
@@ -47,14 +48,14 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     return this._isRegistering;
   }
 
-  ngOnInit() {
-    this.userProfile = this.userService.getCurrentUserProfile();
+  async ngOnInit() {
+    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
     this.organizationForm = this.formBuilder.group({
-      orgName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      orgName: [this.userProfile ? this.userProfile.organizationName : 'Metro Caring', Validators.required],
+      firstName: [this.userProfile ? this.userProfile.firstName : '', Validators.required],
+      lastName: [this.userProfile ? this.userProfile.lastName : '', Validators.required],
+      email: [this.userProfile ? this.userProfile.emailAddress : '', [Validators.required, Validators.email]],
       phone: [this.userProfile ? this.userProfile.phone : '', Validators.required],
       city: [this.userProfile ? this.userProfile.city : '', Validators.required],
       state: [this.userProfile ? this.userProfile.state : '', Validators.required],
@@ -108,7 +109,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
-      organizationId: this.organizationId,
+      organizationId: this.organizationId || "707FB6A6-3067-4FC7-AED0-DEE58A276269",
     };
 
     if (!this._isRegistering && this.userProfile){
