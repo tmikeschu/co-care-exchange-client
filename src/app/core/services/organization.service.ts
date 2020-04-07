@@ -13,12 +13,45 @@ const Organizations = gql`
   }
 `;
 
+const UserOrganization = gql`
+  query getUserOrganization($id: ID!){
+    organizations(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
 export class OrganizationService {
+  currentOrgProfile: null;
   organizations: any[];
   constructor(private apollo: Apollo) {}
+
+  // getCurrentOrgProfile() {
+  //   return this.currentOrgProfile;
+  // }
+
+  // getUserOrganization(orgId: String): Observable<any> {
+  //   console.log('DEBUG getUserOrganization by id', orgId);
+  //   return this.apollo
+  //     .query({
+  //       query: UserOrganization,
+  //       variables: {
+  //         id: orgId
+  //       },
+  //     })
+  //     .pipe(
+  //       map((response: any) => {
+  //         console.log('DEBUG DATA ', response);
+  //         const data = response.data;
+  //         this.currentOrgProfile = data.organizations && data.organizations.length ? data.organizations[0] : null;
+  //         return this.currentOrgProfile;
+  //       })
+  //     );
+  // }
 
   public getOrganizations$(): Observable<any> {
     return this.apollo

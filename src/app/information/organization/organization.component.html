@@ -1,11 +1,11 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <form [formGroup]="organizationForm">
+  <form *ngIf="organizationForm" [formGroup]="organizationForm">
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
         <label>
           <input matInput placeholder="Organization Name" formControlName="orgName" type="text" readonly />
         </label>
-        <mat-error *ngIf="organizationForm.get('orgName').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('orgName').hasError('required')">
           Organization name is a required field
         </mat-error>
       </mat-form-field>
@@ -14,7 +14,7 @@
         <label>
           <input matInput placeholder="First Name" formControlName="firstName" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('firstName').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('firstName').hasError('required')">
           First name is a required field
         </mat-error>
       </mat-form-field>
@@ -23,16 +23,16 @@
         <label>
           <input matInput placeholder="Last Name" formControlName="lastName" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('lastName').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('lastName').hasError('required')">
           Last name is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Email" formControlName="email" type="text" readonly/>
+          <input matInput placeholder="Email" formControlName="email" type="text" readonly />
         </label>
-        <mat-error *ngIf="organizationForm.get('email').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('email').hasError('required')">
           Email is a required field
         </mat-error>
       </mat-form-field>
@@ -41,7 +41,7 @@
         <label>
           <input matInput placeholder="Phone Number" formControlName="phone" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('phone').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('phone').hasError('required')">
           Phone number is a required field
         </mat-error>
       </mat-form-field>
@@ -50,7 +50,7 @@
         <label>
           <input matInput placeholder="City" formControlName="city" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('city').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('city').hasError('required')">
           City is a required field
         </mat-error>
       </mat-form-field>
@@ -59,7 +59,7 @@
         <label>
           <input matInput placeholder="State" formControlName="state" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('state').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('state').hasError('required')">
           State is a required field
         </mat-error>
       </mat-form-field>
@@ -68,31 +68,36 @@
         <label>
           <input matInput placeholder="Postal Code" formControlName="postalCode" type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('postalCode').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('postalCode').hasError('required')">
           Postal Code is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation" type="text" />
+          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
+            type="text" />
         </label>
-        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
+        <mat-error [hidden]="!organizationForm.get('deliveryOrPickupLocation').hasError('required')">
           Delivery or pickup location is a required field
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <label>
-          <input matInput placeholder="Delivery or Pickup Radius" formControlName="deliveryOrPickupRadius" type="number" />
-        </label>
-        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('required')">
-          Delivery or pickup radius is a required field
+        <mat-label>Delivery or Pickup Radius</mat-label>
+        <mat-select formControlName="deliveryOrPickupRadius">
+          <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
+            {{ o.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="organizationForm.get('deliveryOrPickupLocation').hasError('min')">
+          Delivery or pickup radius selection is required
         </mat-error>
       </mat-form-field>
+
     </div>
 
-    <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
+    <mat-progress-bar [hidden]="!isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!organizationForm.valid">
         <mat-icon>arrow_forward</mat-icon>

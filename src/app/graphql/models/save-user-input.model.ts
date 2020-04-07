@@ -1,6 +1,8 @@
-export interface CreateUserInput {
+export interface SaveUserInput {
+    userId?: string;
     address: string;
     emailAddress: string;
+    currentUserEmail: string;
     lastName: string;
     firstName: string;
     dropOffRadius: number;
@@ -10,5 +12,4 @@ export interface CreateUserInput {
     city: string;
     state: string;
     organizationId?: unknown;
-    createdBy?: string;
 }

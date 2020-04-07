@@ -26,4 +26,6 @@ export interface Prompt {
   sharing:number;
   sizeChoices: string[];
   size: string;
+  sizes: string;
+  unit: string;
 }

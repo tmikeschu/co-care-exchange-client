@@ -5,22 +5,6 @@ import { MetricsComponent } from '../components/metrics/metrics.component';
 import { AnswerDetailComponent } from '../components/answer-detail/answer-detail.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: DashboardComponent,
-  // },
-  // {
-  //   path: 'promptind',
-  //   component: PromptsIndividualComponent,
-  // },
-  // {
-  //   path: 'promptorg',
-  //   component: PromptsOrganizationComponent,
-  // },
-  // {
-  //   path: 'summary',
-  //   component: SummaryComponent,
-  // },
   {
     path: 'dashboard',
     component: DashboardComponent
