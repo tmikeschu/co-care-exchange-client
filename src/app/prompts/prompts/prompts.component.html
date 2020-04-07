@@ -1,0 +1,134 @@
+<section class="section">
+
+    <div *ngIf="showGroupTypeQuestions">
+        <div *ngFor="let grouptype of selectedPrompts" class="prompt">
+            <h3 class="category-head text-center">Are you requesting or sharing any {{grouptype.promptType}}</h3>
+            <div class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="grouptype.showQuestions">
+                    <mat-radio-button *ngFor="let rdobtn of groupTypeRdo" [value]="rdobtn.key" [checked]="rdobtn.checked">{{rdobtn.key}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showSpecificQuestions">
+        
+        <div *ngFor="let selectedPrompt of selectedPrompts" class="prompt">
+            <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'">
+                <hr>
+                <h2 class="category-head text-center">For {{selectedPrompt.promptType}}</h2>
+                <div *ngFor="let question of selectedPrompt.prompts" >
+                    
+                    <h3 class="text-center">{{question.display}}</h3>
+
+                    <div fxLayout="row" fxLayoutAlign="space-around center">
+                        <div fxLayout="column">
+                            <h3>Requesting</h3>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <h2 class="counter">{{question.requesting}}</h2>
+                                <div>
+                                    <div>
+                                        <mat-icon (click)="handleRequesting(question, 'up')" class="cce-blue">expand_less
+                                        </mat-icon>
+                                    </div>
+                                    <div>
+                                        <mat-icon (click)="handleRequesting(question, 'down')" class="cce-blue">expand_more
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="column">
+                            <h3>Sharing</h3>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <h2 class="counter">{{question.sharing}}</h2>
+                                <div>
+                                    <div>
+                                        <mat-icon (click)="handleSharing(question, 'up')" class="cce-blue">expand_less</mat-icon>
+                                    </div>
+                                    <div>
+                                        <mat-icon (click)="handleSharing(question, 'down')" class="cce-blue">expand_more
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="question.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unit">
+                            <mat-radio-button class="btn radio-group" *ngFor="let unit of question.unitsOfIssueChoices"
+                                [value]="unit">{{unit}}</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    
+                    <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center center" class="itemborder">
+                        <mat-select [(value)]="question.size" >                    
+                            <mat-option *ngFor="let size of question.sizeChoices" [value]="size">
+                            {{size}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div *ngIf="showConfirm">
+
+        <h2 *ngIf="requests.length || shares.length" class="text-center confirmation-header">
+            Based upon your answers it looks like you are...
+        </h2>
+
+        <div *ngIf="!showConfirmBtn" >
+            <h2 class="text-center confirmation-header">You have chosen no shares or needs. Please return and select an item.</h2>
+        </div>
+
+        <div *ngIf="requests.length > 0" >
+            <mat-card class="confirmation-box mat-elevation-z5">
+                <h3>Requesting</h3>
+                <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let request of requests; let i = index;">                    
+                    <p><strong>{{ request.item }}</strong></p>                    
+                    <p>{{ request.requesting }} </p>
+                </div>
+            </mat-card>
+        </div>
+
+        <div *ngIf="shares.length > 0" >
+            <mat-card class="confirmation-box mat-elevation-z5">
+                <h3>Sharing</h3>
+                <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let share of shares; let i = index;">                    
+                    <p><strong>{{ share.item }}</strong></p>                   
+                    <p>{{ share.sharing }}</p>
+                </div>
+            </mat-card>
+        </div>        
+    </div>
+
+    <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
+        <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showChangeAnswersBtn" (click)="onChangeAnswers()">
+            <mat-icon class="cce-white">arrow_back</mat-icon>
+        </button>
+        
+        <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showGoBackToGroupTypesBtn" (click)="onGoBackToGroupTypes()">
+            <mat-icon class="cce-white">arrow_back</mat-icon>
+        </button>
+
+        
+        <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showSubmitAnswersBtn" (click)="onSubmit()">
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
+        </button>
+        
+
+        <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showConfirmBtn" (click)="onConfirm()">
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
+        </button>
+
+
+        <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showGoToQuestionsBtn" (click)="onGoToQuestions()">
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</section>

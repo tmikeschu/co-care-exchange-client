@@ -4,22 +4,6 @@ import { DashboardComponent } from '../components/dashboard.component';
 import { MetricsComponent } from '../components/metrics/metrics.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: DashboardComponent,
-  // },
-  // {
-  //   path: 'promptind',
-  //   component: PromptsIndividualComponent,
-  // },
-  // {
-  //   path: 'promptorg',
-  //   component: PromptsOrganizationComponent,
-  // },
-  // {
-  //   path: 'summary',
-  //   component: SummaryComponent,
-  // },
   {
     path: 'dashboard',
     component: DashboardComponent
