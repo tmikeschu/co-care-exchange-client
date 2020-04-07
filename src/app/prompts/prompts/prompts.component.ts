@@ -17,8 +17,7 @@ export class PromptsComponent implements OnInit {
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
   promptTypeQuestion: string;
-  showConfirm: boolean = false;
-  showConfirmBtn: boolean = false;
+  showConfirm: boolean = false;  
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: any[] = [];
@@ -32,6 +31,7 @@ export class PromptsComponent implements OnInit {
   showSpecificQuestions:boolean = false;
   showGroupTypeQuestions: boolean = true;
   groupTypeList: {}[] = [];
+  showConfirmBtn: boolean = false;
   showGoToQuestionsBtn: boolean = true;
   showGoBackToGroupTypesBtn: boolean = false;
   showSubmitAnswersBtn: boolean = false;
@@ -81,8 +81,6 @@ export class PromptsComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-       
   }
 
   handleRequesting(question, direction) {
@@ -114,7 +112,7 @@ export class PromptsComponent implements OnInit {
   }
 
   onSubmit(){
-    
+    console.log('onSubmit prompts', this.prompts);
     this.shares = [];
     this.requests = [];
 
@@ -167,7 +165,11 @@ export class PromptsComponent implements OnInit {
   }
 
   onGoToQuestions(){
+    console.log('onGoToQuestions prompts', this.prompts);
+    console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+
     let addedprompt = false;
+
     for(let y = 0; y < this.selectedPrompts.length; y++){
       this.selectedPrompts[y]['prompts'] = [];
     }

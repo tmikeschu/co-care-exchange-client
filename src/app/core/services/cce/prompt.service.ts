@@ -47,7 +47,7 @@ export class PromptService {
       'variables': {
         'input': {
           "promptId": prompt.id,
-          "userId": '4f46ec3b9b534692ada6e5348b153875',//,this.user.id,
+          "userId": this.user.id,
           "numberValue": (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
           "unitOfIssue": prompt.unitsOfIssue,
           "clientMutationId": "123474",
