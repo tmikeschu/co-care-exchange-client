@@ -85,7 +85,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     this.organizationForm.get('lastName').setValue(this.lastName);
 
     if (this.userProfile) {
-      this.organizationForm.get('phone').setValue(this.userProfile.phone || '');
+      this.organizationForm.get('phone').setValue(this.userProfile.phoneNumber || '');
       this.organizationForm.get('deliveryOrPickupLocation').setValue(this.userProfile.address || '');
       this.organizationForm.get('city').setValue(this.userProfile.city || '');
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
