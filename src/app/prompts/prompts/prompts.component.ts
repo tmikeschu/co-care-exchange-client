@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Prompt } from 'src/app/models/cce/prompt';
-import { PromptService } from 'src/app/services/cce/prompt.service';
+import { PromptService } from 'src/app/core/services/cce/prompt.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
+import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 
 @Component({
   selector: 'app-prompts',
@@ -35,6 +36,8 @@ export class PromptsComponent implements OnInit {
   showGoBackToGroupTypesBtn: boolean = false;
   showSubmitAnswersBtn: boolean = false;
   showChangeAnswersBtn: boolean = false;
+  userService: UserService;
+  userEmail: string;
   groupTypeRdo: any[] = [
     {
       key: 'Yes',
@@ -46,21 +49,40 @@ export class PromptsComponent implements OnInit {
     }
   ];
 
-  constructor(private promptService: PromptService, private router: Router, userservice: UserService) {
-    this.user = userservice.getCurrentUserProfile();
+  constructor(private promptService: PromptService, private router: Router, userservice: UserService, authenticationService: AuthenticationService) {
+    this.userEmail = authenticationService.getEmail();
+    this.userService = userservice;
+
+    this.userService.getUser(this.userEmail).subscribe(user => {
+
+      this.userType = 'ind';
+
+      if(user == null){
+        this.router.navigate(['/']);
+        return true;
+      }
+
+      if(user.organization != null){
+        this.userType = 'org';
+      }
+
+      this.promptService.getPrompts(this.userType).subscribe((prompts) => {
+        console.log('getPrompts', prompts);
+        this.prompts = prompts.data.prompts;  
+                
+        for(let x = 0; x < prompts.data.prompts.length; x++){  
+          if(!this.selectedPrompts.find(element => element['promptType'] == this.prompts[x].promptType)){
+            this.selectedPrompts.push({'promptType':this.prompts[x].promptType, 'showQuestions':'No', 'prompts': []});
+          }
+        }     
+      });  
+
+    });
   }
 
   ngOnInit() {
     
-    this.userType = 'ind';
-    if(this.user.organizationId != null){
-      this.userType = 'org';
-    }
-
-    this.promptService.getPrompts(this.userType).subscribe((prompts) => {
-      console.log('getPrompts', prompts);
-      this.prompts = prompts.data.prompts;      
-    });     
+       
   }
 
   handleRequesting(question, direction) {

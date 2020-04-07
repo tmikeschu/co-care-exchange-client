@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/services/cce/dashboard.service';
+import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Subscription } from 'rxjs';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
 

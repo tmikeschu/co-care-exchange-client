@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Prompt } from 'src/app/models/cce/prompt';
 import { UserService } from 'src/app/core/services/user.service';
-import { User } from 'src/app/models/User';
-import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
+import { AuthenticationService } from './authentication.service';
+import { UserProfile } from 'src/app/models/UserProfile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromptService {
-  user: SaveUserInput;
-  constructor(private http: HttpClient, userservice: UserService) {
-    this.user = userservice.getCurrentUserProfile();
+  user: UserProfile;
+
+  constructor(private http: HttpClient, userservice: UserService, authenticationService: AuthenticationService, ) {
+    let userEmail = authenticationService.getEmail();
+
+    userservice.getUser(userEmail).subscribe(user => {
+      this.user = user;
+    });
   }
 
   getPrompts(userType: string): any {
@@ -42,7 +47,7 @@ export class PromptService {
       'variables': {
         'input': {
           "promptId": prompt.id,
-          "userId": this.user.userId,
+          "userId": '4f46ec3b9b534692ada6e5348b153875',//,this.user.id,
           "numberValue": (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
           "unitOfIssue": prompt.unitsOfIssue,
           "clientMutationId": "123474",

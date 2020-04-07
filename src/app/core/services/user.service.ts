@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
+import { UserProfile } from 'src/app/models/UserProfile';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
@@ -51,13 +52,14 @@ const SaveUser = gql`
 })
 export class UserService {
   currentUserProfile = null;
+  
   constructor(private apollo: Apollo) {}
 
   getCurrentUserProfile(): SaveUserInput {
     return this.currentUserProfile;
   }
 
-  getUser(emailAddress: String): Observable<any> {
+  getUser(emailAddress: String): Observable<UserProfile> {
     console.log('DEBUG getUser ', emailAddress);
     return this.apollo
       .query({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../../services/cce/authentication.service';
+import { AuthenticationService } from '../../../core/services/cce/authentication.service';
 import { Router } from '@angular/router';
 import { RESET_PASSWORD_ROUTE } from '../../../core/constants/routes';
 
