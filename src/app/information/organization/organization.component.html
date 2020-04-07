@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <form [formGroup]="organizationForm">
+  <form *ngIf="organizationForm" [formGroup]="organizationForm">
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
         <label>
