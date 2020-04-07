@@ -8,11 +8,21 @@ import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
     users(where: { emailAddress: $emailAddress }) {
-      id
-      emailAddress
-      phoneNumber
-      firstName
-      lastName
+      id,
+      firstName,
+      lastName,
+      emailAddress,
+      phoneNumber,
+      address,
+      city,
+      state,
+      postalCode,
+      dropOffRadius,
+      pickupRadius,
+      organization {
+        id,
+        name
+      }
     }
   }
 `;
@@ -21,11 +31,15 @@ const SaveUser = gql`
   mutation UserMutation($input: SaveUserInput!) {
     saveUser(input: $input) {
       user {
-        id
-        emailAddress
-        phoneNumber
-        firstName
-        lastName
+        id,
+        emailAddress,
+        phoneNumber,
+        firstName,
+        lastName,
+        organization {
+          id,
+          name
+        }
       }
       clientMutationId
     }
