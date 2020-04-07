@@ -1,5 +1,5 @@
 export class Agreement{
-    agreementId: string;
+    orderId: string;
     
     discriminator: string;
     deliveryCoordinates : {

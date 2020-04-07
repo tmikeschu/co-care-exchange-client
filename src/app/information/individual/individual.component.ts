@@ -1,7 +1,5 @@
 import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../../core/services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service'
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
@@ -25,8 +23,6 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
-    private authenticationService: AuthenticationService,
     private userService: UserService
   ) { }
 
