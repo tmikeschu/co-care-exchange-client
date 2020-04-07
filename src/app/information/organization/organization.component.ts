@@ -72,10 +72,10 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
+      address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
-      deliveryOrPickupLocation: ['', Validators.required],
       deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
 
@@ -86,7 +86,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
 
     if (this.userProfile) {
       this.organizationForm.get('phone').setValue(this.userProfile.phoneNumber || '');
-      this.organizationForm.get('deliveryOrPickupLocation').setValue(this.userProfile.address || '');
+      this.organizationForm.get('address').setValue(this.userProfile.address || '');
       this.organizationForm.get('city').setValue(this.userProfile.city || '');
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
       this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
@@ -98,7 +98,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   onRegisterSubmit() {
 
     let profile: SaveUserInput = {
-      address: this.organizationForm.get('deliveryOrPickupLocation').value,
+      address: this.organizationForm.get('address').value,
       city: this.organizationForm.get('city').value,
       dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.email, // read-only, not allowed to change
