@@ -28,7 +28,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private userService: UserService
-    ) {}
+  ) { }
 
   ngOnInit() {
     this.individualRegisterForm = this.formBuilder.group({
@@ -37,12 +37,11 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       householdSize: ['', Validators.required],
+      address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
-      deliveryOrPickupLocation: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.required],
-      // password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
       password: [''],
     });
 
@@ -50,13 +49,13 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   radiusOptions = [
-    {id: 1, name: '1 Mile'},
-    {id: 5, name: '5 Miles'},
-    {id: 10, name: '10 Miles'},
-    {id: 15, name: '15 Miles'},
-    {id: 20, name: '20 Miles'},
-    {id: 25, name: '25 Miles'},
-    {id: 50, name: '50+ Miles'},
+    { id: 1, name: '1 Mile' },
+    { id: 5, name: '5 Miles' },
+    { id: 10, name: '10 Miles' },
+    { id: 15, name: '15 Miles' },
+    { id: 20, name: '20 Miles' },
+    { id: 25, name: '25 Miles' },
+    { id: 50, name: '50+ Miles' },
   ];
 
   ngAfterContentInit(): void {
@@ -84,23 +83,9 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   async onRegisterSubmit() {
-    // reconcile these models
-    // const registrationModel: RegistrationModel = {
-    //   firstName: this.individualRegisterForm.get('firstName').value,
-    //   lastName: this.individualRegisterForm.get('lastName').value,
-    //   isOrganization: false,
-    //   email: this.individualRegisterForm.get('email').value,
-    //   // password: this.registerForm.get('password').value,
-    //   deliveryOrPickupLocation: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
-    //   deliveryOrPickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
-    //   houseHoldSize: this.individualRegisterForm.get('householdSize').value,
-    //   cityState: this.individualRegisterForm.get('cityState').value,
-    //   phone: this.individualRegisterForm.get('phone').value,
-    // };
 
-    // TEST
     const profile: SaveUserInput = {
-      address: this.individualRegisterForm.get('deliveryOrPickupLocation').value,
+      address: this.individualRegisterForm.get('address').value,
       city: this.individualRegisterForm.get('city').value,
       dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
       emailAddress: this.individualRegisterForm.get('email').value,
@@ -114,7 +99,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
-    if (!this._isRegistering && this.userProfile){
+    if (!this._isRegistering && this.userProfile) {
       profile.userId = this.userProfile.id
     }
 
@@ -122,22 +107,5 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
-
-    // const result = await this.authenticationService.register(registrationModel);
-    // if (result.errorMsg) {
-    //   // todo handle error
-    // } else {
-    // this.router.navigate(['/prompt']);
-    // }
-
-    // uncomment this out when services are in place
-    // this.authenticationService.register(registrationModel)
-    //   .subscribe(() => {
-    //       this.router.navigate(['/signIn']);
-    //       this.isRegistering = false;
-    //     },
-    //     error => {
-    //       alert(error);
-    //     });
   }
 }
