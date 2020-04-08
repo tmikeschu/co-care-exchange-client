@@ -74,3 +74,14 @@
   color: #919191!important; 
   font-weight: 600;
 }
+
+h3 {
+  color: #919191!important; 
+}
+
+::ng-deep .mat-select-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; 
+}

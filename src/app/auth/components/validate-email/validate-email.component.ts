@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VerifyEmailService } from '../../../services/verify-email-service';
+import { VerifyEmailService } from '../../../core/services/verify-email-service';
 import { MessageDto } from '../../../models/message-dto';
 
 @Component({

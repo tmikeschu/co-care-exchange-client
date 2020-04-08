@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
-import { DashboardService } from 'src/app/services/cce/dashboard.service';
+import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, switchMap, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         try {
           const orderChangeStatus: OrderStatusChangeModel = {
-            orderId: agreement.agreementId,
+            orderId: agreement.orderId,
             userId: this.dashboardService.userProfile.id,
             newStatus: agreement.statusId++,
             reason: 'unknown',
@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         try {
           const orderToCancel: OrderStatusChangeModel = {
-            orderId: agreement.agreementId,
+            orderId: agreement.orderId,
             userId: this.dashboardService.userService.currentUserProfile.id,
             // orderId: "E6907B91-FCE4-4FD4-99AE-401733DE3AB9",
             // userId: "B8350BCF-B6A3-4239-82D9-3BAA7B1C83E3",
@@ -106,10 +106,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             requestId: agreement.requestId,
             shareId: agreement.shareId,
           };
-          // requestId
-          // shareId
-          // agreementId
-
 
           let status = this.dashboardService.updateOrderStatus(orderToCancel).subscribe((val) => {
             console.log(val);

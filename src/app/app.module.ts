@@ -10,10 +10,8 @@ import { AppRouting } from './app.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomMaterialModule } from './material/material.module';
 import { SharedModule } from './shared/shared.module';
-import { GreetingService } from './services/greeting.service';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { RouterModule, Routes } from '@angular/router';
-import { NavbarService } from './services/navbar.service';
+import { NavbarService } from './core/services/navbar.service';
 import { ToastrModule } from 'ngx-toastr';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { InformationModule } from './information/information.module';
@@ -56,7 +54,6 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
   ],
   declarations: [AppComponent, ContactUsComponent, PersonalDashboardComponent, ResourcesComponent, PopupDialogComponent],
   providers: [
-    GreetingService,
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

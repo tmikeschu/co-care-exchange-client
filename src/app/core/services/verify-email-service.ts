@@ -1,8 +1,8 @@
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import {MessageDto} from '../models/message-dto';
+import {MessageDto} from '../../models/message-dto';
 
 @Injectable({
   providedIn: 'root'

@@ -58,6 +58,16 @@
 
       <mat-form-field class="login-full-width">
         <label>
+          <input matInput placeholder="Address" formControlName="address"
+            type="text" />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('address').hasError('required')">
+          Address is a required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="login-full-width">
+        <label>
           <input matInput placeholder="City" formControlName="city" type="text" />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('city').hasError('required')">
@@ -84,23 +94,13 @@
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <label>
-          <input matInput placeholder="Delivery or Pickup Location" formControlName="deliveryOrPickupLocation"
-            type="text" />
-        </label>
-        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('required')">
-          Delivery or pickup location is a required field
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="login-full-width">
         <mat-label>Delivery or Pickup Radius</mat-label>
         <mat-select formControlName="deliveryOrPickupRadius">
           <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
             {{ o.name }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupLocation').hasError('min')">
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('min')">
           Delivery or pickup radius selection is required
         </mat-error>
       </mat-form-field>
