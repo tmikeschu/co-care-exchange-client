@@ -99,8 +99,8 @@
             <mat-card class="confirmation-box mat-elevation-z5">
                 <h3>Sharing</h3>
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let share of shares; let i = index;">                    
-                    <p><strong>{{ share.item }}</strong></p>                   
-                    <p>{{ share.sharing }}</p>
+                    <p><strong>{{ share.item }} <span *ngIf="share.sizes != null">({{share.sizes}})</span></strong></p>                   
+                    <p>{{ share.sharing }} {{share.unit}}(s)</p>
                 </div>
             </mat-card>
         </div>        
