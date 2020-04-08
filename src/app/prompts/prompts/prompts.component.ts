@@ -112,7 +112,7 @@ export class PromptsComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('onSubmit prompts', this.prompts);
+    //console.log('onSubmit prompts', this.prompts);
     this.shares = [];
     this.requests = [];
 
@@ -147,10 +147,10 @@ export class PromptsComponent implements OnInit {
   }
 
   onConfirm() {    
-    console.log('onConfirm selectedPrompts', this.selectedPrompts);
+    //console.log('onConfirm selectedPrompts', this.selectedPrompts);
     for(let x = 0; x < this.selectedPrompts.length; x++){
       if(this.selectedPrompts[x].showQuestions == 'Yes'){
-        console.log('onConfirm prompts', this.selectedPrompts[x].prompts);
+        //console.log('onConfirm prompts', this.selectedPrompts[x].prompts);
         for(let y = 0; y < this.selectedPrompts[x].prompts.length; y++){
           if(this.selectedPrompts[x].prompts[y].sharing != 0 || this.selectedPrompts[x].prompts[y].requesting != 0){
             console.log('onConfirm item', this.selectedPrompts[x].prompts[y]);
@@ -174,8 +174,8 @@ export class PromptsComponent implements OnInit {
   }
 
   onGoToQuestions(){
-    console.log('onGoToQuestions prompts', this.prompts);
-    console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+    //console.log('onGoToQuestions prompts', this.prompts);
+    //console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
 
     let addedprompt = false;
 
