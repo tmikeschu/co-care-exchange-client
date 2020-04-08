@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <form [formGroup]="individualRegisterForm">
+  <form *ngIf="individualRegisterForm" [formGroup]="individualRegisterForm">
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
         <label>
@@ -37,19 +37,9 @@
         </mat-error>
       </mat-form-field>
 
-      <!--              <mat-form-field class="login-full-width">-->
-      <!--                <input matInput placeholder="Email" formControlName="email" type="text">-->
-      <!--                <mat-error *ngIf="registerForm.get('email').hasError('required')">-->
-      <!--                  Email is a required field-->
-      <!--                </mat-error>-->
-      <!--                <mat-error *ngIf="registerForm.get('email').hasError('email')">-->
-      <!--                  The email address entered is not valid.-->
-      <!--                </mat-error>-->
-      <!--              </mat-form-field>-->
-
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Household Size" formControlName="householdSize" type="number" />
+          <input matInput placeholder="Household Size" formControlName="householdSize" type="tel" />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('householdSize').hasError('required')">
           Phone number is a required field
