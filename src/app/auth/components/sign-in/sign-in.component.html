@@ -8,9 +8,9 @@
       Let's do some good today!
     </h3>
     <div class="cta w-100 active" fxLayout="row" fxLayoutAlign="center center">
-      <a routerLink="/">
+      <!-- <a routerLink="/">
         Login
-      </a>
+      </a> -->
       <a routerLink="/register">
         Sign Up
       </a>
@@ -22,14 +22,14 @@
   <div class="page-content">
     <mat-card class="mat-elevation-z10">
       <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onLoginSubmit()">
-        <mat-form-field class="full-width">
+        <!-- <mat-form-field class="full-width">
           <mat-select placeholder="Organization" formControlName="organization">
             <mat-option>--</mat-option>
             <mat-option *ngFor="let organization of organizations" [value]="organization">
               {{organization.name}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-card-content>
           <mat-form-field class="login-full-width">
             <input matInput placeholder="Username" formControlName="username" type="text" required>
@@ -59,10 +59,6 @@
       </form>
     </mat-card>
 
-    <p class=" vertical-rhythm-two text-primary text-center">
-      Simplifying things that matter for <br>people who care.
-    </p>
-
     <div class="vertical-rhythm-two" fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onLoginSubmit()">
         <mat-icon>arrow_forward</mat-icon>
@@ -72,6 +68,10 @@
     <div class="vertical-rhythm-two text-center">
       <a class="links pantry-link" (click)="handlePantry()">Food Pantries Near Me</a>
     </div>
+    
+    <p class=" vertical-rhythm-two text-primary text-center">
+      Simplifying things that matter for <br>people who care.
+    </p>
 
   </div>
 

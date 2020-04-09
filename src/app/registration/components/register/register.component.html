@@ -78,10 +78,6 @@
       </form>
     </mat-card>
 
-    <p class=" vertical-rhythm-two text-primary text-center">
-      Simplifying things that matter for <br>people who care.
-    </p>
-
     <div class="vertical-rhythm-two" fxLayout="row" fxLayoutAlign="center center">
       <button [disabled]="!registerForm.valid" mat-fab color="primary" (click)="onRegisterSubmit()">
         <mat-icon>arrow_forward</mat-icon>
@@ -91,6 +87,10 @@
     <div class="vertical-rhythm-two text-center">
       <a class="links pantry-link" (click)="handlePantry()">Food Pantries Near Me</a>
     </div>
+
+    <p class=" vertical-rhythm-two text-primary text-center">
+      Simplifying things that matter for <br>people who care.
+    </p>
 
   </div>
 </section>
