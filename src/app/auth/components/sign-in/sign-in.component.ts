@@ -94,16 +94,16 @@ export class SignInComponent implements OnInit {
     // TODO -- check if user profile exists
     const self = this;
     const user = await self.userService.getUser(username).pipe(first()).toPromise();
-    console.log('DEBUG user profile ', user);
+    console.log('signin navigateToNextRoute - user profile ', user);
     // TODO -- also check if user is part of an org if they signed in with an org?
     if (user && user.emailAddress) {
       return this.router.navigate(['/', 'dashboard']);
     } else {
       const queryParams = { newUser: true };
-      if (org) {
-        queryParams['organizationId'] = org.id;
-        queryParams['organizationName'] = org.name;
-      }
+      // if (org) {
+      //   queryParams['organizationId'] = org.id;
+      //   queryParams['organizationName'] = org.name;
+      // }
       return this.router.navigate(['/', 'info'], { queryParams });
     }
   }
