@@ -25,15 +25,14 @@
                         <div fxLayout="column">
                             <h3>Requesting</h3>
                             <div fxLayout="row" fxLayoutAlign="center center">
-                                <h2 class="counter">{{question.requesting}}</h2>
+                                <!-- <h2 class="counter">{{question.requesting}}</h2> -->
+                                <input class="itemborder numinput" name="question.requesting" [(ngModel)]="question.requesting" (change)="question.sharing = 0">
                                 <div>
                                     <div>
-                                        <mat-icon (click)="handleRequesting(question, 'up')" class="cce-blue">expand_less
-                                        </mat-icon>
+                                        <mat-icon (click)="handleRequesting(question, 'up')" class="cce-blue">expand_less</mat-icon>
                                     </div>
                                     <div>
-                                        <mat-icon (click)="handleRequesting(question, 'down')" class="cce-blue">expand_more
-                                        </mat-icon>
+                                        <mat-icon (click)="handleRequesting(question, 'down')" class="cce-blue">expand_more</mat-icon>
                                     </div>
                                 </div>
                             </div>
@@ -42,14 +41,14 @@
                         <div fxLayout="column">
                             <h3>Sharing</h3>
                             <div fxLayout="row" fxLayoutAlign="center center">
-                                <h2 class="counter">{{question.sharing}}</h2>
+                                <!-- <h2 class="counter">{{question.sharing}}</h2> -->
+                                <input class="itemborder numinput" name="question.sharing" [(ngModel)]="question.sharing" (change)="question.requesting = 0">
                                 <div>
                                     <div>
                                         <mat-icon (click)="handleSharing(question, 'up')" class="cce-blue">expand_less</mat-icon>
                                     </div>
                                     <div>
-                                        <mat-icon (click)="handleSharing(question, 'down')" class="cce-blue">expand_more
-                                        </mat-icon>
+                                        <mat-icon (click)="handleSharing(question, 'down')" class="cce-blue">expand_more</mat-icon>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +88,7 @@
             <mat-card class="confirmation-box mat-elevation-z5">
                 <h3>Requesting</h3>
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let request of requests; let i = index;">                    
-                    <p><strong>{{ request.item }} <span *ngIf="request.sizes != null">({{request.sizes}})</span></strong></p>                    
+                    <p><strong>{{ request.item }} <span *ngIf="request.sizes != null">({{request.size}})</span></strong></p>                    
                     <p>{{ request.requesting }} {{request.unit}}(s)</p>
                 </div>
             </mat-card>
@@ -99,7 +98,7 @@
             <mat-card class="confirmation-box mat-elevation-z5">
                 <h3>Sharing</h3>
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let share of shares; let i = index;">                    
-                    <p><strong>{{ share.item }} <span *ngIf="share.sizes != null">({{share.sizes}})</span></strong></p>                   
+                    <p><strong>{{ share.item }} <span *ngIf="share.sizes != null">({{share.size}})</span></strong></p>                   
                     <p>{{ share.sharing }} {{share.unit}}(s)</p>
                 </div>
             </mat-card>
