@@ -48,7 +48,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     { id: 15, name: '15 Miles' },
     { id: 20, name: '20 Miles' },
     { id: 25, name: '25 Miles' },
-    { id: 50, name: '50+ Miles' },
+    { id: 50, name: '50 Miles' },
   ];
 
   get isRegistering() {
