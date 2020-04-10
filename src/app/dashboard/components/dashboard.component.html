@@ -10,7 +10,7 @@
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
                             <mat-label class="contentlabel">{{request.name}}</mat-label>
-                            <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                            <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto">{{request.statusText}}
                             </mat-label>
                         </div>
                     </mat-list-item>
@@ -42,7 +42,7 @@
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
                             <mat-label class="contentlabel">{{request.name}}</mat-label>
-                            <mat-label [className]="request.styleclass" style="margin-left: auto">{{request.statusText}}
+                            <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto">{{request.statusText}}
                             </mat-label>
                         </div>
                     </mat-list-item>

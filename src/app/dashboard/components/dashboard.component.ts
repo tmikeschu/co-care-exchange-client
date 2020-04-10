@@ -139,6 +139,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  getStyle(statusId): string {
+    switch (statusId) {
+      case -1:// Error
+        {
+          return 'contentstatusred';
+        }
+      case 0:// Pending
+        {
+          return 'contentstatusyellow';
+        }
+      case 1:// Matched
+        {
+          return 'contentstatusgreen';
+        }
+      case 2://Confirmed
+        {
+          return 'contentstatusyellow';
+        }
+      case 3://Fulfilled
+        {
+          return 'contentstatusgreen';
+        }
+      case 4://Cancelled
+        {
+          return 'contentstatusred';
+        }
+      default://there is no default, so error
+        return 'contentstatusred';
+    }
+  }
+
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscriptionNeeds.unsubscribe();

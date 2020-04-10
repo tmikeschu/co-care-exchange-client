@@ -30,13 +30,13 @@ export class DashboardService {
     this.init();
   }
 
-  async init() {      
+  async init() {
 
     // this really need t be in a guard or resolver
     try {
       const currentUser = await this.userService.getCurrentUser();
       console.log('DEBUG dash currentUser ', currentUser);
-      this.userProfile = this.userService.getCurrentUserProfile();
+      this.userProfile = await this.userService.getCurrentUserProfile();
       if (!this.userProfile) {
         this.router.navigate(['/']);
       }
@@ -52,8 +52,8 @@ export class DashboardService {
           result.data.dashboard.shared.map(share => share.statusTypeId = 2);
         }
 
-        this.agreementNeeds.next(this.setlabelstyles(result.data.dashboard.requested));
-        this.agreementShares.next(this.setlabelstyles(result.data.dashboard.shared));
+        this.agreementNeeds.next(this.updateMessageCount(result.data.dashboard.requested));
+        this.agreementShares.next(this.updateMessageCount(result.data.dashboard.shared));
       });
     } catch (e) {
       this.router.navigate(['/']);
@@ -86,7 +86,7 @@ export class DashboardService {
         }
     }`,
       'variables': {
-        "userId": this.userProfile && this.userProfile.id ? this.userProfile.id : '22201103dec0466fb44f1926bc1687c1' // TODO: just in case no items return for the demo
+        "userId": this.userProfile.id
       }
     };
     return this.http.post<any>(`${environment.serverUrl}`, query);
@@ -116,45 +116,9 @@ export class DashboardService {
     return this.http.post<any>(`${environment.serverUrl}`, input);
   }
 
-  setlabelstyles(list) {
-    console.log('setlabelstyles')
-
+  updateMessageCount(list) {
     this.messageCount += (list.filter(a => a.statusId === 2)).length;
-
-    return list.map(a => {
-      a.styleclass = this.getStyle(a.statusId);
-      return a;
-    });
+    return list;
   }
 
-  getStyle(statusId): string {
-    switch (statusId) {
-      case -1:// Error
-        {
-          return 'contentstatusred';
-        }
-      case 0:// Pending
-        {
-          return 'contentstatusyellow';
-        }
-      case 1:// Matched
-        {
-          return 'contentstatusgreen';
-        }
-      case 2://Confirmed
-        {
-          return 'contentstatusyellow';
-        }
-      case 3://Fulfilled
-        {
-          return 'contentstatusgreen';
-        }
-      case 4://Cancelled
-        {
-          return 'contentstatusred';
-        }
-      default://there is no default, so error
-        return 'contentstatusred';
-    }
-  }
 }
