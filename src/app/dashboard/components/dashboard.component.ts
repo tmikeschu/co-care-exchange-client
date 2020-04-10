@@ -39,7 +39,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.isAlive = true;
     this.dashboardPoll$ = timer(0, 5000).pipe(
       takeWhile(() => this.isAlive),
-      switchMap(_ => this.dashboardService.getDashboard())
+      switchMap(_ => {
+        return this.dashboardService.getDashboard()
+      })
     );
     this.dashboardData$ = this.dashboardPoll$.pipe(map((results: any) => results.data.dashboard));
     this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
@@ -137,6 +139,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       }
     });
+  }
+
+  getStyle(statusId): string {
+    switch (statusId) {
+      case -1:// Error
+        {
+          return 'contentstatusred';
+        }
+      case 0:// Pending
+        {
+          return 'contentstatusyellow';
+        }
+      case 1:// Matched
+        {
+          return 'contentstatusgreen';
+        }
+      case 2://Confirmed
+        {
+          return 'contentstatusyellow';
+        }
+      case 3://Fulfilled
+        {
+          return 'contentstatusgreen';
+        }
+      case 4://Cancelled
+        {
+          return 'contentstatusred';
+        }
+      default://there is no default, so error
+        return 'contentstatusred';
+    }
   }
 
   ngOnDestroy() {
