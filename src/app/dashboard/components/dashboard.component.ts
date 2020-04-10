@@ -39,9 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.isAlive = true;
     this.dashboardPoll$ = timer(0, 5000).pipe(
       takeWhile(() => this.isAlive),
-      switchMap(_ => {
-        return this.dashboardService.getDashboard()
-      })
+      switchMap(_ => this.dashboardService.getDashboard())
     );
     this.dashboardData$ = this.dashboardPoll$.pipe(map((results: any) => results.data.dashboard));
     this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
