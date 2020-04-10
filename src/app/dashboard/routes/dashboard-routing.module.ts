@@ -5,7 +5,7 @@ import { MetricsComponent } from '../components/metrics/metrics.component';
 
 const routes: Routes = [
   {
-    path: 'dashboard',
+    path: '',
     component: DashboardComponent
   },
   {

@@ -5,23 +5,24 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfile } from 'src/app/models/UserProfile';
+import { AuthenticationService } from './cce/authentication.service';
 
 const UserForEmail = gql`
   query UserForEmail($emailAddress: String!) {
     users(where: { emailAddress: $emailAddress }) {
-      id,
-      firstName,
-      lastName,
-      emailAddress,
-      phoneNumber,
-      address,
-      city,
-      state,
-      postalCode,
-      dropOffRadius,
-      pickupRadius,
+      id
+      firstName
+      lastName
+      emailAddress
+      phoneNumber
+      address
+      city
+      state
+      postalCode
+      dropOffRadius
+      pickupRadius
       organization {
-        id,
+        id
         name
       }
     }
@@ -32,13 +33,13 @@ const SaveUser = gql`
   mutation UserMutation($input: SaveUserInput!) {
     saveUser(input: $input) {
       user {
-        id,
-        emailAddress,
-        phoneNumber,
-        firstName,
-        lastName,
+        id
+        emailAddress
+        phoneNumber
+        firstName
+        lastName
         organization {
-          id,
+          id
           name
         }
       }
@@ -52,10 +53,18 @@ const SaveUser = gql`
 })
 export class UserService {
   currentUserProfile = null;
-  
-  constructor(private apollo: Apollo) {}
 
-  getCurrentUserProfile(): SaveUserInput {
+  constructor(private apollo: Apollo, private authService: AuthenticationService) {}
+
+  async getCurrentUser(): Promise<any> {
+    return await this.authService.getUser();
+  }
+
+  async getCurrentUserProfile(): Promise<SaveUserInput> {
+    if (!this.currentUserProfile) {
+      const user = await this.getCurrentUser();
+      return user ? user.userProfile : null;
+    }
     return this.currentUserProfile;
   }
 
@@ -73,6 +82,7 @@ export class UserService {
           console.log('DEBUG DATA ', response);
           const data = response.data;
           this.currentUserProfile = data.users && data.users.length ? data.users[0] : null;
+          this.authService.saveUserProfile(this.currentUserProfile);
           return this.currentUserProfile;
         })
       );
@@ -109,6 +119,7 @@ export class UserService {
           console.log('DEBUG CREATE USER DATA ', response);
           const data = response.data;
           this.currentUserProfile = data.createUser && data.createUser.user ? data.createUser.user : null;
+          this.authService.saveUserProfile(this.currentUserProfile);
           return this.currentUserProfile;
         })
       );

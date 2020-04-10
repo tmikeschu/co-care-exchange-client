@@ -1,7 +1,7 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { signIn } from '../../../aws-cognito/cognito/signin';
+import { currentAuthenticatedUser, getCurrentUserInfo, signIn, signOut } from '../../../aws-cognito/cognito/signin';
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { register } from '../../../aws-cognito/cognito/register';
@@ -12,6 +12,35 @@ import { environment } from 'src/environments/environment';
 export class AuthenticationService {
   private user: any;
   constructor(private router: Router, private http: HttpClient) {}
+
+  saveUserProfile(profile: unknown): void {
+    window.localStorage.setItem('userProfile', JSON.stringify(profile));
+    if (this.user) {
+      this.user.userProfile = profile;
+    }
+  }
+
+  getUserProfile(): unknown {
+    const up = window.localStorage.getItem('userProfile');
+    if (up) {
+      const profile = JSON.parse(up);
+      return profile;
+    }
+    return null;
+  }
+
+  async getUser(): Promise<any> {
+    if (this.user) {
+      return this.user;
+    }
+    // check for saved session
+    const cu = await currentAuthenticatedUser();
+    this.user = cu;
+    if (this.user) {
+      this.user.userProfile = this.getUserProfile();
+    }
+    return this.user;
+  }
 
   getIdToken(): string {
     return this.user ? this.user.getSignInUserSession().getIdToken() : '';
@@ -95,15 +124,15 @@ export class AuthenticationService {
 
   login(email: string, password: string) {
     console.log(environment.serverUrl);
-    return this.http.post(`${environment.serverUrl}authenticate`, {email, password})
-      .pipe(map((response: any) => {
-      })); 
+    return this.http.post(`${environment.serverUrl}authenticate`, { email, password }).pipe(map((response: any) => {}));
   }
 
-  logout() {
-    // remove user from local storage to log user ou
+  async logout() {
+    // remove user from local storage to log user out
+    this.user = null;
+    await signOut();
     localStorage.removeItem('user');
-    //this.userService.setUser(null);
-    this.router.navigate(['/']);
+    localStorage.removeItem('userProfile');
+    return await this.router.navigate(['/']);
   }
 }

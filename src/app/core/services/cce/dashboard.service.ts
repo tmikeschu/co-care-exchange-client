@@ -32,23 +32,32 @@ export class DashboardService {
 
   async init() {      
 
-    this.userProfile = this.userService.getCurrentUserProfile();
-    if (!this.userProfile) this.router.navigate([ '/signIn' ]);
-
-    this.getDashboard().subscribe(result => {
-      console.log('dashboard results:', result);
-
-      this.hasNeeds = result.data.dashboard.requested.length;
-      this.hasShares = result.data.dashboard.shared.length
-
-      if (this.hasNeeds) {
-        result.data.dashboard.requested.map(need => need.statusTypeId = 1);
-        result.data.dashboard.shared.map(share => share.statusTypeId = 2);
+    // this really need t be in a guard or resolver
+    try {
+      const currentUser = await this.userService.getCurrentUser();
+      console.log('DEBUG dash currentUser ', currentUser);
+      this.userProfile = this.userService.getCurrentUserProfile();
+      if (!this.userProfile) {
+        this.router.navigate(['/']);
       }
 
-      this.agreementNeeds.next(this.setlabelstyles(result.data.dashboard.requested));
-      this.agreementShares.next(this.setlabelstyles(result.data.dashboard.shared));
-    });
+      this.getDashboard().subscribe(result => {
+        console.log('dashboard results:', result);
+
+        this.hasNeeds = result.data.dashboard.requested.length;
+        this.hasShares = result.data.dashboard.shared.length;
+
+        if (this.hasNeeds) {
+          result.data.dashboard.requested.map(need => need.statusTypeId = 1);
+          result.data.dashboard.shared.map(share => share.statusTypeId = 2);
+        }
+
+        this.agreementNeeds.next(this.setlabelstyles(result.data.dashboard.requested));
+        this.agreementShares.next(this.setlabelstyles(result.data.dashboard.shared));
+      });
+    } catch (e) {
+      this.router.navigate(['/']);
+    }
   }
 
   getDashboard(): Observable<Result> {
