@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service'
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-individual',
@@ -26,40 +27,6 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     private userService: UserService
   ) { }
 
-  ngOnInit() {
-    this.individualRegisterForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      householdSize: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.required],
-      password: [''],
-    });
-
-    this.userProfile = this.userService.getCurrentUserProfile();
-  }
-
-  radiusOptions = [
-    { id: 1, name: '1 Mile' },
-    { id: 5, name: '5 Miles' },
-    { id: 10, name: '10 Miles' },
-    { id: 15, name: '15 Miles' },
-    { id: 20, name: '20 Miles' },
-    { id: 25, name: '25 Miles' },
-    { id: 50, name: '50+ Miles' },
-  ];
-
-  ngAfterContentInit(): void {
-    this.individualRegisterForm.get('firstName').setValue(this.firstName);
-    this.individualRegisterForm.get('lastName').setValue(this.lastName);
-    this.individualRegisterForm.get('email').setValue(this.email);
-  }
-
   @Input()
   set isRegistering(state: boolean) {
     console.log('DEBUG org isRegistering ', state);
@@ -74,8 +41,55 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     }
   }
 
+  radiusOptions = [
+    { id: 1, name: '1 Mile' },
+    { id: 5, name: '5 Miles' },
+    { id: 10, name: '10 Miles' },
+    { id: 15, name: '15 Miles' },
+    { id: 20, name: '20 Miles' },
+    { id: 25, name: '25 Miles' },
+    { id: 50, name: '50 Miles' },
+  ];
+
   get isRegistering() {
     return this._isRegistering;
+  }
+
+  ngOnInit() {
+
+  }
+
+  async ngAfterContentInit() {
+
+    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+
+    this.individualRegisterForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      householdSize: [0, Validators.required],
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      postalCode: ['', Validators.required],
+      deliveryOrPickupRadius: ['', Validators.required],
+      password: [''],
+    });
+
+    this.individualRegisterForm.get('firstName').setValue(this.firstName);
+    this.individualRegisterForm.get('lastName').setValue(this.lastName);
+    this.individualRegisterForm.get('email').setValue(this.email);
+
+    if (this.userProfile) {
+      this.individualRegisterForm.get('phone').setValue(this.userProfile.phoneNumber || '');
+      this.individualRegisterForm.get('address').setValue(this.userProfile.address || '');
+      this.individualRegisterForm.get('city').setValue(this.userProfile.city || '');
+      this.individualRegisterForm.get('state').setValue(this.userProfile.state || '');
+      this.individualRegisterForm.get('postalCode').setValue(this.userProfile.postalCode || '');
+      this.individualRegisterForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+      this.individualRegisterForm.get('householdSize').setValue(this.userProfile.householdSize || 0);
+    }
   }
 
   async onRegisterSubmit() {
@@ -84,7 +98,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       address: this.individualRegisterForm.get('address').value,
       city: this.individualRegisterForm.get('city').value,
       dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
-      emailAddress: this.individualRegisterForm.get('email').value,
+      emailAddress: this.email,
       currentUserEmail: this.email,
       firstName: this.individualRegisterForm.get('firstName').value,
       lastName: this.individualRegisterForm.get('lastName').value,

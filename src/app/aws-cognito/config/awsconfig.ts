@@ -3,6 +3,7 @@ import { individualsAWSInfo } from './individuals';
 import { organizationCUPInfo } from './organizations';
 
 export const configureAws = (name: string) => {
+  console.log('DEBUG AWS CONFIG entry');
   const configs = { ...individualsAWSInfo, ...organizationCUPInfo };
   let config = configs[name];
   console.log('DEBUG using aws config ', config);

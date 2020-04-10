@@ -6,7 +6,7 @@ import { AnswerDetailComponent } from '../components/answer-detail/answer-detail
 
 const routes: Routes = [
   {
-    path: 'dashboard',
+    path: '',
     component: DashboardComponent
   },
   {
