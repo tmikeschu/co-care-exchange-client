@@ -33,8 +33,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       switchMap(_ => {
         return this.dashboardService.getDashboard()
           .pipe(
+            map((data: any) => {
+              if (data && data.errors) {
+                const messages = data.errors.map(e => e.message).join(', ');
+                throw new Error(messages);
+              }
+              return data;
+            }),
             catchError(error => {
-              console.error('an error occurred querying the dashboard', error.message);
+              console.warn('an error occurred querying the dashboard', error.message);
               return of({ data: { dashboard: { requested: [], shared: []}}});
             })
           );
