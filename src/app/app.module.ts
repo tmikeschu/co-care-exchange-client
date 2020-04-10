@@ -27,6 +27,7 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { Router } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -61,4 +62,12 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
   exports: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  // DEV NOTE: uncomment to debug routing
+  // constructor(
+  //     private readonly router: Router,
+  // ) {
+  //   router.events
+  //       .subscribe(console.log);
+  // }
+}

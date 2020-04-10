@@ -90,7 +90,7 @@ const appRoutes: Routes = [
 
 
 export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
-// export const routing = RouterModule.forRoot(appRoutes, {
+// export const AppRouting = RouterModule.forRoot(appRoutes, {
 //   enableTracing: false,
 //   scrollPositionRestoration: 'enabled',
 //   anchorScrolling: 'enabled'
