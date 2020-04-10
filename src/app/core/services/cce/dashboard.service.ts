@@ -89,7 +89,16 @@ export class DashboardService {
         "userId": this.userProfile.id
       }
     };
-    return this.http.post<any>(`${environment.serverUrl}`, query);
+    return this.http.post<any>(`${environment.serverUrl}`, query)
+      .pipe(
+        map(data => {
+          if (data && data.errors) {
+            const messages = data.errors.map(e => e.message).join(', ');
+            throw new Error(messages);
+          }
+          return data;
+        })
+      );
   }
 
   updateOrderStatus(orderStatusChange: OrderStatusChangeModel): Observable<any> {
