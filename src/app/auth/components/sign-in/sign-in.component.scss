@@ -4,8 +4,32 @@ img {
   width: 100px;
 }
 
+h2{
+  color: #fafafa;
+}
+
 h3 {
   color: #fafafa;
+  margin: 0px;
+}
+
+.signuplink{
+  color: #29b6f6;
+  cursor: pointer;
+  padding-top: 6px;
+  font-size: .8em;
+}
+
+.mainpagetop{
+  margin-top: 20px;
+}
+
+.cardalign{
+  margin-top: 20px;
+}
+
+.resetpasswordalign{
+  margin-left: auto;
 }
 
 mat-icon {
