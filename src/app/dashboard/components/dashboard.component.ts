@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
-import { Observable, Subscription, timer } from 'rxjs';
-import { map, switchMap, takeWhile } from 'rxjs/operators';
+import { Observable, timer, of } from 'rxjs';
+import { catchError, map, switchMap, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
@@ -20,28 +20,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
   shares$: Observable<any>;
   isAlive: boolean;
 
-  subscriptionNeeds: Subscription;
-  subscriptionShares: Subscription;
-  dashboardService: DashboardService;
-  agreementNeeds: any[];
-  agreementShares: any[];
-
   constructor(
     public dialog: MatDialog,
-    dashboardService: DashboardService,
+    private dashboardService: DashboardService,
     private toastrService: ToastrService) {
-    this.dashboardService = dashboardService;
-    this.subscriptionNeeds = this.dashboardService.agreementNeeds.subscribe();
-    this.subscriptionShares = this.dashboardService.agreementShares.subscribe();
   }
 
   ngOnInit() {
     this.isAlive = true;
     this.dashboardPoll$ = timer(0, 5000).pipe(
       takeWhile(() => this.isAlive),
-      switchMap(_ => this.dashboardService.getDashboard())
+      switchMap(_ => {
+        return this.dashboardService.getDashboard()
+          .pipe(
+            map((data: any) => {
+              if (data && data.errors) {
+                const messages = data.errors.map(e => e.message).join(', ');
+                throw new Error(messages);
+              }
+              return data;
+            }),
+            catchError(error => {
+              console.warn('an error occurred querying the dashboard', error.message);
+              return of({ data: { dashboard: { requested: [], shared: []}}});
+            })
+          );
+      })
     );
-    this.dashboardData$ = this.dashboardPoll$.pipe(map((results: any) => results.data.dashboard));
+    this.dashboardData$ = this.dashboardPoll$.pipe(
+      takeWhile(_ => this.isAlive),
+      map((results: any) => results.data.dashboard)
+    );
     this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
     this.shares$ = this.dashboardData$.pipe(map(dashboard => dashboard.shared));
     this.needs$.subscribe(needs => {
@@ -171,9 +180,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    this.subscriptionNeeds.unsubscribe();
-    this.subscriptionShares.unsubscribe();
     this.isAlive = false;
   }
 }
