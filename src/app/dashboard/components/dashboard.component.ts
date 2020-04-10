@@ -44,6 +44,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.dashboardData$ = this.dashboardPoll$.pipe(map((results: any) => results.data.dashboard));
     this.needs$ = this.dashboardData$.pipe(map(dashboard => dashboard.requested));
     this.shares$ = this.dashboardData$.pipe(map(dashboard => dashboard.shared));
+    this.needs$.subscribe(needs => {
+      console.log('DASHBOARD NEEDS: ', needs);
+    });
+    this.shares$.subscribe(shares => {
+      console.log('DASHBOARD SHARES: ', shares);
+    });
   }
 
   handleStatusClick(agreement: Agreement) {
