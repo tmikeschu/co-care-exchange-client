@@ -3,33 +3,22 @@
     <a routerLink="/">
       <img #image src="../../../assets/cce-logo.svg" />
     </a>
-    <h3 class="text-center">
+    <h3>Care Exchange</h3>
+    <h2 class="text-center">
       Welcome back.<br>
       Let's do some good today!
-    </h3>
-    <div class="cta w-100 active" fxLayout="row" fxLayoutAlign="center center">
-      <!-- <a routerLink="/">
-        Login
-      </a> -->
-      <a routerLink="/register">
-        Sign Up
-      </a>
-    </div>
+    </h2>
+    <div class="cta w-100 active" fxLayout="row" fxLayoutAlign="center center">      
+      
+    </div> 
   </div>
 </div>
 
 <section class="section">
   <div class="page-content">
-    <mat-card class="mat-elevation-z10">
+    <mat-card class="mat-elevation-z10 cardalign">
       <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onLoginSubmit()">
-        <!-- <mat-form-field class="full-width">
-          <mat-select placeholder="Organization" formControlName="organization">
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let organization of organizations" [value]="organization">
-              {{organization.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
+      
         <mat-card-content>
           <mat-form-field class="login-full-width">
             <input matInput placeholder="Username" formControlName="username" type="text" required>
@@ -51,15 +40,20 @@
 
         <mat-progress-bar *ngIf="signingIn" mode="indeterminate" color="accent"></mat-progress-bar>
 
-        <div fxLayout="row" fxLayoutAlign="end center">
-          <a class="links" (click)="handleForgotPW()">Forgot your password?</a>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          
+        </div>
+        <div fxLayout="row">
+          <a class="signuplink" routerLink="/register">Sign Up</a>
+          <a class="links resetpasswordalign" (click)="handleForgotPW()" >Forgot your password?</a>
         </div>
 
         <input type="submit" id="hidden-form-submit" style="display: none;">
       </form>
     </mat-card>
 
-    <div class="vertical-rhythm-two" fxLayout="row" fxLayoutAlign="center center">
+    <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onLoginSubmit()">
         <mat-icon>arrow_forward</mat-icon>
       </button>
