@@ -27,7 +27,7 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @NgModule({
   imports: [
