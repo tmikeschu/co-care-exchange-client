@@ -109,7 +109,7 @@ export class SignInComponent implements OnInit {
   }
 
   handleForgotPW() {
-    this.router.navigate(['/passwordforgot']);
+    this.router.navigate(['/' , 'passwordforgot']);
   }
 
   handleRegistration() {
