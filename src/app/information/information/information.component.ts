@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { filter, first } from 'rxjs/operators';
+import {filter, finalize, first} from 'rxjs/operators';
 import { AuthenticationService } from '../../core/services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfileInformation } from '../models/info-create.model';
+import {subscribe} from 'graphql';
 // import { OrganizationService } from '../../core/services/organization.service'
 
 @Component({
@@ -71,17 +72,19 @@ export class InformationComponent implements OnInit {
   onInfoSubmit(payload: UserProfileInformation) {
     console.log('DEBUG create user profile ', payload);
     this.isRegistering = true;
-    // WIP --save profile
     const profile = payload.userInput;
     console.log('DEBUG profile to save ', profile);
-    this.userService.saveUser(profile).subscribe(
+    this.userService.saveUser(profile).pipe(finalize(() => this.isRegistering = false)).subscribe(
       (x) => {
-        console.log('save user success ', x);
-        this.isRegistering = false;
-        this.router.navigate(['/prompt']);
+        if (x) {
+          console.log('save user success ', x);
+          this.router.navigate(['/prompt']);
+        } else {
+          console.error('Error processing saved user ', x);
+          this.toastrService.error('Unable to retrieve saved profile. Please try again later');
+        }
       },
       (error) => {
-        this.isRegistering = false;
         console.error('Save user error ', error);
         this.toastrService.error('Unable to save profile. Please try again later');
       }
