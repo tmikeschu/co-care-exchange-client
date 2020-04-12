@@ -12,14 +12,12 @@ export class UserResolver implements Resolve<any> {
   constructor( private router: Router, private authenticationService: AuthenticationService) {}
 
   resolve() {
-    console.log('DP resolve entry');
     return this.authenticationService.getUser$().pipe(first(u => u !== undefined),
       catchError((error) => {
         // route to /
         return this.router.navigate(['/']);
       }),
       mergeMap((user: any) => {
-        console.log('DP resolver result ', user);
         if (user) {
           return of(user);
         } else {
