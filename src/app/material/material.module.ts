@@ -22,7 +22,8 @@ import {
   MatTooltipModule,
   MatExpansionModule,
   MatStepperModule,
-  MatListModule, MatRadioModule
+  MatListModule,
+  MatRadioModule,
 } from '@angular/material';
 // import { MaterialFileInputModule } from 'ngx-material-file-input';
 //
@@ -83,5 +84,4 @@ import {
     MatRadioModule,
   ],
 })
-export class CustomMaterialModule {
-}
+export class CustomMaterialModule {}

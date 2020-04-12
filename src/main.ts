@@ -3,6 +3,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import {configureAws} from './app/aws-cognito/config/awsconfig';
+//
+// configureAws('CCE_Individual');
 
 if (environment.production) {
   enableProdMode();

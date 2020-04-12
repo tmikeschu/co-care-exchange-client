@@ -9,9 +9,11 @@ import { PersonalDashboardComponent } from './personal-dashboard/personal-dashbo
 import { ResourcesComponent } from './resources/resources.component';
 import { ModuleWithProviders } from '@angular/core';
 import { UserResolver } from './core/resolvers/user.resolver';
-import {AppComponent} from './app.component';
+import { AppComponent } from './app.component';
+import { PromptsComponent } from './prompts/prompts/prompts.component';
+import {InformationComponent} from './information/information/information.component';
 
-const appRoutes: Routes = [
+export const appRoutes: Routes = [
   // {
   //   path: 'metrics',
   //   component: MetricsComponent
@@ -87,6 +89,7 @@ const appRoutes: Routes = [
       {
         path: 'personaldashboard',
         component: PersonalDashboardComponent,
+        resolve: { user: UserResolver },
       },
       {
         path: 'pantry',
@@ -107,7 +110,17 @@ const appRoutes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        // TODO -- auth guard
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'prompt',
+        component: PromptsComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'info',
+        component: InformationComponent,
+        resolve: { user: UserResolver },
       },
       {
         path: '**',
@@ -115,11 +128,11 @@ const appRoutes: Routes = [
         pathMatch: 'full',
       },
     ],
-    resolve: { user: UserResolver},
+   // resolve: { user: UserResolver },
   },
 ];
 
-export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes, {paramsInheritanceStrategy: 'always'});
 // export const AppRouting = RouterModule.forRoot(appRoutes, {
 //   enableTracing: false,
 //   scrollPositionRestoration: 'enabled',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { first } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { AuthenticationService } from '../../core/services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,10 +31,13 @@ export class InformationComponent implements OnInit {
     private userService: UserService,
     // private organizationService: OrganizationService,
     private toastrService: ToastrService
-  ) { }
-
+  ) {}
 
   async ngOnInit() {
+    this.route.data.pipe(filter((data) => data.user)).subscribe((data) => {
+      // TBD -- prob not needed, but stubbed out jic
+      console.log('DEBUG info data :', data);
+    });
     this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
     this.route.queryParams.subscribe((val) => {
@@ -49,7 +52,7 @@ export class InformationComponent implements OnInit {
         this.organizationId = val.organizationId;
       }
 
-      this.registrantType = (this.organizationId && this.organizationName) ? 'Organization' : 'Individual';
+      this.registrantType = this.organizationId && this.organizationName ? 'Organization' : 'Individual';
     });
   }
 
