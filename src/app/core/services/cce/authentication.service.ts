@@ -29,7 +29,6 @@ export class AuthenticationService {
               this.user.userProfile = this.getUserProfile();
             }
             console.log('DEBUG this.user ', this.user);
-           // this.greeting = 'Hello ' + this.user.username;
           }
           this.userSubject$.next(this.user);
         });
