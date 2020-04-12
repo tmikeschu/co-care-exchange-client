@@ -60,6 +60,10 @@ export class UserService {
     return this.authService.getUser();
   }
 
+  getCurrentUserEmail(): string {
+    return this.authService.getEmail();
+  }
+
   getCurrentUser$(): any {
     return this.authService.getUser$();
   }
