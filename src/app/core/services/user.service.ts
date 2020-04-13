@@ -25,6 +25,7 @@ const UserForEmail = gql`
         id
         name
       }
+      householdSize
     }
   }
 `;
@@ -42,6 +43,7 @@ const SaveUser = gql`
           id
           name
         }
+        householdSize
       }
       clientMutationId
     }

@@ -106,6 +106,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       state: this.individualRegisterForm.get('state').value,
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
+      householdSize: +this.individualRegisterForm.get('householdSize').value || null
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
