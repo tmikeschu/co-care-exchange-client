@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
         this.toastrService.error(result.errorMsg);
         return;
       }
-      this.toastrService.success('Please check your email for a verification and then complete signin', null, { timeOut: 0, extendedTimeOut: 0 });
+      this.toastrService.success('Please check your email for a verification and then complete signin', null, { timeOut: 0, extendedTimeOut: 0, positionClass: "toast-top-center" });
       await this.router.navigate(['/', 'signin'], { queryParams: { email: email } });
     } catch (err) {
       console.error(err);
