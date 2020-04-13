@@ -75,17 +75,16 @@ export class InformationComponent implements OnInit {
     const profile = payload.userInput;
     console.log('DEBUG profile to save ', profile);
     this.userService.saveUser(profile).pipe(finalize(() => this.isRegistering = false)).subscribe(
-      (p) => {
-        if (p) {
-          console.log('save user success ', p);
-          if (p.id) {
+      (savedProfile) => {
+        if (savedProfile) {
+          console.log('save user success ', savedProfile);
+          if (profile.userId) {
             this.router.navigate(['/personaldashboard']);
           } else {
             this.router.navigate(['/prompt']);
           }
-
         } else {
-          console.error('Error processing saved user ', p);
+          console.error('Error processing saved user ', savedProfile);
           this.toastrService.error('Unable to retrieve saved profile. Please try again later');
         }
       },
