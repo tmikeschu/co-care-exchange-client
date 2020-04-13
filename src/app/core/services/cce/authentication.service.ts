@@ -5,13 +5,42 @@ import { currentAuthenticatedUser, getCurrentUserInfo, signIn, signOut } from '.
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { register } from '../../../aws-cognito/cognito/register';
-import { map } from 'rxjs/operators';
+import {map, share} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AmplifyService } from 'aws-amplify-angular';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+  private userSubject$ = new BehaviorSubject<any>(undefined);
+  private user$ = this.userSubject$.pipe(share());
   private user: any;
-  constructor(private router: Router, private http: HttpClient) {}
+  signedIn = false;
+  constructor(private router: Router, private http: HttpClient, private amplifyService: AmplifyService) {
+    this.amplifyService.authStateChange$
+        .subscribe(authState => {
+          console.log('DEBUG authState.state ', authState.state);
+          this.signedIn = authState.state === 'signedIn';
+          if (!authState.user) {
+            this.user = null;
+          } else {
+            this.user = authState.user;
+            if (this.user) {
+              this.user.userProfile = this.getUserProfile();
+            }
+            console.log('DEBUG this.user ', this.user);
+          }
+          this.userSubject$.next(this.user);
+        });
+  }
+
+  getUser$(): any {
+    return this.user$;
+  }
+
+  getUser(): any {
+    return this.user;
+  }
 
   saveUserProfile(profile: unknown): void {
     window.localStorage.setItem('userProfile', JSON.stringify(profile));
@@ -29,18 +58,18 @@ export class AuthenticationService {
     return null;
   }
 
-  async getUser(): Promise<any> {
-    if (this.user) {
-      return this.user;
-    }
-    // check for saved session
-    const cu = await currentAuthenticatedUser();
-    this.user = cu;
-    if (this.user) {
-      this.user.userProfile = this.getUserProfile();
-    }
-    return this.user;
-  }
+  // async getUser(): Promise<any> {
+  //   if (this.user) {
+  //     return this.user;
+  //   }
+  //   // check for saved session
+  //   const cu = await currentAuthenticatedUser();
+  //   this.user = cu;
+  //   if (this.user) {
+  //     this.user.userProfile = this.getUserProfile();
+  //   }
+  //   return this.user;
+  // }
 
   getIdToken(): string {
     return this.user ? this.user.getSignInUserSession().getIdToken() : '';

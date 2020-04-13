@@ -74,7 +74,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-  
+Workaround:
+Production build will fail with AOT build due to AWS libs unless `fullTemplateTypeCheck` is set to `false` in `tsconfig.json`. 
+Ref: https://github.com/aws-amplify/amplify-js/issues/3620  
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 

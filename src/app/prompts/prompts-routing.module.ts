@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PromptsComponent } from 'src/app/prompts/prompts/prompts.component';
+import {UserResolver} from '../core/resolvers/user.resolver';
 
 const routes: Routes = [
   {
-    path: 'prompt',
+    path: '',
     component: PromptsComponent,
+    resolve: { user: UserResolver },
   }
 ];
 
