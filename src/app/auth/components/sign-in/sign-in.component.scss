@@ -4,13 +4,17 @@ img {
   width: 100px;
 }
 
-h2{
-  color: #fafafa;
+h2 {
+  &.sign-in-h2 {
+    color: #fafafa;
+  }
 }
 
 h3 {
-  color: #fafafa;
-  margin: 0px;
+  &.sign-in-h3 {
+    color: #fafafa;
+    margin: 0px;
+  }
 }
 
 .signuplink{
