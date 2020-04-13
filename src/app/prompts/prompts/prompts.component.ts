@@ -217,6 +217,10 @@ export class PromptsComponent implements OnInit {
     }
   }
 
+  onCancelBackToDashboard(){
+    this.router.navigate(['/dashboard']);
+  }
+  
   onChangeAnswers() {
     this.showConfirm = false;
     this.showConfirmBtn = false;
@@ -239,6 +243,8 @@ export class PromptsComponent implements OnInit {
     for (let x = 0; x < this.prompts.length; x++) {
       this.prompts[x].unitsOfIssueChoices = [];
       this.prompts[x].sizeChoices = [];
+      this.prompts[x].unit = null;
+      this.prompts[x].size = null;
 
       for (let y = 0; y < this.selectedPrompts.length; y++) {
         if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {

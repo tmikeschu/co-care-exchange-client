@@ -79,6 +79,30 @@ h3 {
   color: #919191!important; 
 }
 
+h2 {
+  color: #919191!important; 
+}
+
+.leavequestionspage{
+  top: 4px;
+  position: absolute;
+  right: 4px;
+}
+
+.numberCircle {
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  padding: 4px;
+  cursor: pointer;
+  background: #fff;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
+
+  font: 14px Arial, sans-serif;
+}
+
 ::ng-deep .mat-select-panel {
   position: fixed;
   bottom: 0;

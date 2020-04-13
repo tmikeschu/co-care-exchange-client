@@ -17,7 +17,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { InformationModule } from './information/information.module';
 import { AwsCognitoModule } from './aws-cognito/aws-cognito.module';
 import { PantryLocatorModule } from './pantry-locator/pantry-locator.module';
-import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { AccountComponent } from './account/account.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
@@ -56,7 +56,7 @@ import {configureAws} from './aws-cognito/config/awsconfig';
     ToastrModule.forRoot(),
     LayoutModule,
   ],
-  declarations: [AppComponent, ContactUsComponent, PersonalDashboardComponent, ResourcesComponent, PopupDialogComponent],
+  declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent],
   providers: [
     AmplifyService,
     NavbarService,
