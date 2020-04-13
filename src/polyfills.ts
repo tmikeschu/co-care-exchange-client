@@ -1,4 +1,10 @@
 
+// for aws amplify
+// ref: https://aws-amplify.github.io/docs/js/angular
+(window as any).global = window;
+(window as any).process = {
+    env: { DEBUG: undefined },
+};
 
 
 /**

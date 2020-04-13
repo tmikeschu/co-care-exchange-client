@@ -9,7 +9,7 @@ import { AuthenticationService } from 'src/app/core/services/cce/authentication.
 @Component({
   selector: 'app-prompts',
   templateUrl: './prompts.component.html',
-  styleUrls: ['./prompts.component.scss']
+  styleUrls: ['./prompts.component.scss'],
 })
 export class PromptsComponent implements OnInit {
   prompts: Prompt[];
@@ -17,7 +17,7 @@ export class PromptsComponent implements OnInit {
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
   promptTypeQuestion: string;
-  showConfirm: boolean = false;  
+  showConfirm = false;
   promptMap: any = new Map();
   promptTypeIndex = 0;
   shares: any[] = [];
@@ -26,17 +26,16 @@ export class PromptsComponent implements OnInit {
   prompt: Prompt;
   user: SaveUserInput;
   promptIndex = 0;
-  surveyTime = false;  
+  surveyTime = false;
   inNeed: boolean;
-  showSpecificQuestions:boolean = false;
-  showGroupTypeQuestions: boolean = true;
+  showSpecificQuestions = false;
+  showGroupTypeQuestions = true;
   groupTypeList: {}[] = [];
-  showConfirmBtn: boolean = false;
-  showGoToQuestionsBtn: boolean = true;
-  showGoBackToGroupTypesBtn: boolean = false;
-  showSubmitAnswersBtn: boolean = false;
-  showChangeAnswersBtn: boolean = false;
-  userService: UserService;
+  showConfirmBtn = false;
+  showGoToQuestionsBtn = true;
+  showGoBackToGroupTypesBtn = false;
+  showSubmitAnswersBtn = false;
+  showChangeAnswersBtn = false;
   userEmail: string;
   groupTypeRdo: any[] = [
     {
@@ -45,42 +44,97 @@ export class PromptsComponent implements OnInit {
     },
     {
       key: 'No',
-      checked: true
-    }
+      checked: true,
+    },
   ];
 
-  constructor(private promptService: PromptService, private router: Router, userservice: UserService, authenticationService: AuthenticationService) {
-    this.userEmail = authenticationService.getEmail();
-    this.userService = userservice;
-
-    this.userService.getUser(this.userEmail).subscribe(user => {
-
-      this.userType = 'ind';
-
-      if(user == null){
-        this.router.navigate(['/']);
-        return true;
-      }
-
-      if(user.organization != null){
-        this.userType = 'org';
-      }
-
-      this.promptService.getPrompts(this.userType).subscribe((prompts) => {
-        console.log('getPrompts', prompts);
-        this.prompts = prompts.data.prompts;  
-                
-        for(let x = 0; x < prompts.data.prompts.length; x++){  
-          if(!this.selectedPrompts.find(element => element['groupName'] == this.prompts[x].groupName)){
-            this.selectedPrompts.push({'groupName':this.prompts[x].groupName, 'showQuestions':'No', 'prompts': []});
-          }
-        }     
-      });  
-
-    });
-  }
+  constructor(private promptService: PromptService, private router: Router, private userService: UserService) {}
 
   ngOnInit() {
+    this.configure();
+  }
+
+  private configure(): void {
+    const userProfile = this.userService.getCurrentUserProfile();
+    if (userProfile) {
+      this.userEmail = this.userService.getCurrentUserEmail();
+      console.log('DEBUG using saved userprofile for prompts for ' + this.userEmail);
+      this.configureUser(userProfile);
+      this.configurePrompts();
+    } else {
+      this.userEmail = this.userService.getCurrentUserEmail();
+      console.log('DEBUG retrieving  userprofile for prompts for email ' + this.userEmail);
+
+
+      this.userService.getUser(this.userEmail).subscribe((user) => {
+
+        this.configureUser(user);
+        // this.userType = 'ind';
+        //
+        // if (user == null) {
+        //   this.router.navigate(['/']);
+        //   return true;
+        // }
+        //
+        // if (user.organization != null) {
+        //   this.userType = 'org';
+        // }
+
+        this.configurePrompts();
+      });
+    }
+
+    // this.userEmail = this.userService.getEmail();
+    //
+    // this.userService.getUser(this.userEmail).subscribe((user) => {
+    //   this.userType = 'ind';
+    //
+    //   if (user == null) {
+    //     this.router.navigate(['/']);
+    //     return true;
+    //   }
+    //
+    //   if (user.organization != null) {
+    //     this.userType = 'org';
+    //   }
+    //
+    //   // this.promptService.getPrompts(this.userType).subscribe((prompts) => {
+    //   //   console.log('getPrompts', prompts);
+    //   //   this.prompts = prompts.data.prompts;
+    //   //
+    //   //   for (let x = 0; x < prompts.data.prompts.length; x++) {
+    //   //     if (!this.selectedPrompts.find((element) => element['groupName'] == this.prompts[x].groupName)) {
+    //   //       this.selectedPrompts.push({ groupName: this.prompts[x].groupName, showQuestions: 'No', prompts: [] });
+    //   //     }
+    //   //   }
+    //   // });
+    // });
+  }
+
+  private configureUser(userProfile): void {
+    if (userProfile == null) {
+      console.error('Unable to process user, profile is null');
+      this.router.navigate(['/']);
+    }
+
+    this.userType = 'ind';
+
+    if (userProfile.organization != null) {
+      this.userType = 'org';
+    }
+  }
+
+  private configurePrompts(): void {
+    this.promptService.getPrompts(this.userType).subscribe((prompts) => {
+      console.log('getPrompts', prompts);
+      this.prompts = prompts.data.prompts;
+
+      for (let x = 0; x < prompts.data.prompts.length; x++) {
+        if (!this.selectedPrompts.find((element) => element['groupName'] == this.prompts[x].groupName)) {
+          this.selectedPrompts.push({ groupName: this.prompts[x].groupName, showQuestions: 'No', prompts: [] });
+        }
+      }
+    });
   }
 
   handleRequesting(question, direction) {
@@ -111,24 +165,24 @@ export class PromptsComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-    //console.log('onSubmit prompts', this.prompts);
+  onSubmit() {
+    // console.log('onSubmit prompts', this.prompts);
     this.shares = [];
     this.requests = [];
 
-    for(let x = 0; x < this.prompts.length; x++){
-      if(this.prompts[x].sharing > 0){        
-        if(!this.shares.find(element => element == this.prompts[x].groupName)){
+    for (let x = 0; x < this.prompts.length; x++) {
+      if (this.prompts[x].sharing > 0) {
+        if (!this.shares.find((element) => element == this.prompts[x].groupName)) {
           this.shares.push(this.prompts[x]);
-        }        
+        }
       }
 
-      if(this.prompts[x].requesting > 0){
-        if(!this.requests.find(element => element == this.prompts[x].groupName)){
+      if (this.prompts[x].requesting > 0) {
+        if (!this.requests.find((element) => element == this.prompts[x].groupName)) {
           this.requests.push(this.prompts[x]);
-        }        
+        }
       }
-    }  
+    }
 
     this.showSpecificQuestions = false;
     this.showConfirm = true;
@@ -136,32 +190,31 @@ export class PromptsComponent implements OnInit {
     this.showSubmitAnswersBtn = false;
     this.showChangeAnswersBtn = true;
 
-    if(this.requests.length < 1 && this.shares.length < 1){
+    if (this.requests.length < 1 && this.shares.length < 1) {
       this.showConfirmBtn = false;
-    }
-    else{
+    } else {
       this.showConfirmBtn = true;
     }
 
     console.log('submitted prompts', this.prompts);
   }
 
-  onConfirm() {    
-    //console.log('onConfirm selectedPrompts', this.selectedPrompts);
-    for(let x = 0; x < this.selectedPrompts.length; x++){
-      if(this.selectedPrompts[x].showQuestions == 'Yes'){
-        //console.log('onConfirm prompts', this.selectedPrompts[x].prompts);
-        for(let y = 0; y < this.selectedPrompts[x].prompts.length; y++){
-          if(this.selectedPrompts[x].prompts[y].sharing != 0 || this.selectedPrompts[x].prompts[y].requesting != 0){
+  onConfirm() {
+    // console.log('onConfirm selectedPrompts', this.selectedPrompts);
+    for (let x = 0; x < this.selectedPrompts.length; x++) {
+      if (this.selectedPrompts[x].showQuestions == 'Yes') {
+        // console.log('onConfirm prompts', this.selectedPrompts[x].prompts);
+        for (let y = 0; y < this.selectedPrompts[x].prompts.length; y++) {
+          if (this.selectedPrompts[x].prompts[y].sharing != 0 || this.selectedPrompts[x].prompts[y].requesting != 0) {
             console.log('onConfirm item', this.selectedPrompts[x].prompts[y]);
-            this.promptService.savePrompts(this.selectedPrompts[x].prompts[y]).subscribe((val) => {   
-              console.log('savePrompts return', val);     
+            this.promptService.savePrompts(this.selectedPrompts[x].prompts[y]).subscribe((val) => {
+              console.log('savePrompts return', val);
               this.router.navigate(['/dashboard']);
             });
           }
         }
       }
-    }     
+    }
   }
 
   onCancelBackToDashboard(){
@@ -169,6 +222,7 @@ export class PromptsComponent implements OnInit {
   }
 
   onChangeAnswers(){
+  onChangeAnswers() {
     this.showConfirm = false;
     this.showConfirmBtn = false;
     this.showSubmitAnswersBtn = true;
@@ -177,30 +231,28 @@ export class PromptsComponent implements OnInit {
     this.showGoBackToGroupTypesBtn = true;
   }
 
-  onGoToQuestions(){
-    //console.log('onGoToQuestions prompts', this.prompts);
-    //console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+  onGoToQuestions() {
+    // console.log('onGoToQuestions prompts', this.prompts);
+    // console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
 
     let addedprompt = false;
 
-    for(let y = 0; y < this.selectedPrompts.length; y++){
+    for (let y = 0; y < this.selectedPrompts.length; y++) {
       this.selectedPrompts[y]['prompts'] = [];
     }
-    
-    for(let x = 0; x < this.prompts.length; x++){
+
+    for (let x = 0; x < this.prompts.length; x++) {
       this.prompts[x].unitsOfIssueChoices = [];
       this.prompts[x].sizeChoices = [];
-      
-      for(let y = 0; y < this.selectedPrompts.length; y++){        
-        
-        if(this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes'){
-          
-          if(typeof this.prompts[x].unitsOfIssue !='undefined' && this.prompts[x].unitsOfIssue){
+
+      for (let y = 0; y < this.selectedPrompts.length; y++) {
+        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {
+          if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
             this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
             this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
           }
-          
-          if(typeof this.prompts[x].sizes !='undefined' && this.prompts[x].sizes){
+
+          if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
             this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
             this.prompts[x].size = this.prompts[x].sizeChoices[0];
           }
@@ -208,15 +260,13 @@ export class PromptsComponent implements OnInit {
           this.selectedPrompts[y]['prompts'].push(this.prompts[x]);
           addedprompt = true;
         }
-        
       }
 
       this.prompts[x].sharing = 0;
       this.prompts[x].requesting = 0;
-      
-    }       
-    
-    if(addedprompt){
+    }
+
+    if (addedprompt) {
       this.showSpecificQuestions = true;
       this.showGroupTypeQuestions = false;
       this.showGoBackToGroupTypesBtn = true;
@@ -225,12 +275,11 @@ export class PromptsComponent implements OnInit {
     }
   }
 
-  onGoBackToGroupTypes(){
+  onGoBackToGroupTypes() {
     this.showSpecificQuestions = false;
     this.showGroupTypeQuestions = true;
     this.showGoBackToGroupTypesBtn = false;
     this.showGoToQuestionsBtn = true;
     this.showSubmitAnswersBtn = false;
   }
-
 }

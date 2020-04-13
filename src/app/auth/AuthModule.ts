@@ -14,11 +14,13 @@ import {
   MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatProgressBarModule, MatProgressSpinnerModule,
+  MatInputModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 import { AuthRoutingModule } from './routes/auth-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {CustomMaterialModule} from '../material/material.module';
+import { CustomMaterialModule } from '../material/material.module';
 
 @NgModule({
   declarations: [
@@ -29,14 +31,6 @@ import {CustomMaterialModule} from '../material/material.module';
     TopNavShellComponent,
     ValidateEmailComponent,
   ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    SharedModule,
-    CustomMaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    FlexLayoutModule
-  ],
+  imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule],
 })
 export class AuthModule {}

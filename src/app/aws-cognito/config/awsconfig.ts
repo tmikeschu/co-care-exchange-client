@@ -65,4 +65,5 @@ export const configureAws = (name: string) => {
       // }
     },
   });
+  Amplify.Logger.LOG_LEVEL = 'DEBUG';
 };

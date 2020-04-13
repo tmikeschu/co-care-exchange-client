@@ -5,6 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { environment } from '../../environments/environment';
 import { ApolloLink, concat, from } from 'apollo-link';
 import { HttpHeaders } from '@angular/common/http';
+import { DefaultOptions } from 'apollo-client';
 
 const TOKEN_HEADER_KEY = 'x-api-key';
 const uri = environment.serverUrl; // <-- add the URL of the GraphQL server here
@@ -20,9 +21,20 @@ export function createApollo(httpLink: HttpLink) {
 
   const http = httpLink.create({ uri });
 
+  const defaultOptions: DefaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  };
   return {
     link: from([authMiddleware, http]),
     cache: new InMemoryCache(),
+    defaultOptions: defaultOptions,
   };
 }
 

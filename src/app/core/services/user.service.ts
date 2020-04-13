@@ -56,13 +56,25 @@ export class UserService {
 
   constructor(private apollo: Apollo, private authService: AuthenticationService) {}
 
-  async getCurrentUser(): Promise<any> {
-    return await this.authService.getUser();
+  getCurrentUser(): any {
+    return this.authService.getUser();
   }
 
-  async getCurrentUserProfile(): Promise<SaveUserInput> {
+  getCurrentUserEmail(): string {
+    return this.authService.getEmail();
+  }
+
+  getCurrentUser$(): any {
+    return this.authService.getUser$();
+  }
+
+  // async getCurrentUser(): Promise<any> {
+  //   return await this.authService.getUser();
+  // }
+
+  getCurrentUserProfile(): any {
     if (!this.currentUserProfile) {
-      const user = await this.getCurrentUser();
+      const user = this.getCurrentUser();
       return user ? user.userProfile : null;
     }
     return this.currentUserProfile;
@@ -118,17 +130,10 @@ export class UserService {
         map((response: any) => {
           console.log('DEBUG CREATE USER DATA ', response);
           const data = response.data;
-          this.currentUserProfile = data.createUser && data.createUser.user ? data.createUser.user : null;
+          this.currentUserProfile = data.saveUser && data.saveUser.user ? data.saveUser.user : null;
           this.authService.saveUserProfile(this.currentUserProfile);
           return this.currentUserProfile;
         })
       );
   }
 }
-
-// query Users {
-//   organizations {
-//     id,
-//         name
-//   }
-// }

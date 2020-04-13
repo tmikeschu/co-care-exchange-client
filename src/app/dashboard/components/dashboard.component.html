@@ -1,10 +1,9 @@
 <app-site-header></app-site-header>
-
 <section class="section tight">
     <div>
+        <h2>Needs</h2>
         <div *ngIf="(needs$ | async)?.length">
-            <mat-card-content>
-                <h2>Needs</h2>
+<!--                <h2>Needs</h2>-->
                 <div *ngFor="let request of needs$ | async">
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
@@ -14,16 +13,14 @@
                         </div>
                     </mat-list-item>
                 </div>
-            </mat-card-content>
         </div>
         <div *ngIf="(needs$ | async)?.length==0">
-            <h2>Needs</h2>
-            You have not specified any needs.
+<!--            <h2>Needs</h2>-->
+           You have not specified any needs.
         </div>
-    
+
+        <h2>Can Give</h2>
         <div *ngIf="(shares$ | async)?.length">
-            <mat-card-content>
-                <h2>Can Give</h2>
                 <div *ngFor="let request of shares$ | async">
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
@@ -33,10 +30,8 @@
                         </div>
                     </mat-list-item>
                 </div>
-            </mat-card-content>
         </div>
         <div *ngIf="(shares$ | async)?.length==0">
-            <h2>Can Give</h2>
             You have not specified any items to share.
         </div>
     </div>
