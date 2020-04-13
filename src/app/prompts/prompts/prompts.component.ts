@@ -164,6 +164,10 @@ export class PromptsComponent implements OnInit {
     }     
   }
 
+  onCancelBackToDashboard(){
+    this.router.navigate(['/dashboard']);
+  }
+
   onChangeAnswers(){
     this.showConfirm = false;
     this.showConfirmBtn = false;
