@@ -112,6 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.toastrService.error(`Error: order status update request for ${agreement.name} failed.`, null, {
             enableHtml: true,
             disableTimeOut: true,
+            positionClass: "toast-top-center"
           });
         }
       } else {
@@ -136,6 +137,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
                   enableHtml: true,
                   disableTimeOut: true,
+                  positionClass: "toast-top-center"
                 });
               });
             } else {
@@ -147,6 +149,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
             enableHtml: true,
             disableTimeOut: true,
+            positionClass: "toast-top-center"
           });
         }
       }
