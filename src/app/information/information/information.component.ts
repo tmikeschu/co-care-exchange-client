@@ -85,7 +85,7 @@ export class InformationComponent implements OnInit {
           }
 
         } else {
-          console.error('Error processing saved user ', x);
+          console.error('Error processing saved user ', p);
           this.toastrService.error('Unable to retrieve saved profile. Please try again later');
         }
       },
