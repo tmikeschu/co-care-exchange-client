@@ -6,7 +6,6 @@ import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfileInformation } from '../models/info-create.model';
 import {subscribe} from 'graphql';
-// import { OrganizationService } from '../../core/services/organization.service'
 
 @Component({
   selector: 'app-register',
@@ -20,17 +19,14 @@ export class InformationComponent implements OnInit {
   organizationId = null;
   error = false;
   profile = null;
-  // userOrganization = null;
 
   isRegistering = false;
 
-  // TODO -- combine the authservice user stuff with user service
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
     private userService: UserService,
-    // private organizationService: OrganizationService,
     private toastrService: ToastrService
   ) {}
 
@@ -75,12 +71,18 @@ export class InformationComponent implements OnInit {
     const profile = payload.userInput;
     console.log('DEBUG profile to save ', profile);
     this.userService.saveUser(profile).pipe(finalize(() => this.isRegistering = false)).subscribe(
-      (x) => {
-        if (x) {
-          console.log('save user success ', x);
-          this.router.navigate(['/prompt']);
+      (savedProfile) => {
+        if (savedProfile) {
+          console.log('save user success ', savedProfile);
+          // this checks for existing profile, if so, it has a user id
+          if (profile.userId) {
+            this.router.navigate(['/account']);
+          } else {
+            // first time profile submit, prompt for questions
+            this.router.navigate(['/prompt']);
+          }
         } else {
-          console.error('Error processing saved user ', x);
+          console.error('Error processing saved user ', savedProfile);
           this.toastrService.error('Unable to retrieve saved profile. Please try again later');
         }
       },

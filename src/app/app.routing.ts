@@ -5,13 +5,13 @@ import { RegisterComponent } from './registration/components/register/register.c
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component';
-import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { AccountComponent } from './account/account.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { ModuleWithProviders } from '@angular/core';
 import { UserResolver } from './core/resolvers/user.resolver';
 import { AppComponent } from './app.component';
 import { PromptsComponent } from './prompts/prompts/prompts.component';
-import {InformationComponent} from './information/information/information.component';
+import { InformationComponent } from './information/information/information.component';
 
 export const appRoutes: Routes = [
   // {
@@ -23,8 +23,8 @@ export const appRoutes: Routes = [
   //   component: ResourcesComponent,
   // },
   // {
-  //   path: 'personaldashboard',
-  //   component: PersonalDashboardComponent,
+  //   path: 'account',
+  //   component: AccountComponent,
   // },
   // {
   //   path: 'pantry',
@@ -87,8 +87,8 @@ export const appRoutes: Routes = [
         component: ResourcesComponent,
       },
       {
-        path: 'personaldashboard',
-        component: PersonalDashboardComponent,
+        path: 'account',
+        component: AccountComponent,
         resolve: { user: UserResolver },
       },
       {
@@ -128,11 +128,11 @@ export const appRoutes: Routes = [
         pathMatch: 'full',
       },
     ],
-   // resolve: { user: UserResolver },
+    // resolve: { user: UserResolver },
   },
 ];
 
-export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes, {paramsInheritanceStrategy: 'always'});
+export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes, { paramsInheritanceStrategy: 'always' });
 // export const AppRouting = RouterModule.forRoot(appRoutes, {
 //   enableTracing: false,
 //   scrollPositionRestoration: 'enabled',

@@ -1,5 +1,6 @@
-<section class="section">
 
+<section class="section">
+    <div class="leavequestionspage numberCircle" (click)="onCancelBackToDashboard()">X</div>
     <div *ngIf="showGroupTypeQuestions">
         <div *ngFor="let grouptype of selectedPrompts" class="prompt">
             <h3 class="category-head text-center">Are you requesting or sharing any {{grouptype.groupName}}</h3>
@@ -74,7 +75,7 @@
 
     <div *ngIf="showConfirm">
 
-        <h2 *ngIf="requests.length || shares.length" class="text-center confirmation-header">
+        <h2 *ngIf="requests.length || shares.length" class="text-center category-head">
             Based upon your answers it looks like you are...
         </h2>
 
