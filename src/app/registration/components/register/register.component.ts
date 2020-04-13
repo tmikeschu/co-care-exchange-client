@@ -52,14 +52,22 @@ export class RegisterComponent implements OnInit {
       };
       const result = await this.authenticationService.register(regModel);
       if (result.errorMsg) {
-        this.toastrService.error(result.errorMsg);
+        this.toastrService.error(result.errorMsg, null, {
+          positionClass: "toast-top-center"
+        });
         return;
       }
-      this.toastrService.success('Please check your email for a verification and then complete signin', null, { timeOut: 0, extendedTimeOut: 0, positionClass: "toast-top-center" });
+      this.toastrService.success('Please check your email for a verification and then complete signin', null, {
+        timeOut: 0,
+        extendedTimeOut: 0,
+        positionClass: "toast-top-center"
+      });
       await this.router.navigate(['/', 'signin'], { queryParams: { email: email } });
     } catch (err) {
       console.error(err);
-      this.toastrService.error('An unexpected error has occurred. Please try again later.');
+      this.toastrService.error('An unexpected error has occurred. Please try again later.', null, {
+        positionClass: "toast-top-center"
+      });
     } finally {
       this.registerForm.enable();
       this.isRegistering = false;

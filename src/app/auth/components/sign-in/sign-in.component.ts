@@ -75,7 +75,7 @@ export class SignInComponent implements OnInit {
       if (result.errorMsg) {
         this.error = true;
         this.errorMessage = result.errorMsg;
-        this.toastrService.error(result.errorMsg);
+        this.toastrService.error(result.errorMsg, null, { positionClass: "toast-top-center" });
         return;
       }
       // TODO is navbar service needed...dont think so
@@ -84,7 +84,7 @@ export class SignInComponent implements OnInit {
       await this.navigateToNextRoute(this.loginForm.get('username').value, org);
     } catch (err) {
       console.log('SignIn error ', err);
-      this.toastrService.error('An unexpected error has occurred. please try again later');
+      this.toastrService.error('An unexpected error has occurred. please try again later', null, { positionClass: "toast-top-center" });
     } finally {
       this.signingIn = false;
     }
