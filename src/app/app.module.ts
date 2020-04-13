@@ -28,10 +28,13 @@ import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.comp
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
+import {AmplifyAngularModule, AmplifyService} from 'aws-amplify-angular';
+import {configureAws} from './aws-cognito/config/awsconfig';
 
 @NgModule({
   imports: [
     BrowserModule,
+    AmplifyAngularModule,
     AppRouting,
     CoreModule,
     AuthModule,
@@ -55,6 +58,7 @@ import { Router } from '@angular/router';
   ],
   declarations: [AppComponent, ContactUsComponent, PersonalDashboardComponent, ResourcesComponent, PopupDialogComponent],
   providers: [
+    AmplifyService,
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -63,6 +67,11 @@ import { Router } from '@angular/router';
   bootstrap: [AppComponent],
 })
 export class AppModule {
+
+  // constructor() {
+  //   // TODO -- move config to login module based on selected option
+  //   configureAws('CCE_Individual');
+  // }
   // DEV NOTE: uncomment to debug routing
   // constructor(
   //     private readonly router: Router,

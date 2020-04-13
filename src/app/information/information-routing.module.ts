@@ -4,7 +4,7 @@ import { InformationComponent } from './information/information.component';
 
 export const routes: Routes = [
   {
-    path: 'info',
+    path: '',
     component: InformationComponent,
   },
 ];

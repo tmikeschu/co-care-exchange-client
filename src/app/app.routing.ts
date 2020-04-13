@@ -8,42 +8,45 @@ import { PantryLocatorComponent } from './pantry-locator/pantry-locator.componen
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { ModuleWithProviders } from '@angular/core';
+import { UserResolver } from './core/resolvers/user.resolver';
+import { AppComponent } from './app.component';
+import { PromptsComponent } from './prompts/prompts/prompts.component';
+import {InformationComponent} from './information/information/information.component';
 
-
-const appRoutes: Routes = [
+export const appRoutes: Routes = [
   // {
   //   path: 'metrics',
   //   component: MetricsComponent
   // },
-  {
-    path: 'resources',
-    component: ResourcesComponent,
-  },
-  {
-    path: 'personaldashboard',
-    component: PersonalDashboardComponent,
-  },
-  {
-    path: 'pantry',
-    component: PantryLocatorComponent,
-  },
-  {
-    path: 'signin',
-    component: SignInComponent,
-  },
-  {
-    path: 'contact',
-    component: ContactUsComponent,
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    // TODO -- auth guard
-  },
+  // {
+  //   path: 'resources',
+  //   component: ResourcesComponent,
+  // },
+  // {
+  //   path: 'personaldashboard',
+  //   component: PersonalDashboardComponent,
+  // },
+  // {
+  //   path: 'pantry',
+  //   component: PantryLocatorComponent,
+  // },
+  // {
+  //   path: 'signin',
+  //   component: SignInComponent,
+  // },
+  // {
+  //   path: 'contact',
+  //   component: ContactUsComponent,
+  // },
+  // {
+  //   path: 'register',
+  //   component: RegisterComponent,
+  // },
+  // {
+  //   path: 'dashboard',
+  //   component: DashboardComponent,
+  //   // TODO -- auth guard
+  // },
   // {
   //   path: 'info',
   //   component: InformationComponent
@@ -76,20 +79,60 @@ const appRoutes: Routes = [
   // },
   {
     path: '',
-    component: LoginShellComponent,
+    component: AppComponent,
     children: [
       // everything behind login goes here
+      {
+        path: 'resources',
+        component: ResourcesComponent,
+      },
+      {
+        path: 'personaldashboard',
+        component: PersonalDashboardComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'pantry',
+        component: PantryLocatorComponent,
+      },
+      {
+        path: 'signin',
+        component: SignInComponent,
+      },
+      {
+        path: 'contact',
+        component: ContactUsComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'prompt',
+        component: PromptsComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: 'info',
+        component: InformationComponent,
+        resolve: { user: UserResolver },
+      },
+      {
+        path: '**',
+        redirectTo: '/',
+        pathMatch: 'full',
+      },
     ],
-  },
-  {
-    path: '**',
-    redirectTo: '/',
-    pathMatch: 'full',
+   // resolve: { user: UserResolver },
   },
 ];
 
-
-export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes, {paramsInheritanceStrategy: 'always'});
 // export const AppRouting = RouterModule.forRoot(appRoutes, {
 //   enableTracing: false,
 //   scrollPositionRestoration: 'enabled',
