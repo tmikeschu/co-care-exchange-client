@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Observable, timer, of } from 'rxjs';
-import {catchError, filter, map, share, switchMap, take, takeWhile} from 'rxjs/operators';
+import { catchError, filter, map, share, switchMap, take, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
-import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
-import {UserService} from '../../core/services/user.service';
+import { ActivatedRoute, ChildActivationEnd, Router } from '@angular/router';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-cce-home',
@@ -21,19 +21,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   needs$: Observable<any>;
   shares$: Observable<any>;
   isAlive: boolean;
-  sharesLoading = false;
-  needsLoading = false;
 
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
-    private userService: UserService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.route.data.pipe(filter(data => data.user)).subscribe((data) => {
+    this.route.data.pipe(filter((data) => data.user)).subscribe((data) => {
       console.log('DEBUG route data :', data);
       this.pollForData();
     });
@@ -45,8 +43,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (!userProfile) {
       return;
     }
-    this.sharesLoading = true;
-    this.needsLoading = true;
     this.dashboardPoll$ = timer(0, 5000).pipe(
       takeWhile(() => this.isAlive),
       switchMap(() => {
@@ -70,11 +66,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.shares$ = this.dashboardPoll$.pipe(map((dashboard) => dashboard.shared));
     this.needs$.subscribe((needs) => {
       console.log('DASHBOARD NEEDS: ', needs);
-      this.needsLoading = false;
     });
     this.shares$.subscribe((shares) => {
       console.log('DASHBOARD SHARES: ', shares);
-      this.sharesLoading = false;
     });
   }
 
@@ -87,8 +81,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((confirm) => {
       if (confirm) {
         // if they hit OK/Yes, only update status if changing from 1=matched to 2=confirmed
-        if (agreement.statusId === 0 || agreement.statusId === 2) return; // if pending or confirmed, noop
-        if (agreement.statusId >= 3) return; // fulfilled or cancelled already; noop
+        if (agreement.statusId === 0 || agreement.statusId === 2) {
+          return;
+        } // if pending or confirmed, noop
+        if (agreement.statusId >= 3) {
+          return;
+        } // fulfilled or cancelled already; noop
 
         try {
           const orderChangeStatus: OrderStatusChangeModel = {
@@ -101,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             shareId: agreement.shareId,
           };
 
-          let status = this.dashboardService.updateOrderStatus(orderChangeStatus).subscribe((val) => {
+          const status = this.dashboardService.updateOrderStatus(orderChangeStatus).subscribe((val) => {
             console.log(val);
             if (val && val.errors && val.errors.length) {
               val.errors.forEach((e) => {
@@ -118,7 +116,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.toastrService.error(`Error: order status update request for ${agreement.name} failed.`, null, {
             enableHtml: true,
             disableTimeOut: true,
-            positionClass: "toast-top-center"
+            positionClass: 'toast-top-center',
           });
         }
       } else {
@@ -135,7 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             shareId: agreement.shareId,
           };
 
-          let status = this.dashboardService.updateOrderStatus(orderToCancel).subscribe((val) => {
+          const status = this.dashboardService.updateOrderStatus(orderToCancel).subscribe((val) => {
             console.log(val);
             if (val && val.errors && val.errors.length) {
               val.errors.forEach((e) => {
@@ -143,7 +141,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
                   enableHtml: true,
                   disableTimeOut: true,
-                  positionClass: "toast-top-center"
+                  positionClass: 'toast-top-center',
                 });
               });
             } else {
@@ -155,7 +153,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
             enableHtml: true,
             disableTimeOut: true,
-            positionClass: "toast-top-center"
+            positionClass: 'toast-top-center',
           });
         }
       }
@@ -177,19 +175,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return 'contentstatusgreen';
       }
       case 2: {
-        //Confirmed
+        // Confirmed
         return 'contentstatusyellow';
       }
       case 3: {
-        //Fulfilled
+        // Fulfilled
         return 'contentstatusgreen';
       }
       case 4: {
-        //Cancelled
+        // Cancelled
         return 'contentstatusred';
       }
       default:
-        //there is no default, so error
+        // there is no default, so error
         return 'contentstatusred';
     }
   }
