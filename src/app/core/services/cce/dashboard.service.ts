@@ -95,7 +95,7 @@ export class DashboardService {
                 id,
                 status,
                 cancellationReason,
-                requesterUserId
+                requestingUserId
             }
         }
     }`,

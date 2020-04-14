@@ -102,7 +102,7 @@ export class AgreementDetailComponent implements OnInit {
             shareId: agreement.shareId,
         };
 
-        this.dashboardService
+        return this.dashboardService
             .updateOrderStatus(udpateOrder)
             .pipe(
                 map(data => {
@@ -121,7 +121,8 @@ export class AgreementDetailComponent implements OnInit {
                     });
                     return of([]);
                 })
-            );
+            )
+            .subscribe();
     }
 
     onCancelMatch(agreement) {
