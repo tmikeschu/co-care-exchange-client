@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   needs$: Observable<any>;
   shares$: Observable<any>;
   isAlive: boolean;
+  sharesLoading = false;
+  needsLoading = false;
 
   constructor(
     public dialog: MatDialog,
@@ -43,6 +45,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (!userProfile) {
       return;
     }
+    this.sharesLoading = true;
+    this.needsLoading = true;
     this.dashboardPoll$ = timer(0, 5000).pipe(
       takeWhile(() => this.isAlive),
       switchMap(() => {
@@ -66,9 +70,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.shares$ = this.dashboardPoll$.pipe(map((dashboard) => dashboard.shared));
     this.needs$.subscribe((needs) => {
       console.log('DASHBOARD NEEDS: ', needs);
+      this.needsLoading = false;
     });
     this.shares$.subscribe((shares) => {
       console.log('DASHBOARD SHARES: ', shares);
+      this.sharesLoading = false;
     });
   }
 
