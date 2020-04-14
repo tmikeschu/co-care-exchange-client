@@ -1,10 +1,9 @@
-export class Agreement{
+export class Agreement {
     orderId: string;
-    
     discriminator: string;
-    deliveryCoordinates : {
-        "latitude": number,
-            "longitude": number
+    deliveryCoordinates: {
+        latitude: number,
+        longitude: number
     };
     deliveryAddress: string;
     cancelledOn: Date;
