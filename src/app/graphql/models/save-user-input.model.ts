@@ -12,4 +12,5 @@ export interface SaveUserInput {
     city: string;
     state: string;
     organizationId?: unknown;
+    householdSize?: number;
 }

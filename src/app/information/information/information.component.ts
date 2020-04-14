@@ -83,12 +83,12 @@ export class InformationComponent implements OnInit {
           }
         } else {
           console.error('Error processing saved user ', savedProfile);
-          this.toastrService.error('Unable to retrieve saved profile. Please try again later');
+          this.toastrService.error('Unable to retrieve saved profile. Please try again later', null, { positionClass: "toast-top-center" });
         }
       },
       (error) => {
         console.error('Save user error ', error);
-        this.toastrService.error('Unable to save profile. Please try again later');
+        this.toastrService.error('Unable to save profile. Please try again later', null, { positionClass: "toast-top-center" });
       }
     );
   }

@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Observable, timer, of } from 'rxjs';
-import {catchError, filter, map, share, switchMap, take, takeWhile} from 'rxjs/operators';
+import { catchError, filter, map, share, switchMap, take, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
-import {ActivatedRoute, ChildActivationEnd, Router} from '@angular/router';
-import {UserService} from '../../core/services/user.service';
+import { ActivatedRoute, ChildActivationEnd, Router } from '@angular/router';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-cce-home',
@@ -28,11 +28,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.route.data.pipe(filter(data => data.user)).subscribe((data) => {
+    this.route.data.pipe(filter((data) => data.user)).subscribe((data) => {
       console.log('DEBUG route data :', data);
       this.pollForData();
     });
@@ -173,19 +173,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return 'contentstatusgreen';
       }
       case 2: {
-        //Confirmed
+        // Confirmed
         return 'contentstatusyellow';
       }
       case 3: {
-        //Fulfilled
+        // Fulfilled
         return 'contentstatusgreen';
       }
       case 4: {
-        //Cancelled
+        // Cancelled
         return 'contentstatusred';
       }
       default:
-        //there is no default, so error
+        // there is no default, so error
         return 'contentstatusred';
     }
   }
