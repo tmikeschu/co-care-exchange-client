@@ -112,7 +112,9 @@ export class AgreementDetailComponent implements OnInit {
                     }
                     return data;
                 }),
-                finalize(() => this.router.navigate(['/dashboard'])),
+                finalize(() => {
+                    this.router.navigate(['/dashboard']);
+                }),
                 catchError((err) => {
                     this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
                         enableHtml: true
