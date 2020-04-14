@@ -45,18 +45,32 @@ export class AgreementDetailComponent implements OnInit {
 
     ngOnInit() {
         /**
-         * TODO:
-         * [] Confirmation Pick-up button
-         * - Sharers will only see confirmation button if they are delivering (how do we know this?),
-         * - needs individuals will only see the confirmation if it is in the Pick-Up workflow. (what does pick up workflow mean?)
+         * For the pilot, sharers are deliverers - tony
+         *
+         * User is requesting
+         * All statuses execpt (4) "cancelled", sharer should be able to view the detail and cancel the match
+         * if status (4) "cancelled" you can view it only
+         *
+         * User is sharing
+         * if status (1) "new match" you are prompted to confirm you can drop it off
+         *  if yes, move forward to (2) "confirmed"
+         *  if no, cancel the match (4)
+         * All other statuses except "cancelled", the sharer can view details and cancel
          */
         this.user = this.userSerice.getCurrentUser();
         this.agreement = this.dashboardService.agreementDetail;
+
+        if (!this.agreement) {
+            // TODO: should probably be handled better to be able to retrieve agreement item via url
+            // instead of relying on accessing this view only from the dashboard
+            this.router.navigate(['/dashboard']);
+        }
+
         this.route.queryParams
             .subscribe(params => {
                 this.agreementType = params.type;
 
-                if (this.agreementType === 'need' && this.agreement.statusId === 0) {
+                if (this.agreementType === 'share' && this.agreement.statusId === 1) {
 
                     const ref = this.dialog.open(ConfirmMatchDialogComponent, {
                         width: '300px',
@@ -64,9 +78,10 @@ export class AgreementDetailComponent implements OnInit {
                     });
 
                     ref.afterClosed().subscribe(results => {
-                        // 'Cancel' || 'Confirm'
                         if (results === 'Cancel') {
-                            this.onCancelMatch(this.agreement);
+                            this.updateMatch(this.agreement, 4, 'Sharer refused the drop off terms.');
+                        } else if (results === 'Confirm') {
+                            this.updateMatch(this.agreement, 2, 'Sharer confirmed ability to drop off the items.');
                         }
                     });
 
@@ -75,19 +90,20 @@ export class AgreementDetailComponent implements OnInit {
             });
     }
 
-    onCancelMatch(agreement) {
-        const orderToCancel: OrderStatusChangeModel = {
+    updateMatch(agreement, newStatusId, reason = 'Update status from agreement details') {
+        // Pending (0) -> Matched (1) -> Confirmed (2) -> Fulfilled (3) -> Cancelled (4)
+        const udpateOrder: OrderStatusChangeModel = {
             orderId: agreement.orderId,
             userId: this.user.userProfile.id,
-            newStatus: 4, // cancel
-            reason: 'No longer needed',
+            newStatus: newStatusId,
+            reason,
             clientMutationId: '123456',
             requestId: agreement.requestId,
             shareId: agreement.shareId,
         };
 
         this.dashboardService
-            .updateOrderStatus(orderToCancel)
+            .updateOrderStatus(udpateOrder)
             .pipe(
                 map(data => {
                     if (data && data.errors && data.errors.length) {
@@ -106,8 +122,12 @@ export class AgreementDetailComponent implements OnInit {
             );
     }
 
-    onConfirmPickup() {
-        console.log('confirm pick up called');
+    onCancelMatch(agreement) {
+        this.updateMatch(agreement, 4, 'User cancelled the match in agreement detail view.');
+    }
+
+    onConfirmDropOff(agreement) {
+        this.updateMatch(agreement, 3, 'Sharer confirmed that they have dropped off the item.');
     }
 
     // onCancelEdit() {
