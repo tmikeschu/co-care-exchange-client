@@ -22,12 +22,6 @@ const routes: Routes = [
     path: 'validateemailaddress',
     component: ValidateEmailComponent,
   },
-  // {
-  //   path: '',
-  //   component: TopNavShellComponent,
-  //   children: [
-  //   ]
-  // },
 ];
 
 @NgModule({

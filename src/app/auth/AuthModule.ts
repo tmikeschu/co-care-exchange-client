@@ -4,7 +4,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { PasswordForgotComponent } from './components/password-forgot/password-forgot.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { TopNavShellComponent } from './components/top-nav-shell/top-nav-shell.component';
 import { ValidateEmailComponent } from './components/validate-email/validate-email.component';
 import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './routes/auth-routing.module';
@@ -16,7 +15,6 @@ import { CustomMaterialModule } from '../material/material.module';
     PasswordForgotComponent,
     PasswordResetComponent,
     SignInComponent,
-    TopNavShellComponent,
     ValidateEmailComponent,
   ],
   imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule],
