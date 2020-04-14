@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../core/services/cce/authentication.service';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-site-header',
   templateUrl: './site-header.component.html',
-  styleUrls: ['./site-header.component.scss']
+  styleUrls: ['./site-header.component.scss'],
 })
 export class SiteHeaderComponent implements OnInit {
+  constructor(private userService: UserService) {}
 
-  constructor(private authenticationService: AuthenticationService) { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  logout() {
+    this.userService.logout();
   }
-
-  logout(){
-    this.authenticationService.logout();
-  }
-
 }
