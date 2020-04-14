@@ -79,6 +79,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((confirm) => {
+      const userId = this.userService.getCurrentUserProfile() ? this.userService.getCurrentUserProfile().id : null;
+      if (userId === null) {
+        console.error('User profile is not valid');
+        return;
+      }
       if (confirm) {
         // if they hit OK/Yes, only update status if changing from 1=matched to 2=confirmed
         if (agreement.statusId === 0 || agreement.statusId === 2) {
@@ -87,12 +92,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (agreement.statusId >= 3) {
           return;
         } // fulfilled or cancelled already; noop
-
-        const userId = this.userService.getCurrentUserProfile() ? this.userService.getCurrentUserProfile().id : null;
-        if (userId === null) {
-          console.error('User profile is not valid');
-          return;
-        }
 
         try {
           const orderChangeStatus: OrderStatusChangeModel = {
@@ -130,7 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
           const orderToCancel: OrderStatusChangeModel = {
             orderId: agreement.orderId,
-            userId: this.dashboardService.userService.currentUserProfile.id,
+            userId,
             // orderId: "E6907B91-FCE4-4FD4-99AE-401733DE3AB9",
             // userId: "B8350BCF-B6A3-4239-82D9-3BAA7B1C83E3",
             newStatus: 4, // cancel
