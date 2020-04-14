@@ -1,11 +1,11 @@
 <app-site-header></app-site-header>
 <section class="section tight">
     <div>
-        <h2>Needs</h2>
+        <h2 class="app-blue">Needs</h2>
         <div *ngIf="(needs$ | async)?.length">
 <!--                <h2>Needs</h2>-->
                 <div *ngFor="let request of needs$ | async">
-                    <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+                    <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
                             <mat-label class="contentlabel">{{request.name}}</mat-label>
                             <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto">{{request.statusText}}
@@ -19,10 +19,10 @@
            You have not specified any needs.
         </div>
 
-        <h2>Can Give</h2>
+        <h2 class="app-blue">Can Give</h2>
         <div *ngIf="(shares$ | async)?.length">
                 <div *ngFor="let request of shares$ | async">
-                    <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+                    <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
                             <mat-label class="contentlabel">{{request.name}}</mat-label>
                             <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto">{{request.statusText}}
