@@ -90,7 +90,7 @@ export class SignInComponent implements OnInit {
     }
   }
 
-  private async navigateToNextRoute(username: String, org?: any) {
+  private async navigateToNextRoute(username: string, org?: any) {
     // TODO -- check if user profile exists
     const self = this;
     const user = await self.userService.getUser(username).pipe(first()).toPromise();

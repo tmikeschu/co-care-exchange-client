@@ -62,6 +62,10 @@ export class UserService {
     return this.authService.getUser();
   }
 
+  getCurrentUsername(): any {
+    return this.authService.getUsername();
+  }
+
   getCurrentUserEmail(): string {
     return this.authService.getEmail();
   }
@@ -82,7 +86,11 @@ export class UserService {
     return this.currentUserProfile;
   }
 
-  getUser(emailAddress: String): Observable<UserProfile> {
+  logout(): any {
+    return this.authService.logout(this.getCurrentUsername());
+  }
+
+  getUser(emailAddress: string): Observable<UserProfile> {
     console.log('DEBUG getUser ', emailAddress);
     return this.apollo
       .query({
@@ -96,7 +104,7 @@ export class UserService {
           console.log('DEBUG DATA ', response);
           const data = response.data;
           this.currentUserProfile = data.users && data.users.length ? data.users[0] : null;
-          this.authService.saveUserProfile(this.currentUserProfile);
+          this.authService.saveUserProfile(emailAddress, this.currentUserProfile);
           return this.currentUserProfile;
         })
       );
@@ -133,7 +141,7 @@ export class UserService {
           console.log('DEBUG CREATE USER DATA ', response);
           const data = response.data;
           this.currentUserProfile = data.saveUser && data.saveUser.user ? data.saveUser.user : null;
-          this.authService.saveUserProfile(this.currentUserProfile);
+          this.authService.saveUserProfile(userProfile.emailAddress, this.currentUserProfile);
           return this.currentUserProfile;
         })
       );

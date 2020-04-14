@@ -5,10 +5,10 @@ import { currentAuthenticatedUser, getCurrentUserInfo, signIn, signOut } from '.
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { register } from '../../../aws-cognito/cognito/register';
-import {map, share} from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AmplifyService } from 'aws-amplify-angular';
-import {BehaviorSubject} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -16,22 +16,39 @@ export class AuthenticationService {
   private user$ = this.userSubject$.pipe(share());
   private user: any;
   signedIn = false;
+  authState = null;
   constructor(private router: Router, private http: HttpClient, private amplifyService: AmplifyService) {
-    this.amplifyService.authStateChange$
-        .subscribe(authState => {
-          console.log('DEBUG authState.state ', authState.state);
-          this.signedIn = authState.state === 'signedIn';
-          if (!authState.user) {
-            this.user = null;
-          } else {
-            this.user = authState.user;
-            if (this.user) {
-              this.user.userProfile = this.getUserProfile();
-            }
-            console.log('DEBUG this.user ', this.user);
-          }
-          this.userSubject$.next(this.user);
-        });
+    this.amplifyService.authStateChange$.subscribe((authState) => {
+      console.log('DEBUG router url ', this.router.url);
+      console.log('DEBUG authState.state ', authState);
+      console.log('DEBUG authState.state ', authState.state);
+      const wasSignedOut = this.authState === 'signedOut';
+      this.authState = authState.state;
+      this.signedIn = authState.state === 'signedIn';
+
+      if (!authState.user) {
+        this.user = null;
+      } else {
+        this.user = authState.user;
+        if (this.signedIn && this.user) {
+          this.user.userProfile = this.getUserProfile(this.user.username);
+        }
+        console.log('DEBUG AuthenticationService this.user ', this.user);
+        // TODO -- should this resolver load the user profile? I say yes, bue the logic and testing is bigger
+        // so for not, if proior state was signedout and there is no user profile, allow auth to continue and app
+        // can load userprofile
+        if (!wasSignedOut && !this.user.userProfile) {
+          // got user but no profile...not a valid user, make user login
+          console.error('Invalid user for login, user profile missing');
+          this.signedIn = false;
+          const username = this.user.username;
+          this.user = null;
+          this.logout(username).then();
+
+        }
+      }
+      this.userSubject$.next(this.user);
+    });
   }
 
   getUser$(): any {
@@ -42,15 +59,20 @@ export class AuthenticationService {
     return this.user;
   }
 
-  saveUserProfile(profile: unknown): void {
-    window.localStorage.setItem('userProfile', JSON.stringify(profile));
+  saveUserProfile(username: string, profile: unknown): void {
+    if (!username) {
+      return;
+    }
+    const key = `${username}.userProfile`;
+    window.localStorage.setItem(key, JSON.stringify(profile));
     if (this.user) {
       this.user.userProfile = profile;
     }
   }
 
-  getUserProfile(): unknown {
-    const up = window.localStorage.getItem('userProfile');
+  getUserProfile(username: string): unknown {
+    const key = `${username}.userProfile`;
+    const up = window.localStorage.getItem(key);
     if (up) {
       const profile = JSON.parse(up);
       return profile;
@@ -72,7 +94,7 @@ export class AuthenticationService {
   // }
 
   getIdToken(): string {
-    return this.user ? this.user.getSignInUserSession().getIdToken() : '';
+    return this.user && this.user.getSignInUserSession() ? this.user.getSignInUserSession().getIdToken() : '';
   }
 
   getFirstName(): string {
@@ -81,6 +103,10 @@ export class AuthenticationService {
 
   getLastName(): string {
     return this.user ? this.user.attributes.family_name : '';
+  }
+
+  getUsername(): string {
+    return this.user ? this.user.username : '';
   }
 
   getEmail(): string {
@@ -156,12 +182,15 @@ export class AuthenticationService {
     return this.http.post(`${environment.serverUrl}authenticate`, { email, password }).pipe(map((response: any) => {}));
   }
 
-  async logout() {
+  async logout(username?: string) {
     // remove user from local storage to log user out
     this.user = null;
     await signOut();
-    localStorage.removeItem('user');
-    localStorage.removeItem('userProfile');
+   // localStorage.removeItem('user');
+    if (username) {
+      const key = `${username}.userProfile`;
+      localStorage.removeItem(key);
+    }
     return await this.router.navigate(['/']);
   }
 }
