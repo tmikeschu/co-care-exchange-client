@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
 import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
 import { UserService } from '../user.service';
+import { Apollo } from 'apollo-angular';
+import { Agreement } from 'src/app/dashboard/components/models/agreement';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,9 @@ import { UserService } from '../user.service';
 export class DashboardService {
   agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
   agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
+  agreementDetail: Agreement;
+  // selectedAgreementSubject$ = new BehaviorSubject<Agreement>(null);
+  // selectedAgreement$ = this.selectedAgreementSubject$.pipe(share());
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
@@ -20,7 +25,7 @@ export class DashboardService {
   result: any;
   userProfile;
 
-  constructor(private http: HttpClient, public userService: UserService) {
+  constructor(private http: HttpClient, public userService: UserService, private apollo: Apollo) {
     // TODO -- figure out when to invoke service this.init();
   }
 
@@ -105,5 +110,13 @@ export class DashboardService {
   updateMessageCount(list) {
     this.messageCount += list.filter((a) => a.statusId === 2).length;
     return list;
+  }
+
+  get selectedAgreement() {
+    return this.agreementDetail;
+  }
+
+  set selectedAgreement(agreement: Agreement) {
+    this.selectedAgreement = agreement;
   }
 }

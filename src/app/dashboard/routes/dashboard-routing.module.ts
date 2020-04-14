@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from '../components/dashboard.component';
 import { MetricsComponent } from '../components/metrics/metrics.component';
-import { AnswerDetailComponent } from '../components/answer-detail/answer-detail.component';
+import { AgreementDetailComponent } from '../components/agreement-detail/agreement-detail.component';
 import {UserResolver} from '../../core/resolvers/user.resolver';
 
 export const routes: Routes = [
@@ -17,9 +17,9 @@ export const routes: Routes = [
     resolve: { user: UserResolver},
   },
   {
-    path: 'answer-detail',
-    component: AnswerDetailComponent,
-  },
+    path: 'agreement-detail',
+    component: AgreementDetailComponent,
+  }
 ];
 
 @NgModule({

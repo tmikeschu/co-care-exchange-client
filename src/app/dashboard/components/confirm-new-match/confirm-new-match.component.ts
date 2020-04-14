@@ -1,5 +1,6 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Component, Inject } from '@angular/core';
+import { Agreement } from '../models/agreement';
 
 @Component({
     selector: 'app-confirm-new-match',
@@ -8,16 +9,14 @@ import { Component, Inject } from '@angular/core';
 })
 export class ConfirmMatchDialogComponent {
 
-    constructor(public dialogRef: MatDialogRef<ConfirmMatchDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+    constructor(public dialogRef: MatDialogRef<ConfirmMatchDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Agreement) { }
 
     onCancelPickup() {
-        console.log('cancel agreement clicked');
-        this.dialogRef.close(this.data);
+        this.dialogRef.close('Cancel');
     }
 
     onConfirmPickup() {
-        console.log('confirm pickup clicked');
-        this.dialogRef.close(this.data);
+        this.dialogRef.close('Confirm');
     }
 
 }

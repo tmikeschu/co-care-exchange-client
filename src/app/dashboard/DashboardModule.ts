@@ -9,7 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
-import { AnswerDetailComponent } from './components/answer-detail/answer-detail.component';
+import { AgreementDetailComponent } from './components/agreement-detail/agreement-detail.component';
 import { ConfirmMatchDialogComponent } from './components/confirm-new-match/confirm-new-match.component';
 
 
@@ -19,7 +19,7 @@ import { ConfirmMatchDialogComponent } from './components/confirm-new-match/conf
     MetricsComponent,
     StatusDialogComponent,
     ConfirmMatchDialogComponent,
-    AnswerDetailComponent
+    AgreementDetailComponent
   ],
   imports: [
     CommonModule,
