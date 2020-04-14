@@ -2,7 +2,7 @@
 <section class="section tight">
     <div>
         <h2>Needs</h2>
-        <div *ngIf="(needs$ | async)?.length">
+        <div *ngIf="needs$; else inprogress">
 <!--                <h2>Needs</h2>-->
                 <div *ngFor="let request of needs$ | async">
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
@@ -20,7 +20,7 @@
         </div>
 
         <h2>Can Give</h2>
-        <div *ngIf="(shares$ | async)?.length">
+        <div *ngIf="!this.sharesLoading; else inprogress">
                 <div *ngFor="let request of shares$ | async">
                     <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
                         <div class="dashboardlistitem">
@@ -37,4 +37,5 @@
     </div>
 </section>
 
+<ng-template #inprogress> <mat-progress-bar mode="indeterminate"></mat-progress-bar>.</ng-template>
 <app-site-footer></app-site-footer>
