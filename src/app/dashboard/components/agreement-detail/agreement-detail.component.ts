@@ -44,6 +44,12 @@ export class AgreementDetailComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        /**
+         * TODO:
+         * [] Confirmation Pick-up button
+         * - Sharers will only see confirmation button if they are delivering (how do we know this?),
+         * - needs individuals will only see the confirmation if it is in the Pick-Up workflow. (what does pick up workflow mean?)
+         */
         this.user = this.userSerice.getCurrentUser();
         this.agreement = this.dashboardService.agreementDetail;
         this.route.queryParams
