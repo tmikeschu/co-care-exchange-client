@@ -88,10 +88,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
           return;
         } // fulfilled or cancelled already; noop
 
+        const userId = this.userService.getCurrentUserProfile() ? this.userService.getCurrentUserProfile().id : null;
+        if (userId === null) {
+          console.error('User profile is not valid');
+          return;
+        }
+
         try {
           const orderChangeStatus: OrderStatusChangeModel = {
             orderId: agreement.orderId,
-            userId: this.dashboardService.userProfile.id,
+            userId,
+            //  userId: this.dashboardService.userProfile.id,
             newStatus: agreement.statusId++,
             reason: 'unknown',
             clientMutationId: '123456',
