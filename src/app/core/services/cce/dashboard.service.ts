@@ -85,7 +85,7 @@ export class DashboardService {
   }
 
   updateOrderStatus(orderStatusChange: OrderStatusChangeModel): Observable<any> {
-    console.log('orderToCancel: ', orderStatusChange);
+    console.log('order to update: ', orderStatusChange);
 
     const input = {
       operationName: 'OrderMutations',
