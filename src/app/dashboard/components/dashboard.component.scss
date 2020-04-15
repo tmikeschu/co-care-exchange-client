@@ -12,21 +12,26 @@
 .contentlabel{
     color: #696969;
     font-weight: 200;
+    font-size: .8em;
+    width: 60%;
 }
 
 .contentstatusred{
     color: #ff4747;
     font-weight: 300;
+    font-size: .8em;
 }
 
 .contentstatusgreen{
     color: #0db536;
     font-weight: 300;
+    font-size: .8em;
 }
 
 .contentstatusyellow{
     color: #f2a50a;
     font-weight: 500;
+    font-size: .8em;
 }
 
 .dashboard-list-item {
@@ -34,7 +39,7 @@
     -webkit-tap-highlight-color: transparent;
     width: 100%;
     padding: 10 0 0 0;
-    font-size: 16px;
+    //font-size: 16px;
     margin-bottom: 4px;
 }
 
