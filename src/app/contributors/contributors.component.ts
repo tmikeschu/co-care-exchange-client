@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-contributors',
@@ -12,12 +11,11 @@ export class ContributorsComponent implements OnInit {
   constructor(
     private router: Router
   ) { }
-  // constructor(public dialogRef: MatDialogRef<ContributorsComponent>) { }
 
   ngOnInit() {
   }
 
-  backToResources() {
-    this.router.navigate(['/resources']);
+  backToAccount() {
+    this.router.navigate(['/account']);
   }
 }
