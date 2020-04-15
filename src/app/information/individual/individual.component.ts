@@ -71,7 +71,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       householdSize: [0, Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
-      state: ['', Validators.required],
+      state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.required],
       password: [''],
