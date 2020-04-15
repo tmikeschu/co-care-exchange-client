@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+// import { MatDialog } from '@angular/material';
+// import { ContributorsComponent } from '../contributors/contributors.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resources',
@@ -7,13 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResourcesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    // private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
   }
 
   openNewTab(url: string) {
     window.open(url, '_blank');
+  }
+
+  showCredits() {
+    this.router.navigate(['/contributors']);
+    // this.dialog.open(ContributorsComponent, {
+    //   width: '300px',
+    //   // height: '50%',
+    //   height: '500px'
+    // });
+
   }
 
 }
