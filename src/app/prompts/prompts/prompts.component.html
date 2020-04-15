@@ -26,7 +26,7 @@
                         <div fxLayout="column">
                             <h3>Requesting</h3>
                             <div fxLayout="row" fxLayoutAlign="center center">
-                                <input class="itemborder numinput" name="question.requesting" [(ngModel)]="question.requesting" (change)="question.sharing = 0" type="number">
+                                <input class="itemborder numinput" name="question.requesting" [(ngModel)]="question.requesting" (keyup)="question.sharing = 0" (change)="question.sharing = 0" type="number">
                                 <div>
                                     <div>
                                         <mat-icon (click)="handleRequesting(question, 'up')" class="cce-blue">expand_less</mat-icon>
@@ -41,7 +41,7 @@
                         <div fxLayout="column">
                             <h3>Sharing</h3>
                             <div fxLayout="row" fxLayoutAlign="center center">
-                                <input class="itemborder numinput" name="question.sharing" [(ngModel)]="question.sharing" (change)="question.requesting = 0" type="number">
+                                <input class="itemborder numinput" name="question.sharing" [(ngModel)]="question.sharing" (keyup)="question.requesting = 0" (change)="question.requesting = 0" type="number">
                                 <div>
                                     <div>
                                         <mat-icon (click)="handleSharing(question, 'up')" class="cce-blue">expand_less</mat-icon>
