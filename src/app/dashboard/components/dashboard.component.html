@@ -5,7 +5,7 @@
     <div *ngIf="needs$ | async as needs; else inprogress">
       <div *ngIf="needs && needs.length > 0; else noneeds">
         <div *ngFor="let request of needs">
-          <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+          <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}</mat-label>
               <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
@@ -19,7 +19,7 @@
     <div *ngIf="shares$ | async as shares; else inprogress">
       <div *ngIf="shares && shares.length > 0; else noshares">
         <div *ngFor="let request of shares">
-          <mat-list-item (click)="handleStatusClick(request)" class="contentborder dashboard-list-item">
+          <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}</mat-label>
               <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
