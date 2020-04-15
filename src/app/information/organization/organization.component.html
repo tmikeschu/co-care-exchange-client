@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <form *ngIf="organizationForm" [formGroup]="organizationForm">
+  <form *ngIf="organizationForm" [formGroup]="organizationForm" novalidate>
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
         <label>
@@ -12,7 +12,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="First Name" formControlName="firstName" type="text" />
+          <input matInput placeholder="First Name" formControlName="firstName" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('firstName').hasError('required')">
           First name is a required field
@@ -21,7 +21,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Last Name" formControlName="lastName" type="text" />
+          <input matInput placeholder="Last Name" formControlName="lastName" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('lastName').hasError('required')">
           Last name is a required field
@@ -30,7 +30,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Email" formControlName="email" type="text" readonly />
+          <input matInput placeholder="Email" formControlName="email" type="text" readonly required />
         </label>
         <mat-error [hidden]="!organizationForm.get('email').hasError('required')">
           Email is a required field
@@ -39,7 +39,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Phone Number" formControlName="phone" type="text" />
+          <input matInput placeholder="Phone Number" formControlName="phone" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('phone').hasError('required')">
           Phone number is a required field
@@ -49,7 +49,7 @@
       <mat-form-field class="login-full-width">
         <label>
           <input matInput placeholder="Address" formControlName="address"
-            type="text" />
+            type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('address').hasError('required')">
           Address is a required field
@@ -58,7 +58,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="City" formControlName="city" type="text" />
+          <input matInput placeholder="City" formControlName="city" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('city').hasError('required')">
           City is a required field
@@ -67,16 +67,16 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="State" formControlName="state" type="text" />
+          <input matInput placeholder="State" formControlName="state" type="text" minlength="2" maxlength="2" required />
         </label>
-        <mat-error [hidden]="!organizationForm.get('state').hasError('required')">
-          State is a required field
+        <mat-error *ngIf="organizationForm.get('state').hasError('required') || organizationForm.get('state').hasError('minlength')">
+          State 2-digit abbreviation is required
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Postal Code" formControlName="postalCode" type="text" />
+          <input matInput placeholder="Postal Code" formControlName="postalCode" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('postalCode').hasError('required')">
           Postal Code is a required field
