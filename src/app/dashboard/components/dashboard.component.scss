@@ -31,7 +31,6 @@
 
 .dashboard-list-item {
     display: block;
-    height: 48px;
     -webkit-tap-highlight-color: transparent;
     width: 100%;
     padding: 10 0 0 0;
@@ -48,4 +47,5 @@
     padding: 0 16px;
     position: relative;
     height: inherit;
+    margin-bottom: 10px;
 }
