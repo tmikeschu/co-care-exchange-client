@@ -4,11 +4,12 @@ import { SignInComponent } from '../components/sign-in/sign-in.component';
 import { PasswordResetComponent } from '../components/password-reset/password-reset.component';
 import { PasswordForgotComponent } from '../components/password-forgot/password-forgot.component';
 import { ValidateEmailComponent } from '../components/validate-email/validate-email.component';
+import { WelcomePageComponent } from '../components/welcome-page/welcome.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SignInComponent,
+    component: WelcomePageComponent,//SignInComponent,
   },
   {
     path: 'passwordreset',

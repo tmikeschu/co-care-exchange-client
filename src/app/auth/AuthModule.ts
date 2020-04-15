@@ -9,14 +9,17 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './routes/auth-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../material/material.module';
+import { WelcomePageComponent } from './components/welcome-page/welcome.component';
+import { RegistrationModule } from './components/registration/registration.module';
 
 @NgModule({
   declarations: [
     PasswordForgotComponent,
     PasswordResetComponent,
-    SignInComponent,
+    SignInComponent,    
     ValidateEmailComponent,
+    WelcomePageComponent
   ],
-  imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule],
+  imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule, RegistrationModule],
 })
 export class AuthModule {}

@@ -18,5 +18,6 @@ import { SharedModule } from '../../../shared/shared.module';
     FlexLayoutModule,
     RouterModule
   ],
+  exports:[RegisterComponent]
 })
 export class RegistrationModule {}
