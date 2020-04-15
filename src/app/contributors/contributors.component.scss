@@ -1,0 +1,35 @@
+
+p {
+    text-transform: capitalize;
+}
+
+.section {
+    height: 100%;
+}
+
+.scroll-container {
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #919191;
+    animation: 30s credits linear infinite;
+}
+
+.contributor-group {
+  margin-bottom: 50px;
+  font-size: 50px;
+}
+
+@keyframes credits {
+  0% {
+    top: 800%;
+  }
+  100% {
+    top: -600%;
+  }
+}
