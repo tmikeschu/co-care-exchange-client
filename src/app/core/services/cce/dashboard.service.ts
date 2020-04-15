@@ -63,6 +63,7 @@ export class DashboardService {
                 dialogMessage,
                 statusId,
                 deliveryAddress,
+                addressLabel,
                 requestId,
                 shareId
             }, shared {
@@ -72,6 +73,7 @@ export class DashboardService {
                 dialogMessage,
                 statusId,
                 deliveryAddress,
+                addressLabel,
                 shareId,
                 requestId
             }
@@ -95,7 +97,7 @@ export class DashboardService {
                 id,
                 status,
                 cancellationReason,
-                requesterUserId
+                requestingUserId
             }
         }
     }`,

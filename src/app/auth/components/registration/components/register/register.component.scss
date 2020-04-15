@@ -1,4 +1,4 @@
-@import '../../../../styles/theme.scss';
+@import '../../../../../../styles/theme.scss';
 
 mat-card {
   max-width: 400px;
@@ -20,6 +20,10 @@ h2{
 h3 {
   color: #fafafa;
   margin: 0px;
+}
+
+.tabcontent{
+  margin-top: 50px;
 }
 
 mat-icon {

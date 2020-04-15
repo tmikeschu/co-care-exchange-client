@@ -22,7 +22,7 @@ import { ResourcesComponent } from './resources/resources.component';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/AuthModule';
 import { DashboardModule } from './dashboard/DashboardModule';
-import { RegistrationModule } from './registration/registration.module';
+import { RegistrationModule } from './auth/components/registration/registration.module';
 import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
@@ -30,6 +30,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
 import {AmplifyAngularModule, AmplifyService} from 'aws-amplify-angular';
 import {configureAws} from './aws-cognito/config/awsconfig';
+import { ContributorsComponent } from './contributors/contributors.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,7 @@ import {configureAws} from './aws-cognito/config/awsconfig';
     ToastrModule.forRoot(),
     LayoutModule,
   ],
-  declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent],
+  declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent],
   providers: [
     AmplifyService,
     NavbarService,

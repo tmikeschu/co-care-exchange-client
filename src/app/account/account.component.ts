@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AccountComponent implements OnInit {
 
-  constructor(private router: Router ) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     window.scrollTo(0, 0)

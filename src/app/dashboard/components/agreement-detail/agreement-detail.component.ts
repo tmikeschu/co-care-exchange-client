@@ -92,7 +92,7 @@ export class AgreementDetailComponent implements OnInit {
 
     updateMatch(agreement, newStatusId, reason = 'Update status from agreement details') {
         // Pending (0) -> Matched (1) -> Confirmed (2) -> Fulfilled (3) -> Cancelled (4)
-        const udpateOrder: OrderStatusChangeModel = {
+        const updateOrder: OrderStatusChangeModel = {
             orderId: agreement.orderId,
             userId: this.user.userProfile.id,
             newStatus: newStatusId,
@@ -102,8 +102,10 @@ export class AgreementDetailComponent implements OnInit {
             shareId: agreement.shareId,
         };
 
-        this.dashboardService
-            .updateOrderStatus(udpateOrder)
+        console.log('update status body: ', updateOrder);
+
+        return this.dashboardService
+            .updateOrderStatus(updateOrder)
             .pipe(
                 map(data => {
                     if (data && data.errors && data.errors.length) {
@@ -121,7 +123,8 @@ export class AgreementDetailComponent implements OnInit {
                     });
                     return of([]);
                 })
-            );
+            )
+            .subscribe();
     }
 
     onCancelMatch(agreement) {

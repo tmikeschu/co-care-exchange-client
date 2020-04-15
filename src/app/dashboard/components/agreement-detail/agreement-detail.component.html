@@ -1,18 +1,24 @@
 <section *ngIf="agreement" class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
-<!-- <section *ngIf="agreement$ | async as agreement" class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center"> -->
+    <!-- <section *ngIf="agreement$ | async as agreement" class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center"> -->
 
     <div [ngSwitch]="agreementType">
 
         <div *ngSwitchCase="'share'">
             <h2>{{ agreement.name }}</h2>
 
-            <h3 class="sub-title status-text" [ngClass]="{ 'is-finding': agreement.statusId === 1}">
+            <h3 class="sub-title status-text" [ngClass]="{ 
+                'is-pending': agreement.statusId === 0,
+                'is-matched': agreement.statusId === 1,
+                'is-confirmed': agreement.statusId === 2,
+                'is-fulfilled': agreement.statusId === 3,
+                'is-cancelled': agreement.statusId === 4
+            }">
                 <strong>{{ agreement.statusText }}</strong></h3>
 
             <!-- <p class="body-copy">DATE HERE</p>
             <p class="body-copy">{{ agreement.statusText }}</p> -->
 
-            <h3 class="sub-title">Pick-Up Address</h3>
+            <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
 
@@ -23,7 +29,8 @@
                 <button mat-button color="warn" (click)="onReportIssue()">Report an issue</button>
             </div> -->
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-                <button *ngIf="agreement.statusId !== 4" mat-button mat-flat-button color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
+                <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
+                    color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
                 <button *ngIf="agreement.statusId === 2" mat-button mat-flat-button color="primary" class="btn cce-btn"
                     (click)="onConfirmDropOff(agreement)">Confirm Drop-Off</button>
             </div>
@@ -33,13 +40,19 @@
         <div *ngSwitchCase="'need'">
             <h2>{{ agreement.name }}</h2>
 
-            <h3 class="sub-title status-text" [ngClass]="{ 'is-finding': agreement.statusId === 1}">
+            <h3 class="sub-title status-text" [ngClass]="{
+                'is-pending': agreement.statusId === 0,
+                'is-matched': agreement.statusId === 1,
+                'is-confirmed': agreement.statusId === 2,
+                'is-fulfilled': agreement.statusId === 3,
+                'is-cancelled': agreement.statusId === 4
+            }">
                 <strong>{{ agreement.statusText }}</strong></h3>
 
             <!-- <p class="body-copy">DATE HERE</p>
             <p class="body-copy">{{ agreement.statusText }}</p> -->
 
-            <h3 class="sub-title">Pick-Up Address</h3>
+            <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
             <!-- <div fxLayout="row" fxLayoutAlign="start center">
@@ -67,7 +80,8 @@
                 <button mat-button color="warn" (click)="onReportIssue()">Report an issue</button>
             </div> -->
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-                <button *ngIf="agreement.statusId !== 4" mat-button mat-flat-button color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
+                <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
+                    color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
                 <!-- <button mat-button mat-flat-button color="primary" class="btn cce-btn"
                     (click)="onConfirmPickup()">Confirm Pick-Up</button> -->
             </div>

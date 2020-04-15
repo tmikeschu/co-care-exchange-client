@@ -1,7 +1,7 @@
 <app-site-header></app-site-header>
 <section class="section tight">
   <div>
-    <h2>Needs</h2>
+    <h2>Requests</h2>
     <div *ngIf="needs$ | async as needs; else inprogress">
       <div *ngIf="needs && needs.length > 0; else noneeds">
         <div *ngFor="let request of needs">
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <h2>Can Give</h2>
+    <h2>Shares</h2>
     <div *ngIf="shares$ | async as shares; else inprogress">
       <div *ngIf="shares && shares.length > 0; else noshares">
         <div *ngFor="let request of shares">
