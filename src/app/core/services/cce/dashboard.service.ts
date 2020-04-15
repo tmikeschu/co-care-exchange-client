@@ -65,7 +65,9 @@ export class DashboardService {
                 deliveryAddress,
                 addressLabel,
                 requestId,
-                shareId,
+                shareId,                
+                unitOfIssue,
+                quantity,                
                 details,
                 description
             }, shared {
@@ -76,7 +78,9 @@ export class DashboardService {
                 statusId,
                 deliveryAddress,
                 addressLabel,
-                shareId,
+                shareId,                                
+                unitOfIssue,
+                quantity,
                 requestId,
                 details,
                 description
