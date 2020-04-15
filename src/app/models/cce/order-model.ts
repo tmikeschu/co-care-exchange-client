@@ -1,4 +1,4 @@
-export interface OrderStatusChangeModel {
+export interface OrderChangeInput {
     orderId: string;
     userId: string;
     newStatus: number;
@@ -6,4 +6,5 @@ export interface OrderStatusChangeModel {
     clientMutationId: string;
     requestId: string;
     shareId: string;
+    description: String;
 }

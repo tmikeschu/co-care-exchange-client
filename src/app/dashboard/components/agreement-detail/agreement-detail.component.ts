@@ -1,18 +1,17 @@
 import { MatDialog } from '@angular/material';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { debounceTime, catchError, map, tap, finalize, share } from 'rxjs/operators';
-import { Observable, of, combineLatest } from 'rxjs';
+import { debounceTime, catchError, map, finalize, distinctUntilChanged, takeWhile } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-match.component';
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Agreement } from '../models/agreement';
-import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
+import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -20,11 +19,14 @@ import { ToastrService } from 'ngx-toastr';
     templateUrl: 'agreement-detail.component.html',
     styleUrls: ['./agreement-detail.component.scss']
 })
-export class AgreementDetailComponent implements OnInit {
+export class AgreementDetailComponent implements OnInit, OnDestroy {
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+
+    isAlive: boolean;
 
     editDescription = false;
     descriptionFC: FormControl;
+    // description$: Observable<String>;
     descriptionCurrentVal: String;
 
     user: any;
@@ -44,6 +46,7 @@ export class AgreementDetailComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.isAlive = true;
         /**
          * For the pilot, sharers are deliverers - tony
          *
@@ -59,6 +62,15 @@ export class AgreementDetailComponent implements OnInit {
          */
         this.user = this.userSerice.getCurrentUser();
         this.agreement = this.dashboardService.agreementDetail;
+        this.descriptionFC = new FormControl('');
+        this.descriptionFC.valueChanges.pipe(
+            debounceTime(400),
+            distinctUntilChanged(),
+            takeWhile(() => this.isAlive)
+        )
+        .subscribe(description => {
+            this.descriptionCurrentVal = description;
+        });
 
         if (!this.agreement) {
             // TODO: should probably be handled better to be able to retrieve agreement item via url
@@ -90,9 +102,13 @@ export class AgreementDetailComponent implements OnInit {
             });
     }
 
+    ngOnDestroy() {
+        this.isAlive = false;
+    }
+
     updateMatch(agreement, newStatusId, reason = 'Update status from agreement details') {
         // Pending (0) -> Matched (1) -> Confirmed (2) -> Fulfilled (3) -> Cancelled (4)
-        const updateOrder: OrderStatusChangeModel = {
+        const updateOrderStatusPayload: OrderChangeInput = {
             orderId: agreement.orderId,
             userId: this.user.userProfile.id,
             newStatus: newStatusId,
@@ -100,12 +116,11 @@ export class AgreementDetailComponent implements OnInit {
             clientMutationId: '123456',
             requestId: agreement.requestId,
             shareId: agreement.shareId,
+            description: null
         };
 
-        console.log('update status body: ', updateOrder);
-
         return this.dashboardService
-            .updateOrderStatus(updateOrder)
+            .updateOrderStatus(updateOrderStatusPayload)
             .pipe(
                 map(data => {
                     if (data && data.errors && data.errors.length) {
@@ -118,7 +133,7 @@ export class AgreementDetailComponent implements OnInit {
                     this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
-                    this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
+                    this.toastrService.error(`Error: updating the order for ${agreement.name} failed.`, null, {
                         enableHtml: true
                     });
                     return of([]);
@@ -135,12 +150,46 @@ export class AgreementDetailComponent implements OnInit {
         this.updateMatch(agreement, 3, 'Sharer confirmed that they have dropped off the item.');
     }
 
-    // onCancelEdit() {
-    //     this.editDescription = false;
-    //     this.descriptionCurrentVal = '';
-    // }
+    onCancelEdit() {
+        this.editDescription = false;
+        this.descriptionCurrentVal = '';
+    }
 
-    // onSubmitEdit() {
-    //     console.log('edit description submitted, go update the description with: ', this.descriptionCurrentVal);
-    // }
+    updateOrderDesc(payload: OrderChangeInput) {
+        console.log('update order description payload: ', payload);
+        this.dashboardService.updateOrderDescription(payload)
+            .pipe(
+                map(data => {
+                    if (data && data.errors && data.errors.length) {
+                        const messages = data.errors.map(e => e.message).join(', ');
+                        throw new Error(messages);
+                    }
+                    return data;
+                }),
+                finalize(() => {
+                    this.router.navigate(['/dashboard']);
+                }),
+                catchError((err) => {
+                    this.toastrService.error(`Error: update description request for ${this.agreement.name} failed.`, null, {
+                        enableHtml: true
+                    });
+                    return of([]);
+                })
+            )
+            .subscribe();
+    }
+
+    onSubmitEdit() {
+        const updateDescriptionPayload: OrderChangeInput = {
+            orderId: this.agreement.orderId,
+            userId: this.user.userProfile.id,
+            newStatus: this.agreement.statusId,
+            reason: 'Sharer updated item description',
+            clientMutationId: '123456',
+            requestId: this.agreement.requestId,
+            shareId: this.agreement.shareId,
+            description: this.descriptionCurrentVal
+        };
+        this.updateOrderDesc(updateDescriptionPayload);
+    }
 }
