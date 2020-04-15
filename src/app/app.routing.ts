@@ -6,11 +6,13 @@ import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { PantryLocatorComponent } from './pantry-locator/pantry-locator.component';
 import { AccountComponent } from './account/account.component';
 import { ResourcesComponent } from './resources/resources.component';
+
 import { ModuleWithProviders } from '@angular/core';
 import { UserResolver } from './core/resolvers/user.resolver';
 import { AppComponent } from './app.component';
 import { PromptsComponent } from './prompts/prompts/prompts.component';
 import { InformationComponent } from './information/information/information.component';
+import { ContributorsComponent } from './contributors/contributors.component';
 
 export const appRoutes: Routes = [
   {
@@ -21,6 +23,10 @@ export const appRoutes: Routes = [
       {
         path: 'resources',
         component: ResourcesComponent,
+      },
+      {
+        path: 'contributors',
+        component: ContributorsComponent,
       },
       {
         path: 'account',
