@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 // import { MatDialogRef } from '@angular/material';
 
 @Component({
@@ -8,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContributorsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
   // constructor(public dialogRef: MatDialogRef<ContributorsComponent>) { }
 
   ngOnInit() {
   }
 
+  backToResources() {
+    this.router.navigate(['/resources']);
+  }
 }
