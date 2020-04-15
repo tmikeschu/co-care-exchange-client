@@ -70,7 +70,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       phone: ['', Validators.required],
       householdSize: [0, Validators.required],
       address: ['', Validators.required],
-      city: ['', Validators.required],
+      city: ['', Validators.compose([Validators.required, Validators.min(2), Validators.max(2)])],
       state: ['', Validators.required],
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.required],
