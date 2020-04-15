@@ -74,7 +74,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       phone: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
-      state: ['', Validators.required],
+      state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
     });
