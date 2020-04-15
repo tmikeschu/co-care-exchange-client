@@ -11,6 +11,10 @@
   button {
     color: #fafafa;
 
+    mat-icon {
+      color: mat-color(map-get($colorado-care-exchange-theme, primary));
+    }
+
     &.primary {
       color: mat-color(map-get($colorado-care-exchange-theme, primary));
     }
