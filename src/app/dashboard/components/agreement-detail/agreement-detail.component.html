@@ -1,5 +1,4 @@
 <section *ngIf="agreement" class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
-    <!-- <section *ngIf="agreement$ | async as agreement" class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center"> -->
 
     <div [ngSwitch]="agreementType">
 
@@ -15,19 +14,33 @@
             }">
                 <strong>{{ agreement.statusText }}</strong></h3>
 
-            <!-- <p class="body-copy">DATE HERE</p>
-            <p class="body-copy">{{ agreement.statusText }}</p> -->
+            <p class="body-copy">{{ agreement.dialogMessage }}</p>
 
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
 
-            <!-- <h3>Item Description Here</h3>
-            <p class="body-copy">sharer description here</p> -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <h3>Item Description</h3>
+                <button [disabled]="editDescription" *ngIf="agreement.statusId !== 0 && agreement.statusId !== 3 && agreement.statusId !== 4" (click)="editDescription = true;" class="primary" mat-button color="primary">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+            <div *ngIf="editDescription" fxLayout="row" fxLayoutAlign="center baseline">
+                <mat-form-field>
+                    <textarea matInput [formControl]="descriptionFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                    </textarea>
+                </mat-form-field>
+                <button (click)="onCancelEdit();" class="primary" mat-button>
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button (click)="onSubmitEdit()" class="primary" mat-button>
+                    <mat-icon>done</mat-icon>
+                </button>
+            </div>
+            <p *ngIf="!editDescription">{{ agreement.description ? agreement.description : '--' }}</p>
 
-            <!-- <div class="report-issue" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-button color="warn" (click)="onReportIssue()">Report an issue</button>
-            </div> -->
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                 <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
                     color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
@@ -48,42 +61,16 @@
                 'is-cancelled': agreement.statusId === 4
             }">
                 <strong>{{ agreement.statusText }}</strong></h3>
-
-            <!-- <p class="body-copy">DATE HERE</p>
-            <p class="body-copy">{{ agreement.statusText }}</p> -->
+            <p class="body-copy">{{ agreement.dialogMessage }}</p>
 
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
-            <!-- <div fxLayout="row" fxLayoutAlign="start center">
-                <h3>Item Description Here</h3>
-                <button [disabled]="editDescription" (click)="editDescription = true;" class="primary" mat-button color="primary">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </div> -->
-            <!-- <div *ngIf="editDescription" fxLayout="row" fxLayoutAlign="center baseline">
-                <mat-form-field>
-                    <textarea matInput [formControl]="descriptionFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
-                    </textarea>
-                </mat-form-field>
-                <button (click)="onCancelEdit();" class="primary" mat-button>
-                    <mat-icon>close</mat-icon>
-                </button>
-                <button (click)="onSubmitEdit()" class="primary" mat-button>
-                    <mat-icon>done</mat-icon>
-                </button>
-            </div>
-            <p class="body-copy">need description here</p> -->
-
-            <!-- <div class="report-issue" fxLayout="row" fxLayoutAlign="start center">
-                <button mat-button color="warn" (click)="onReportIssue()">Report an issue</button>
-            </div> -->
+            <h3>Item Description</h3>
+            <p>{{ agreement.description ? agreement.description : '--' }}</p>
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                 <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
                     color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
-                <!-- <button mat-button mat-flat-button color="primary" class="btn cce-btn"
-                    (click)="onConfirmPickup()">Confirm Pick-Up</button> -->
             </div>
         </div>
     </div>
