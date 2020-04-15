@@ -7,8 +7,8 @@
         <div *ngFor="let request of needs">
           <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }}</mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
+              <mat-label class="contentlabel">({{ request.quantity }}) {{ request.unitOfIssue }} {{ request.name }}</mat-label>
+              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>             
             </div>
           </mat-list-item>
         </div>
