@@ -133,7 +133,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
-                    this.toastrService.error(`Error: order cancel request for ${agreement.name} failed.`, null, {
+                    this.toastrService.error(`Error: updating the order for ${agreement.name} failed.`, null, {
                         enableHtml: true
                     });
                     return of([]);
