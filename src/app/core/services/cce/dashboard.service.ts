@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import gql from 'graphql-tag';
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
-import { OrderStatusChangeModel } from 'src/app/models/cce/order-model';
+import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { UserService } from '../user.service';
 import { Apollo } from 'apollo-angular';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
@@ -67,7 +67,9 @@ export class DashboardService {
                 requestId,
                 shareId,                
                 unitOfIssue,
-                quantity
+                quantity,                
+                details,
+                description
             }, shared {
                 name,
                 statusText,
@@ -76,10 +78,12 @@ export class DashboardService {
                 statusId,
                 deliveryAddress,
                 addressLabel,
-                shareId,
-                requestId,                
+                shareId,                                
                 unitOfIssue,
-                quantity
+                quantity,
+                requestId,
+                details,
+                description
             }
         }
     }`,
@@ -90,12 +94,12 @@ export class DashboardService {
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  updateOrderStatus(orderStatusChange: OrderStatusChangeModel): Observable<any> {
+  updateOrderStatus(orderStatusChange: OrderChangeInput): Observable<any> {
     console.log('order to update: ', orderStatusChange);
 
     const input = {
       operationName: 'OrderMutations',
-      query: `mutation OrderMutations($input: OrderStatusChangeInput!) {
+      query: `mutation OrderMutations($input: OrderChangeInput!) {
         changeStatus(input: $input) {
             order {
                 id,
@@ -111,6 +115,29 @@ export class DashboardService {
     };
 
     return this.http.post<any>(`${environment.serverUrl}`, input);
+  }
+
+  updateOrderDescription(order) {
+    const UpdateOrderDescription = gql`
+      mutation UpdateOrderDescription($input: OrderChangeInput!) {
+        updateOrderDescription(input: $input) {
+          clientMutationId,
+          order {
+            id,
+            status,
+            description
+          }
+        }
+      }
+    `;
+
+    return this.apollo
+      .mutate({
+        mutation: UpdateOrderDescription,
+        variables: {
+          input: order,
+        }
+      });
   }
 
   updateMessageCount(list) {
