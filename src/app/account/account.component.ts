@@ -26,5 +26,8 @@ export class AccountComponent implements OnInit {
   resource() {
     this.router.navigate(['/resources']);
   }
+  showContributors() {
+    this.router.navigate(['/contributors']);
+  }
 
 }
