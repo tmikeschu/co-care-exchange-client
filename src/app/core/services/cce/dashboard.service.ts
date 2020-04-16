@@ -78,9 +78,9 @@ export class DashboardService {
                 statusId,
                 deliveryAddress,
                 addressLabel,
-                shareId,                                
+                shareId,
                 unitOfIssue,
-                quantity,
+                quantity
                 requestId,
                 details,
                 description
