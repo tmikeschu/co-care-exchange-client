@@ -59,6 +59,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+### Prod 
+
+`ng s -c prod`
+
+### QA
+
+`ng s -c qa`
   
 
 ## Code scaffolding
@@ -80,7 +87,13 @@ Ref: https://github.com/aws-amplify/amplify-js/issues/3620
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-  
+### Prod build
+
+`ng build -c prod`
+
+### QA Build
+
+`ng build -c qa`  
 
 ## Running unit tests
 

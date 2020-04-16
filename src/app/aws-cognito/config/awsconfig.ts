@@ -4,6 +4,7 @@ import { organizationCUPInfo } from './organizations';
 
 export const configureAws = (name: string) => {
   console.log('DEBUG AWS CONFIG entry');
+  // dev note: right now, just the CCE_Individual config is used for everything since groups are in the CUP as well
   const configs = { ...individualsAWSInfo, ...organizationCUPInfo };
   let config = configs[name];
   console.log('DEBUG using aws config ', config);

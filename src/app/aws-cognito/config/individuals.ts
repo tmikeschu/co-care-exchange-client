@@ -1,9 +1,10 @@
 import { CUPMap } from './cup-info.model';
+import {environment} from '../../../environments/environment';
 
 export const individualsAWSInfo: CUPMap = {
   CCE_Individual: {
-    region: 'us-west-2',
-    userPoolId: 'us-west-2_igpmMslLS',
-    userPoolWebClientId: '5bil759v27orpugcsmiq1698t6',
+    region: environment.aws.region,
+    userPoolId: environment.aws.userPoolId,
+    userPoolWebClientId: environment.aws.userPoolWebClientId,
   },
 };

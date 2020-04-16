@@ -50,6 +50,23 @@
               "vendorChunk": false,
               "buildOptimizer": true
             },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
             "test": {
               "fileReplacements": [
                 {
@@ -77,6 +94,9 @@
           "configurations": {
             "production": {
               "browserTarget": "colorado-care-exchange:build:production"
+            },
+            "qa": {
+              "browserTarget": "colorado-care-exchange:build:qa"
             }
           }
         },
@@ -128,6 +148,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "colorado-care-exchange:serve:production"
+            },
+            "qa": {
+              "devServerTarget": "colorado-care-exchange:serve:qa"
             }
           }
         },
