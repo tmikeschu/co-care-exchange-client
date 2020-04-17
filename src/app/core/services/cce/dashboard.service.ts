@@ -15,9 +15,9 @@ import { Agreement } from 'src/app/dashboard/components/models/agreement';
 export class DashboardService {
   agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
   agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
-  agreementDetail: Agreement;
-  // selectedAgreementSubject$ = new BehaviorSubject<Agreement>(null);
-  // selectedAgreement$ = this.selectedAgreementSubject$.pipe(share());
+  // agreementDetail: Agreement;
+  selectedAgreementSubject$ = new BehaviorSubject<any>(null);
+  readonly agreement$ = this.selectedAgreementSubject$.asObservable();
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
@@ -160,10 +160,10 @@ export class DashboardService {
   }
 
   get selectedAgreement() {
-    return this.agreementDetail;
+    return this.agreement$;
   }
 
-  set selectedAgreement(agreement: Agreement) {
-    this.selectedAgreement = agreement;
+  setSelectedAgreement(agreement) {
+    this.selectedAgreementSubject$.next(agreement);
   }
 }
