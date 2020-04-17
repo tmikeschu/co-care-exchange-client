@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { debounceTime, catchError, map, finalize, distinctUntilChanged, takeWhile, take } from 'rxjs/operators';
+import { debounceTime, catchError, map, finalize, distinctUntilChanged, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-match.component';
@@ -26,7 +26,6 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
 
     editDescription = false;
     descriptionFC: FormControl;
-    // description$: Observable<String>;
     descriptionCurrentVal: String;
 
     user: any;
@@ -48,8 +47,6 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isAlive = true;
         /**
-         * For the pilot, sharers are deliverers - tony
-         *
          * User is requesting
          * All statuses execpt (4) "cancelled", sharer should be able to view the detail and cancel the match
          * if status (4) "cancelled" you can view it only
@@ -61,44 +58,52 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
          * All other statuses except "cancelled", the sharer can view details and cancel
          */
         this.user = this.userSerice.getCurrentUser();
-        this.agreement$ = this.dashboardService.selectedAgreement.pipe(take(1));
-        this.agreement$.subscribe(agreement => {
-            this.agreement = agreement;
-            this.descriptionFC = new FormControl(this.agreement.description);
-            this.descriptionFC.valueChanges.pipe(
-                debounceTime(400),
-                distinctUntilChanged(),
-                takeWhile(() => this.isAlive)
-            )
+        this.descriptionFC = new FormControl('');
+        this.agreement$ = this.dashboardService.selectedAgreement.pipe(
+            tap((agreement: any) => {
+                if (agreement) {
+                    const desc = agreement.description || '';
+                    this.descriptionFC.patchValue(desc);
+                }
+                if (!agreement) {
+                    this.router.navigate(['/dashboard']);
+                }
+            })
+        );
+
+        this.descriptionFC.valueChanges.pipe(
+            debounceTime(400),
+            distinctUntilChanged(),
+            takeWhile(() => this.isAlive)
+        )
             .subscribe(description => {
                 this.descriptionCurrentVal = description;
             });
-        });
-        // this.agreement = this.dashboardService.selectedAgreement;
-        // const desc = this.agreement.description ? this.agreement.description : '';
-
-        if (!this.agreement) {
-            // TODO: should probably be handled better to be able to retrieve agreement item via url
-            // instead of relying on accessing this view only from the dashboard
-            this.router.navigate(['/dashboard']);
-        }
 
         this.route.queryParams
-            .subscribe(params => {
+            .pipe(
+                withLatestFrom(this.agreement$),
+                tap(([params, agreement]) => {
+                    if (!agreement || !params) {
+                        this.router.navigate(['/dashboard']);
+                    }
+                }),
+            )
+            .subscribe(([params, agreement]) => {
                 this.agreementType = params.type;
 
-                if (this.agreementType === 'share' && this.agreement.statusId === 1) {
+                if (this.agreementType && this.agreementType === 'share' && agreement && agreement.statusId === 1) {
 
                     const ref = this.dialog.open(ConfirmMatchDialogComponent, {
                         width: '300px',
-                        data: this.agreement
+                        data: agreement
                     });
 
                     ref.afterClosed().subscribe(results => {
                         if (results === 'Cancel') {
-                            this.updateMatch(this.agreement, 4, 'Sharer refused the drop off terms.');
+                            this.updateMatch(agreement, 4, 'Sharer refused the drop off terms.');
                         } else if (results === 'Confirm') {
-                            this.updateMatch(this.agreement, 2, 'Sharer confirmed ability to drop off the items.');
+                            this.updateMatch(agreement, 2, 'Sharer confirmed ability to drop off the items.');
                         }
                     });
 
@@ -121,7 +126,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             clientMutationId: '123456',
             requestId: agreement.requestId,
             shareId: agreement.shareId,
-            description: null
+            description: agreement.description || this.descriptionCurrentVal || null
         };
 
         return this.dashboardService
@@ -130,13 +135,14 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                 map(data => {
                     if (data && data.errors && data.errors.length) {
                         const messages = data.errors.map(e => {
-                            return `Message:  ${e.message} Path: ${e.path ? e.path[0] : null} `
+                            return `Message:  ${e.message} Path: ${e.path ? e.path[0] : null}`;
                         }).join(', ');
                         throw new Error(messages);
                     }
-                    //TODO: pick up here
-                    // this.dashboardService.setSelectedAgreement()
                     return data;
+                }),
+                finalize(() => {
+                    this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
                     console.log('Agreement Detail updateOrderStatus error', err.message)
@@ -166,18 +172,25 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
         console.log('update order description payload: ', payload);
         this.dashboardService.updateOrderDescription(payload)
             .pipe(
-                map(data => {
+                map((data: any) => {
                     if (data && data.errors && data.errors.length) {
                         const messages = data.errors.map(e => e.message).join(', ');
                         throw new Error(messages);
                     }
+
+                    if (data && data.data && data.data.updateOrderDescription && data.data.updateOrderDescription.orderViewModel) {
+                        const nextAgreement = data.data.updateOrderDescription.orderViewModel;
+                        if (nextAgreement) {
+                            this.dashboardService.setSelectedAgreement(nextAgreement);
+                        }
+                    }
                     return data;
                 }),
                 finalize(() => {
-                    // this.router.navigate(['/dashboard']);
+                    this.editDescription = false;
                 }),
                 catchError((err) => {
-                    this.toastrService.error(`Error: update description request for ${this.agreement.name} failed.`, null, {
+                    this.toastrService.error(`Error: update description request failed.`, null, {
                         enableHtml: true
                     });
                     return of([]);
@@ -186,15 +199,15 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    onSubmitEdit() {
+    onSubmitEdit(agreement) {
         const updateDescriptionPayload: OrderChangeInput = {
-            orderId: this.agreement.orderId,
+            orderId: agreement.orderId,
             userId: this.user.userProfile.id,
-            newStatus: this.agreement.statusId,
+            newStatus: agreement.statusId,
             reason: 'Sharer updated item description',
             clientMutationId: '123456',
-            requestId: this.agreement.requestId,
-            shareId: this.agreement.shareId,
+            requestId: agreement.requestId,
+            shareId: agreement.shareId,
             description: this.descriptionCurrentVal
         };
         this.updateOrderDesc(updateDescriptionPayload);
