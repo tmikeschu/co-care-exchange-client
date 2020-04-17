@@ -125,7 +125,22 @@ export class DashboardService {
           order {
             id,
             status,
-            description
+            description,
+            orderViewModel {
+              name,
+              statusText,
+              orderId,
+              dialogMessage,
+              statusId,
+              deliveryAddress,
+              addressLabel,
+              shareId,
+              unitOfIssue,
+              quantity
+              requestId,
+              details,
+              description
+            }
           }
         }
       }
