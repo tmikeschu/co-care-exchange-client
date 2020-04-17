@@ -69,52 +69,17 @@ export class PromptsComponent implements OnInit {
       this.userService.getUser(this.userEmail).subscribe((user) => {
 
         this.configureUser(user);
-        // this.userType = 'ind';
-        //
-        // if (user == null) {
-        //   this.router.navigate(['/']);
-        //   return true;
-        // }
-        //
-        // if (user.organization != null) {
-        //   this.userType = 'org';
-        // }
+        
 
         this.configurePrompts();
       });
     }
-
-    // this.userEmail = this.userService.getEmail();
-    //
-    // this.userService.getUser(this.userEmail).subscribe((user) => {
-    //   this.userType = 'ind';
-    //
-    //   if (user == null) {
-    //     this.router.navigate(['/']);
-    //     return true;
-    //   }
-    //
-    //   if (user.organization != null) {
-    //     this.userType = 'org';
-    //   }
-    //
-    //   // this.promptService.getPrompts(this.userType).subscribe((prompts) => {
-    //   //   console.log('getPrompts', prompts);
-    //   //   this.prompts = prompts.data.prompts;
-    //   //
-    //   //   for (let x = 0; x < prompts.data.prompts.length; x++) {
-    //   //     if (!this.selectedPrompts.find((element) => element['groupName'] == this.prompts[x].groupName)) {
-    //   //       this.selectedPrompts.push({ groupName: this.prompts[x].groupName, showQuestions: 'No', prompts: [] });
-    //   //     }
-    //   //   }
-    //   // });
-    // });
   }
 
   private configureUser(userProfile): void {
     if (userProfile == null) {
       console.error('Unable to process user, profile is null');
-      this.router.navigate(['/']);
+      this.router.navigate(['/', 'welcome']);
     }
 
     this.userType = 'ind';

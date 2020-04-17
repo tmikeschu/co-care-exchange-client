@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { ErrorStateMatcher } from '@angular/material';
 import { ActivatedRoute, Router} from '@angular/router';
 import { AuthenticationService } from '../../../core/services/cce/authentication.service';
-import { FORGET_PASSWORD_ROUTE, RESET_PASSWORD_ROUTE, SIGNIN_ROUTE} from '../../../core/constants/routes';
+import { FORGET_PASSWORD_ROUTE} from '../../../core/constants/routes';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -60,7 +60,7 @@ export class PasswordResetComponent implements OnInit {
     try {
       const result = await this.authenticationService.forgetPasswordComplete(this.email, this.pwResetForm.controls.resetCode.value, this.pwResetForm.controls.passwordConfirm.value);
       this.success = true;
-      await this.router.navigate(['/', SIGNIN_ROUTE]);
+      await this.router.navigate(['/', , 'welcome']);
     } catch (err) {
       console.error('Error resetting password ', err);
     }
