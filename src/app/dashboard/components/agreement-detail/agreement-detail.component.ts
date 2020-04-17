@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { debounceTime, catchError, map, finalize, distinctUntilChanged, takeWhile } from 'rxjs/operators';
+import { debounceTime, catchError, map, finalize, distinctUntilChanged, takeWhile, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-match.component';
@@ -61,17 +61,21 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
          * All other statuses except "cancelled", the sharer can view details and cancel
          */
         this.user = this.userSerice.getCurrentUser();
-        this.agreement = this.dashboardService.agreementDetail;
-        // const desc = this.agreement.description ? this.agreement.description : '';
-        this.descriptionFC = new FormControl(this.agreement.description);
-        this.descriptionFC.valueChanges.pipe(
-            debounceTime(400),
-            distinctUntilChanged(),
-            takeWhile(() => this.isAlive)
-        )
-        .subscribe(description => {
-            this.descriptionCurrentVal = description;
+        this.agreement$ = this.dashboardService.selectedAgreement.pipe(take(1));
+        this.agreement$.subscribe(agreement => {
+            this.agreement = agreement;
+            this.descriptionFC = new FormControl(this.agreement.description);
+            this.descriptionFC.valueChanges.pipe(
+                debounceTime(400),
+                distinctUntilChanged(),
+                takeWhile(() => this.isAlive)
+            )
+            .subscribe(description => {
+                this.descriptionCurrentVal = description;
+            });
         });
+        // this.agreement = this.dashboardService.selectedAgreement;
+        // const desc = this.agreement.description ? this.agreement.description : '';
 
         if (!this.agreement) {
             // TODO: should probably be handled better to be able to retrieve agreement item via url
@@ -130,10 +134,9 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                         }).join(', ');
                         throw new Error(messages);
                     }
+                    //TODO: pick up here
+                    // this.dashboardService.setSelectedAgreement()
                     return data;
-                }),
-                finalize(() => {
-                    this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
                     console.log('Agreement Detail updateOrderStatus error', err.message)
@@ -171,7 +174,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                     return data;
                 }),
                 finalize(() => {
-                    this.router.navigate(['/dashboard']);
+                    // this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
                     this.toastrService.error(`Error: update description request for ${this.agreement.name} failed.`, null, {
