@@ -7,7 +7,6 @@ import { AuthenticationService } from '../../../core/services/cce/authentication
 import { NavbarService } from '../../../core/services/navbar.service';
 import { SignInResult } from '../../../models/cce/sign-in-result.model';
 import { UserService } from '../../../core/services/user.service';
-import { OrganizationService } from '../../../core/services/organization.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,15 +20,14 @@ export class SignInComponent implements OnInit {
   errorMessage: string;
   error = false;
   signingIn = false;
-  organizations = [];
+  
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private orgService: OrganizationService,
+    private userService: UserService,    
     private navbarService: NavbarService,
     private toastrService: ToastrService
   ) { }
@@ -37,8 +35,7 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
-      organization: [''],
+      password: ['', Validators.required]      
     });
     this.route.queryParams.subscribe((val) => {
       console.log('DEBUG signin email ', val);
@@ -47,41 +44,35 @@ export class SignInComponent implements OnInit {
         this.loginForm.get('username').setValue(email);
       }
     });
-    this.orgService.getOrganizations$().subscribe((orgs) => {
-      const orgList = [...orgs];
-      orgList.unshift(this.INDIVIDUAL);
-      this.organizations = orgList;
-    });
+    
   }
 
   async onLoginSubmit() {
     this.error = false;
     this.errorMessage = undefined;
-    this.signingIn = true;
-    console.log('DEBUG signin org ', this.loginForm.get('organization').value);
-    let org = this.loginForm.get('organization').value;
-    // if org is the individual, then no org
-    if (org && !org.id) {
-      org = null;
-    }
+    this.signingIn = true;    
+    
     try {
       const result: SignInResult = await this.authenticationService.signIn(
         this.loginForm.get('username').value,
-        this.loginForm.get('password').value,
-        org
+        this.loginForm.get('password').value
       );
-      console.log('DEBUG: signin result ', result);
+
+      //console.log('DEBUG: signin result ', result);
       this.signingIn = false;
+
       if (result.errorMsg) {
         this.error = true;
         this.errorMessage = result.errorMsg;
         this.toastrService.error(result.errorMsg, null, { positionClass: "toast-top-center" });
         return;
       }
+
       // TODO is navbar service needed...dont think so
-      this.navbarService.setLogin(true);
+      //this.navbarService.setLogin(true);
+
       // the email is the username
-      await this.navigateToNextRoute(this.loginForm.get('username').value, org);
+      await this.navigateToNextRoute(this.loginForm.get('username').value);
     } catch (err) {
       console.log('SignIn error ', err);
       this.toastrService.error('An unexpected error has occurred. please try again later', null, { positionClass: "toast-top-center" });
@@ -95,15 +86,12 @@ export class SignInComponent implements OnInit {
     const self = this;
     const user = await self.userService.getUser(username).pipe(first()).toPromise();
     console.log('signin navigateToNextRoute - user profile ', user);
+
     // TODO -- also check if user is part of an org if they signed in with an org?
     if (user && user.emailAddress) {
       return this.router.navigate(['/', 'dashboard']);
     } else {
-      const queryParams = { newUser: true };
-      // if (org) {
-      //   queryParams['organizationId'] = org.id;
-      //   queryParams['organizationName'] = org.name;
-      // }
+      const queryParams = { newUser: true };      
       return this.router.navigate(['/', 'info'], { queryParams });
     }
   }

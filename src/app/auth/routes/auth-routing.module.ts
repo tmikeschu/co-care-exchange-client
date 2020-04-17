@@ -9,7 +9,11 @@ import { WelcomePageComponent } from '../components/welcome-page/welcome.compone
 const routes: Routes = [
   {
     path: '',
-    component: WelcomePageComponent,//SignInComponent,
+    component: WelcomePageComponent,
+  },
+  {
+    path: 'welcome',
+    component: WelcomePageComponent,
   },
   {
     path: 'passwordreset',

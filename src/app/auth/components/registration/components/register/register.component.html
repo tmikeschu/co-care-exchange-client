@@ -22,6 +22,15 @@
             </mat-error>
           </mat-form-field>
 
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Organization" formControlName="organization">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let organization of organizations" [value]="organization">
+                {{organization.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <mat-form-field class="login-full-width">
             <input matInput placeholder="Email" formControlName="email" type="text">
             <mat-error *ngIf="registerForm.get('email').hasError('required')">
