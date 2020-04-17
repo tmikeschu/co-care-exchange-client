@@ -124,7 +124,9 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             .pipe(
                 map(data => {
                     if (data && data.errors && data.errors.length) {
-                        const messages = data.errors.map(e => e.message).join(', ');
+                        const messages = data.errors.map(e => {
+                            return `Message:  ${e.message} Path: ${e.path ? e.path[0] : null} `
+                        }).join(', ');
                         throw new Error(messages);
                     }
                     return data;
@@ -133,6 +135,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
+                    console.log('Agreement Detail updateOrderStatus error', err.message)
                     this.toastrService.error(`Error: updating the order for ${agreement.name} failed.`, null, {
                         enableHtml: true
                     });

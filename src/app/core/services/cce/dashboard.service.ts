@@ -95,8 +95,6 @@ export class DashboardService {
   }
 
   updateOrderStatus(orderStatusChange: OrderChangeInput): Observable<any> {
-    console.log('order to update: ', orderStatusChange);
-
     const input = {
       operationName: 'OrderMutations',
       query: `mutation OrderMutations($input: OrderChangeInput!) {
@@ -113,7 +111,7 @@ export class DashboardService {
         input: orderStatusChange,
       },
     };
-
+    console.log('updateOrderStatus mutation: ', input);
     return this.http.post<any>(`${environment.serverUrl}`, input);
   }
 
@@ -130,7 +128,8 @@ export class DashboardService {
         }
       }
     `;
-
+    console.log('updateOrderDescription mutation: ', UpdateOrderDescription);
+    console.log('updateOrderDescription order: ', order);
     return this.apollo
       .mutate({
         mutation: UpdateOrderDescription,
