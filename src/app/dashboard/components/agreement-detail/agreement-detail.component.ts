@@ -62,7 +62,8 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
          */
         this.user = this.userSerice.getCurrentUser();
         this.agreement = this.dashboardService.agreementDetail;
-        this.descriptionFC = new FormControl('');
+        // const desc = this.agreement.description ? this.agreement.description : '';
+        this.descriptionFC = new FormControl(this.agreement.description);
         this.descriptionFC.valueChanges.pipe(
             debounceTime(400),
             distinctUntilChanged(),
