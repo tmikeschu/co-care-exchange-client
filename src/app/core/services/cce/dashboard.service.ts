@@ -16,8 +16,6 @@ export class DashboardService {
   agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
   agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
   agreementDetail: Agreement;
-  // selectedAgreementSubject$ = new BehaviorSubject<Agreement>(null);
-  // selectedAgreement$ = this.selectedAgreementSubject$.pipe(share());
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
@@ -26,30 +24,10 @@ export class DashboardService {
   userProfile;
 
   constructor(private http: HttpClient, public userService: UserService, private apollo: Apollo) {
-    // TODO -- figure out when to invoke service this.init();
+    
   }
 
   init() {
-    // DEV QUESTION: what is the purpose of this vs the call from the component?
-    // try {
-    //   this.getDashboard().subscribe((result) => {
-    //     console.log('dashboard results:', result);
-    //
-    //     this.hasNeeds = result.data.dashboard.requested.length;
-    //     this.hasShares = result.data.dashboard.shared.length;
-    //
-    //     if (this.hasNeeds) {
-    //       result.data.dashboard.requested.map((need) => (need.statusTypeId = 1));
-    //       result.data.dashboard.shared.map((share) => (share.statusTypeId = 2));
-    //     }
-    //
-    //     this.agreementNeeds.next(this.updateMessageCount(result.data.dashboard.requested));
-    //     this.agreementShares.next(this.updateMessageCount(result.data.dashboard.shared));
-    //   });
-    // } catch (e) {
-    //   console.error('Dashboard data error ', e);
-    //   this.router.navigate(['/']);
-    // }
   }
 
   getDashboard(userId: string): Observable<Result> {
