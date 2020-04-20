@@ -6,7 +6,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../../../../core/services/cce/authentication.service';
 import { BasicRegistrationModel } from '../../../../../models/cce/basic-registration.model';
 import { environment } from '../../../../../../environments/environment';
-import { OrganizationService } from 'src/app/core/services/organization.service';
 
 @Component({
   selector: 'app-register',
@@ -18,14 +17,12 @@ export class RegisterComponent implements OnInit {
   errorMessage: string;
   error = false;
   isRegistering = false;
-  organizations = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
-    private orgService: OrganizationService,
   ) { }
 
   ngOnInit() {
@@ -35,14 +32,8 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(minPasswordLength), Validators.maxLength(30)]],
-      organization: [''],
-    });
-
-    this.orgService.getOrganizations$().subscribe((orgs) => {
-      const orgList = [...orgs];      
-      this.organizations = orgList;
-    });
+      password: ['', [Validators.required, Validators.minLength(minPasswordLength), Validators.maxLength(30)]]
+    });    
   }
 
   handlePantry() {
@@ -52,16 +43,14 @@ export class RegisterComponent implements OnInit {
   async onRegisterSubmit() {
     this.registerForm.disable();
     this.isRegistering = true;
-    const email = this.registerForm.get('email').value;
-     
+    const email = this.registerForm.get('email').value;     
 
     try {
       const regModel: BasicRegistrationModel = {
         email,
         password: this.registerForm.get('password').value,
         firstName: this.registerForm.get('firstName').value,
-        lastName: this.registerForm.get('lastName').value,
-        organization: this.registerForm.get('organization').value
+        lastName: this.registerForm.get('lastName').value
       };
 
       const result = await this.authenticationService.register(regModel);
