@@ -4,3 +4,4 @@ export const WELCOME_ROUTE = 'welcome';
 export const DASHBOARD_ROUTE = 'dashboard';
 export const INFO_ROUTE = 'info';
 export const PROMPT_ROUTE = 'prompt';
+export const SIGNIN_ROUTE = 'signin';
