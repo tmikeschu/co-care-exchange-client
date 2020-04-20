@@ -65,6 +65,10 @@ export class DashboardService {
                 deliveryAddress,
                 addressLabel,
                 requestId,
+                shar  ingUser {
+                  firstName
+                  lastName
+                },
                 shareId,                
                 unitOfIssue,
                 quantity,                
@@ -82,6 +86,10 @@ export class DashboardService {
                 unitOfIssue,
                 quantity
                 requestId,
+                requestingUser {
+                  firstName
+                  lastName
+                },
                 details,
                 description
             }
