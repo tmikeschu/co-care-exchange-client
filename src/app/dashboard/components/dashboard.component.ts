@@ -78,8 +78,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   handleStatusClick(agreement: Agreement, type: String) {
     console.log('handleStatusClick-type: ', type);
 
-    this.dashboardService.agreementDetail = agreement;
-    this.router.navigate(['/agreement-detail'], { queryParams: { type } });
+    // this.dashboardService.agreementDetail = agreement;
+    this.dashboardService.setSelectedAgreement(agreement);
+    this.router.navigate(['/agreement-detail'], { queryParams: { type }});
   }
 
   getStyle(statusId): string {

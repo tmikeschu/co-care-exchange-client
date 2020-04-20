@@ -15,4 +15,8 @@ export class Agreement {
     statusTypeId: number; // 1=need;2=share
     shareId: string;
     requestId: string;
+    unitOfIssue: String;
+    description: String;
+    details: String;
+    addressLabel: String;
 }

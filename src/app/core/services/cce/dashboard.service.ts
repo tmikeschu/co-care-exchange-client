@@ -15,7 +15,9 @@ import { Agreement } from 'src/app/dashboard/components/models/agreement';
 export class DashboardService {
   agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
   agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
-  agreementDetail: Agreement;
+  // agreementDetail: Agreement;
+  selectedAgreementSubject$ = new BehaviorSubject<any>(null);
+  readonly agreement$ = this.selectedAgreementSubject$.asObservable();
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
@@ -82,6 +84,21 @@ export class DashboardService {
                 status,
                 cancellationReason,
                 requestingUserId
+            },
+            orderViewModel {
+              name,
+              statusText,
+              orderId,
+              dialogMessage,
+              statusId,
+              deliveryAddress,
+              addressLabel,
+              shareId,
+              unitOfIssue,
+              quantity
+              requestId,
+              details,
+              description
             }
         }
     }`,
@@ -101,6 +118,21 @@ export class DashboardService {
           order {
             id,
             status,
+            description
+          },
+          orderViewModel {
+            name,
+            statusText,
+            orderId,
+            dialogMessage,
+            statusId,
+            deliveryAddress,
+            addressLabel,
+            shareId,
+            unitOfIssue,
+            quantity
+            requestId,
+            details,
             description
           }
         }
@@ -123,10 +155,10 @@ export class DashboardService {
   }
 
   get selectedAgreement() {
-    return this.agreementDetail;
+    return this.agreement$;
   }
 
-  set selectedAgreement(agreement: Agreement) {
-    this.selectedAgreement = agreement;
+  setSelectedAgreement(agreement) {
+    this.selectedAgreementSubject$.next(agreement);
   }
 }
