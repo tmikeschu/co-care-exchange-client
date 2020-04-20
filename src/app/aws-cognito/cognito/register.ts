@@ -28,18 +28,6 @@ export const register = async (regModel: BasicRegistrationModel): Promise<Regist
     result.errorMsg = err.message || 'Registration error';
   }
   return result;
-  // Auth.signUp({
-  //   username,
-  //   password,
-  //   attributes: {
-  //     email,          // optional
-  //     phone_number,   // optional - E.164 number convention
-  //     // other custom attributes
-  //   },
-  //   validationData: []  // optional
-  // })
-  //   .then(data => console.log(data))
-  //   .catch(err => console.log(err));
 };
 
 export const confirm = async (username, code) => {

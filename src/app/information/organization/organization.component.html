@@ -48,8 +48,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Address" formControlName="address"
-            type="text" required />
+          <input matInput placeholder="Address" formControlName="address" type="text" required />
         </label>
         <mat-error [hidden]="!organizationForm.get('address').hasError('required')">
           Address is a required field
@@ -67,9 +66,11 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="State" formControlName="state" type="text" minlength="2" maxlength="2" required />
+          <input matInput placeholder="State" formControlName="state" type="text" minlength="2" maxlength="2"
+            required />
         </label>
-        <mat-error *ngIf="organizationForm.get('state').hasError('required') || organizationForm.get('state').hasError('minlength')">
+        <mat-error
+          *ngIf="organizationForm.get('state').hasError('required') || organizationForm.get('state').hasError('minlength')">
           State 2-digit abbreviation is required
         </mat-error>
       </mat-form-field>
@@ -84,14 +85,13 @@
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <mat-label>Delivery or Pickup Radius</mat-label>
-        <mat-select formControlName="deliveryOrPickupRadius">
-          <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
-            {{ o.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="organizationForm.get('deliveryOrPickupRadius').hasError('min')">
-          Delivery or pickup radius selection is required
+        <label>
+          <input matInput placeholder="Delivery or Pickup Radius (in miles, 1 to 50)"
+            formControlName="deliveryOrPickupRadius" type="number" required />
+        </label>
+        <mat-error
+          *ngIf="organizationForm.get('deliveryOrPickupRadius').hasError('min') || organizationForm.get('deliveryOrPickupRadius').hasError('max')">
+          Delivery or pickup radius (in miles, 1 to 50) is required
         </mat-error>
       </mat-form-field>
 

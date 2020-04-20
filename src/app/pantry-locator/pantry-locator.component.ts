@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SIGNIN_ROUTE } from '../core/constants/routes';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -28,7 +27,7 @@ export class PantryLocatorComponent implements OnInit {
   }
 
   async back() {
-    await this.router.navigate(['/', SIGNIN_ROUTE]);
+    await this.router.navigate(['/', , 'welcome']);
   }
 }
 
