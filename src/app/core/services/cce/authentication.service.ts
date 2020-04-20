@@ -5,30 +5,45 @@ import { currentAuthenticatedUser, getCurrentUserInfo, signIn, signOut } from '.
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
 import { register } from '../../../aws-cognito/cognito/register';
-import { map, share } from 'rxjs/operators';
+import { filter, map, share } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AmplifyService } from 'aws-amplify-angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Auth } from '@aws-amplify/auth';
+import { AuthState } from '../../models/auth-state.model';
+
+const unAuthState: AuthState = {
+  isLoggedIn: false,
+  user: null,
+  hasUserProfile: false,
+};
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private userSubject$ = new BehaviorSubject<any>(undefined);
-  private user$ = this.userSubject$.pipe(share());
+  private readonly authStateSubject = new BehaviorSubject<AuthState>(null);
+
+  /** AuthState as an Observable */
+  readonly auth$ = this.authStateSubject.asObservable();
+  private readonly userSubject = new BehaviorSubject<any>(undefined);
+  private user$ = this.userSubject.pipe(share());
+
+  readonly isLoggedIn$ = this.auth$.pipe(
+    filter((x) => !!x),
+    map((state) => state.isLoggedIn)
+  );
+
   private user: any;
   signedIn = false;
   authState = null;
   constructor(private router: Router, private http: HttpClient, private amplifyService: AmplifyService) {
     this.amplifyService.authStateChange$.subscribe((authState) => {
-      console.log('DEBUG router url ', this.router.url);
-      console.log('DEBUG authState.state ', authState);
+      console.log('DEBUG authState ', authState);
       console.log('DEBUG authState.state ', authState.state);
-      const wasSignedOut = this.authState === 'signedOut';
+      const signedOut = this.authState === 'signedOut';
       this.authState = authState.state;
       this.signedIn = authState.state === 'signedIn';
 
-      if (!authState.user) {
-        this.user = null;
-      } else {
+      if (this.signedIn && authState.user) {
         this.user = authState.user;
         if (this.signedIn && this.user) {
           this.user.userProfile = this.getUserProfile(this.user.username);
@@ -37,17 +52,52 @@ export class AuthenticationService {
         // TODO -- should this resolver load the user profile? I say yes, bue the logic and testing is bigger
         // so for not, if proior state was signedout and there is no user profile, allow auth to continue and app
         // can load userprofile
-        if (!wasSignedOut && !this.user.userProfile) {
-          // got user but no profile...not a valid user, make user login
-          console.error('Invalid user for login, user profile missing');
-          this.signedIn = false;
-          const username = this.user.username;
+        // if (!wasSignedOut && !this.user.userProfile) {
+        //   // got user but no profile...not a valid user, make user login
+        //   console.error('Invalid user for login, user profile missing');
+        //   this.signedIn = false;
+        //   const username = this.user.username;
+        //   this.user = null;
+        //   this.logout(username).then();
+        // }
+        const userAuthState: AuthState = {
+          isLoggedIn: true,
+          user: this.user,
+          hasUserProfile: !!this.user.userProfile,
+        };
+        this.authStateSubject.next(userAuthState);
+      } else {
+        const username = this.user ? this.user.username : null;
+        if (this.user) {
           this.user = null;
           this.logout(username).then();
-
         }
+        this.authStateSubject.next(unAuthState);
+        this.router.navigate(['/']);
       }
-      this.userSubject$.next(this.user);
+
+      // if (!authState.user) {
+      //   this.user = null;
+      //   this.authStateSubject.next(unAuthState);
+      // } else {
+      //   this.user = authState.user;
+      //   if (this.signedIn && this.user) {
+      //     this.user.userProfile = this.getUserProfile(this.user.username);
+      //   }
+      //   console.log('DEBUG AuthenticationService this.user ', this.user);
+      //   // TODO -- should this resolver load the user profile? I say yes, bue the logic and testing is bigger
+      //   // so for not, if proior state was signedout and there is no user profile, allow auth to continue and app
+      //   // can load userprofile
+      //   if (!wasSignedOut && !this.user.userProfile) {
+      //     // got user but no profile...not a valid user, make user login
+      //     console.error('Invalid user for login, user profile missing');
+      //     this.signedIn = false;
+      //     const username = this.user.username;
+      //     this.user = null;
+      //     this.logout(username).then();
+      //   }
+      // }
+      this.userSubject.next(this.user);
     });
   }
 
@@ -182,15 +232,15 @@ export class AuthenticationService {
     return this.http.post(`${environment.serverUrl}authenticate`, { email, password }).pipe(map((response: any) => {}));
   }
 
-  async logout(username?: string) {
+  async logout(username?: string): Promise<boolean> {
+    console.log('DEBUG logout user ', username);
     // remove user from local storage to log user out
     this.user = null;
     await signOut();
-   // localStorage.removeItem('user');
     if (username) {
       const key = `${username}.userProfile`;
       localStorage.removeItem(key);
     }
-    return await this.router.navigate(['/']);
+    return Promise.resolve(true);
   }
 }

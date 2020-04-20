@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
-import { Observable, timer, of } from 'rxjs';
-import { catchError, filter, map, share, switchMap, takeWhile } from 'rxjs/operators';
+import { Observable, timer, of, Subject } from 'rxjs';
+import { catchError, filter, map, share, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
 import { Agreement } from './models/agreement';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   needs$: Observable<any>;
   shares$: Observable<any>;
   isAlive: boolean;
+  private readonly destroyed$ = new Subject();
 
   constructor(
     public dialog: MatDialog,
@@ -28,16 +29,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.data.pipe(filter((data) => data.user)).subscribe((data) => {
-      console.log('DEBUG route data :', data);
-      this.pollForData();
-    });
+    // this.route.data.pipe(filter((data) => data.user)).subscribe((data) => {
+    //   console.log('DEBUG dashboard route data :', data);
+    //   this.pollForData();
+    // });
+    this.userService
+      .getCurrentUser$()
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((user) => !!user)
+      )
+      .subscribe((user) => {
+        console.log('DEBUG dashboard user data :', user);
+        this.pollForData();
+      });
     this.isAlive = true;
   }
 
   private pollForData(): void {
     const userProfile = this.userService.getCurrentUserProfile();
     if (!userProfile) {
+      console.error('User profile not found, unable to retrieve user dashboard data');
       return;
     }
     this.dashboardPoll$ = timer(0, 5000).pipe(
@@ -66,8 +78,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   handleStatusClick(agreement: Agreement, type: String) {
     console.log('handleStatusClick-type: ', type);
 
-    this.dashboardService.agreementDetail = agreement;   
-    this.router.navigate(['/agreement-detail'], { queryParams: { type }});
+    this.dashboardService.agreementDetail = agreement;
+    this.router.navigate(['/agreement-detail'], { queryParams: { type } });
   }
 
   getStyle(statusId): string {
@@ -104,5 +116,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isAlive = false;
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

@@ -28,8 +28,7 @@ import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.comp
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
-import {AmplifyAngularModule, AmplifyService} from 'aws-amplify-angular';
-import {configureAws} from './aws-cognito/config/awsconfig';
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
 
 @NgModule({
@@ -68,7 +67,6 @@ import { ContributorsComponent } from './contributors/contributors.component';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-
   // constructor() {
   //   // TODO -- move config to login module based on selected option
   //   configureAws('CCE_Individual');
