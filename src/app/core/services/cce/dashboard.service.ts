@@ -104,6 +104,21 @@ export class DashboardService {
                 status,
                 cancellationReason,
                 requestingUserId
+            },
+            orderViewModel {
+              name,
+              statusText,
+              orderId,
+              dialogMessage,
+              statusId,
+              deliveryAddress,
+              addressLabel,
+              shareId,
+              unitOfIssue,
+              quantity
+              requestId,
+              details,
+              description
             }
         }
     }`,
