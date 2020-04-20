@@ -139,10 +139,13 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                         }).join(', ');
                         throw new Error(messages);
                     }
+                    if (data && data.data && data.data.changeStatus && data.data.changeStatus.orderViewModel) {
+                        const nextAgreement = data.data.changeStatus.orderViewModel;
+                        if (nextAgreement) {
+                            this.dashboardService.setSelectedAgreement(nextAgreement);
+                        }
+                    }
                     return data;
-                }),
-                finalize(() => {
-                    this.router.navigate(['/dashboard']);
                 }),
                 catchError((err) => {
                     console.log('Agreement Detail updateOrderStatus error', err.message)
