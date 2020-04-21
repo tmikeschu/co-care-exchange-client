@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
-import { map, switchMap, withLatestFrom, share } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, share, catchError } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
@@ -77,6 +77,11 @@ export class DashboardService {
             throw new Error(messages);
           }
           return data.data.dashboard;
+        }),
+        catchError((error: any) => {
+          console.error('an error occurred querying the dashboard: ', error.message);
+          return of(this._state); // serve a cached version on error
+          // return of({ data: { data: { dashboard: {needs: [], shares: [] }}}});
         }),
         share()
       );
