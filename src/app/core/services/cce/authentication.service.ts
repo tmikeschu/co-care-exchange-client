@@ -67,13 +67,16 @@ export class AuthenticationService {
         };
         this.authStateSubject.next(userAuthState);
       } else {
-        const username = this.user ? this.user.username : null;
         if (this.user) {
-          this.user = null;
-          this.logout(username).then();
+          const username = this.user ? this.user.username : null;
+          if (this.user) {
+            this.user = null;
+            this.logout(username).then();
+          }
+          this.authStateSubject.next(unAuthState);
+          this.router.navigate(['/']);
         }
         this.authStateSubject.next(unAuthState);
-        this.router.navigate(['/']);
       }
 
       // if (!authState.user) {
