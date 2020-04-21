@@ -15,4 +15,6 @@ export class Agreement {
     statusTypeId: number; // 1=need;2=share
     shareId: string;
     requestId: string;
+    requesterName: string;
+    sharerName: string;
 }
