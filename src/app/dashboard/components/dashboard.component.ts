@@ -25,13 +25,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dashboardService.startPolling();
     this.vm$ = this.dashboardService.state$;
-    this.isAlive = true;
   }
 
   handleStatusClick(agreement: Agreement, type: String) {
-    console.log('handleStatusClick-type: ', type);
-
-    this.dashboardService.agreementDetail = agreement;
+    this.dashboardService.setSelectedAgreement(agreement);
     this.router.navigate(['/agreement-detail'], { queryParams: { type }});
   }
 
@@ -68,7 +65,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isAlive = false;
     this.dashboardService.stopPolling();
   }
 }
