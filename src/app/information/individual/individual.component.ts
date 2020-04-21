@@ -63,7 +63,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       city: ['', Validators.required],
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.compose([Validators.min(1), Validators.max(50)])],
+      deliveryOrPickupRadius: ['', Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern(/^[1-9][0-9]?$/)])],
       password: [''],
     });
 
