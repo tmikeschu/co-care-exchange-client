@@ -57,40 +57,34 @@ export class DashboardService {
       query: `query View($userId: ID!) {
         dashboard(userId: $userId) {
             requested {
-                name,
-                statusText,
-                orderId,
-                dialogMessage,
-                statusId,
-                deliveryAddress,
-                addressLabel,
-                requestId,
-                shar  ingUser {
-                  firstName
-                  lastName
-                },
-                shareId,                
-                unitOfIssue,
-                quantity,                
-                details,
+                name
+                statusText
+                orderId
+                dialogMessage
+                statusId
+                deliveryAddress
+                addressLabel
+                requestId
+                sharerName
+                shareId
+                unitOfIssue
+                quantity
+                details
                 description
             }, shared {
-                name,
-                statusText,
-                orderId,
-                dialogMessage,
-                statusId,
-                deliveryAddress,
-                addressLabel,
-                shareId,
-                unitOfIssue,
+                name
+                statusText
+                orderId
+                dialogMessage
+                statusId
+                deliveryAddress
+                addressLabel
+                shareId
+                unitOfIssue
                 quantity
-                requestId,
-                requestingUser {
-                  firstName
-                  lastName
-                },
-                details,
+                requestId
+                requesterName
+                details
                 description
             }
         }
