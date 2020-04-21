@@ -38,7 +38,6 @@ export class DashboardService {
   userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(map((user: any) => user.userProfile));
 
   agreementDetail: Agreement;
-
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
