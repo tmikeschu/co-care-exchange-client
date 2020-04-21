@@ -7,7 +7,7 @@
         <div *ngFor="let request of vm.needs">
           <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">({{ request.quantity }}) {{ request.unitOfIssue }} {{ request.name }}</mat-label>
+              <mat-label class="contentlabel">{{ request.name }} ({{ request.quantity }}) {{ request.unitOfIssue }}</mat-label>
               <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>             
             </div>
           </mat-list-item>
@@ -21,7 +21,7 @@
         <div *ngFor="let request of vm.shares">
           <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">({{ request.quantity }}) {{ request.unitOfIssue }} {{ request.name }}</mat-label>
+              <mat-label class="contentlabel">{{ request.name }} ({{ request.quantity }}) {{ request.unitOfIssue }}</mat-label>
               <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
             </div>
           </mat-list-item>
