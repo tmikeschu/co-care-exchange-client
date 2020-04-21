@@ -11,27 +11,41 @@
 
 .contentlabel{
     color: #696969;
-    font-weight: 200;
+    font-weight: 600;
+    font-size: 1em;
+    width: 60%;
+}
+
+.contentlabel-detail{
+    color: #696969;
+    font-weight: 600;
     font-size: .8em;
     width: 60%;
 }
 
+.content-multiplier {
+    color: #696969;
+    font-weight: 600;
+    font-size: .7em;
+    // width: 60%;
+}
+
 .contentstatusred{
-    color: #ff4747;
-    font-weight: 300;
-    font-size: .8em;
+    color: #FF5F57;
+    font-weight: 600;
+    font-size: 1em;
 }
 
 .contentstatusgreen{
-    color: #0db536;
-    font-weight: 300;
-    font-size: .8em;
+    color: #19B08B;
+    font-weight: 600;
+    font-size: 1em;
 }
 
 .contentstatusyellow{
-    color: #f2a50a;
-    font-weight: 500;
-    font-size: .8em;
+    color: #FA9915;
+    font-weight: 600;
+    font-size: 1em;
 }
 
 .dashboard-list-item {
