@@ -30,6 +30,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
+import { ConfirmationComponent } from './auth/components/confirmation/confirmation.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,7 @@ import { ContributorsComponent } from './contributors/contributors.component';
     ToastrModule.forRoot(),
     LayoutModule,
   ],
-  declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent],
+  declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent, ConfirmationComponent],
   providers: [
     AmplifyService,
     NavbarService,

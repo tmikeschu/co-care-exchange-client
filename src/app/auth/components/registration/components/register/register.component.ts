@@ -68,7 +68,7 @@ export class RegisterComponent implements OnInit {
         positionClass: "toast-top-center"
       });
 
-      this.router.navigate(['/', 'welcome'], { queryParams: { email: email } });
+      this.router.navigate(['/', 'confirmregistration'], { queryParams: { email: email } });
 
     } catch (err) {
       console.error(err);

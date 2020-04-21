@@ -31,21 +31,13 @@ export const register = async (regModel: BasicRegistrationModel): Promise<Regist
 };
 
 export const confirm = async (username, code) => {
-  try {
-    // After retrieving the confirmation code from the user
-    const result = await Auth.confirmSignUp(username, code, {
-      // Optional. Force user confirmation irrespective of existing alias. By default set to True.
-      forceAliasCreation: true,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  // After retrieving the confirmation code from the user
+  return await Auth.confirmSignUp(username, code, {
+    // Optional. Force user confirmation irrespective of existing alias. By default set to True.
+    forceAliasCreation: true,
+  });
 };
 
 export const resend = async (username) => {
-  try {
-    const result = await Auth.resendSignUp(username);
-  } catch (err) {
-    console.log(err);
-  }
+  return await Auth.resendSignUp(username);
 };

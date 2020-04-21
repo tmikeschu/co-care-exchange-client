@@ -5,6 +5,7 @@ import { PasswordForgotComponent } from '../components/password-forgot/password-
 import { ValidateEmailComponent } from '../components/validate-email/validate-email.component';
 import { WelcomePageComponent } from '../components/welcome-page/welcome.component';
 import { LoggedInRedirectGuard } from '../../core/guards/logged-in-redirect.guard';
+import {ConfirmationComponent} from '../components/confirmation/confirmation.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'validateemailaddress',
     component: ValidateEmailComponent,
+  },
+  {
+    path: 'confirmregistration',
+    component: ConfirmationComponent,
   },
 ];
 

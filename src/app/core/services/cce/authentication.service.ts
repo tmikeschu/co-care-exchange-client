@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { currentAuthenticatedUser, getCurrentUserInfo, signIn, signOut } from '../../../aws-cognito/cognito/signin';
 import { changePassword, forgetPassword, forgetPasswordComplete } from '../../../aws-cognito/cognito/password';
 import { BasicRegistrationModel } from '../../../models/cce/basic-registration.model';
-import { register } from '../../../aws-cognito/cognito/register';
+import {register, resend, confirm} from '../../../aws-cognito/cognito/register';
 import { filter, map, share } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AmplifyService } from 'aws-amplify-angular';
@@ -67,13 +67,16 @@ export class AuthenticationService {
         };
         this.authStateSubject.next(userAuthState);
       } else {
-        const username = this.user ? this.user.username : null;
         if (this.user) {
-          this.user = null;
-          this.logout(username).then();
+          const username = this.user ? this.user.username : null;
+          if (this.user) {
+            this.user = null;
+            this.logout(username).then();
+          }
+          this.authStateSubject.next(unAuthState);
+          this.router.navigate(['/']);
         }
         this.authStateSubject.next(unAuthState);
-        this.router.navigate(['/']);
       }
 
       // if (!authState.user) {
@@ -230,6 +233,14 @@ export class AuthenticationService {
   login(email: string, password: string) {
     console.log(environment.serverUrl);
     return this.http.post(`${environment.serverUrl}authenticate`, { email, password }).pipe(map((response: any) => {}));
+  }
+
+  async confirm(username: string, code: unknown) {
+    return await confirm(username, code);
+  }
+
+  async resendCode(username: string) {
+    return await resend(username);
   }
 
   async logout(username?: string): Promise<boolean> {

@@ -1,0 +1,48 @@
+<section class="section">
+    <div class="container">
+        <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+            <mat-card class="box">
+                <mat-card-header>
+                    <div fxLayout="column">
+                        <a routerLink="/">
+                            <img style="width: 50%; margin: auto" #image
+                                 src="../../../assets/cce-logo.svg"/>
+                        </a>
+                        <mat-card-title>Password Reset</mat-card-title>
+                    </div>
+
+                </mat-card-header>
+
+                <form [formGroup]="confirmationForm" class="login-form" (ngSubmit)="confirmationForm.valid && onConfirmSubmit()">
+
+
+                    <mat-card-content>
+
+                        <div>
+                            <mat-form-field class="login-full-width">
+                                <input matInput placeholder="email" formControlName="email" type="text">
+                                <mat-error *ngIf="email.errors?.required">
+                                    Email is required
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="login-full-width">
+                                <input matInput placeholder="Reset code" formControlName="confirmCode" type="text" maxlength="50" required>
+                                <mat-error *ngIf="confirmCode.errors?.required">
+                                    Confirmation code is required.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <button mat-stroked-button color="accent" class="btn-block" type="submit">Submit</button>
+                            <button mat-stroked-button color="accent" class="btn-block" type="button" (click)="onResendCode()">Resend Code</button>
+                        </div>
+                        
+                    </mat-card-content>
+
+
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</section>
