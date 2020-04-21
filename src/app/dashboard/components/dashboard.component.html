@@ -7,8 +7,11 @@
         <div *ngFor="let request of vm.needs">
           <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }} ({{ request.quantity }}) {{ request.unitOfIssue }}</mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>             
+              <mat-label class="contentlabel">{{ request.name }}<br>
+                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
+                  {{ request.unitOfIssue }}</span></mat-label>
+              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              </mat-label>
             </div>
           </mat-list-item>
         </div>
@@ -21,8 +24,11 @@
         <div *ngFor="let request of vm.shares">
           <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }} ({{ request.quantity }}) {{ request.unitOfIssue }}</mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
+              <mat-label class="contentlabel">{{ request.name }}<br>
+                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
+                  {{ request.unitOfIssue }}</span></mat-label>
+              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              </mat-label>
             </div>
           </mat-list-item>
         </div>
@@ -32,7 +38,9 @@
   </div>
 </section>
 
-<ng-template #inprogress> <mat-progress-bar mode="indeterminate"></mat-progress-bar></ng-template>
+<ng-template #inprogress>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
 <ng-template #noneeds>You have not specified any needs.</ng-template>
 <ng-template #noshares>You have not specified any items to share.</ng-template>
 <app-site-footer></app-site-footer>
