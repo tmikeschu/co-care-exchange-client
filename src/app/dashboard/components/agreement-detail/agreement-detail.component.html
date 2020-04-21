@@ -14,6 +14,8 @@
             }">
                 <strong>{{ agreement.statusText }}</strong></h3>
 
+            <p *ngIf="agreement.requesterName" class="name body-copy">You matched with {{ agreement.requesterName }}!</p>
+
             <p class="body-copy">{{ agreement.dialogMessage }}</p>
 
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
@@ -22,7 +24,9 @@
 
             <div fxLayout="row" fxLayoutAlign="start center">
                 <h3>Item Description</h3>
-                <button [disabled]="editDescription" *ngIf="agreement.statusId !== 0 && agreement.statusId !== 3 && agreement.statusId !== 4" (click)="editDescription = true;" class="primary" mat-button color="primary">
+                <button [disabled]="editDescription"
+                    *ngIf="agreement.statusId !== 0 && agreement.statusId !== 3 && agreement.statusId !== 4"
+                    (click)="editDescription = true;" class="primary" mat-button color="primary">
                     <mat-icon>edit</mat-icon>
                 </button>
             </div>
@@ -61,6 +65,8 @@
                 'is-cancelled': agreement.statusId === 4
             }">
                 <strong>{{ agreement.statusText }}</strong></h3>
+
+            <p *ngIf="agreement.sharerName" class="name body-copy">You matched with {{ agreement.sharerName }}!</p>
             <p class="body-copy">{{ agreement.dialogMessage }}</p>
 
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>

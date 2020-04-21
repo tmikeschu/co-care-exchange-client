@@ -19,4 +19,6 @@ export class Agreement {
     description: String;
     details: String;
     addressLabel: String;
+    requesterName: string;
+    sharerName: string;
 }
