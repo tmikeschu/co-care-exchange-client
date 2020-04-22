@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthenticationService {
   private userSubject$ = new BehaviorSubject<any>(undefined);
   private user$ = this.userSubject$.pipe(share());
+  private userAsObs$ = this.userSubject$.asObservable();
   private user: any;
   signedIn = false;
   authState = null;
@@ -53,6 +54,10 @@ export class AuthenticationService {
 
   getUser$(): any {
     return this.user$;
+  }
+
+  getUserAsObs$() {
+    return this.userAsObs$;
   }
 
   getUser(): any {

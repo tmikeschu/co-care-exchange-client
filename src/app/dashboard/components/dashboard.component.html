@@ -1,14 +1,17 @@
 <app-site-header></app-site-header>
 <section class="section tight">
-  <div>
+  <div *ngIf="vm$ | async as vm; else inprogress">
     <h2>Requests</h2>
-    <div *ngIf="needs$ | async as needs; else inprogress">
-      <div *ngIf="needs && needs.length > 0; else noneeds">
-        <div *ngFor="let request of needs">
+    <div *ngIf="!vm.loading; else inprogress">
+      <div *ngIf="vm.needs && vm.needs.length > 0; else noneeds">
+        <div *ngFor="let request of vm.needs">
           <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">({{ request.quantity }}) {{ request.unitOfIssue }} {{ request.name }}</mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>             
+              <mat-label class="contentlabel">{{ request.name }}<br>
+                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
+                  {{ request.unitOfIssue }}</span></mat-label>
+              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              </mat-label>
             </div>
           </mat-list-item>
         </div>
@@ -16,22 +19,28 @@
     </div>
 
     <h2>Shares</h2>
-    <div *ngIf="shares$ | async as shares; else inprogress">
-      <div *ngIf="shares && shares.length > 0; else noshares">
-        <div *ngFor="let request of shares">
+    <div *ngIf="!vm.loading; else inprogress">
+      <div *ngIf="vm.shares && vm.shares.length > 0; else noshares">
+        <div *ngFor="let request of vm.shares">
           <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
-              <mat-label class="contentlabel">({{ request.quantity }}) {{ request.unitOfIssue }} {{ request.name }}</mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }} </mat-label>
+              <mat-label class="contentlabel">{{ request.name }}<br>
+                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
+                  {{ request.unitOfIssue }}</span></mat-label>
+              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              </mat-label>
             </div>
           </mat-list-item>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
-<ng-template #inprogress> <mat-progress-bar mode="indeterminate"></mat-progress-bar></ng-template>
+<ng-template #inprogress>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
 <ng-template #noneeds>You have not specified any needs.</ng-template>
 <ng-template #noshares>You have not specified any items to share.</ng-template>
 <app-site-footer></app-site-footer>
