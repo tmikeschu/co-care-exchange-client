@@ -4,5 +4,4 @@ export interface BasicRegistrationModel {
   password: string;
   firstName?: string;
   lastName?: string;
-  organization?: string;
 }

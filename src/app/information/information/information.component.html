@@ -12,7 +12,12 @@
       </div>
 
       <div *ngIf="registrantType === 'Individual'" class="w-100 vertical-rhythm">
-        <app-individual [email]="email" [lastName]="lastName" [firstName]="firstName" (infoSubmit)="onInfoSubmit($event)"></app-individual>
+        <app-individual 
+          [email]="email" 
+          [lastName]="lastName" 
+          [firstName]="firstName" 
+          (infoSubmit)="onInfoSubmit($event)">
+        </app-individual>
       </div>
 
       <div *ngIf="registrantType === 'Organization'" class="w-100 vertical-rhythm">

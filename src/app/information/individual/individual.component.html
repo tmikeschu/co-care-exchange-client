@@ -19,6 +19,16 @@
         </mat-error>
       </mat-form-field>
 
+      <div *ngIf="userProfile?.organization" class="orgtext">
+        <label class="orglabel">
+          Organization:
+        </label>
+        <br>        
+        <label>
+          {{userProfile.organization}}
+        </label>
+      </div>  
+      
       <mat-form-field class="login-full-width">
         <label>
           <input matInput placeholder="Email" formControlName="email" type="text" readonly required />

@@ -131,28 +131,10 @@ export class AuthenticationService {
     const result = await signIn(username, password);
     this.user = result.user;
     console.log('signIn- this.user', this.user);
-    // check if user is in org
-    if(this.user['organization'] != null){
-      const inOrg = this.isInOrg(result.user);
-      if (!inOrg) {
-        // error
-        this.user = null;
-        result.user = null;
-        result.errorMsg = 'Invalid username, password, or organization';
-        return result;
-      }
-    }
+    
     // store user object for user operations like change password
     this.user = result.user;
     return result;
-  }
-
-  private isInOrg(user: any): boolean {
-    const userGroups = this.getGroups();    
-    const orgInCognitoFormat = user['organization'].replace(/ /g, '_');
-    console.log('DEBUG orgInCognitoFormat ', orgInCognitoFormat);
-    console.log('DEBUG userGroups ', userGroups);
-    return userGroups.some((e) => e === orgInCognitoFormat);
   }
 
   async forgetPassword(username: string) {
