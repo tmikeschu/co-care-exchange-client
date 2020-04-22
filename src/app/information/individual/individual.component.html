@@ -19,6 +19,16 @@
         </mat-error>
       </mat-form-field>
 
+      <div *ngIf="userProfile.organization" style="border-bottom-color: #8c8c8c; border-style: solid; border-top: none; border-right: none; border-left: none; margin-bottom: 10px;padding-bottom: 10px;">
+        <label style="font-size:.8em; color: #8c8c8c">
+          Organization:
+        </label>
+        <br>        
+        <label>
+          Colorado Cares Organization{{userProfile.organization}}
+        </label>
+      </div>  
+      
       <mat-form-field class="login-full-width">
         <label>
           <input matInput placeholder="Email" formControlName="email" type="text" readonly required />
