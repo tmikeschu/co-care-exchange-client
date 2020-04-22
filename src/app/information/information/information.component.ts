@@ -36,7 +36,8 @@ export class InformationComponent implements OnInit {
       console.log('DEBUG info data :', data);
     });
 
-    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();    
+    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();  
+    this.registrantType = 'Individual';
       
     if (this.profile) {
       this.newUser = false;
@@ -44,11 +45,12 @@ export class InformationComponent implements OnInit {
       if(this.profile.organization && this.profile.organization.id){
         this.organizationName = this.profile.organization.name;
         this.organizationId = this.profile.organization.id;
+        this.registrantType = 'Organization';
       }
     } 
     else {
       this.newUser = true;
-    }      
+    }
   }
 
   get email(): string {

@@ -108,23 +108,6 @@ export class UserService {
           return this.currentUserProfile;
         })
       );
-    // this.apollo
-    //     .query({
-    //       query: gql`
-    //       {
-    // users(where: { emailAddress: "scarlet@dfb.org"}) {
-    //     id,
-    //     emailAddress
-    // }
-    //       }
-    //     `,
-    //     })
-    //     .subscribe(console.log);
-    // const query = {
-    //   query: 'query GetPrompts {prompts{id,audience,display,groupName,promptType,sizes,item,unitsOfIssue}}',
-    //   variables: {},
-    // };
-    // return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
   saveUser(userProfile: SaveUserInput) {
