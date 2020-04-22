@@ -38,15 +38,15 @@ export class AuthenticationService {
         // TODO -- should this resolver load the user profile? I say yes, bue the logic and testing is bigger
         // so for not, if proior state was signedout and there is no user profile, allow auth to continue and app
         // can load userprofile
-        if (!wasSignedOut && !this.user.userProfile) {
-          // got user but no profile...not a valid user, make user login
-          console.error('Invalid user for login, user profile missing');
-          this.signedIn = false;
-          const username = this.user.username;
-          this.user = null;
-          this.logout(username).then();
-
-        }
+        // if (!wasSignedOut && !this.user.userProfile) {
+        //   // got user but no profile...not a valid user, make user login
+        //   console.error('Invalid user for login, user profile missing');
+        //   this.signedIn = false;
+        //   const username = this.user.username;
+        //   this.user = null;
+        //   this.logout(username).then();
+        //
+        // }
       }
       this.userSubject$.next(this.user);
     });
@@ -86,7 +86,7 @@ export class AuthenticationService {
   }
 
   getIdToken(): string {
-    return this.user && this.user.getSignInUserSession() ? this.user.getSignInUserSession().getIdToken() : '';
+    return this.user && this.user.getSignInUserSession ? this.user.getSignInUserSession().getIdToken() : '';
   }
 
   getFirstName(): string {
