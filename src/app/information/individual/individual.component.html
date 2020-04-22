@@ -86,12 +86,13 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Delivery or Pickup Radius (in miles, 1 to 50)" formControlName="deliveryOrPickupRadius"
-            type="number" required />
+          <input matInput placeholder="Delivery or Pickup Radius (in miles, 1 to 50)"
+            formControlName="deliveryOrPickupRadius" type="number" required />
         </label>
-        <mat-error
-          *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('min') || individualRegisterForm.get('deliveryOrPickupRadius').hasError('max')">
-          Delivery or pickup radius (in miles, 1 to 50) is required
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('min') ||
+          individualRegisterForm.get('deliveryOrPickupRadius').hasError('max') ||
+          individualRegisterForm.get('deliveryOrPickupRadius').hasError('pattern')">
+          Delivery or pickup radius (in miles, 1 to 50, whole number only) is required
         </mat-error>
       </mat-form-field>
 
