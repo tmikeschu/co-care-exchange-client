@@ -37,13 +37,6 @@ export class DashboardService {
   isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(map((user: any) => user.userProfile));
 
-  // agreementDetail: Agreement;
-  // agreementNeeds: Subject<any> = new BehaviorSubject<any[]>([]);
-  // agreementShares: Subject<any> = new BehaviorSubject<any[]>([]);
-  // // agreementDetail: Agreement;
-  // selectedAgreementSubject$ = new BehaviorSubject<any>(null);
-  // readonly agreement$ = this.selectedAgreementSubject$.asObservable();
-
   messageCount = 0;
   hasNeeds = false;
   hasShares = false;
@@ -86,7 +79,6 @@ export class DashboardService {
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
           return of(this._state); // serve a cached version on error
-          // return of({ data: { data: { dashboard: {needs: [], shares: [] }}}});
         }),
         share()
       );
@@ -225,11 +217,7 @@ export class DashboardService {
   }
 
   setSelectedAgreement(agreement) {
-    const prevState = this._state.getValue();
-    console.log('prevState: ', prevState);
     this.state = Object.assign({}, this.state, { activeAgreement: agreement });
     this._state.next(this.state);
-    const newState = this._state.getValue();
-    console.log('newState: ', newState);
   }
 }
