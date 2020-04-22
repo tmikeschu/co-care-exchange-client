@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
-import { map, switchMap, withLatestFrom, share, catchError } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, share, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
@@ -35,7 +35,8 @@ export class DashboardService {
 
   doPoll$ = new BehaviorSubject<boolean>(false);
   isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
-  userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(map((user: any) => user.userProfile));
+  userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(
+    filter(u => u !== undefined), map((user: any) => user.userProfile));
 
   messageCount = 0;
   hasNeeds = false;
