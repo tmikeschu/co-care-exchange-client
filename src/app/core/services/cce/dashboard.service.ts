@@ -38,13 +38,6 @@ export class DashboardService {
   userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(
     filter(u => u !== undefined), map((user: any) => user.userProfile));
 
-  messageCount = 0;
-  hasNeeds = false;
-  hasShares = false;
-
-  result: any;
-  userProfile;
-
   constructor(
     private http: HttpClient,
     public userService: UserService,
@@ -211,11 +204,6 @@ export class DashboardService {
           input: order,
         }
       });
-  }
-
-  updateMessageCount(list) {
-    this.messageCount += list.filter((a) => a.statusId === 2).length;
-    return list;
   }
 
   setSelectedAgreement(agreement: Agreement) {
