@@ -44,16 +44,6 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     }
   }
 
-  radiusOptions = [
-    {id: 1, name: '1 Mile'},
-    {id: 5, name: '5 Miles'},
-    {id: 10, name: '10 Miles'},
-    {id: 15, name: '15 Miles'},
-    {id: 20, name: '20 Miles'},
-    {id: 25, name: '25 Miles'},
-    {id: 50, name: '50 Miles'},
-  ];
-
   get isRegistering() {
     return this._isRegistering;
   }
@@ -76,7 +66,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       city: ['', Validators.required],
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
-      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50)])],
+      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
     });
 
     this.organizationForm.get('orgName').setValue(this.organizationName);

@@ -17,7 +17,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 0) {
           this.toastrService.error('ColoradoCareExchange services are not responding.  Please try again later.', null, {
             enableHtml: true,
-            disableTimeOut: true,
             positionClass: 'toast-top-center',
           });
         } else if (err.status === 401) {
@@ -30,7 +29,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if (err.status === 400) {
           this.toastrService.error(err.error, null, {
             enableHtml: true,
-            disableTimeOut: true,
             positionClass: 'toast-top-center',
           });
         }

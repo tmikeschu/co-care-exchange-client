@@ -3,7 +3,7 @@
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="First Name" formControlName="firstName" type="text" required/>
+          <input matInput placeholder="First Name" formControlName="firstName" type="text" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('firstName').hasError('required')">
           First name is a required field
@@ -12,16 +12,26 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Last Name" formControlName="lastName" type="text" required/>
+          <input matInput placeholder="Last Name" formControlName="lastName" type="text" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('lastName').hasError('required')">
           Last name is a required field
         </mat-error>
       </mat-form-field>
 
+      <div *ngIf="userProfile?.organization" class="orgtext">
+        <label class="orglabel">
+          Organization:
+        </label>
+        <br>        
+        <label>
+          {{userProfile.organization}}
+        </label>
+      </div>  
+      
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Email" formControlName="email" type="text" readonly required/>
+          <input matInput placeholder="Email" formControlName="email" type="text" readonly required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('email').hasError('required')">
           Email is a required field
@@ -30,7 +40,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Phone Number" formControlName="phone" type="text" required/>
+          <input matInput placeholder="Phone Number" formControlName="phone" type="text" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('phone').hasError('required')">
           Phone number is a required field
@@ -39,7 +49,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Household Size" formControlName="householdSize" type="tel" required/>
+          <input matInput placeholder="Household Size" formControlName="householdSize" type="tel" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('householdSize').hasError('required')">
           Phone number is a required field
@@ -48,8 +58,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="Address" formControlName="address"
-            type="text" required/>
+          <input matInput placeholder="Address" formControlName="address" type="text" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('address').hasError('required')">
           Address is a required field
@@ -58,7 +67,7 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="City" formControlName="city" type="text" required/>
+          <input matInput placeholder="City" formControlName="city" type="text" required />
         </label>
         <mat-error *ngIf="individualRegisterForm.get('city').hasError('required')">
           City is a required field
@@ -67,9 +76,11 @@
 
       <mat-form-field class="login-full-width">
         <label>
-          <input matInput placeholder="State" formControlName="state" type="text" minlength="2" maxlength="2" required/>
+          <input matInput placeholder="State" formControlName="state" type="text" minlength="2" maxlength="2"
+            required />
         </label>
-        <mat-error *ngIf="individualRegisterForm.get('state').hasError('required') || individualRegisterForm.get('state').hasError('minlength')">
+        <mat-error
+          *ngIf="individualRegisterForm.get('state').hasError('required') || individualRegisterForm.get('state').hasError('minlength')">
           State 2-digit abbreviation is required
         </mat-error>
       </mat-form-field>
@@ -84,14 +95,14 @@
       </mat-form-field>
 
       <mat-form-field class="login-full-width">
-        <mat-label>Delivery or Pickup Radius</mat-label>
-        <mat-select formControlName="deliveryOrPickupRadius">
-          <mat-option *ngFor="let o of radiusOptions" [value]="o.id">
-            {{ o.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('min')">
-          Delivery or pickup radius selection is required
+        <label>
+          <input matInput placeholder="Delivery or Pickup Radius (in miles, 1 to 50)"
+            formControlName="deliveryOrPickupRadius" type="number" required />
+        </label>
+        <mat-error *ngIf="individualRegisterForm.get('deliveryOrPickupRadius').hasError('min') ||
+          individualRegisterForm.get('deliveryOrPickupRadius').hasError('max') ||
+          individualRegisterForm.get('deliveryOrPickupRadius').hasError('pattern')">
+          Delivery or pickup radius (in miles, 1 to 50, whole number only) is required
         </mat-error>
       </mat-form-field>
 

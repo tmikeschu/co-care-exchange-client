@@ -32,6 +32,9 @@ export class AuthenticationService {
     map((state) => state.isLoggedIn)
   );
 
+  private userSubject$ = new BehaviorSubject<any>(undefined);
+  private user$ = this.userSubject$.pipe(share());
+  private userAsObs$ = this.userSubject$.asObservable();
   private user: any;
   signedIn = false;
   authState = null;
@@ -108,6 +111,10 @@ export class AuthenticationService {
     return this.user$;
   }
 
+  getUserAsObs$() {
+    return this.userAsObs$;
+  }
+
   getUser(): any {
     return this.user;
   }
@@ -133,21 +140,8 @@ export class AuthenticationService {
     return null;
   }
 
-  // async getUser(): Promise<any> {
-  //   if (this.user) {
-  //     return this.user;
-  //   }
-  //   // check for saved session
-  //   const cu = await currentAuthenticatedUser();
-  //   this.user = cu;
-  //   if (this.user) {
-  //     this.user.userProfile = this.getUserProfile();
-  //   }
-  //   return this.user;
-  // }
-
   getIdToken(): string {
-    return this.user && this.user.getSignInUserSession() ? this.user.getSignInUserSession().getIdToken() : '';
+    return this.user && this.user.getSignInUserSession ? this.user.getSignInUserSession().getIdToken() : '';
   }
 
   getFirstName(): string {
@@ -188,31 +182,14 @@ export class AuthenticationService {
     return await register(registrationModel);
   }
 
-  async signIn(username: string, password: string, organization?: any) {
-    const result = await signIn(username, password, organization);
+  async signIn(username: string, password: string) {
+    const result = await signIn(username, password);
     this.user = result.user;
-    // check if user is in org
-    if (organization) {
-      const inOrg = this.isInOrg(result.user, organization);
-      if (!inOrg) {
-        // error
-        this.user = null;
-        result.user = null;
-        result.errorMsg = 'Invalid username, password, or organization';
-        return result;
-      }
-    }
+    console.log('signIn- this.user', this.user);
+
     // store user object for user operations like change password
     this.user = result.user;
     return result;
-  }
-
-  private isInOrg(user: any, organization: any): boolean {
-    const userGroups = this.getGroups();
-    const orgInCognitoFormat = organization.name.replace(/ /g, '_');
-    console.log('DEBUG orgInCognitoFormat ', orgInCognitoFormat);
-    console.log('DEBUG userGroups ', userGroups);
-    return userGroups.some((e) => e === orgInCognitoFormat);
   }
 
   async forgetPassword(username: string) {

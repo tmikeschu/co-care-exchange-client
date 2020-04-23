@@ -1,7 +1,7 @@
 import { Organization } from './cce/organizations.model';
 
-export interface UserProfile{
-    id: number;
+export interface UserProfile {
+    id: string;
     firstName: string;
     lastName: string;
     emailAddress: string;
@@ -12,5 +12,5 @@ export interface UserProfile{
     postalCode: string;
     dropOffRadius: string;
     pickupRadius: string;
-    organization: Organization
+    organization: Organization;
 }

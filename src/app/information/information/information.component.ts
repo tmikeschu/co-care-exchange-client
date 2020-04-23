@@ -35,22 +35,22 @@ export class InformationComponent implements OnInit {
       // TBD -- prob not needed, but stubbed out jic
       console.log('DEBUG info data :', data);
     });
-    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
-    this.route.queryParams.subscribe((val) => {
-      console.log('DEBUG info newuser, org ', val);
-      if (this.profile && this.profile.organization && this.profile.organization.id) {
-        this.newUser = false;
+    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();  
+    this.registrantType = 'Individual';
+      
+    if (this.profile) {
+      this.newUser = false;
+
+      if(this.profile.organization && this.profile.organization.id){
         this.organizationName = this.profile.organization.name;
         this.organizationId = this.profile.organization.id;
-      } else {
-        this.newUser = true;
-        this.organizationName = val.organizationName;
-        this.organizationId = val.organizationId;
+        this.registrantType = 'Organization';
       }
-
-      this.registrantType = this.organizationId && this.organizationName ? 'Organization' : 'Individual';
-    });
+    } 
+    else {
+      this.newUser = true;
+    }
   }
 
   get email(): string {

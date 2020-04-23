@@ -9,14 +9,15 @@
           We just need a little bit more<br />
           information...
         </h3>
-        <!--    <mat-radio-group class="radioGroup" aria-label="Select an option" [(ngModel)]="registrantType">-->
-        <!--      <mat-radio-button value="Individual">Individual</mat-radio-button>-->
-        <!--      <mat-radio-button value="Organization">Organization</mat-radio-button>-->
-        <!--    </mat-radio-group>-->
       </div>
 
       <div *ngIf="registrantType === 'Individual'" class="w-100 vertical-rhythm">
-        <app-individual [email]="email" [lastName]="lastName" [firstName]="firstName" (infoSubmit)="onInfoSubmit($event)"></app-individual>
+        <app-individual 
+          [email]="email" 
+          [lastName]="lastName" 
+          [firstName]="firstName" 
+          (infoSubmit)="onInfoSubmit($event)">
+        </app-individual>
       </div>
 
       <div *ngIf="registrantType === 'Organization'" class="w-100 vertical-rhythm">
