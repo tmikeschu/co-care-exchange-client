@@ -13,7 +13,7 @@ export class PromptService {
   user: UserProfile;
 
   constructor(private http: HttpClient, userservice: UserService, authenticationService: AuthenticationService, ) {
-    let userEmail = authenticationService.getEmail();
+    const userEmail = authenticationService.getEmail();
 
     userservice.getUser(userEmail).subscribe(user => {
       this.user = user;
@@ -23,7 +23,11 @@ export class PromptService {
   getPrompts(userType: string): any {
 
     const query = {
-      'query': 'query GetPrompts { prompts(where: { audience_contains: "' + userType + '"}) { id, promptType, groupName, item, unitsOfIssue, sizes, display } }',
+      'query': `query GetPrompts {
+        prompts(where: { audience_contains: "' + userType + '"}) {
+          id, promptType, groupName, item, unitsOfIssue, sizes, display
+        }
+      }`,
       'variables': {}
     };
 
@@ -46,12 +50,12 @@ export class PromptService {
       }`,
       'variables': {
         'input': {
-          "promptId": prompt.id,
-          "userId": this.user.id,
-          "numberValue": (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
-          "unitOfIssue": prompt.unit,
-          "clientMutationId": "123474",
-          "size": prompt.size
+          'promptId': prompt.id,
+          'userId': this.user.id,
+          'numberValue': (prompt.sharing > 0) ? prompt.sharing : -prompt.requesting,
+          'unitOfIssue': prompt.unit,
+          'clientMutationId': '123474',
+          'size': prompt.size
         }
       }
     };
