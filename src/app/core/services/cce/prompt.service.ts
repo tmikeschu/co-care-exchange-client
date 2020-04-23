@@ -24,7 +24,7 @@ export class PromptService {
 
     const query = {
       'query': `query GetPrompts {
-        prompts(where: { audience_contains: "' + userType + '"}) {
+        prompts(where: { audience_contains: "${userType}"}) {
           id, promptType, groupName, item, unitsOfIssue, sizes, display
         }
       }`,
