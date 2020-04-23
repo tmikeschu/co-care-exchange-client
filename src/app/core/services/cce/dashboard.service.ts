@@ -57,15 +57,14 @@ export class DashboardService {
         withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
         switchMap(([_tick, isOnline, doPoll, userProfile]) => {
           const empty$ = empty();
-          empty$.subscribe({ complete: () => this.setLoadingFalse() });
+          empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
           return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
         }),
         share()
       )
       .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
-        this.state = Object.assign({}, this.state, { needs: requested, shares: shared, loading: false });
-        this._state.next(this.state);
+        this.updateDashboard({ needs: requested, shares: shared });
       });
   }
 
@@ -219,13 +218,8 @@ export class DashboardService {
     return list;
   }
 
-  setSelectedAgreement(agreement) {
-    this.state = Object.assign({}, this.state, { activeAgreement: agreement });
-    this._state.next(this.state);
-  }
-
-  setLoadingFalse() {
-    this.state = Object.assign({}, this.state, { loading: false });
+  updateDashboard(updates: Partial<IDashboardState>) {
+    this.state = Object.assign({}, this.state, updates);
     this._state.next(this.state);
   }
 }
