@@ -1,6 +1,10 @@
 @import '../../../styles/utilities.scss';
 @import '../../../styles/theme.scss';
 
+mat-form-field {
+  width: 100%;
+}
+
 :host {
   color: #919191;
 }

@@ -54,6 +54,16 @@
                         </div>
                     </div>
 
+                    <!-- requestor notes -->
+                    <div *ngIf="question.requesting > 0">
+                        <p>Notes</p>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput [(ngModel)]="question.requestNotes" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+
                     <div *ngIf="question.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
                         <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unit">
                             <mat-radio-button class="btn radio-group" *ngFor="let unit of question.unitsOfIssueChoices"
