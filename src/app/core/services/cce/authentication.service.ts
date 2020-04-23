@@ -33,7 +33,6 @@ export class AuthenticationService {
   );
 
   private userSubject$ = new BehaviorSubject<any>(undefined);
-  private user$ = this.userSubject$.pipe(share());
   private userAsObs$ = this.userSubject$.asObservable();
   private user: any;
   signedIn = false;
@@ -71,11 +70,9 @@ export class AuthenticationService {
         this.authStateSubject.next(userAuthState);
       } else {
         if (this.user) {
-          const username = this.user ? this.user.username : null;
-          if (this.user) {
-            this.user = null;
-            this.logout(username).then();
-          }
+          const username = this.user.username;
+          this.user = null;
+          this.logout(username).then();
           this.authStateSubject.next(unAuthState);
           this.router.navigate(['/']);
         }
@@ -186,9 +183,6 @@ export class AuthenticationService {
     const result = await signIn(username, password);
     this.user = result.user;
     console.log('signIn- this.user', this.user);
-
-    // store user object for user operations like change password
-    this.user = result.user;
     return result;
   }
 
@@ -215,7 +209,7 @@ export class AuthenticationService {
   async logout(username?: string): Promise<boolean> {
     console.log('DEBUG logout user ', username);
     // remove user from local storage to log user out
-    this.user = null;
+    // this.user = null;
     await signOut();
     if (username) {
       const key = `${username}.userProfile`;
