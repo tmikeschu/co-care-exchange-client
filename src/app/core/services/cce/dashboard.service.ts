@@ -56,7 +56,9 @@ export class DashboardService {
       .pipe(
         withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
         switchMap(([_tick, isOnline, doPoll, userProfile]) => {
-          return isOnline && doPoll ? this.dashboardHandler(userProfile.id) : empty();
+          const empty$ = empty();
+          empty$.subscribe({ complete: () => this.setLoadingFalse() });
+          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
         }),
         share()
       )
@@ -219,6 +221,11 @@ export class DashboardService {
 
   setSelectedAgreement(agreement) {
     this.state = Object.assign({}, this.state, { activeAgreement: agreement });
+    this._state.next(this.state);
+  }
+
+  setLoadingFalse() {
+    this.state = Object.assign({}, this.state, { loading: false });
     this._state.next(this.state);
   }
 }
