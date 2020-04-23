@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
-import { map, switchMap, withLatestFrom, share, catchError, filter } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
@@ -52,8 +52,7 @@ export class DashboardService {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
           return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
-        }),
-        share()
+        })
       )
       .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
@@ -74,8 +73,7 @@ export class DashboardService {
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
           return of(this._state); // serve a cached version on error
-        }),
-        share()
+        })
       );
   }
 
