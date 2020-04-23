@@ -106,6 +106,7 @@ export class DashboardService {
                 quantity
                 details
                 description
+                requesterNotes
             }, shared {
                 name
                 statusText
@@ -121,6 +122,7 @@ export class DashboardService {
                 requesterName
                 details
                 description
+                requesterNotes
             }
         }
     }`,
