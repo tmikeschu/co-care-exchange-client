@@ -146,7 +146,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                         // was "Finding a Match", there isn't an underlying order. In this case,
                         // navigate back to the dashboard.
                         if (orderVm) {
-                            this.dashboardService.updateDashboard({ activeAgreement: orderVm });
+                            this.dashboardService.setSelectedAgreement(orderVm);
                         } else {
                             this.router.navigate(['/dashboard']);
                         }
@@ -193,7 +193,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                         // was "Finding a Match", there isn't an underlying order. In this case,
                         // navigate back to the dashboard.
                         if (orderVm) {
-                            this.dashboardService.updateDashboard({ activeAgreement: orderVm });
+                            this.dashboardService.setSelectedAgreement(orderVm);
                         } else {
                             this.router.navigate(['/dashboard']);
                         }

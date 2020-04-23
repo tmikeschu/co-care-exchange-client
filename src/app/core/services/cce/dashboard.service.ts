@@ -218,7 +218,11 @@ export class DashboardService {
     return list;
   }
 
-  updateDashboard(updates: Partial<IDashboardState>) {
+  setSelectedAgreement(agreement: Agreement) {
+    this.updateDashboard({ activeAgreement: agreement });
+  }
+
+  private updateDashboard(updates: Partial<IDashboardState>) {
     this.state = Object.assign({}, this.state, updates);
     this._state.next(this.state);
   }
