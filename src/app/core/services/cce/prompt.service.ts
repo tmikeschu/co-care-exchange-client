@@ -43,7 +43,8 @@ export class PromptService {
           answer {
             id,
             promptId,
-            numberValue
+            numberValue,
+            requestNotes
           },
           clientMutationId
         }
