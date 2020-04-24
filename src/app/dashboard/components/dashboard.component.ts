@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
 import { Agreement } from './models/agreement';
+import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dashboardService: DashboardService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dashboardService.startPolling();
@@ -29,7 +30,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   handleStatusClick(agreement: Agreement, type: String) {
     this.dashboardService.setSelectedAgreement(agreement);
-    this.router.navigate(['/agreement-detail'], { queryParams: { type }});
+    this.router.navigate(['/agreement-detail'], { queryParams: { type } });
+  }
+
+  formatItemDetails(agreement: Agreement) {
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
   getStyle(statusId): string {
