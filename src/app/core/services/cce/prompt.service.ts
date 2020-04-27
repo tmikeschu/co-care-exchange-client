@@ -44,7 +44,8 @@ export class PromptService {
             id,
             promptId,
             numberValue,
-            requestNotes
+            requesterNotes,
+            sharerNotes
           },
           clientMutationId
         }
