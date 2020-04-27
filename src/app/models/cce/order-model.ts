@@ -1,7 +1,7 @@
 export interface OrderChangeInput {
     orderId: string;
     userId: string;
-    newStatus: number;
+    status: number;
     reason: string;
     clientMutationId: string;
     requestId: string;
