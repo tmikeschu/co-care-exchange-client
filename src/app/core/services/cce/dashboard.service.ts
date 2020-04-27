@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
 import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
