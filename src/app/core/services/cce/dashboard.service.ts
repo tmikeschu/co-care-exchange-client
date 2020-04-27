@@ -37,12 +37,11 @@ export class DashboardService {
 
   doPoll$ = new BehaviorSubject<boolean>(false);
   isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
-  userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(
+  userProfile$: Observable<UserProfile> = this.userService.getCurrentUser$().pipe(
     filter(u => u !== undefined), map((user: any) => user.userProfile));
 
   messageCount = 0;
   hasNeeds = false;
-  hasShares = false;
 
   result: any;
   userProfile;
