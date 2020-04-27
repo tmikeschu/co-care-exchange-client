@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PromptsComponent } from 'src/app/prompts/prompts/prompts.component';
-import {UserResolver} from '../core/resolvers/user.resolver';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'prompt',
     component: PromptsComponent,
-    resolve: { user: UserResolver },
-  }
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

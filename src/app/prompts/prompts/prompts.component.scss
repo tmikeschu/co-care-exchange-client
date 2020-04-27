@@ -9,12 +9,15 @@ mat-form-field {
   color: #919191;
 }
 
-.prompt {
-  margin-bottom: 4rem;
+.questionsection{
+  margin-bottom: 100px;
+  max-width: 400px;
 }
 
-.radio-group-container {
-  margin-top: 1.5rem;
+.prompt {
+  margin-top:40px;
+  border-bottom: 2px solid #f2f2f2;
+  padding-bottom: 5px;
 }
 
 .btn {
@@ -69,6 +72,10 @@ mat-form-field {
   margin: auto;
 }
 
+.selectpad{
+  margin-top: 5px;
+}
+
 ::ng-deep .mat-select-value{  
   color: #919191!important;  
   font-weight: 600;
@@ -79,12 +86,28 @@ mat-form-field {
   font-weight: 600;
 }
 
+h4 {
+  color: #919191!important; 
+  margin:0px;  
+}
+
+.sharinglabel{
+  padding-left: 20px;
+}
+
+.requestinglabel{
+  padding-left: 10px;
+}
+
 h3 {
   color: #919191!important; 
+  margin:0px;
+  font-size: 1.1em;
 }
 
 h2 {
   color: #919191!important; 
+  margin:0px;
 }
 
 .leavequestionspage{

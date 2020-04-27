@@ -1,5 +1,5 @@
 
-<section class="section">
+<section class="section questionsection" >
     <div class="leavequestionspage numberCircle" (click)="onCancelBackToDashboard()">X</div>
     <div *ngIf="showGroupTypeQuestions">
         <div *ngFor="let grouptype of selectedPrompts" class="prompt">
@@ -14,17 +14,17 @@
 
     <div *ngIf="showSpecificQuestions">
         
-        <div *ngFor="let selectedPrompt of selectedPrompts" class="prompt">
+        <div *ngFor="let selectedPrompt of selectedPrompts">
             <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'">
                 <hr>
                 <h2 class="category-head text-center">For {{selectedPrompt.groupName}}</h2>
-                <div *ngFor="let question of selectedPrompt.prompts" >
+                <div *ngFor="let question of selectedPrompt.prompts" class="prompt">
                     
                     <h3 class="text-center">{{question.display}}</h3>
 
                     <div fxLayout="row" fxLayoutAlign="space-around center">
                         <div fxLayout="column">
-                            <h3>Requesting</h3>
+                            <h4 class="requestinglabel">Requesting</h4>
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <input class="itemborder numinput" name="question.requesting" [(ngModel)]="question.requesting" (keyup)="question.sharing = 0" (change)="question.sharing = 0" type="number">
                                 <div>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div fxLayout="column">
-                            <h3>Sharing</h3>
+                            <h4 class="sharinglabel">Sharing</h4>
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <input class="itemborder numinput" name="question.sharing" [(ngModel)]="question.sharing" (keyup)="question.requesting = 0" (change)="question.requesting = 0" type="number">
                                 <div>
@@ -71,7 +71,7 @@
                         </mat-radio-group>
                     </div>
                     
-                    <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center center" class="itemborder">
+                    <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center" class="itemborder selectpad">
                         <mat-select [(value)]="question.size" >                    
                             <mat-option *ngFor="let size of question.sizeChoices" [value]="size">
                             {{size}}
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <div *ngIf="showConfirm" class="prompt">
+    <div *ngIf="showConfirm" >
 
         <h2 *ngIf="requests.length || shares.length" class="text-center category-head">
             Based upon your answers it looks like you are...
@@ -98,7 +98,7 @@
                 <h3>Requesting</h3>
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let request of requests; let i = index;">                    
                     <p class="cardsizeleft"><strong>{{ request.item }} <span *ngIf="request.sizes != null">({{request.size}})</span></strong></p>                    
-                    <p class="cardsizeright">{{ request.requesting }} {{request.unit}}(s)</p>
+                    <p class="cardsizeright">{{ request.requesting }} <span *ngIf="request.unit != null">({{request.unit}})</span></p>
                 </div>
             </mat-card>
         </div>
@@ -108,7 +108,7 @@
                 <h3>Sharing</h3>
                 <div fxLayout="row" fxLayoutAlign="space-between center " *ngFor="let share of shares; let i = index;">                    
                     <p class="cardsizeleft"><strong>{{ share.item }} <span *ngIf="share.sizes != null">({{share.size}})</span></strong></p>                   
-                    <p class="cardsizeright">{{ share.sharing }} {{share.unit}}(s)</p>
+                    <p class="cardsizeright">{{ share.sharing }} <span *ngIf="share.unit != null">({{share.unit}})</span></p>
                 </div>
             </mat-card>
         </div>        

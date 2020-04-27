@@ -6,13 +6,13 @@
             <h2>{{ agreement.name }}</h2>
 
             <h3 class="sub-title status-text" [ngClass]="{ 
-                'is-pending': agreement.statusId === 0,
-                'is-matched': agreement.statusId === 1,
-                'is-confirmed': agreement.statusId === 2,
-                'is-fulfilled': agreement.statusId === 3,
-                'is-cancelled': agreement.statusId === 4
+                'is-pending': agreement.status === status.FindingMatch,
+                'is-matched': agreement.status === status.NewMatchFound,
+                'is-confirmed': agreement.status === status.DeliveryPending,
+                'is-fulfilled': agreement.status === status.OrderFulfilled,
+                'is-cancelled': agreement.status === status.orderCancelled
             }">
-                <strong>{{ agreement.statusText }}</strong></h3>
+                <strong>{{ agreement.statusDisplay }}</strong></h3>
 
             <p *ngIf="agreement.requesterName" class="name body-copy">You matched with {{ agreement.requesterName }}!</p>
 
@@ -25,7 +25,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
                 <h3>Item Description</h3>
                 <button [disabled]="editDescription"
-                    *ngIf="agreement.statusId !== 0 && agreement.statusId !== 3 && agreement.statusId !== 4"
+                    *ngIf="agreement.status !== status.FindingMatch && agreement.status !== status.Fulfilled && agreement.status !== status.OrderCancelled"
                     (click)="editDescription = true;" class="primary" mat-button color="primary">
                     <mat-icon>edit</mat-icon>
                 </button>
@@ -43,12 +43,12 @@
                     <mat-icon>done</mat-icon>
                 </button>
             </div>
-            <p *ngIf="!editDescription">{{ agreement.description ? agreement.description : '--' }}</p>
+            <p *ngIf="!editDescription">{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
 
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-                <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
+                <button *ngIf="agreement.status !== status.OrderCancelled && agreement.status !== status.OrderFulfilled" mat-button mat-flat-button
                     color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
-                <button *ngIf="agreement.statusId === 2" mat-button mat-flat-button color="primary" class="btn cce-btn"
+                <button *ngIf="agreement.status === status.NewMatchFound" mat-button mat-flat-button color="primary" class="btn cce-btn"
                     (click)="onConfirmDropOff(agreement)">Confirm Drop-Off</button>
             </div>
         </div>
@@ -58,13 +58,13 @@
             <h2>{{ agreement.name }}</h2>
 
             <h3 class="sub-title status-text" [ngClass]="{
-                'is-pending': agreement.statusId === 0,
-                'is-matched': agreement.statusId === 1,
-                'is-confirmed': agreement.statusId === 2,
-                'is-fulfilled': agreement.statusId === 3,
-                'is-cancelled': agreement.statusId === 4
+                'is-pending': agreement.status === status.FindingMatch,
+                'is-matched': agreement.status === status.NewMatchFound,
+                'is-confirmed': agreement.status === status.DeliveryPending,
+                'is-fulfilled': agreement.status === status.OrderFulfilled,
+                'is-cancelled': agreement.status === status.orderCancelled
             }">
-                <strong>{{ agreement.statusText }}</strong></h3>
+                <strong>{{ agreement.statusDisplay }}</strong></h3>
 
             <p *ngIf="agreement.sharerName" class="name body-copy">You matched with {{ agreement.sharerName }}!</p>
             <p class="body-copy">{{ agreement.dialogMessage }}</p>
@@ -73,9 +73,9 @@
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
             <h3>Item Description</h3>
-            <p>{{ agreement.description ? agreement.description : '--' }}</p>
+            <p>{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-                <button *ngIf="agreement.statusId !== 4 && agreement.statusId !== 3" mat-button mat-flat-button
+                <button *ngIf="agreement.status !== status.OrderCancelled && agreement.status !== status.OrderFulfilled" mat-button mat-flat-button
                     color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>
             </div>
         </div>

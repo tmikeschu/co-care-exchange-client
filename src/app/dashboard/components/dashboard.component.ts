@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
 import { Agreement } from './models/agreement';
+import { Status } from 'src/app/core/constants/enums';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -32,29 +33,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/agreement-detail'], { queryParams: { type }});
   }
 
-  getStyle(statusId): string {
-    switch (statusId) {
-      case -1: {
-        // Error
-        return 'contentstatusred';
-      }
-      case 0: {
+  getStyle(status: Status): string {
+    switch (status) {
+      case Status.FindingMatch: {
         // Pending
         return 'contentstatusyellow';
       }
-      case 1: {
+      case Status.NewMatchFound: {
         // Matched
         return 'contentstatusgreen';
       }
-      case 2: {
+      case Status.DeliveryPending: {
         // Confirmed
         return 'contentstatusyellow';
       }
-      case 3: {
+      case Status.OrderFulfilled: {
         // Fulfilled
         return 'contentstatusgreen';
       }
-      case 4: {
+      case Status.OrderCancelled: {
         // Cancelled
         return 'contentstatusred';
       }
