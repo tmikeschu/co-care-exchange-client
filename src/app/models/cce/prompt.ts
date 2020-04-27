@@ -28,5 +28,6 @@ export interface Prompt {
   size: string;
   sizes: string;
   unit: string;
-  requestNotes: string;
+  requesterNotes: string;
+  sharerNotes: string;
 }

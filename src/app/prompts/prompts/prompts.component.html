@@ -58,7 +58,16 @@
                     <div *ngIf="question.requesting > 0">
                         <p>Notes</p>
                         <mat-form-field appearance="outline">
-                            <textarea matInput [(ngModel)]="question.requestNotes" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                            <textarea matInput [(ngModel)]="question.requesterNotes" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+                    <!-- Sharer Notes -->
+                    <div *ngIf="question.sharing > 0">
+                        <p>Notes</p>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput [(ngModel)]="question.sharerNotes" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
                                 cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
                             </textarea>
                         </mat-form-field>
