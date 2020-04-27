@@ -11,6 +11,8 @@ import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
+import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
+import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -100,34 +102,34 @@ export class DashboardService {
         dashboard(userId: $userId) {
             requested {
                 name
-                statusText
                 orderId
                 dialogMessage
-                statusId
                 deliveryAddress
                 addressLabel
                 requestId
                 sharerName
+                sharerNotes
                 shareId
                 unitOfIssue
                 quantity
                 details
-                description
+                statusDisplay
+                status
             }, shared {
                 name
-                statusText
                 orderId
                 dialogMessage
-                statusId
                 deliveryAddress
                 addressLabel
                 shareId
+                sharerNotes
                 unitOfIssue
                 quantity
                 requestId
                 requesterName
                 details
-                description
+                statusDisplay
+                status
             }
         }
     }`,
@@ -138,79 +140,18 @@ export class DashboardService {
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  updateOrderStatus(orderStatusChange: OrderChangeInput): Observable<any> {
-    const input = {
-      operationName: 'OrderMutations',
-      query: `mutation OrderMutations($input: OrderChangeInput!) {
-        changeStatus(input: $input) {
-            order {
-                id,
-                status,
-                cancellationReason,
-                requestingUserId
-            },
-            orderViewModel {
-              name,
-              statusText,
-              orderId,
-              dialogMessage,
-              statusId,
-              deliveryAddress,
-              addressLabel,
-              shareId,
-              unitOfIssue,
-              quantity
-              requestId,
-              details,
-              description
-            }
-        }
-    }`,
-      variables: {
-        input: orderStatusChange,
-      },
-    };
-    console.log('updateOrderStatus mutation: ', input);
-    return this.http.post<any>(`${environment.serverUrl}`, input);
-  }
-
-  updateOrderDescription(order) {
-    const UpdateOrderDescription = gql`
-      mutation UpdateOrderDescription($input: OrderChangeInput!) {
-        updateOrderDescription(input: $input) {
-          clientMutationId,
-          order {
-            id,
-            status,
-            description
-          },
-          orderViewModel {
-            name,
-            statusText,
-            orderId,
-            dialogMessage,
-            statusId,
-            deliveryAddress,
-            addressLabel,
-            shareId,
-            unitOfIssue,
-            quantity
-            requestId,
-            details,
-            description
-          }
-        }
-      }
-    `;
-    console.log('updateOrderDescription mutation: ', UpdateOrderDescription);
-    console.log('updateOrderDescription order: ', order);
+  updateOrder(updates: Partial<OrderChangeInput>): Observable<any> {
+    console.log('[DEBUG] updateOrder input: ', updates);
     return this.apollo
       .mutate({
-        mutation: UpdateOrderDescription,
+        mutation: UpdateOrder,
         variables: {
-          input: order,
+          input: updates
         }
-      });
+      })
+      .pipe(
+        map(handleGQLErrors)
+      );
   }
 
   updateMessageCount(list) {
