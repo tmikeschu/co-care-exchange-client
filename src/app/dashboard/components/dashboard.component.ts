@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
