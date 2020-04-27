@@ -10,7 +10,7 @@
               <mat-label class="contentlabel">{{ request.name }}<br>
                 <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
                   {{ request.unitOfIssue }}</span></mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
               </mat-label>
             </div>
           </mat-list-item>
@@ -27,7 +27,7 @@
               <mat-label class="contentlabel">{{ request.name }}<br>
                 <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
                   {{ request.unitOfIssue }}</span></mat-label>
-              <mat-label [className]="getStyle(request.statusId)" style="margin-left: auto;">{{ request.statusText }}
+              <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
               </mat-label>
             </div>
           </mat-list-item>

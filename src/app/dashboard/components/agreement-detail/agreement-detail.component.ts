@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Agreement } from '../models/agreement';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { ToastrService } from 'ngx-toastr';
+import { Status } from 'src/app/core/constants/enums';
 
 @Component({
     selector: 'app-agreement-detail',
@@ -27,6 +28,8 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
     editDescription = false;
     descriptionFC: FormControl;
     descriptionCurrentVal: String;
+
+    status = Status;
 
     user: any;
     agreement: Agreement;
@@ -63,7 +66,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             map((data: IDashboardState) => data.activeAgreement),
             tap((agreement: Agreement) => {
                 if (agreement) {
-                    const desc = agreement.description || '';
+                    const desc = agreement.sharerNotes || '';
                     this.descriptionFC.patchValue(desc);
                 }
                 if (!agreement) {
@@ -93,7 +96,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             .subscribe(([params, agreement]) => {
                 this.agreementType = params.type;
 
-                if (this.agreementType && this.agreementType === 'share' && agreement && agreement.statusId === 1) {
+                if (this.agreementType && this.agreementType === 'share' && agreement && agreement.status === Status.NewMatchFound) {
 
                     const ref = this.dialog.open(ConfirmMatchDialogComponent, {
                         width: '300px',
@@ -102,9 +105,11 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
 
                     ref.afterClosed().subscribe(results => {
                         if (results === 'Cancel') {
-                            this.updateMatch(agreement, 4, 'Sharer refused the drop off terms.');
+                            this.updateOrder(agreement, { status: Status.OrderCancelled, reason: 'Sharer refused the drop off terms.' });
                         } else if (results === 'Confirm') {
-                            this.updateMatch(agreement, 2, 'Sharer confirmed ability to drop off the items.');
+                            this.updateOrder(agreement, {
+                                status: Status.DeliveryPending, reason: 'Sharer confirmed ability to drop off the items.'
+                            });
                         }
                     });
 
@@ -117,59 +122,51 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
         this.isAlive = false;
     }
 
-    updateMatch(agreement, newStatusId, reason = 'Update status from agreement details') {
-        // Pending (0) -> Matched (1) -> Confirmed (2) -> Fulfilled (3) -> Cancelled (4)
-        const updateOrderStatusPayload: OrderChangeInput = {
+    updateOrder(agreement: Agreement, updates: Partial<OrderChangeInput>) {
+        const updateOrderPayload = {
             orderId: agreement.orderId,
             userId: this.user.userProfile.id,
-            newStatus: newStatusId,
-            reason,
+            status: updates.status || null,
+            reason: updates.reason || 'Update status from agreement detail',
             clientMutationId: '123456',
             requestId: agreement.requestId,
             shareId: agreement.shareId,
-            description: agreement.description || this.descriptionCurrentVal || null
+            sharerNotes: updates.sharerNotes || agreement.sharerNotes || null
         };
 
-        return this.dashboardService
-            .updateOrderStatus(updateOrderStatusPayload)
+        this.dashboardService.updateOrder(updateOrderPayload)
             .pipe(
+                takeWhile(() => this.isAlive),
                 map(data => {
-                    if (data && data.errors && data.errors.length) {
-                        const messages = data.errors.map(e => {
-                            return `Message:  ${e.message} Path: ${e.path ? e.path[0] : null}`;
-                        }).join(', ');
-                        throw new Error(messages);
-                    }
-                    if (data && data.data && data.data.changeStatus) {
-                        const orderVm = data.data.changeStatus.orderViewModel;
-                        // there isn't always an order returned. In the case where the item
-                        // was "Finding a Match", there isn't an underlying order. In this case,
-                        // navigate back to the dashboard.
+                    if (data && data.updateOrder) {
+                        const orderVm = data.updateOrder.orderViewModel;
                         if (orderVm) {
                             this.dashboardService.setSelectedAgreement(orderVm);
                         } else {
                             this.router.navigate(['/dashboard']);
                         }
                     }
-                    return data;
                 }),
                 catchError((err) => {
-                    console.log('Agreement Detail updateOrderStatus error', err.message)
+                    console.log('Agreement Detail update order error while updating status', err.message);
                     this.toastrService.error(`Error: updating the order for ${agreement.name} failed.`, null, {
                         enableHtml: true
                     });
                     return of([]);
+                }),
+                finalize(() => {
+                    this.editDescription = false;
                 })
             )
             .subscribe();
     }
 
     onCancelMatch(agreement) {
-        this.updateMatch(agreement, 4, 'User cancelled the match in agreement detail view.');
+        this.updateOrder(agreement, { status: Status.OrderCancelled, reason: 'User cancelled the match in agreement detail view.' });
     }
 
     onConfirmDropOff(agreement) {
-        this.updateMatch(agreement, 3, 'Sharer confirmed that they have dropped off the item.');
+        this.updateOrder(agreement, { status: Status.OrderFulfilled, reason: 'Sharer confirmed that they have dropped off the item.' });
     }
 
     onCancelEdit() {
@@ -177,53 +174,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
         this.descriptionCurrentVal = '';
     }
 
-    updateOrderDesc(payload: OrderChangeInput) {
-        console.log('update order description payload: ', payload);
-        this.dashboardService.updateOrderDescription(payload)
-            .pipe(
-                map((data: any) => {
-                    if (data && data.errors && data.errors.length) {
-                        const messages = data.errors.map(e => e.message).join(', ');
-                        throw new Error(messages);
-                    }
-
-                    if (data && data.data && data.data.updateOrderDescription) {
-                        const orderVm = data.data.updateOrderDescription.orderViewModel;
-                        // there isn't always an order returned. In the case where the item
-                        // was "Finding a Match", there isn't an underlying order. In this case,
-                        // navigate back to the dashboard.
-                        if (orderVm) {
-                            this.dashboardService.setSelectedAgreement(orderVm);
-                        } else {
-                            this.router.navigate(['/dashboard']);
-                        }
-                    }
-                    return data;
-                }),
-                finalize(() => {
-                    this.editDescription = false;
-                }),
-                catchError((err) => {
-                    this.toastrService.error(`Error: update description request failed.`, null, {
-                        enableHtml: true
-                    });
-                    return of([]);
-                })
-            )
-            .subscribe();
-    }
-
     onSubmitEdit(agreement) {
-        const updateDescriptionPayload: OrderChangeInput = {
-            orderId: agreement.orderId,
-            userId: this.user.userProfile.id,
-            newStatus: agreement.statusId,
-            reason: 'Sharer updated item description',
-            clientMutationId: '123456',
-            requestId: agreement.requestId,
-            shareId: agreement.shareId,
-            description: this.descriptionCurrentVal
-        };
-        this.updateOrderDesc(updateDescriptionPayload);
+        this.updateOrder(agreement, { sharerNotes: `${this.descriptionCurrentVal}`, reason: 'Sharer updated item sharer notes' });
     }
 }
