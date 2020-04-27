@@ -11,6 +11,8 @@ import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
+import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
+import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -35,12 +37,11 @@ export class DashboardService {
 
   doPoll$ = new BehaviorSubject<boolean>(false);
   isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
-  userProfile$: Observable<UserProfile> = this.userService.getCurrentUserAsObs$().pipe(
+  userProfile$: Observable<UserProfile> = this.userService.getCurrentUser$().pipe(
     filter(u => u !== undefined), map((user: any) => user.userProfile));
 
   messageCount = 0;
   hasNeeds = false;
-  hasShares = false;
 
   result: any;
   userProfile;
@@ -75,7 +76,6 @@ export class DashboardService {
             const messages = data.errors.map((e) => e.message).join(', ');
             throw new Error(messages);
           }
-          console.log('dashboardservice - getDashboard', data.data.dashboard)
           return data.data.dashboard;
         }),
         catchError((error: any) => {
@@ -99,23 +99,35 @@ export class DashboardService {
       query: `query View($userId: ID!) {
         dashboard(userId: $userId) {
             requested {
-              name,
-              status,
-              orderId,
-              dialogMessage,
-              deliveryAddress,
-              requestId,
-              shareId,
-              sharerName
+                name
+                orderId
+                dialogMessage
+                deliveryAddress
+                addressLabel
+                requestId
+                sharerName
+                sharerNotes
+                shareId
+                unitOfIssue
+                quantity
+                details
+                statusDisplay
+                status
             }, shared {
-              name,
-              status,
-              orderId,
-              dialogMessage,
-              deliveryAddress,
-              shareId,
-              requestId,
-              requesterName
+                name
+                orderId
+                dialogMessage
+                deliveryAddress
+                addressLabel
+                shareId
+                sharerNotes
+                unitOfIssue
+                quantity
+                requestId
+                requesterName
+                details
+                statusDisplay
+                status
             }
         }
     }`,
@@ -126,79 +138,18 @@ export class DashboardService {
     return this.http.post<any>(`${environment.serverUrl}`, query);
   }
 
-  updateOrderStatus(orderStatusChange: OrderChangeInput): Observable<any> {
-    const input = {
-      operationName: 'OrderMutations',
-      query: `mutation OrderMutations($input: OrderChangeInput!) {
-        changeStatus(input: $input) {
-            order {
-                id,
-                status,
-                cancellationReason,
-                requestingUserId
-            },
-            orderViewModel {
-              name,
-              statusText,
-              orderId,
-              dialogMessage,
-              statusId,
-              deliveryAddress,
-              addressLabel,
-              shareId,
-              unitOfIssue,
-              quantity
-              requestId,
-              details,
-              description
-            }
-        }
-    }`,
-      variables: {
-        input: orderStatusChange,
-      },
-    };
-    console.log('updateOrderStatus mutation: ', input);
-    return this.http.post<any>(`${environment.serverUrl}`, input);
-  }
-
-  updateOrderDescription(order) {
-    const UpdateOrderDescription = gql`
-      mutation UpdateOrderDescription($input: OrderChangeInput!) {
-        updateOrderDescription(input: $input) {
-          clientMutationId,
-          order {
-            id,
-            status,
-            description
-          },
-          orderViewModel {
-            name,
-            statusText,
-            orderId,
-            dialogMessage,
-            statusId,
-            deliveryAddress,
-            addressLabel,
-            shareId,
-            unitOfIssue,
-            quantity
-            requestId,
-            details,
-            description
-          }
-        }
-      }
-    `;
-    console.log('updateOrderDescription mutation: ', UpdateOrderDescription);
-    console.log('updateOrderDescription order: ', order);
+  updateOrder(updates: Partial<OrderChangeInput>): Observable<any> {
+    console.log('[DEBUG] updateOrder input: ', updates);
     return this.apollo
       .mutate({
-        mutation: UpdateOrderDescription,
+        mutation: UpdateOrder,
         variables: {
-          input: order,
+          input: updates
         }
-      });
+      })
+      .pipe(
+        map(handleGQLErrors)
+      );
   }
 
   updateMessageCount(list) {

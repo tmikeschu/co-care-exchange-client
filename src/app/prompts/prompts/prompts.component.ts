@@ -161,7 +161,9 @@ export class PromptsComponent implements OnInit {
       this.showConfirmBtn = true;
     }
 
-    console.log('submitted prompts', this.prompts);
+    //console.log('submitted prompts', this.prompts);
+    console.log('requests', this.requests);
+    console.log('shares', this.shares);
   }
 
   onConfirm() {
