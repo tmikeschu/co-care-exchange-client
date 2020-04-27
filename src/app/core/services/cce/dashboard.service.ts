@@ -75,6 +75,7 @@ export class DashboardService {
             const messages = data.errors.map((e) => e.message).join(', ');
             throw new Error(messages);
           }
+          console.log('dashboardservice - getDashboard', data.data.dashboard)
           return data.data.dashboard;
         }),
         catchError((error: any) => {
@@ -98,35 +99,23 @@ export class DashboardService {
       query: `query View($userId: ID!) {
         dashboard(userId: $userId) {
             requested {
-                name
-                statusText
-                orderId
-                dialogMessage
-                statusId
-                deliveryAddress
-                addressLabel
-                requestId
-                sharerName
-                shareId
-                unitOfIssue
-                quantity
-                details
-                description
+              name,
+              status,
+              orderId,
+              dialogMessage,
+              deliveryAddress,
+              requestId,
+              shareId,
+              sharerName
             }, shared {
-                name
-                statusText
-                orderId
-                dialogMessage
-                statusId
-                deliveryAddress
-                addressLabel
-                shareId
-                unitOfIssue
-                quantity
-                requestId
-                requesterName
-                details
-                description
+              name,
+              status,
+              orderId,
+              dialogMessage,
+              deliveryAddress,
+              shareId,
+              requestId,
+              requesterName
             }
         }
     }`,
