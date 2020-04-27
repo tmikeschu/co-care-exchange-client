@@ -7,14 +7,14 @@ export const UpdateOrder = gql`
             order {
                 id,
                 status,
-                description
+                sharerNotes
             },
             orderViewModel {
                 name,
-                statusText,
+                status,
+                statusDisplay,
                 orderId,
                 dialogMessage,
-                statusId,
                 deliveryAddress,
                 addressLabel,
                 shareId,
@@ -22,7 +22,7 @@ export const UpdateOrder = gql`
                 quantity
                 requestId,
                 details,
-                description
+                sharerNotes
             }
         }
     }
