@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
 })
 export class ResourcesComponent implements OnInit {
 
+  toAddress: string;
   constructor(
     private router: Router,
   ) { }
 
   ngOnInit() {
+    this.toAddress = 'mailto:support@care-exchange.org';
   }
 
   openNewTab(url: string) {
