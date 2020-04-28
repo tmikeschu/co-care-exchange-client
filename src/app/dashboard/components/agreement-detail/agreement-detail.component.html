@@ -78,15 +78,15 @@
             <!-- requester notes (still show sharer notes) -->
             <div fxLayout="row" fxLayoutAlign="start center">
                 <h3>Requester Notes</h3>
-                <button [disabled]="editSharerNote"
+                <button [disabled]="editRequesterNote"
                     *ngIf="agreement.status !== status.FindingMatch && agreement.status !== status.Fulfilled && agreement.status !== status.OrderCancelled"
-                    (click)="editSharerNote = true;" class="primary" mat-button color="primary">
+                    (click)="editRequesterNote = true;" class="primary" mat-button color="primary">
                     <mat-icon>edit</mat-icon>
                 </button>
             </div>
-            <div *ngIf="editSharerNote" fxLayout="row" fxLayoutAlign="center baseline">
+            <div *ngIf="editRequesterNote" fxLayout="row" fxLayoutAlign="center baseline">
                 <mat-form-field>
-                    <textarea matInput [formControl]="sharerNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    <textarea matInput [formControl]="requesterNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
                         cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
                     </textarea>
                 </mat-form-field>
@@ -97,7 +97,7 @@
                     <mat-icon>done</mat-icon>
                 </button>
             </div>
-            <p *ngIf="!editSharerNote">{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
+            <p *ngIf="!editRequesterNote">{{ agreement.requesterNotes ? agreement.requesterNotes : '--' }}</p>
 
             <h3>Sharer Notes</h3>
             <p>{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
