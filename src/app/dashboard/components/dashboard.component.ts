@@ -35,7 +35,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   formatItemDetails(agreement: Agreement) {
-    // console.log('formatItemDetails function invoked')
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
