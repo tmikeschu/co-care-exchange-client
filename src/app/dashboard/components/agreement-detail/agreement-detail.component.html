@@ -21,18 +21,18 @@
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
-
+            <!--  sharer notes. still show requester notes -->
             <div fxLayout="row" fxLayoutAlign="start center">
-                <h3>Item Description</h3>
-                <button [disabled]="editDescription"
+                <h3>Sharer Notes</h3>
+                <button [disabled]="editSharerNote"
                     *ngIf="agreement.status !== status.FindingMatch && agreement.status !== status.Fulfilled && agreement.status !== status.OrderCancelled"
-                    (click)="editDescription = true;" class="primary" mat-button color="primary">
+                    (click)="editSharerNote = true;" class="primary" mat-button color="primary">
                     <mat-icon>edit</mat-icon>
                 </button>
             </div>
-            <div *ngIf="editDescription" fxLayout="row" fxLayoutAlign="center baseline">
+            <div *ngIf="editSharerNote" fxLayout="row" fxLayoutAlign="center baseline">
                 <mat-form-field>
-                    <textarea matInput [formControl]="descriptionFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    <textarea matInput [formControl]="sharerNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
                         cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
                     </textarea>
                 </mat-form-field>
@@ -43,7 +43,10 @@
                     <mat-icon>done</mat-icon>
                 </button>
             </div>
-            <p *ngIf="!editDescription">{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
+            <p *ngIf="!editSharerNote">{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
+
+            <h3>Requester Notes</h3>
+            <p>{{ agreement.requesterNotes ? agreement.requesterNotes : '--' }}</p>
 
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                 <button *ngIf="agreement.status !== status.OrderCancelled && agreement.status !== status.OrderFulfilled" mat-button mat-flat-button
@@ -72,8 +75,35 @@
             <h3 class="sub-title">{{ agreement.addressLabel }}</h3>
             <p class="body-copy">{{ agreement.deliveryAddress }}</p>
 
-            <h3>Item Description</h3>
+            <!-- requester notes (still show sharer notes) -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <h3>Requester Notes</h3>
+                <button [disabled]="editSharerNote"
+                    *ngIf="agreement.status !== status.FindingMatch && agreement.status !== status.Fulfilled && agreement.status !== status.OrderCancelled"
+                    (click)="editSharerNote = true;" class="primary" mat-button color="primary">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+            <div *ngIf="editSharerNote" fxLayout="row" fxLayoutAlign="center baseline">
+                <mat-form-field>
+                    <textarea matInput [formControl]="sharerNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                    </textarea>
+                </mat-form-field>
+                <button (click)="onCancelEdit();" class="primary" mat-button>
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button (click)="onSubmitEdit(agreement)" class="primary" mat-button>
+                    <mat-icon>done</mat-icon>
+                </button>
+            </div>
+            <p *ngIf="!editSharerNote">{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
+
+            <h3>Sharer Notes</h3>
             <p>{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p>
+
+            <!-- <h3>Item Description</h3>
+            <p>{{ agreement.sharerNotes ? agreement.sharerNotes : '--' }}</p> -->
             <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                 <button *ngIf="agreement.status !== status.OrderCancelled && agreement.status !== status.OrderFulfilled" mat-button mat-flat-button
                     color="warn" (click)="onCancelMatch(agreement)">Cancel Match</button>

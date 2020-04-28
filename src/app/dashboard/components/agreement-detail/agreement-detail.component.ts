@@ -25,9 +25,13 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
 
     isAlive: boolean;
 
-    editDescription = false;
-    descriptionFC: FormControl;
-    descriptionCurrentVal: String;
+    editSharerNote = false;
+    sharerNoteFC: FormControl;
+    sharerNoteCurrentVal: string;
+
+    editRequesterNote = false;
+    requesterNoteFC: FormControl;
+    requesterNoteCurrentVal: string;
 
     status = Status;
 
@@ -61,13 +65,16 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
          * All other statuses except "cancelled", the sharer can view details and cancel
          */
         this.user = this.userSerice.getCurrentUser();
-        this.descriptionFC = new FormControl('');
+        this.sharerNoteFC = new FormControl('');
+        this.requesterNoteFC = new FormControl('');
         this.agreement$ = this.dashboardService.state$.pipe(
             map((data: IDashboardState) => data.activeAgreement),
             tap((agreement: Agreement) => {
                 if (agreement) {
-                    const desc = agreement.sharerNotes || '';
-                    this.descriptionFC.patchValue(desc);
+                    const sharerNotes = agreement.sharerNotes || '';
+                    const requesterNotes = agreement.requesterNotes || '';
+                    this.sharerNoteFC.patchValue(sharerNotes);
+                    this.sharerNoteFC.patchValue(requesterNotes);
                 }
                 if (!agreement) {
                     this.router.navigate(['/dashboard']);
@@ -75,13 +82,22 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.descriptionFC.valueChanges.pipe(
+        this.sharerNoteFC.valueChanges.pipe(
             debounceTime(400),
             distinctUntilChanged(),
             takeWhile(() => this.isAlive)
         )
             .subscribe(description => {
-                this.descriptionCurrentVal = description;
+                this.sharerNoteCurrentVal = description;
+            });
+
+        this.requesterNoteFC.valueChanges.pipe(
+            debounceTime(400),
+            distinctUntilChanged(),
+            takeWhile(() => this.isAlive)
+        )
+            .subscribe(description => {
+                this.requesterNoteCurrentVal = description;
             });
 
         this.route.queryParams
@@ -112,9 +128,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                             });
                         }
                     });
-
                 }
-
             });
     }
 
@@ -131,7 +145,8 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
             clientMutationId: '123456',
             requestId: agreement.requestId,
             shareId: agreement.shareId,
-            sharerNotes: updates.sharerNotes || agreement.sharerNotes || null
+            sharerNotes: updates.sharerNotes || agreement.sharerNotes || null,
+            requesterNotes: updates.requesterNotes || agreement.requesterNotes || null
         };
 
         this.dashboardService.updateOrder(updateOrderPayload)
@@ -155,7 +170,7 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
                     return of([]);
                 }),
                 finalize(() => {
-                    this.editDescription = false;
+                    this.editSharerNote = false;
                 })
             )
             .subscribe();
@@ -170,11 +185,17 @@ export class AgreementDetailComponent implements OnInit, OnDestroy {
     }
 
     onCancelEdit() {
-        this.editDescription = false;
-        this.descriptionCurrentVal = '';
+        this.editSharerNote = false;
+        this.sharerNoteCurrentVal = '';
+        this.editRequesterNote = false;
+        this.requesterNoteCurrentVal = '';
     }
 
     onSubmitEdit(agreement) {
-        this.updateOrder(agreement, { sharerNotes: `${this.descriptionCurrentVal}`, reason: 'Sharer updated item sharer notes' });
+        this.updateOrder(agreement, {
+            sharerNotes: this.sharerNoteCurrentVal
+            , requesterNotes: this.requesterNoteCurrentVal
+            , reason: 'Update agreement notes'
+        });
     }
 }
