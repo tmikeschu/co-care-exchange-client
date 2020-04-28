@@ -3,23 +3,25 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from '../components/dashboard.component';
 import { MetricsComponent } from '../components/metrics/metrics.component';
 import { AgreementDetailComponent } from '../components/agreement-detail/agreement-detail.component';
-import {UserResolver} from '../../core/resolvers/user.resolver';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { DASHBOARD_ROUTE } from '../../core/constants/routes';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: DASHBOARD_ROUTE,
     component: DashboardComponent,
-    resolve: { user: UserResolver },
+    canActivate: [AuthGuard],
   },
   {
     path: 'metrics',
     component: MetricsComponent,
-    resolve: { user: UserResolver},
+    canActivate: [AuthGuard],
   },
   {
     path: 'agreement-detail',
     component: AgreementDetailComponent,
-  }
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

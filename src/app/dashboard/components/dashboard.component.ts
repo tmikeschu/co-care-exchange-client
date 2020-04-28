@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
 import { Agreement } from './models/agreement';
-import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
+import { Status } from 'src/app/core/constants/enums';
 
 
 @Component({
@@ -37,29 +37,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
-  getStyle(statusId): string {
-    switch (statusId) {
-      case -1: {
-        // Error
-        return 'contentstatusred';
-      }
-      case 0: {
+  getStyle(status: Status): string {
+    switch (status) {
+      case Status.FindingMatch: {
         // Pending
         return 'contentstatusyellow';
       }
-      case 1: {
+      case Status.NewMatchFound: {
         // Matched
         return 'contentstatusgreen';
       }
-      case 2: {
+      case Status.DeliveryPending: {
         // Confirmed
         return 'contentstatusyellow';
       }
-      case 3: {
+      case Status.OrderFulfilled: {
         // Fulfilled
         return 'contentstatusgreen';
       }
-      case 4: {
+      case Status.OrderCancelled: {
         // Cancelled
         return 'contentstatusred';
       }

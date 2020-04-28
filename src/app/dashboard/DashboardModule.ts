@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard.component';
-import { StatusDialogComponent } from './components/status-dialog/status-dialog.component';
 import { CustomMaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
@@ -17,7 +16,6 @@ import { ConfirmMatchDialogComponent } from './components/confirm-new-match/conf
   declarations: [
     DashboardComponent,
     MetricsComponent,
-    StatusDialogComponent,
     ConfirmMatchDialogComponent,
     AgreementDetailComponent
   ],
@@ -31,6 +29,6 @@ import { ConfirmMatchDialogComponent } from './components/confirm-new-match/conf
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [StatusDialogComponent, ConfirmMatchDialogComponent],
+  entryComponents: [ConfirmMatchDialogComponent],
 })
 export class DashboardModule {}

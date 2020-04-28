@@ -9,14 +9,14 @@ export class Agreement {
     cancelledOn: Date;
     cancelledBy: string;
     name: string;
-    statusId: number;
-    statusText: string;
+    status: string;
+    statusDisplay: string;
     dialogMessage: string;
     statusTypeId: number; // 1=need;2=share
     shareId: string;
     requestId: string;
     unitOfIssue: String;
-    description: String;
+    sharerNotes: string;
     details: String;
     addressLabel: String;
     requesterName: string;

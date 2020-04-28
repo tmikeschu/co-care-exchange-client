@@ -8,18 +8,25 @@ import { AccountComponent } from './account/account.component';
 import { ResourcesComponent } from './resources/resources.component';
 
 import { ModuleWithProviders } from '@angular/core';
-import { UserResolver } from './core/resolvers/user.resolver';
 import { AppComponent } from './app.component';
 import { PromptsComponent } from './prompts/prompts/prompts.component';
 import { InformationComponent } from './information/information/information.component';
 import { ContributorsComponent } from './contributors/contributors.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { WelcomePageComponent } from './auth/components/welcome-page/welcome.component';
+import { LoggedInRedirectGuard } from './core/guards/logged-in-redirect.guard';
+import { DASHBOARD_ROUTE, INFO_ROUTE, PROMPT_ROUTE, SIGNIN_ROUTE, WELCOME_ROUTE } from './core/constants/routes';
 
 export const appRoutes: Routes = [
   {
     path: '',
     component: AppComponent,
     children: [
-      // everything behind login goes here
+      {
+        path: WELCOME_ROUTE,
+        component: WelcomePageComponent,
+        canActivate: [LoggedInRedirectGuard],
+      },
       {
         path: 'resources',
         component: ResourcesComponent,
@@ -31,14 +38,14 @@ export const appRoutes: Routes = [
       {
         path: 'account',
         component: AccountComponent,
-        resolve: { user: UserResolver },
+        canActivate: [AuthGuard],
       },
       {
         path: 'pantry',
         component: PantryLocatorComponent,
       },
       {
-        path: 'signin',
+        path: SIGNIN_ROUTE,
         component: SignInComponent,
       },
       {
@@ -50,23 +57,24 @@ export const appRoutes: Routes = [
         component: RegisterComponent,
       },
       {
-        path: 'dashboard',
+        path: DASHBOARD_ROUTE,
         component: DashboardComponent,
-        resolve: { user: UserResolver },
+        canActivate: [AuthGuard],
       },
       {
-        path: 'prompt',
+        path: PROMPT_ROUTE,
         component: PromptsComponent,
-        resolve: { user: UserResolver },
+        canActivate: [AuthGuard],
       },
       {
-        path: 'info',
+        path: INFO_ROUTE,
         component: InformationComponent,
-        resolve: { user: UserResolver },
+        data: { allowNoProfile: true },
+        canActivate: [AuthGuard],
       },
       {
         path: '**',
-        redirectTo: '/',
+        redirectTo: `/${WELCOME_ROUTE}`,
         pathMatch: 'full',
       },
     ],
