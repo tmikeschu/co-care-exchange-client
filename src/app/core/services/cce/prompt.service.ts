@@ -58,8 +58,8 @@ export class PromptService {
           'unitOfIssue': prompt.unit,
           'clientMutationId': '123474',
           'size': prompt.size,
-          'requesterNotes': prompt.requesterNotes,
-          'sharerNotes': prompt.sharerNotes,
+          'requesterNotes': prompt.requesterNotes || null,
+          'sharerNotes': prompt.sharerNotes || null,
         }
       }
     };
