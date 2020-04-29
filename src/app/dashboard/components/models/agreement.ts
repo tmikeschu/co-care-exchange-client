@@ -17,8 +17,6 @@ export class Agreement {
     shareId: string;
     requestId: string;
     unitOfIssue: String;
-    sharerNotes: string;
-    requesterNotes: string;
     details: String;
     addressLabel: String;
     requesterName: string;
