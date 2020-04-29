@@ -20,6 +20,12 @@ export const ItemDetails = gql`
             status
             statusDisplay
             unitOfIssue
+            orderNotes {
+                createdBy
+                createdOn
+                id
+                noteBody
+            }
         }
     }
 `;
