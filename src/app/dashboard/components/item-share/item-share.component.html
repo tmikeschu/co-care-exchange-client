@@ -41,7 +41,7 @@
         </div>
         <div *ngIf="!addNote">
             <div *ngIf="vm.itemDetails.orderNotes && vm.itemDetails.orderNotes.length; else noNotes">
-                <p *ngFor="let note of vm.itemDetails.orderNotes">{{ note.createdBy }} said: {{ note.noteBody }} on {{ note.createdOn | date:'short' }}</p>
+                <p class="note" *ngFor="let note of vm.itemDetails.orderNotes">{{ note.createdBy }} said: {{ note.noteBody }} on {{ note.createdOn | date:'short' }}</p>
             </div>
             <ng-template #noNotes>
                 <p>--</p>
