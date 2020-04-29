@@ -1,8 +1,6 @@
-<section *ngIf="route.params | async as params">
-    <div *ngIf="vm$ | async as vm">
-        <div [ngSwitch]="params.type">
-            <app-item-share *ngSwitchCase="'share'" [viewModel]="vm"></app-item-share>
-            <app-item-request *ngSwitchCase="'request'" [viewModel]="vm"></app-item-request>
-        </div>
+<section *ngIf="vm$ | async as vm">
+    <div [ngSwitch]="params.type">
+        <app-item-share *ngSwitchCase="'share'" (updateItem)="handleUpdateItem($event)" (createNote)="handleNewNote($event)" [vm]="vm"></app-item-share>
+        <app-item-request *ngSwitchCase="'request'" (updateItem)="handleUpdateItem($event)" (createNote)="handleNewNote($event)" [vm]="vm"></app-item-request>
     </div>
 </section>
