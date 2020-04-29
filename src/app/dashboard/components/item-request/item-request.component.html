@@ -9,8 +9,8 @@
             'is-cancelled': vm.itemDetails.status === status.orderCancelled
         }"><strong>{{ vm.itemDetails.statusDisplay }}</strong></h3>
 
-        <p *ngIf="vm.itemDetails.requesterName" class="name body-copy">You matched with
-            {{ vm.itemDetails.requesterName }}!</p>
+        <p *ngIf="vm.itemDetails.sharerName" class="name body-copy">You matched with
+            {{ vm.itemDetails.sharerName }}!</p>
 
         <p class="body-copy">{{ vm.itemDetails.dialogMessage }}</p>
 
