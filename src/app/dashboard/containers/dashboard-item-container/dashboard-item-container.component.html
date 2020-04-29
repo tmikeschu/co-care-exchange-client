@@ -1,0 +1,8 @@
+<section *ngIf="route.params | async as params">
+    <div *ngIf="vm$ | async as vm">
+        <div [ngSwitch]="params.type">
+            <app-item-share *ngSwitchCase="'share'" [viewModel]="vm"></app-item-share>
+            <app-item-request *ngSwitchCase="'request'" [viewModel]="vm"></app-item-request>
+        </div>
+    </div>
+</section>
