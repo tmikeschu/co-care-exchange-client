@@ -99,6 +99,7 @@ export class DashboardService {
       query: `query View($userId: ID!) {
         dashboard(userId: $userId) {
             requested {
+                itemId
                 name
                 orderId
                 dialogMessage
@@ -114,6 +115,7 @@ export class DashboardService {
                 statusDisplay
                 status
             }, shared {
+                itemId
                 name
                 orderId
                 dialogMessage
