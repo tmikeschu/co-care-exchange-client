@@ -97,12 +97,10 @@ export class DashboardService {
                 addressLabel
                 requestId
                 sharerName
-                sharerNotes
                 shareId
                 unitOfIssue
                 quantity
                 details
-                requesterNotes
                 statusDisplay
                 status
             }, shared {
@@ -113,13 +111,11 @@ export class DashboardService {
                 deliveryAddress
                 addressLabel
                 shareId
-                sharerNotes
                 unitOfIssue
                 quantity
                 requestId
                 requesterName
                 details
-                requesterNotes
                 statusDisplay
                 status
             }
