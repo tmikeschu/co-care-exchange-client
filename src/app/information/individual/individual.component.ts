@@ -6,6 +6,7 @@ import { UserProfileInformation } from '../models/info-create.model';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-individual',
@@ -22,17 +23,19 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   errorMessage: string;
   error = false;
   private _isRegistering = false;
-  userProfile
+  userProfile;
+  newUser: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private dialog: MatDialog,
+    private router: ActivatedRoute
   ) { }
 
   @Input()
   set isRegistering(state: boolean) {
-    console.log('DEBUG org isRegistering ', state);
+    console.log('DEBUG ind isRegistering ', state);
     this._isRegistering = state;
     if (!this.individualRegisterForm) {
       return;
@@ -49,7 +52,9 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-
+    this.router.queryParams.subscribe(params => {
+      this.newUser = params.newUser.toLowerCase() == 'true';
+    });
   }
 
   async ngAfterContentInit() {
