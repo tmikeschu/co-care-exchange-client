@@ -12,11 +12,9 @@ export const ItemDetails = gql`
             orderId
             quantity
             requesterName
-            requesterNotes
             requestId
             shareId
             sharerName
-            sharerNotes
             status
             statusDisplay
             unitOfIssue
