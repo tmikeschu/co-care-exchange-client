@@ -12,7 +12,7 @@ import { Status } from 'src/app/core/constants/enums';
 @Component({
   selector: 'app-item-request',
   templateUrl: './item-request.component.html',
-  styleUrls: ['../agreement-detail/agreement-detail.component.scss', './item-request.component.scss'],
+  styleUrls: ['../item-share/item-share.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {

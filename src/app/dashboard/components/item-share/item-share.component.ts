@@ -14,7 +14,7 @@ import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-
 @Component({
   selector: 'app-item-share',
   templateUrl: './item-share.component.html',
-  styleUrls: ['../agreement-detail/agreement-detail.component.scss', './item-share.component.scss'],
+  styleUrls: ['./item-share.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemShareComponent implements OnInit, OnDestroy {
