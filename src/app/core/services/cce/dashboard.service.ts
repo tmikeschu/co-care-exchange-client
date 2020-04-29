@@ -16,7 +16,6 @@ import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
-  activeAgreement?: Agreement;
   loading: boolean;
 }
 
@@ -27,7 +26,6 @@ export class DashboardService {
   private state = {
     needs: [],
     shares: [],
-    activeAgreement: null,
     loading: true
   };
 
@@ -91,6 +89,7 @@ export class DashboardService {
       query: `query View($userId: ID!) {
         dashboard(userId: $userId) {
             requested {
+                itemId
                 name
                 orderId
                 dialogMessage
@@ -107,6 +106,7 @@ export class DashboardService {
                 statusDisplay
                 status
             }, shared {
+                itemId
                 name
                 orderId
                 dialogMessage
@@ -144,10 +144,6 @@ export class DashboardService {
       .pipe(
         map(handleGQLErrors)
       );
-  }
-
-  setSelectedAgreement(agreement: Agreement) {
-    this.updateDashboard({ activeAgreement: agreement });
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {
