@@ -5,7 +5,7 @@
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.needs && vm.needs.length > 0; else noneeds">
         <div *ngFor="let request of vm.needs">
-          <mat-list-item (click)="handleStatusClick(request, 'need')" class="contentborder dashboard-list-item">
+          <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}<br>
                 <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
@@ -22,7 +22,7 @@
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.shares && vm.shares.length > 0; else noshares">
         <div *ngFor="let request of vm.shares">
-          <mat-list-item (click)="handleStatusClick(request, 'share')" class="contentborder dashboard-list-item">
+          <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}<br>
                 <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
