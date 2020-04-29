@@ -53,7 +53,9 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
   ngOnInit() {
     this.router.queryParams.subscribe(params => {
-      this.newUser = params.newUser.toLowerCase() == 'true';
+      if (params && params.newUser) {
+        this.newUser = params.newUser.toLowerCase() == 'true';
+      }
     });
   }
 
