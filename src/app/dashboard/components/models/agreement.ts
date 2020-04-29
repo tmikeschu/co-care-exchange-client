@@ -1,5 +1,6 @@
 export class Agreement {
     orderId: string;
+    itemId: string;
     discriminator: string;
     deliveryCoordinates: {
         latitude: number,
