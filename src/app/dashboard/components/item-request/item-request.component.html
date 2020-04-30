@@ -1,5 +1,5 @@
 <section class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
-    <div *ngIf="!vm.loading && vm.itemDetails; else loading">
+    <div>
         <h2> {{ vm.itemDetails.name }}</h2>
         <h3 class="sub-title status-text" [ngClass]="{
             'is-pending': vm.itemDetails.status === status.FindingMatch,
@@ -54,10 +54,6 @@
         </div>
 
     </div>
-    <!-- loader -->
-    <ng-template #loading>
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </ng-template>
 </section>
 
 <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">

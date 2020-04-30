@@ -10,6 +10,7 @@ import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-ma
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Agreement } from '../models/agreement';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-share',
@@ -33,7 +34,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     // form input
@@ -100,5 +101,14 @@ export class ItemShareComponent implements OnInit, OnDestroy {
 
   onCancelEdit() {
     this.addNote = false;
+  }
+
+  // TODO: this should be a routerLink in the view. Temp work around to move this story forward due to inability to toggle disabled state
+  navigateBackToDashboard() {
+    if (!this.modalVisible) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      return false;
+    }
   }
 }
