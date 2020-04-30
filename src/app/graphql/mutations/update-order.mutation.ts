@@ -22,7 +22,8 @@ export const UpdateOrder = gql`
                 quantity
                 requestId,
                 details,
-                sharerNotes
+                sharerNotes,
+                itemId
             }
         }
     }
