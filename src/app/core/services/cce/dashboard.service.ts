@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
-import { map, switchMap, withLatestFrom, share, catchError, filter } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
@@ -17,7 +16,6 @@ import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
-  activeAgreement?: Agreement;
   loading: boolean;
 }
 
@@ -28,7 +26,6 @@ export class DashboardService {
   private state = {
     needs: [],
     shares: [],
-    activeAgreement: null,
     loading: true
   };
 
@@ -39,12 +36,6 @@ export class DashboardService {
   isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   userProfile$: Observable<UserProfile> = this.userService.getCurrentUser$().pipe(
     filter(u => u !== undefined), map((user: any) => user.userProfile));
-
-  messageCount = 0;
-  hasNeeds = false;
-
-  result: any;
-  userProfile;
 
   constructor(
     private http: HttpClient,
@@ -60,8 +51,7 @@ export class DashboardService {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
           return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
-        }),
-        share()
+        })
       )
       .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
@@ -82,8 +72,7 @@ export class DashboardService {
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
           return of(this._state); // serve a cached version on error
-        }),
-        share()
+        })
       );
   }
 
@@ -151,15 +140,6 @@ export class DashboardService {
       .pipe(
         map(handleGQLErrors)
       );
-  }
-
-  updateMessageCount(list) {
-    this.messageCount += list.filter((a) => a.statusId === 2).length;
-    return list;
-  }
-
-  setSelectedAgreement(agreement: Agreement) {
-    this.updateDashboard({ activeAgreement: agreement });
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {

@@ -32,6 +32,10 @@
     color: mat-color(map-get($colorado-care-exchange-theme, primary));
   }
 
+  .note {
+    font-size: .85em;
+  }
+
   .status-text {
     &.is-pending {
       color: #919191;
@@ -55,6 +59,7 @@
   }
 
   .actions {
+    margin-bottom: 75px;
     > button {
       margin: 1em 1em 0 0;
     }

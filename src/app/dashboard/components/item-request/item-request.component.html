@@ -1,0 +1,63 @@
+<section class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
+    <div>
+        <h2> {{ vm.itemDetails.name }}</h2>
+        <h3 class="sub-title status-text" [ngClass]="{
+            'is-pending': vm.itemDetails.status === status.FindingMatch,
+            'is-matched': vm.itemDetails.status === status.NewMatchFound,
+            'is-confirmed': vm.itemDetails.status === status.DeliveryPending,
+            'is-fulfilled': vm.itemDetails.status === status.OrderFulfilled,
+            'is-cancelled': vm.itemDetails.status === status.orderCancelled
+        }"><strong>{{ vm.itemDetails.statusDisplay }}</strong></h3>
+
+        <p *ngIf="vm.itemDetails.sharerName" class="name body-copy">You matched with
+            {{ vm.itemDetails.sharerName }}!</p>
+
+        <p class="body-copy">{{ vm.itemDetails.dialogMessage }}</p>
+
+        <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
+        <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p>
+
+        <!-- Notes -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <h3>Notes</h3>
+            <button [disabled]="addNote"
+                *ngIf="vm.itemDetails.status !== status.Fulfilled && vm.itemDetails.status !== status.OrderCancelled"
+                (click)="addNote = true;" class="primary" mat-button color="primary">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        <div *ngIf="addNote" fxLayout="row" fxLayoutAlign="center baseline">
+            <mat-form-field>
+                <textarea matInput [formControl]="orderNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                </textarea>
+            </mat-form-field>
+            <button (click)="onCancelEdit();" class="primary" mat-button>
+                <mat-icon>close</mat-icon>
+            </button>
+            <button (click)="onSubmitEdit()" class="primary" mat-button>
+                <mat-icon>done</mat-icon>
+            </button>
+        </div>
+        <div *ngIf="!addNote">
+            <div *ngIf="vm.itemDetails.orderNotes && vm.itemDetails.orderNotes.length; else noNotes">
+                <p class="note" *ngFor="let note of vm.itemDetails.orderNotes">{{ note.createdBy }} said: {{ note.noteBody }} on {{ note.createdOn | date:'short' }}</p>
+            </div>
+            <ng-template #noNotes>
+                <p>--</p>
+            </ng-template>
+        </div>
+
+        <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+            <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
+                mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
+        </div>
+
+    </div>
+</section>
+
+<div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
+    <a mat-button class="nav-action btn cce" mat-fab color="primary" routerLink="/dashboard">
+        <mat-icon class="cce-white">arrow_back</mat-icon>
+    </a>
+</div>

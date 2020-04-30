@@ -7,4 +7,5 @@ export interface OrderChangeInput {
     requestId: string;
     shareId: string;
     sharerNotes: string;
+    requesterNotes: string;
 }
