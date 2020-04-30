@@ -4,6 +4,8 @@ import { UserService } from '../../core/services/user.service'
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
 import { first } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 
 @Component({
   selector: 'app-individual',
@@ -24,7 +26,8 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
   ) { }
 
   @Input()
@@ -108,5 +111,12 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
+  }
+
+  onOrgInfoClick(){
+    const ref = this.dialog.open(OrgInfoModalComponent, {
+      width: '300px',
+      data: {}
+    });
   }
 }

@@ -1,15 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
 import { Status } from 'src/app/core/constants/enums';
+import { Agreement } from './models/agreement';
 
 
 @Component({
   selector: 'app-cce-home',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardState>;
@@ -17,12 +20,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private dashboardService: DashboardService
-  ) {}
+    private dashboardService: DashboardService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.dashboardService.startPolling();
     this.vm$ = this.dashboardService.state$;
+  }
+
+  formatItemDetails(agreement: Agreement) {
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
   getStyle(status: Status): string {

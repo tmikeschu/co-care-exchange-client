@@ -8,8 +8,8 @@
           <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}<br>
-                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
-                  {{ request.unitOfIssue }}</span></mat-label>
+                <span class="content-multiplier">x</span><span
+                  class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
               <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
               </mat-label>
             </div>
@@ -25,8 +25,8 @@
           <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]" class="contentborder dashboard-list-item">
             <div class="dashboardlistitem">
               <mat-label class="contentlabel">{{ request.name }}<br>
-                <span class="content-multiplier">x</span><span class="contentlabel-detail">{{ request.quantity }}
-                  {{ request.unitOfIssue }}</span></mat-label>
+                <span class="content-multiplier">x</span><span
+                  class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
               <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
               </mat-label>
             </div>

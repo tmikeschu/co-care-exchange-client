@@ -21,4 +21,5 @@ export class Agreement {
     addressLabel: String;
     requesterName: string;
     sharerName: string;
+    quantity: number;
 }
