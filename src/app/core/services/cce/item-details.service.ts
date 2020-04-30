@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, of, BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, switchMap, filter, catchError, tap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
@@ -29,7 +29,7 @@ export class ItemDetailsService {
     private _state = new BehaviorSubject<IItemDetailState>(this.state);
     public readonly store$ = this._state.asObservable();
 
-    private _itemId = new BehaviorSubject<string>(null);
+    private _itemId = new Subject<string>();
     private readonly itemId$ = this._itemId.asObservable();
 
     private userProfileId$: Observable<string> = this.authService.auth$.pipe(
@@ -45,14 +45,17 @@ export class ItemDetailsService {
         // TODO: error handling
         combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
-                switchMap(([userId, itemId]) => {
+                tap(() => {
+                    this.updateState({ itemDetails: null, loading: true });
+                })
+                , switchMap(([userId, itemId]) => {
                     return this.apollo
                         .query({
                             query: ItemDetails
                             , variables: { userId, itemId }
                         }).pipe(map(handleGQLErrors));
-                }),
-                catchError((err: any) => {
+                })
+                , catchError((err: any) => {
                     console.error('an error occured querying item details: ', err);
                     return of({ itemDetails: null, loading: false });
                 })
