@@ -32,6 +32,8 @@ export class ItemDetailsService {
     private _itemId = new Subject<string>();
     private readonly itemId$ = this._itemId.asObservable();
 
+    private showLoader$ = new BehaviorSubject(true);
+
     private userProfileId$: Observable<string> = this.authService.auth$.pipe(
         filter(authState => authState.hasUserProfile),
         map(authState => authState.user.userProfile.id)
@@ -42,11 +44,18 @@ export class ItemDetailsService {
         public authService: AuthenticationService,
         private apollo: Apollo
     ) {
-        // TODO: error handling
-        combineLatest([this.userProfileId$, this.itemId$])
+        combineLatest([this.userProfileId$, this.itemId$, this.showLoader$])
             .pipe(
-                tap(() => {
-                    this.updateState({ itemDetails: null, loading: true });
+                tap(([_profileId, _itemId, showLoader]) => {
+                    /**
+                     * should improve this but need to conditionally show loading
+                     * indicator. Use case: we added polling into the detail component.
+                     * this will allow us to query for fresh itemDetails without breaking the UI
+                     * with a loader
+                     */
+                    if (showLoader) {
+                        this.updateState({ itemDetails: null, loading: true });
+                    }
                 })
                 , switchMap(([userId, itemId]) => {
                     return this.apollo
@@ -77,6 +86,11 @@ export class ItemDetailsService {
         this._itemId.next(id);
     }
 
+    public refreshItemDetail(itemId: string) {
+        this.showLoader$.next(false);
+        this.getItem(itemId);
+    }
+
     public createOrderNote(note: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>): Observable<any> {
         // get the userprofileid, then issue the note create, then issue a side effect to reload the details view
         // catch error and handle subs in calling code
@@ -103,7 +117,7 @@ export class ItemDetailsService {
                              * Need to requery for item details due to that call returning
                              * different data based on whether it is a share, request, or order
                              */
-                            this.getItem(note.itemId);
+                            this.refreshItemDetail(note.itemId);
                         })
                     );
             })
