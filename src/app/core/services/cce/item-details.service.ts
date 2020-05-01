@@ -14,7 +14,9 @@ import { OrderChangeInput } from 'src/app/models/cce/order-model';
 
 export interface IItemDetailState {
     itemDetails: Agreement;
+    userId: string;
     loading: boolean;
+    newMessagePending: boolean;
 }
 
 @Injectable({
@@ -23,7 +25,9 @@ export interface IItemDetailState {
 export class ItemDetailsService {
     private state = {
         itemDetails: null
+        , userId: null
         , loading: true
+        , newMessagePending: false
     };
 
     private _state = new BehaviorSubject<IItemDetailState>(this.state);
@@ -35,8 +39,9 @@ export class ItemDetailsService {
     private showLoader$ = new BehaviorSubject(true);
 
     private userProfileId$: Observable<string> = this.authService.auth$.pipe(
-        filter(authState => authState.hasUserProfile),
-        map(authState => authState.user.userProfile.id)
+        filter(authState => authState.hasUserProfile)
+        , map(authState => authState.user.userProfile.id)
+        , tap(id => this.updateState({ userId: id }))
     );
 
     constructor(
@@ -46,7 +51,7 @@ export class ItemDetailsService {
     ) {
         combineLatest([this.userProfileId$, this.itemId$, this.showLoader$])
             .pipe(
-                tap(([_profileId, _itemId, showLoader]) => {
+                tap(([profileId, _itemId, showLoader]) => {
                     /**
                      * should improve this but need to conditionally show loading
                      * indicator. Use case: we added polling into the detail component.
@@ -70,7 +75,7 @@ export class ItemDetailsService {
                 })
             )
             .subscribe(data => {
-                this.updateState({ itemDetails: data.itemDetails, loading: false });
+                this.updateState({ itemDetails: data.itemDetails, loading: false, newMessagePending: false });
             });
     }
 
@@ -88,6 +93,7 @@ export class ItemDetailsService {
 
     public refreshItemDetail(itemId: string) {
         this.showLoader$.next(false);
+        this.updateState({ newMessagePending: true });
         this.getItem(itemId);
     }
 
