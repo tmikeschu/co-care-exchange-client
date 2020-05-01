@@ -35,13 +35,16 @@
           <mat-form-field class="login-full-width">
             <input matInput placeholder="Password" formControlName="password" type="password">
             <mat-error *ngIf="registerForm.get('password').hasError('required')">
-              Password is a required field
+              Password is required
             </mat-error>
             <mat-error *ngIf="registerForm.get('password').hasError('minlength')">
-              The password must be at least 6 characters long
+              The password must be at least 8 characters long
             </mat-error>
             <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">
               The password must not be longer than 30 characters
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('password').hasError('pattern')">
+              Password requirements: (min length 8, number, upper and lower case letters, special character all required)
             </mat-error>
           </mat-form-field>
         </mat-card-content>
