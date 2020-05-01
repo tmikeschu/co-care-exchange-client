@@ -20,12 +20,16 @@
     }
   }
 
+  mat-form-field {
+    width: 100%;
+  }
+
   .sub-title {
     font-size: 1.15em;
   }
 
   .body-copy {
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .name {
@@ -33,7 +37,12 @@
   }
 
   .note {
-    font-size: .85em;
+    font-size: 0.85em;
+  }
+
+  .send-btn {
+    position: relative;
+    bottom: 64px;
   }
 
   .status-text {
@@ -72,6 +81,37 @@
   }
 }
 
+.chat-entry {
+
+  &:nth-child(even) {
+    .chat-body {
+      background-color: #ccc;
+      color: #fafafa;
+    }
+  }
+
+  &:nth-child(odd) {
+    .chat-body {
+      background-color: mat-color(map-get($colorado-care-exchange-theme, primary));
+      text-align: right;
+      color: #fafafa;
+    }
+
+    .author {
+      text-align: right;
+    }
+  }
+
+  .author {
+    padding: 0 1em;
+    margin-bottom: 0;
+  }
+
+  .chat-body {
+    padding: 1em;
+    border-radius: 10px;
+  }
+}
 
 .page-footer {
   background-color: #fafafa;

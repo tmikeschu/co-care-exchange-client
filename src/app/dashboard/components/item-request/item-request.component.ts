@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, filter, tap, finalize } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   submit$ = new BehaviorSubject<boolean>(false);
 
   addNote = false;
-  orderNoteFC: FormControl = new FormControl('');
+  orderNoteFC: FormControl = new FormControl('', Validators.required);
   orderNoteFC$: Observable<string>;
 
   constructor() { }

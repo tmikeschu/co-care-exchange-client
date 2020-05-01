@@ -17,39 +17,36 @@
         <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
         <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p>
 
-        <!-- Notes -->
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <h3>Notes</h3>
-            <button [disabled]="addNote"
-                *ngIf="vm.itemDetails.status !== status.Fulfilled && vm.itemDetails.status !== status.OrderCancelled"
-                (click)="addNote = true;" class="primary" mat-button color="primary">
-                <mat-icon>edit</mat-icon>
-            </button>
-        </div>
-        <div *ngIf="addNote" fxLayout="row" fxLayoutAlign="center baseline">
-            <mat-form-field>
+        <!-- Chat Input -->
+        <div fxLayout="row" fxLayoutAlign="start center"
+            *ngIf="vm.itemDetails.status !== status.Fulfilled && vm.itemDetails.status !== status.OrderCancelled">
+            <mat-form-field appearance="outline">
                 <textarea matInput [formControl]="orderNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+                    cdkAutosizeMinRows="5" cdkAutosizeMaxRows="10">
                 </textarea>
             </mat-form-field>
-            <button (click)="onCancelEdit();" class="primary" mat-button>
-                <mat-icon>close</mat-icon>
-            </button>
-            <button (click)="onSubmitEdit()" class="primary" mat-button>
-                <mat-icon>done</mat-icon>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.invalid" (click)="onSubmitEdit()">
+                <mat-icon>send</mat-icon>
             </button>
         </div>
-        <div *ngIf="!addNote">
-            <div *ngIf="vm.itemDetails.orderNotes && vm.itemDetails.orderNotes.length; else noNotes">
-                <p class="note" *ngFor="let note of vm.itemDetails.orderNotes">{{ note.createdBy }} said: {{ note.noteBody }} on {{ note.createdOn | date:'short' }}</p>
+
+        <!-- Chat Log -->
+        <h3>Messages</h3>
+        <div class="chat-entry" *ngFor="let note of vm.itemDetails.orderNotes">
+            <p class="author">{{ note.createdBy }}</p>
+            <div class="chat-body">
+                <div>{{ note.noteBody }}</div>
+                <div>
+                    <small><i>{{ note.createdOn | date:'short' }}</i></small>
+                </div>
             </div>
-            <ng-template #noNotes>
-                <p>--</p>
-            </ng-template>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-            <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
+            <button
+                *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
                 mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
         </div>
 
