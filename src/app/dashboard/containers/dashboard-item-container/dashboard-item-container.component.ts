@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, of } from 'rxjs';
-import { tap, takeUntil, catchError } from 'rxjs/operators';
+import { Observable, Subject, of, timer, empty } from 'rxjs';
+import { tap, takeUntil, catchError, switchMap, withLatestFrom, map, filter } from 'rxjs/operators';
 
 import { ItemDetailsService, IItemDetailState } from 'src/app/core/services/cce/item-details.service';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
@@ -19,6 +19,7 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
 
   stop$ = new Subject();
   vm$: Observable<IItemDetailState> = this.itemDetailsService.store$;
+  populatedVm$: Observable<IItemDetailState> = this.vm$.pipe(filter(d => !!d.itemDetails));
 
   constructor(
     public route: ActivatedRoute
@@ -40,6 +41,15 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
+
+    timer(0, 5000)
+      .pipe(
+        takeUntil(this.stop$)
+        , withLatestFrom(this.populatedVm$)
+        , map(([_timer, vm]) => vm.itemDetails)
+        , tap((itemDetails) => this.itemDetailsService.refreshItemDetail(itemDetails.itemId))
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {
