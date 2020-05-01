@@ -23,10 +23,9 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   status = Status; // enum binding to use in view template
 
   stop$ = new Subject();
-  submit$ = new BehaviorSubject<boolean>(false);
 
-  addNote = false;
-  orderNoteFC: FormControl = new FormControl('', Validators.required);
+  currentNoteVal: string;
+  orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
   constructor() { }
@@ -37,21 +36,9 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
     this.orderNoteFC$.pipe(
       debounceTime(400)
       , distinctUntilChanged()
+      , filter(val => val && val !== '')
       , takeUntil(this.stop$)
-    );
-
-    // form handler
-    combineLatest([this.submit$, this.orderNoteFC$])
-      .pipe(
-        filter(([submit, _note]) => {
-          return submit;
-        })
-        , tap(([_submit, orderNote]) => {
-          this.createNote.emit({ noteBody: orderNote, itemId: this.vm.itemDetails.itemId });
-          this.addNote = false;
-        })
-        , takeUntil(this.stop$)
-      ).subscribe();
+    ).subscribe(val => this.currentNoteVal = val);
   }
 
   ngOnDestroy() {
@@ -69,10 +56,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.submit$.next(true);
-  }
-
-  onCancelEdit() {
-    this.addNote = false;
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+    this.orderNoteFC.patchValue('');
   }
 }

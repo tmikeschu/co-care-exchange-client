@@ -28,9 +28,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   modalVisible = false;
 
   stop$ = new Subject();
-  submit$ = new BehaviorSubject<boolean>(false);
 
-  addNote = false;
+  currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
@@ -42,19 +41,9 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     this.orderNoteFC$.pipe(
       debounceTime(400)
       , distinctUntilChanged()
+      , filter(val => val && val !== '')
       , takeUntil(this.stop$)
-    );
-
-    // form handler
-    combineLatest([this.submit$, this.orderNoteFC$])
-      .pipe(
-        filter(([submit, _note]) => submit)
-        , tap(([_submit, orderNote]) => {
-          this.createNote.emit({ noteBody: orderNote, itemId: this.vm.itemDetails.itemId });
-          this.addNote = false;
-        })
-        , takeUntil(this.stop$)
-      ).subscribe();
+    ).subscribe(val => this.currentNoteVal = val);
 
     // confirm match
     if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
@@ -96,11 +85,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.submit$.next(true);
-  }
-
-  onCancelEdit() {
-    this.addNote = false;
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+    this.orderNoteFC.patchValue('');
   }
 
   // TODO: this should be a routerLink in the view. Temp work around to move this story forward due to inability to toggle disabled state
