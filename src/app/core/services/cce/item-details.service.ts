@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { map, switchMap, filter, catchError, tap } from 'rxjs/operators';
+import { map, switchMap, filter, catchError, tap, skip } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
 import { UserService } from '../user.service';
@@ -33,10 +33,8 @@ export class ItemDetailsService {
     private _state = new BehaviorSubject<IItemDetailState>(this.state);
     public readonly store$ = this._state.asObservable();
 
-    private _itemId = new Subject<string>();
-    private readonly itemId$ = this._itemId.asObservable();
-
-    private showLoader$ = new BehaviorSubject(true);
+    private _itemId = new BehaviorSubject<string>(null);
+    private readonly itemId$ = this._itemId.pipe(skip(1)); // skip the null initial value
 
     private userProfileId$: Observable<string> = this.authService.auth$.pipe(
         filter(authState => authState.hasUserProfile)
@@ -49,20 +47,9 @@ export class ItemDetailsService {
         public authService: AuthenticationService,
         private apollo: Apollo
     ) {
-        combineLatest([this.userProfileId$, this.itemId$, this.showLoader$])
+        combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
-                tap(([profileId, _itemId, showLoader]) => {
-                    /**
-                     * should improve this but need to conditionally show loading
-                     * indicator. Use case: we added polling into the detail component.
-                     * this will allow us to query for fresh itemDetails without breaking the UI
-                     * with a loader
-                     */
-                    if (showLoader) {
-                        this.updateState({ itemDetails: null, loading: true });
-                    }
-                })
-                , switchMap(([userId, itemId]) => {
+                switchMap(([userId, itemId]) => {
                     return this.apollo
                         .query({
                             query: ItemDetails
@@ -71,7 +58,7 @@ export class ItemDetailsService {
                 })
                 , catchError((err: any) => {
                     console.error('an error occured querying item details: ', err);
-                    return of({ itemDetails: null, loading: false });
+                    return of({ itemDetails: null, loading: false, newMessagePending: false });
                 })
             )
             .subscribe(data => {
@@ -84,16 +71,26 @@ export class ItemDetailsService {
         this._state.next(this.state);
     }
 
-    /**
-     * Public API
-     */
-    public getItem(id: string) {
+    private handleNewNoteSuccess(itemId: string) {
+        this.updateState({ newMessagePending: true });
+        this.getItem(itemId);
+    }
+
+    private getItem(id: string) {
         this._itemId.next(id);
     }
 
+    /**
+     * Public API
+     */
+
+    public getItemInitial(id: string) {
+        this.updateState({ loading: true, itemDetails: null });
+        this.getItem(id);
+    }
+
     public refreshItemDetail(itemId: string) {
-        this.showLoader$.next(false);
-        this.updateState({ newMessagePending: true });
+        this.updateState({ loading: false });
         this.getItem(itemId);
     }
 
@@ -123,7 +120,7 @@ export class ItemDetailsService {
                              * Need to requery for item details due to that call returning
                              * different data based on whether it is a share, request, or order
                              */
-                            this.refreshItemDetail(note.itemId);
+                            this.handleNewNoteSuccess(note.itemId);
                         })
                     );
             })

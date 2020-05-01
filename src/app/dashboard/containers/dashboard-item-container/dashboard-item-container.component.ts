@@ -35,14 +35,14 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
         this.params = params;
         const itemId = params && params.id ? params.id : null;
         if (itemId) {
-          this.itemDetailsService.getItem(itemId);
+          this.itemDetailsService.getItemInitial(itemId);
         } else {
           this.router.navigate(['/dashboard']);
         }
       })
     ).subscribe();
 
-    timer(0, 5000)
+    timer(5000, 5000)
       .pipe(
         takeUntil(this.stop$)
         , withLatestFrom(this.populatedVm$)

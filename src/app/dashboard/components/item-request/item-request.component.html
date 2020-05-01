@@ -19,18 +19,23 @@
 
         <!-- Chat Log -->
         <h3>Messages</h3>
-        <div class="chat-entry" *ngFor="let note of vm.itemDetails.orderNotes" [ngClass]="{
-            'is-user-message': note.userId === vm.userId,
-            'is-guest-message': note.userId !== vm.userId
-        }">
-            <p class="author">{{ note.createdBy }}</p>
-            <div class="chat-body">
-                <div>{{ note.noteBody }}</div>
-                <div>
-                    <small><i>{{ note.createdOn | date:'short' }}</i></small>
+        <div *ngIf="vm.itemDetails.orderNotes.length; else nonotes">
+            <div class="chat-entry" *ngFor="let note of vm.itemDetails.orderNotes" [ngClass]="{
+                'is-user-message': note.userId === vm.userId,
+                'is-guest-message': note.userId !== vm.userId
+            }">
+                <p class="author">{{ note.createdBy }}</p>
+                <div class="chat-body">
+                    <div>{{ note.noteBody }}</div>
+                    <div>
+                        <small><i>{{ note.createdOn | date:'short' }}</i></small>
+                    </div>
                 </div>
             </div>
         </div>
+        <ng-template #nonotes>
+            <p><i>No messages yet...</i></p>
+        </ng-template>
         <!-- new message pending animation -->
         <div *ngIf="vm.newMessagePending" class="wave-animation">
             <span class="dot"></span>
