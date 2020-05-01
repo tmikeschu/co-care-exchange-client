@@ -23,6 +23,7 @@ export const ItemDetails = gql`
                 createdOn
                 id
                 noteBody
+                userId
             }
         }
     }
