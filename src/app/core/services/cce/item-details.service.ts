@@ -47,8 +47,6 @@ export class ItemDetailsService {
         public authService: AuthenticationService,
         private apollo: Apollo
     ) {
-        this.itemId$.subscribe(id => console.log('itemId$ values: ', id));
-        this.authService.auth$.subscribe(auth => console.log('auth$ values: ', auth));
         combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
                 switchMap(([userId, itemId]) => {
