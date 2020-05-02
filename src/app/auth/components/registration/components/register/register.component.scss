@@ -72,4 +72,18 @@ mat-error {
   flex-basis: 0
 }
 
+.is-invalid {
+  border-left: solid 6px red;
+}
+
+.col {
+  display: block;
+  max-width: 100%;
+}
+
+.material-icons {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
 
