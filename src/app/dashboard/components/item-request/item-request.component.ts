@@ -49,7 +49,8 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   onCancelMatch(agreement: Agreement) {
     this.updateItem.emit({
       orderUpdate: agreement, updates: {
-        status: Status.OrderCancelled
+        requestId: agreement.requestId
+        , status: Status.OrderCancelled
         , reason: 'User cancelled the match in agreement detail view'
       }
     });

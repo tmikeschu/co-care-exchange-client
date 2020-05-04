@@ -19,7 +19,7 @@
 
         <!-- Chat Log -->
         <h3>Messages</h3>
-        <div *ngIf="vm.itemDetails.orderNotes.length; else nonotes">
+        <div *ngIf="vm.itemDetails.orderNotes && vm.itemDetails.orderNotes.length; else nonotes">
             <div class="chat-entry" *ngFor="let note of vm.itemDetails.orderNotes" [ngClass]="{
                 'is-user-message': note.userId === vm.userId,
                 'is-guest-message': note.userId !== vm.userId

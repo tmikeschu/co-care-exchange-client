@@ -48,6 +48,10 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
         , withLatestFrom(this.populatedVm$)
         , map(([_timer, vm]) => vm.itemDetails)
         , tap((itemDetails) => this.itemDetailsService.refreshItemDetail(itemDetails.itemId))
+        , catchError(_error => {
+          this.router.navigate(['/dashboard']);
+          return of(null);
+        })
       )
       .subscribe();
   }
@@ -58,7 +62,6 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
   }
 
   handleUpdateItem(payload: { orderUpdate: Agreement, updates: Partial<OrderChangeInput> }) {
-    console.log('handleUpdateItem called with: ', payload);
     this.itemDetailsService.updateOrder(payload.orderUpdate, payload.updates)
       .pipe(
         takeUntil(this.stop$)
@@ -67,7 +70,6 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
   }
 
   handleNewNote(newNote: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>) {
-    console.log('handleNewItemNote called with: ', newNote);
     this.itemDetailsService.createOrderNote(newNote)
       .pipe(
         takeUntil(this.stop$)
