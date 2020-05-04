@@ -28,17 +28,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     const minPasswordLength = environment.passwordPolicy.minLength || 8;
-    
+
     this.registerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      // password: ['', [Validators.required,
-      //   Validators.minLength(minPasswordLength),
-      //   Validators.maxLength(30),
-      //   Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,29}$')
-      // ]]
-
       password: [
         null,
         Validators.compose([
@@ -67,10 +61,10 @@ export class RegisterComponent implements OnInit {
       ],
       confirmPassword: [null, Validators.compose([Validators.required])]
     },
-    {
-      // check whether our password and confirm password match
-      validator: CustomValidators.passwordMatchValidator
-    });    
+      {
+        // check whether our password and confirm password match
+        validator: CustomValidators.passwordMatchValidator
+      });
   }
 
   handlePantry() {
@@ -80,7 +74,7 @@ export class RegisterComponent implements OnInit {
   async onRegisterSubmit() {
     this.registerForm.disable();
     this.isRegistering = true;
-    const email = this.registerForm.get('email').value;     
+    const email = this.registerForm.get('email').value;
 
     try {
       const regModel: BasicRegistrationModel = {
