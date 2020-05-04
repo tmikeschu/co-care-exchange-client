@@ -11,6 +11,7 @@ import { AuthenticationService } from './authentication.service';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
 import { CreateOrderNote, UpdateOrder } from 'src/app/graphql/mutations';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
+import { Router } from '@angular/router';
 
 export interface IItemDetailState {
     itemDetails: Agreement;
@@ -45,7 +46,8 @@ export class ItemDetailsService {
     constructor(
         public userService: UserService,
         public authService: AuthenticationService,
-        private apollo: Apollo
+        private apollo: Apollo,
+        private router: Router
     ) {
         combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
@@ -132,14 +134,17 @@ export class ItemDetailsService {
             map(userProfileId => {
                 const updateOrderPayload = {
                     orderId: order.orderId,
+                    requestId: order.requestId,
+                    shareId: order.shareId,
                     userId: userProfileId,
                     status: updates.status || null,
                     reason: updates.reason || 'Update status from agreement detail',
                     clientMutationId: '123456',
                 };
                 return updateOrderPayload;
-            }),
-            switchMap(payload => {
+            })
+            , tap(payload => console.log('update order payload: ', payload))
+            , switchMap(payload => {
                 return this.apollo
                     .mutate({
                         mutation: UpdateOrder
@@ -152,6 +157,8 @@ export class ItemDetailsService {
                         , tap(data => {
                             if (data.updateOrder && data.updateOrder.orderViewModel) {
                                 this.updateState({ itemDetails: data.updateOrder.orderViewModel });
+                            } else {
+                                this.router.navigate(['/dashboard']);
                             }
                         })
                     );
