@@ -13,4 +13,5 @@ export interface SaveUserInput {
     state: string;
     organizationId?: unknown;
     householdSize?: number;
+    sendEmailMatchNotifications: boolean;
 }
