@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+import { WELCOME_ROUTE } from '../../../../../core/constants/routes';;
 import { AuthenticationService } from '../../../../../core/services/cce/authentication.service';
 import { BasicRegistrationModel } from '../../../../../models/cce/basic-registration.model';
 import { environment } from '../../../../../../environments/environment';
@@ -62,14 +62,13 @@ export class RegisterComponent implements OnInit {
         return;
       }
 
-      this.toastrService.success('Please check your email for a verification and then complete signin', null, {
+      this.toastrService.success('Please check your email for a verification and then complete signin. Click to dismiss.', null, {
         timeOut: 0,
         extendedTimeOut: 0,
         positionClass: "toast-top-center"
       });
 
-      this.router.navigate(['/', 'welcome'], { queryParams: { email: email } });
-
+      this.router.navigate(['/', WELCOME_ROUTE], { queryParams: { email: email } });
     } catch (err) {
       console.error(err);
       this.toastrService.error('An unexpected error has occurred. Please try again later.', null, {
