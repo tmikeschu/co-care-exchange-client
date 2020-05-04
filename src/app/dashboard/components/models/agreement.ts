@@ -22,4 +22,13 @@ export class Agreement {
     requesterName: string;
     sharerName: string;
     quantity: number;
+    orderNotes: IOrderNote[];
+}
+
+interface IOrderNote {
+    createdBy: string;
+    createdOn: string;
+    id: string;
+    noteBody: string;
+    userId: string;
 }
