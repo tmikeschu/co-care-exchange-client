@@ -12,6 +12,7 @@ import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
+import { AuthenticationService } from './authentication.service';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -32,14 +33,17 @@ export class DashboardService {
   private _state = new BehaviorSubject<IDashboardState>(this.state);
   public readonly state$ = this._state.asObservable();
 
-  doPoll$ = new BehaviorSubject<boolean>(false);
-  isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
-  userProfile$: Observable<UserProfile> = this.userService.getCurrentUser$().pipe(
-    filter(u => u !== undefined), map((user: any) => user.userProfile));
+  private doPoll$ = new BehaviorSubject<boolean>(false);
+  private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
+  private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
+    filter(authState => authState.hasUserProfile)
+    , map(authState => authState.user.userProfile)
+  );
 
   constructor(
     private http: HttpClient,
     public userService: UserService,
+    private authService: AuthenticationService,
     private apollo: Apollo
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
