@@ -6,8 +6,7 @@ export const UpdateOrder = gql`
             clientMutationId,
             order {
                 id,
-                status,
-                sharerNotes
+                status
             },
             orderViewModel {
                 name,
@@ -22,7 +21,7 @@ export const UpdateOrder = gql`
                 quantity
                 requestId,
                 details,
-                sharerNotes
+                itemId
             }
         }
     }

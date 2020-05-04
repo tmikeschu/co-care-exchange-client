@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
-import { map, switchMap, withLatestFrom, share, catchError, filter } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 import { Result } from 'src/app/dashboard/components/models/dasboard';
 import { environment } from 'src/environments/environment';
@@ -13,11 +12,11 @@ import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
+import { AuthenticationService } from './authentication.service';
 
 export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
-  activeAgreement?: Agreement;
   loading: boolean;
 }
 
@@ -28,27 +27,23 @@ export class DashboardService {
   private state = {
     needs: [],
     shares: [],
-    activeAgreement: null,
     loading: true
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
   public readonly state$ = this._state.asObservable();
 
-  doPoll$ = new BehaviorSubject<boolean>(false);
-  isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
-  userProfile$: Observable<UserProfile> = this.userService.getCurrentUser$().pipe(
-    filter(u => u !== undefined), map((user: any) => user.userProfile));
-
-  messageCount = 0;
-  hasNeeds = false;
-
-  result: any;
-  userProfile;
+  private doPoll$ = new BehaviorSubject<boolean>(false);
+  private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
+  private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
+    filter(authState => authState.hasUserProfile)
+    , map(authState => authState.user.userProfile)
+  );
 
   constructor(
     private http: HttpClient,
     public userService: UserService,
+    private authService: AuthenticationService,
     private apollo: Apollo
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
@@ -57,14 +52,14 @@ export class DashboardService {
       .pipe(
         withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
         switchMap(([_tick, isOnline, doPoll, userProfile]) => {
-          return isOnline && doPoll ? this.dashboardHandler(userProfile.id) : empty();
-        }),
-        share()
+          const empty$ = empty();
+          empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
+          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
+        })
       )
       .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
-        this.state = Object.assign({}, this.state, { needs: requested, shares: shared, loading: false });
-        this._state.next(this.state);
+        this.updateDashboard({ needs: requested, shares: shared });
       });
   }
 
@@ -81,8 +76,7 @@ export class DashboardService {
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
           return of(this._state); // serve a cached version on error
-        }),
-        share()
+        })
       );
   }
 
@@ -107,7 +101,6 @@ export class DashboardService {
                 addressLabel
                 requestId
                 sharerName
-                sharerNotes
                 shareId
                 unitOfIssue
                 quantity
@@ -122,7 +115,6 @@ export class DashboardService {
                 deliveryAddress
                 addressLabel
                 shareId
-                sharerNotes
                 unitOfIssue
                 quantity
                 requestId
@@ -154,13 +146,8 @@ export class DashboardService {
       );
   }
 
-  updateMessageCount(list) {
-    this.messageCount += list.filter((a) => a.statusId === 2).length;
-    return list;
-  }
-
-  setSelectedAgreement(agreement) {
-    this.state = Object.assign({}, this.state, { activeAgreement: agreement });
+  private updateDashboard(updates: Partial<IDashboardState>) {
+    this.state = Object.assign({}, this.state, updates);
     this._state.next(this.state);
   }
 }
