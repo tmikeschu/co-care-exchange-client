@@ -34,36 +34,36 @@
             <mat-form-field class="login-full-width">
               <input matInput placeholder="Password" formControlName="password" type="password">
 
-              <div class="col error-buffer"
-                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('minlength')  ? 'text-danger' : 'text-success'">
+              <div class="validation-block error-buffer"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('minlength')  ? 'validation-error' : 'validation-success'">
                 <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
                 registerForm.controls['password'].hasError('minlength') ? 'cancel' :
                 'check_circle' }}</i>
                 Must be at least 8 characters!
               </div>
-              <div class="col"
-                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasNumber')  ? 'text-danger' : 'text-success'">
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasNumber')  ? 'validation-error' : 'validation-success'">
                 <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
                 registerForm.controls['password'].hasError('hasNumber') ? 'cancel' :
                 'check_circle' }}</i>
                 Must contain at least 1 number!
               </div>
-              <div class="col"
-                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasCapitalCase')  ? 'text-danger' : 'text-success'">
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasCapitalCase')  ? 'validation-error' : 'validation-success'">
                 <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
                 registerForm.controls['password'].hasError('hasCapitalCase') ? 'cancel' :
                 'check_circle' }}</i>
                 Must contain at least 1 in Capital Case!
               </div>
-              <div class="col"
-                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSmallCase')  ? 'text-danger' : 'text-success'">
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSmallCase')  ? 'validation-error' : 'validation-success'">
                 <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
                 registerForm.controls['password'].hasError('hasSmallCase') ? 'cancel' :
                 'check_circle' }}</i>
                 Must contain at least 1 Letter in Small Case!
               </div>
-              <div class="col"
-                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSpecialCharacters') ? 'text-danger' : 'text-success'">
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSpecialCharacters') ? 'validation-error' : 'validation-success'">
                 <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
                 registerForm.controls['password'].hasError('hasSpecialCharacters') ? 'cancel' :
                 'check_circle' }}</i>
@@ -77,10 +77,10 @@
             <mat-form-field class="login-full-width">
               <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password">
             </mat-form-field>
-            <div class="text-danger" *ngIf="registerForm.controls['confirmPassword'].hasError('required')">
+            <div class="validation-error" *ngIf="registerForm.controls['confirmPassword'].hasError('required')">
               Password is Required!
             </div>
-            <div class="text-danger" *ngIf="registerForm.controls['confirmPassword'].hasError('NoPassswordMatch')">
+            <div class="validation-error" *ngIf="registerForm.controls['confirmPassword'].hasError('NoPasswordMatch')">
               Password do not match
             </div>
           </div>
