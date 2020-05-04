@@ -76,6 +76,18 @@ mat-error {
   border-left: solid 6px red;
 }
 
+.text-danger {
+  color: red;
+}
+
+.text-success {
+  color: green;
+}
+
+.error-buffer {
+  margin-top: 10px;
+}
+
 .col {
   display: block;
   max-width: 100%;
