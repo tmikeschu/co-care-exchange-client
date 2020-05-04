@@ -100,6 +100,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
+      sendEmailMatchNotifications: true
     };
 
     if (!this._isRegistering && this.userProfile){
