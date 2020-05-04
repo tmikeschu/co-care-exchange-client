@@ -1,5 +1,6 @@
 export class Agreement {
     orderId: string;
+    itemId: string;
     discriminator: string;
     deliveryCoordinates: {
         latitude: number,
@@ -9,16 +10,16 @@ export class Agreement {
     cancelledOn: Date;
     cancelledBy: string;
     name: string;
-    statusId: number;
-    statusText: string;
+    status: string;
+    statusDisplay: string;
     dialogMessage: string;
     statusTypeId: number; // 1=need;2=share
     shareId: string;
     requestId: string;
     unitOfIssue: String;
-    description: String;
     details: String;
     addressLabel: String;
     requesterName: string;
     sharerName: string;
+    quantity: number;
 }

@@ -1,0 +1,170 @@
+@import '../../../../styles/theme.scss';
+
+.agreement-detail-card {
+  color: #919191;
+
+  h2 {
+    font-size: 1.5em;
+    color: #919191;
+  }
+
+  button {
+    color: #fafafa;
+
+    mat-icon {
+      color: mat-color(map-get($colorado-care-exchange-theme, primary));
+    }
+
+    &.primary {
+      color: mat-color(map-get($colorado-care-exchange-theme, primary));
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .sub-title {
+    font-size: 1.15em;
+  }
+
+  .body-copy {
+    font-size: 0.9em;
+  }
+
+  .name {
+    color: mat-color(map-get($colorado-care-exchange-theme, primary));
+  }
+
+  .note {
+    font-size: 0.85em;
+  }
+
+  .send-btn {
+    position: relative;
+    bottom: 64px;
+  }
+
+  .status-text {
+    &.is-pending {
+      color: #919191;
+    }
+
+    &.is-matched {
+      color: #0db536;
+    }
+
+    &.is-confirmed {
+      color: mat-color(map-get($colorado-care-exchange-theme, accent));
+    }
+
+    &.is-fulfilled {
+      color: #0db536;
+    }
+
+    &.is-cancelled {
+      color: mat-color(map-get($colorado-care-exchange-theme, warn));
+    }
+  }
+
+  .input-area {
+    margin-top: 1em;
+  }
+
+  .actions {
+    margin-bottom: 75px;
+    > button {
+      margin: 1em 1em 0 0;
+    }
+  }
+
+  .report-issue {
+    > button {
+      padding-left: 0;
+    }
+  }
+}
+
+.chat-entry {
+  width: 75%;
+
+  &.is-guest-message {
+    margin-right: auto;
+    .chat-body {
+      background-color: #ccc;
+      color: #fafafa;
+    }
+  }
+
+  &.is-user-message {
+    margin-left: auto;
+    .chat-body {
+      background-color: mat-color(map-get($colorado-care-exchange-theme, primary));
+      text-align: right;
+      color: #fafafa;
+    }
+
+    .author {
+      text-align: right;
+    }
+  }
+
+  .author {
+    padding: 0 1em;
+    margin-bottom: 0;
+    font-size: .9em;
+    font-style: italic;
+  }
+
+  .chat-body {
+    padding: 1em;
+    border-radius: 10px;
+  }
+}
+
+.page-footer {
+  background-color: #fafafa;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  text-align: center;
+  z-index: 10000;
+}
+
+.wave-animation {
+	position:relative;
+	margin-top:3em;
+	text-align:center;
+	width:100px;
+	margin-left: auto;
+	.dot {
+    display:inline-block;
+    opacity: .5;
+		width:12px;
+		height:12px;
+		border-radius:50%;
+		margin-right:3px;
+		background:mat-color(map-get($colorado-care-exchange-theme, primary));
+		animation: wave 1.3s linear infinite;
+
+		&:nth-child(2) {
+			animation-delay: -1.1s;
+		}
+
+		&:nth-child(3) {
+			animation-delay: -0.9s;
+		}
+	}
+}
+
+@keyframes wave {
+	0%, 60%, 100% {
+		transform: initial;
+	}
+
+	30% {
+		transform: translateY(-15px);
+	}
+}

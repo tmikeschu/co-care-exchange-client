@@ -74,10 +74,6 @@ export class UserService {
     return this.authService.getUser$();
   }
 
-  getCurrentUserAsObs$(): any {
-    return this.authService.getUserAsObs$();
-  }
-
   // async getCurrentUser(): Promise<any> {
   //   return await this.authService.getUser();
   // }

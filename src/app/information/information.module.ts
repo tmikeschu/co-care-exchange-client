@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { OrganizationComponent } from './organization/organization.component';
 import { InformationRoutingModule } from './information-routing.module';
+import { OrgInfoModalComponent } from './orginfomodal/orginfomodal.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule],
-  declarations: [IndividualComponent, InformationComponent, OrganizationComponent],
+  declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],
+  entryComponents: [OrgInfoModalComponent]
 })
 export class InformationModule {}
