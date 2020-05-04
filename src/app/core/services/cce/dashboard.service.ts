@@ -48,9 +48,6 @@ export class DashboardService {
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
     // alive and if the client has internet connectivity
-    this.isOnline$.subscribe(online => console.log('online val: ', online));
-    this.doPoll$.subscribe(doPoll => console.log('doPoll val: ', doPoll));
-    this.userProfile$.subscribe(up => console.log('up val: ', up));
     timer(0, 5000)
       .pipe(
         withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
