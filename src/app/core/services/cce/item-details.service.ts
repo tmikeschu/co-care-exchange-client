@@ -37,7 +37,7 @@ export class ItemDetailsService {
     private readonly itemId$ = this._itemId.pipe(skip(1)); // skip the null initial value
 
     private userProfileId$: Observable<string> = this.authService.auth$.pipe(
-        filter(authState => authState.hasUserProfile)
+        filter(authState => authState.user && authState.user.userProfile && authState.user.userProfile.id)
         , map(authState => authState.user.userProfile.id)
         , tap(id => this.updateState({ userId: id }))
     );
