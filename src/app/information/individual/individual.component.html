@@ -47,7 +47,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="login-full-width">
+      <mat-form-field *ngIf="!newUser" class="login-full-width">
         <label>
           <input matInput placeholder="Household Size" formControlName="householdSize" type="tel" required />
         </label>
