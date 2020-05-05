@@ -36,7 +36,7 @@ export class DashboardService {
   private doPoll$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
-    filter(authState => authState.hasUserProfile)
+    filter(authState => authState.user && authState.user.userProfile)
     , map(authState => authState.user.userProfile)
   );
 
