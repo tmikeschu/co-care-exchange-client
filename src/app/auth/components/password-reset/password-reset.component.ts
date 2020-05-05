@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../../core/services/cce/authentication.service';
 import { FORGET_PASSWORD_ROUTE, WELCOME_ROUTE } from '../../../core/constants/routes';
 import { CustomValidators } from 'src/app/shared/custom-validators';
@@ -14,7 +15,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     return (invalidCtrl || invalidParent);
   }
 }
-
 
 @Component({
   selector: 'app-password-reset',
@@ -31,7 +31,12 @@ export class PasswordResetComponent implements OnInit {
 
   errorStateMatcher = new MyErrorStateMatcher();
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private authenticationService: AuthenticationService,
+    private toastrService: ToastrService
   ) {
     this.createForm();
   }
@@ -96,6 +101,9 @@ export class PasswordResetComponent implements OnInit {
       this.router.navigate(['/', WELCOME_ROUTE]);
     } catch (err) {
       console.error('Error resetting password ', err);
+      this.toastrService.error('An unexpected error has occurred attempting password reset. Please try again later.', null, {
+        positionClass: "toast-top-center"
+      });
     }
   }
 
