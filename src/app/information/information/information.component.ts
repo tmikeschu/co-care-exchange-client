@@ -5,7 +5,6 @@ import { AuthenticationService } from '../../core/services/cce/authentication.se
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfileInformation } from '../models/info-create.model';
-import {subscribe} from 'graphql';
 
 @Component({
   selector: 'app-register',
@@ -36,19 +35,18 @@ export class InformationComponent implements OnInit {
       console.log('DEBUG info data :', data);
     });
 
-    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();  
+    this.profile = await this.userService.getUser(this.email).pipe(first()).toPromise();
     this.registrantType = 'Individual';
-      
+
     if (this.profile) {
       this.newUser = false;
 
-      if(this.profile.organization && this.profile.organization.id){
+      if (this.profile.organization && this.profile.organization.id) {
         this.organizationName = this.profile.organization.name;
         this.organizationId = this.profile.organization.id;
         this.registrantType = 'Organization';
       }
-    } 
-    else {
+    } else {
       this.newUser = true;
     }
   }
