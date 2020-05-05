@@ -53,8 +53,9 @@ export class SignInComponent implements OnInit {
     this.signingIn = true;
 
     try {
+      const username = this.loginForm.get('username').value;
       const result: SignInResult = await this.authenticationService.signIn(
-        this.loginForm.get('username').value,
+        username,
         this.loginForm.get('password').value
       );
 
