@@ -20,14 +20,14 @@ export class SignInComponent implements OnInit {
   errorMessage: string;
   error = false;
   signingIn = false;
-  
+
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService,    
+    private userService: UserService,
     private navbarService: NavbarService,
     private toastrService: ToastrService
   ) { }
@@ -35,7 +35,7 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]      
+      password: ['', Validators.required]
     });
     this.route.queryParams.subscribe((val) => {
       console.log('DEBUG signin email ', val);
@@ -44,21 +44,21 @@ export class SignInComponent implements OnInit {
         this.loginForm.get('username').setValue(email);
       }
     });
-    
+
   }
 
   async onLoginSubmit() {
     this.error = false;
     this.errorMessage = undefined;
-    this.signingIn = true;    
-    
+    this.signingIn = true;
+
     try {
       const result: SignInResult = await this.authenticationService.signIn(
         this.loginForm.get('username').value,
         this.loginForm.get('password').value
       );
 
-      //console.log('DEBUG: signin result ', result);
+      // console.log('DEBUG: signin result ', result);
       this.signingIn = false;
 
       if (result.errorMsg) {
@@ -69,7 +69,7 @@ export class SignInComponent implements OnInit {
       }
 
       // TODO is navbar service needed...dont think so
-      //this.navbarService.setLogin(true);
+      // this.navbarService.setLogin(true);
 
       // the email is the username
       await this.navigateToNextRoute(this.loginForm.get('username').value);
@@ -91,7 +91,7 @@ export class SignInComponent implements OnInit {
     if (user && user.emailAddress) {
       return this.router.navigate(['/', 'dashboard']);
     } else {
-      const queryParams = { newUser: true };      
+      const queryParams = { newUser: true };
       return this.router.navigate(['/', 'info'], { queryParams });
     }
   }
