@@ -1,6 +1,3 @@
-
-    
-
 <section class="section tabcontent">
   <div class="page-content">
     <mat-card class="mat-elevation-z10">
@@ -32,28 +29,72 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field class="login-full-width">
-            <input matInput placeholder="Password" formControlName="password" type="password">
-            <mat-error *ngIf="registerForm.get('password').hasError('required')">
-              Password is a required field
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('password').hasError('minlength')">
-              The password must be at least 6 characters long
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">
-              The password must not be longer than 30 characters
-            </mat-error>
-          </mat-form-field>
-        </mat-card-content>
+          <div class="form-group">
 
-        <mat-error class="error-message" *ngIf="error===true">
-          <div *ngIf="errorMessage">
-            {{errorMessage}}
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Password" formControlName="password" type="password">
+
+              <div class="validation-block error-buffer"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('minlength')  ? 'validation-error' : 'validation-success'">
+                <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
+                registerForm.controls['password'].hasError('minlength') ? 'cancel' :
+                'check_circle' }}</i>
+                Must be at least 8 characters!
+              </div>
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasNumber')  ? 'validation-error' : 'validation-success'">
+                <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
+                registerForm.controls['password'].hasError('hasNumber') ? 'cancel' :
+                'check_circle' }}</i>
+                Must contain at least 1 number!
+              </div>
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasCapitalCase')  ? 'validation-error' : 'validation-success'">
+                <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
+                registerForm.controls['password'].hasError('hasCapitalCase') ? 'cancel' :
+                'check_circle' }}</i>
+                Must contain at least 1 in Capital Case!
+              </div>
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSmallCase')  ? 'validation-error' : 'validation-success'">
+                <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
+                registerForm.controls['password'].hasError('hasSmallCase') ? 'cancel' :
+                'check_circle' }}</i>
+                Must contain at least 1 Letter in Small Case!
+              </div>
+              <div class="validation-block"
+                [ngClass]="registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('hasSpecialCharacters') ? 'validation-error' : 'validation-success'">
+                <i class="material-icons">{{ registerForm.controls['password'].hasError('required') ||
+                registerForm.controls['password'].hasError('hasSpecialCharacters') ? 'cancel' :
+                'check_circle' }}</i>
+                Must contain at least 1 Special Character!
+              </div>
+
+            </mat-form-field>
           </div>
-          <div *ngIf="!errorMessage">
-            Invalid username or password
+
+          <div class="form-group">
+            <mat-form-field class="login-full-width">
+              <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password">
+            </mat-form-field>
+            <div class="validation-error" *ngIf="registerForm.controls['confirmPassword'].hasError('required')">
+              Password is Required!
+            </div>
+            <div class="validation-error" *ngIf="registerForm.controls['confirmPassword'].hasError('NoPasswordMatch')">
+              Password do not match
+            </div>
           </div>
-        </mat-error>
+
+          <mat-error class="error-message" *ngIf="error===true">
+            <div *ngIf="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div *ngIf="!errorMessage">
+              Invalid username or password
+            </div>
+          </mat-error>
+
+        </mat-card-content>
 
         <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
 
@@ -70,7 +111,7 @@
       <a class="links pantry-link" (click)="handlePantry()">Food Pantries Near Me</a>
     </div>
 
-    <p class=" vertical-rhythm-two text-primary text-center">
+    <p class=" verticalnpm start-rhythm-two text-primary text-center">
       Simplifying things that matter for <br>people who care.
     </p>
 
