@@ -60,4 +60,8 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
     this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
     this.orderNoteFC.patchValue('');
   }
+
+  formatItemDetails(agreement: Agreement) {
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+  }
 }
