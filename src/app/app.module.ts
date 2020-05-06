@@ -30,6 +30,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -55,6 +57,7 @@ import { ContributorsComponent } from './contributors/contributors.component';
     AwsCognitoModule,
     ToastrModule.forRoot(),
     LayoutModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent],
   providers: [
