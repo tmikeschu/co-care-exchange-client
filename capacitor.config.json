@@ -1,0 +1,8 @@
+{
+  "appId": "com.coloradocareexchange.app",
+  "appName": "colorado-care-exchange",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist/colorado-care-exchange",
+  "cordova": {}
+}
