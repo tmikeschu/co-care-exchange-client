@@ -98,4 +98,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       return false;
     }
   }
+
+  formatItemDetails(agreement: Agreement) {
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+  }
 }
