@@ -73,9 +73,9 @@
 
   .actions {
     margin-bottom: 75px;
-    > button {
-      margin: 1em 1em 0 0;
-    }
+    // > button {
+    //   margin: 1em 1em 0 0;
+    // }
   }
 
   .report-issue {
@@ -83,6 +83,10 @@
       padding-left: 0;
     }
   }
+}
+
+.confirmbtn{
+  float: right;
 }
 
 .chat-entry {

@@ -45,8 +45,25 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       , takeUntil(this.stop$)
     ).subscribe(val => this.currentNoteVal = val);
 
-    // confirm match
-    if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
+    
+  }
+
+  ngOnDestroy() {
+    this.stop$.next();
+    this.stop$.complete();
+  }
+
+  onCancelMatch(agreement: Agreement) {
+    this.updateItem.emit({ orderUpdate: agreement, updates: {
+      shareId: agreement.shareId
+      , status: Status.OrderCancelled
+      , reason: 'User cancelled the match in agreement detail view'
+    }});
+  }
+
+  onConfirmMatch(agreement: Agreement){
+    console.log('onConfirmMatch', agreement);
+    
       this.modalVisible = true;
       const ref = this.dialog.open(ConfirmMatchDialogComponent, {
         width: '300px'
@@ -69,20 +86,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
           }});
         }
       });
-    }
-  }
-
-  ngOnDestroy() {
-    this.stop$.next();
-    this.stop$.complete();
-  }
-
-  onCancelMatch(agreement: Agreement) {
-    this.updateItem.emit({ orderUpdate: agreement, updates: {
-      shareId: agreement.shareId
-      , status: Status.OrderCancelled
-      , reason: 'User cancelled the match in agreement detail view'
-    }});
+    
   }
 
   onSubmitEdit() {

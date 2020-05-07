@@ -1,9 +1,17 @@
 h3 {
   font-size: 1.25em;
   color: #919191;
+  margin: 0px 0px 10px 0px;
 }
 
-button {
+.buttonConfirm {
+  color: #fafafa;
+  margin-right: 1em;
+  float: right;
+  background-color: yellowgreen;
+}
+
+.buttonCancel {
   color: #fafafa;
   margin-right: 1em;
 }
