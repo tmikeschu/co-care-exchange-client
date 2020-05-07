@@ -5,6 +5,8 @@ import { first } from 'rxjs/operators';
 import { UserProfileInformation } from '../models/info-create.model';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
+import { MatDialog } from '@angular/material';
+import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 
 @Component({
   selector: 'app-organization',
@@ -27,7 +29,8 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
     ) {}
 
   @Input()
@@ -110,5 +113,12 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
 
+  }  
+
+  onOrgInfoClick(){
+    const ref = this.dialog.open(OrgInfoModalComponent, {
+      width: '300px',
+      data: {}
+    });
   }
 }
