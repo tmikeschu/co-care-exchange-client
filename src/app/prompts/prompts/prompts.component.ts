@@ -30,6 +30,7 @@ export class PromptsComponent implements OnInit {
   inNeed: boolean;
   showSpecificQuestions = false;
   showGroupTypeQuestions = true;
+  showMultipleSelect = false;
   groupTypeList: {}[] = [];
   showConfirmBtn = false;
   showGoToQuestionsBtn = true;
@@ -46,6 +47,22 @@ export class PromptsComponent implements OnInit {
       key: 'No',
       checked: true,
     },
+  ];
+
+  multiitem: any;
+  multiItemFilters: any[] = [
+    {
+      key: 1, value: 'Value 1',
+    },
+    {
+      key: 2, value: 'Value 2',
+    },
+    {
+      key: 3, value: 'Value 3',
+    },
+    {
+      key: 4, value: 'Value 4',
+    }
   ];
 
   constructor(private promptService: PromptService, private router: Router, private userService: UserService) {}
@@ -250,4 +267,9 @@ export class PromptsComponent implements OnInit {
     this.showGoToQuestionsBtn = true;
     this.showSubmitAnswersBtn = false;
   }
+
+  testval(){
+    console.log('multiitem', this.multiitem);
+  }
+
 }

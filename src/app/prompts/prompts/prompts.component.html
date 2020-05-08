@@ -1,6 +1,7 @@
 
 <section class="section questionsection" >
     <div class="leavequestionspage numberCircle" (click)="onCancelBackToDashboard()">X</div>
+    
     <div *ngIf="showGroupTypeQuestions">
         <div *ngFor="let grouptype of selectedPrompts" class="prompt">
             <h3 class="category-head text-center">Are you requesting or sharing any {{grouptype.groupName}}</h3>
@@ -12,8 +13,26 @@
         </div>
     </div>
 
+    <!-- <div *ngIf="showMultipleSelect"> -->
+    <div >
+        <div *ngFor="let group of multiselectPromts">
+            <hr>
+            <h2 class="category-head text-center">{{group.groupName}}</h2>
+            <div *ngFor="let item of group.sizes">
+                <mat-select [(value)]="multiitem" multiple>
+                    <mat-option *ngFor="let filters of multiItemFilters" [value]="filters.key" >
+                        {{filters.value}}
+                    </mat-option>                    
+                </mat-select>
+            </div>
+        </div>
+    </div>
+
+    
+    <button (click)="testval()">test</button>
+
     <div *ngIf="showSpecificQuestions">
-        
+
         <div *ngFor="let selectedPrompt of selectedPrompts">
             <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'">
                 <hr>
