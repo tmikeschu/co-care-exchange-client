@@ -120,11 +120,4 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
   }
-
-  onOrgInfoClick(){
-    const ref = this.dialog.open(OrgInfoModalComponent, {
-      width: '300px',
-      data: {}
-    });
-  }
 }
