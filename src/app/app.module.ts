@@ -65,6 +65,7 @@ import { environment } from '../environments/environment';
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: 'Window', useValue: window },
   ],
   exports: [],
   bootstrap: [AppComponent],
