@@ -70,6 +70,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
+      sendEmailMatchNotifications: [true],
     });
 
     this.organizationForm.get('orgName').setValue(this.organizationName);
@@ -84,6 +85,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
       this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
       this.organizationForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+      this.organizationForm.get('sendEmailMatchNotifications').setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
     }
 
   }
@@ -103,7 +105,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
-      sendEmailMatchNotifications: true
+      sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
     };
 
     if (!this._isRegistering && this.userProfile){
