@@ -108,7 +108,7 @@
 
     </div>
 
-    <mat-progress-bar [hidden]="!isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
+    <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!organizationForm.valid">
         <mat-icon>arrow_forward</mat-icon>

@@ -1,14 +1,16 @@
 <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
     <div fxLayout="column">
         <h3 class="text-primary center">
-            Are there any questions we did not ask for items you need or could have shared?
+            Have any feedback?<br>
+            Get in touch with our team!<br>
+            <a class="link-accent" [href]="toAddress">support@care-exchange.org</a>
         </h3>
     </div>
 </div>
 
 <div class="vertical-rhythm" fxLayout="row" fxLayoutAlign="center center">
     <div fxLayout="column">
-        <h3 class="text-primary center">
+        <h3 class="text-primary center" (click)='openNewTab("https://www.cocareexchange.org/user-guide-v2/")'>
             FAQs & How To Information
         </h3>
     </div>

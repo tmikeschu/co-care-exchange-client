@@ -51,7 +51,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 • Angular: 8.2.14
 
-  
+# Canary
+
+• http://canary-app.cocareexchange.org
+
 
 ## Development server
 

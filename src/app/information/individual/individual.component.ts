@@ -4,6 +4,9 @@ import { UserService } from '../../core/services/user.service'
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
 import { first } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-individual',
@@ -20,16 +23,19 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   errorMessage: string;
   error = false;
   private _isRegistering = false;
-  userProfile
+  userProfile;
+  newUser: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
+    private router: ActivatedRoute
   ) { }
 
   @Input()
   set isRegistering(state: boolean) {
-    console.log('DEBUG org isRegistering ', state);
+    console.log('DEBUG ind isRegistering ', state);
     this._isRegistering = state;
     if (!this.individualRegisterForm) {
       return;
@@ -46,7 +52,11 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-
+    this.router.queryParams.subscribe(params => {
+      if (params && params.newUser) {
+        this.newUser = params.newUser.toLowerCase() == 'true';
+      }
+    });
   }
 
   async ngAfterContentInit() {
@@ -96,7 +106,8 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       state: this.individualRegisterForm.get('state').value,
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
-      householdSize: +this.individualRegisterForm.get('householdSize').value || null
+      householdSize: +this.individualRegisterForm.get('householdSize').value || null,
+      sendEmailMatchNotifications: true
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
