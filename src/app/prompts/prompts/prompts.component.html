@@ -15,13 +15,14 @@
 
     <!-- <div *ngIf="showMultipleSelect"> -->
     <div >
-        <div *ngFor="let group of multiselectPromts">
+        <div *ngFor="let group of multiselectPrompts">
             <hr>
             <h2 class="category-head text-center">{{group.groupName}}</h2>
-            <div *ngFor="let item of group.sizes">
+            <div *ngFor="let prompt of group.prompts">
+                {{prompt.item}}
                 <mat-select [(value)]="multiitem" multiple>
-                    <mat-option *ngFor="let filters of multiItemFilters" [value]="filters.key" >
-                        {{filters.value}}
+                    <mat-option *ngFor="let filters of prompt.sizeChoices" [value]="filters" >
+                        {{filters}}
                     </mat-option>                    
                 </mat-select>
             </div>

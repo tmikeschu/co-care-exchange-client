@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-prompts',
@@ -13,6 +14,7 @@ import { AuthenticationService } from 'src/app/core/services/cce/authentication.
 })
 export class PromptsComponent implements OnInit {
   prompts: Prompt[];
+  multiselectPrompts: any[] = [];
   selectedPrompts: any[] = [];
   surveyQuestions: Prompt[] = [];
   promptKeys: string[];
@@ -270,6 +272,53 @@ export class PromptsComponent implements OnInit {
 
   testval(){
     console.log('multiitem', this.multiitem);
+
+    let addedprompt = false;
+    this.multiselectPrompts = [];
+
+    for (let y = 0; y < this.selectedPrompts.length; y++) {
+      this.selectedPrompts[y]['prompts'] = [];
+    }
+
+    for (let x = 0; x < this.prompts.length; x++) {
+      this.prompts[x].unitsOfIssueChoices = [];
+      this.prompts[x].sizeChoices = [];
+      this.prompts[x].unit = null;
+      this.prompts[x].size = null;
+
+      for (let y = 0; y < this.selectedPrompts.length; y++) {
+        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {
+          if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
+            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
+            this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
+          }
+
+          if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
+            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
+            this.prompts[x].size = this.prompts[x].sizeChoices[0];
+          }
+
+          if(this.prompts[x].sizeChoices.length > 0){        
+            
+            addedprompt = true;
+
+            if(this.multiselectPrompts.filter(e => e.groupName === this.selectedPrompts[y]['groupName']).length > 0){
+              let item = this.multiselectPrompts.filter(e => e.groupName == this.selectedPrompts[y]['groupName'])[0];
+              item['prompts'].push(this.prompts[x]);
+            }else{
+                this.multiselectPrompts.push({
+                'groupName':this.selectedPrompts[y]['groupName'],
+                'prompts':[this.prompts[x]]});  
+            }
+          }
+        }
+      }
+
+      this.prompts[x].sharing = 0;
+      this.prompts[x].requesting = 0;
+    }
+
+    console.log('multiselectPrompts', this.multiselectPrompts);
   }
 
 }
