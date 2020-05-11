@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
       this.swUpdate.available.subscribe(async () => {
         const confirmReload = await Modals.confirm({
           title: 'A new version of the app is available.',
-          message: 'Would you like to load it now?'
+          message: 'A new version of the app is available. Would you like to load it now?'
         });
         if (confirmReload) {
           window.location.reload();
