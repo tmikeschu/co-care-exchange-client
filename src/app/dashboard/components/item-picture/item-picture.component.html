@@ -1,8 +1,12 @@
 <div>        
     
-    <button (click)="captureimage()">Capture</button>
-
-    <video #video autoplay ></video>
+    <button (click)="captureimage()" *ngIf="showCaptureBtn">Capture</button>
+    <button (click)="retakepicture()" *ngIf="showRetakeBtn">Retake Picture</button>
     
-    <canvas #canvas ></canvas>
+    <video #video autoplay *ngIf="!hideVid"></video>
+    
+    <canvas #canvas *ngIf="!hidePic"></canvas>
+
+    <button (click)="acceptimage()" *ngIf="showRetakeBtn">Accept</button>
+    
 </div>

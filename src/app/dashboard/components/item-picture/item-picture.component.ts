@@ -1,4 +1,5 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 
 @Component({
     selector: 'app-item-picture',
@@ -6,8 +7,22 @@ import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/co
     styleUrls: ['./item-picture.component.scss']
   })
   export class ItemPictureComponent implements OnInit {
-    @ViewChild('video', { static: true }) videoElement: ElementRef;
-    @ViewChild('canvas', { static: true }) canvas: ElementRef;
+    private videoElement: ElementRef;
+    @ViewChild('video', { static: false }) set content1(content: ElementRef) {
+        if(content) { // initially setter gets called with undefined
+            this.videoElement = content;
+        }
+    }
+
+    private canvasElement: ElementRef;
+    @ViewChild('canvas', { static: false }) set content2(content: ElementRef) {
+        if(content) { // initially setter gets called with undefined
+            this.canvasElement = content;
+        }
+    }
+
+    //@ViewChild('video', { static: true }) videoElement: ElementRef;
+    //@ViewChild('canvas', { static: true }) canvas: ElementRef;
     
     videoWidth = 0;
     videoHeight = 0;
@@ -18,17 +33,40 @@ import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/co
           height: { ideal: 200 }
       }
     };
+
+    hideVid: boolean = false;
+    hidePic: boolean = true;
+    showCaptureBtn: boolean = true;
+    showRetakeBtn: boolean = false;
     
-    constructor(private renderer: Renderer2) { }
+    constructor(private renderer: Renderer2, private dashboardService: DashboardService,) { }
 
     ngOnInit(){
         this.startCamera();
     }    
     
     captureimage(){
-    this.renderer.setProperty(this.canvas.nativeElement, 'width', this.videoWidth);
-    this.renderer.setProperty(this.canvas.nativeElement, 'height', this.videoHeight);
-    this.canvas.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
+        this.hideVid = true;
+        this.hidePic = false;
+        this.showCaptureBtn = false;
+        this.showRetakeBtn = true;
+        setTimeout(()=> {//NOTE: this just needs a moment to show the div
+            this.renderer.setProperty(this.canvasElement.nativeElement, 'width', this.videoWidth);
+            this.renderer.setProperty(this.canvasElement.nativeElement, 'height', this.videoHeight);
+            this.canvasElement.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
+        }, 500);        
+    }
+
+    retakepicture(){
+        this.startCamera();
+        this.hideVid = false;
+        this.hidePic = true;
+        this.showCaptureBtn = true;
+        this.showRetakeBtn = false;
+    }
+
+    acceptimage(){
+        //console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));
     }
 
     startCamera() {
