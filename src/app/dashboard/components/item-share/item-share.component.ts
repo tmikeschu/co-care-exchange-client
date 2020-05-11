@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ChangeDetectionStrategy, EventEmitter, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, filter, distinctUntilChanged, takeUntil, take, tap, finalize } from 'rxjs/operators';
@@ -23,6 +23,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
+  showImageArea:boolean = false;
+
   status = Status; // enum binding to use in view template
 
   modalVisible = false;
@@ -33,7 +35,9 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  
+
+  constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2) { }
 
   ngOnInit() {
     // form input
@@ -70,6 +74,9 @@ export class ItemShareComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+
+    
   }
 
   ngOnDestroy() {
@@ -110,4 +117,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   formatItemDetails(agreement: Agreement) {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
+
+  takepicture(){
+    this.showImageArea = true;
+  }  
 }
