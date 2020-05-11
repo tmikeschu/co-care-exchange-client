@@ -20,7 +20,7 @@
             <h2 class="category-head text-center">{{group.groupName}}</h2>
             <div *ngFor="let prompt of group.prompts">
                 {{prompt.item}}
-                <mat-select [(value)]="multiitem" multiple>
+                <mat-select [(value)]="prompt.multiselect" multiple>
                     <mat-option *ngFor="let filters of prompt.sizeChoices" [value]="filters" >
                         {{filters}}
                     </mat-option>                    
@@ -31,6 +31,7 @@
 
     
     <button (click)="testval()">test</button>
+    <button (click)="nextvals()">whopper</button>
 
     <div *ngIf="showSpecificQuestions">
 

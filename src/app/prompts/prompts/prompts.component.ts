@@ -273,7 +273,6 @@ export class PromptsComponent implements OnInit {
   testval(){
     console.log('multiitem', this.multiitem);
 
-    let addedprompt = false;
     this.multiselectPrompts = [];
 
     for (let y = 0; y < this.selectedPrompts.length; y++) {
@@ -300,8 +299,6 @@ export class PromptsComponent implements OnInit {
 
           if(this.prompts[x].sizeChoices.length > 0){        
             
-            addedprompt = true;
-
             if(this.multiselectPrompts.filter(e => e.groupName === this.selectedPrompts[y]['groupName']).length > 0){
               let item = this.multiselectPrompts.filter(e => e.groupName == this.selectedPrompts[y]['groupName'])[0];
               item['prompts'].push(this.prompts[x]);
@@ -313,12 +310,68 @@ export class PromptsComponent implements OnInit {
           }
         }
       }
+    }
+
+    console.log('multiselectPrompts', this.multiselectPrompts);
+
+    
+  }
+
+  nextvals(){
+    this.selectedPrompts = [];
+    for(let x = 0; x < this.multiselectPrompts.length; x++){
+      for(let y = 0; y < this.multiselectPrompts[x].prompts.length; y++){
+        if(this.multiselectPrompts[x].prompts[y].multiselect){
+          for(let z = 0; z < this.multiselectPrompts[x].prompts[y].multiselect.length; z++){
+            this.selectedPrompts.push(this.multiselectPrompts[x].prompts[y]);
+          }
+        }
+      }
+    }
+
+    console.log('this.selectedPrompts', this.selectedPrompts);
+
+    let addedprompt = false;
+
+    for (let y = 0; y < this.selectedPrompts.length; y++) {
+      this.selectedPrompts[y]['prompts'] = [];
+    }
+
+    for (let x = 0; x < this.prompts.length; x++) {
+      this.prompts[x].unitsOfIssueChoices = [];
+      this.prompts[x].sizeChoices = [];
+      this.prompts[x].unit = null;
+      this.prompts[x].size = null;
+
+      for (let y = 0; y < this.selectedPrompts.length; y++) {
+        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] ) {
+          if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
+            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
+            this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
+          }
+
+          if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
+            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
+            this.prompts[x].size = this.prompts[x].sizeChoices[0];
+          }
+
+          this.selectedPrompts[y]['prompts'].push(this.prompts[x]);
+          addedprompt = true;
+        }
+      }
 
       this.prompts[x].sharing = 0;
       this.prompts[x].requesting = 0;
     }
 
-    console.log('multiselectPrompts', this.multiselectPrompts);
+    if (addedprompt) {
+      this.showSpecificQuestions = true;
+      this.showGroupTypeQuestions = false;
+      this.showGoBackToGroupTypesBtn = true;
+      this.showGoToQuestionsBtn = false;
+      this.showSubmitAnswersBtn = true;
+    }
+
   }
 
 }
