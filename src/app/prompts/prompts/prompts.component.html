@@ -1,6 +1,7 @@
 
 <section class="section questionsection" >
-    <div class="leavequestionspage numberCircle" (click)="onCancelBackToDashboard()">X</div>
+    <mat-icon (click)="onCancelBackToDashboard()" class="leavequestionspage">highlight_off</mat-icon>
+
     <div *ngIf="showGroupTypeQuestions">
         <div *ngFor="let grouptype of selectedPrompts" class="prompt">
             <h3 class="category-head text-center">Are you requesting or sharing any {{grouptype.groupName}}</h3>
