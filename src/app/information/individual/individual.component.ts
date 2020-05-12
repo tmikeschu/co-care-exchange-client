@@ -75,6 +75,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
       password: [''],
+      sendEmailMatchNotifications: [true],
     });
 
     this.individualRegisterForm.get('firstName').setValue(this.firstName);
@@ -89,6 +90,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       this.individualRegisterForm.get('postalCode').setValue(this.userProfile.postalCode || '');
       this.individualRegisterForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
       this.individualRegisterForm.get('householdSize').setValue(this.userProfile.householdSize || 0);
+      this.individualRegisterForm.get('sendEmailMatchNotifications').setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
     }
   }
 
@@ -107,7 +109,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
-      sendEmailMatchNotifications: true
+      sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
@@ -119,12 +121,5 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
-  }
-
-  onOrgInfoClick(){
-    const ref = this.dialog.open(OrgInfoModalComponent, {
-      width: '300px',
-      data: {}
-    });
   }
 }
