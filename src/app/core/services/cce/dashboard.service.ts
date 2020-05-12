@@ -95,13 +95,6 @@ export class DashboardService {
             requested {
                 itemId
                 name
-                orderId
-                dialogMessage
-                deliveryAddress
-                addressLabel
-                requestId
-                sharerName
-                shareId
                 unitOfIssue
                 quantity
                 details
@@ -110,15 +103,8 @@ export class DashboardService {
             }, shared {
                 itemId
                 name
-                orderId
-                dialogMessage
-                deliveryAddress
-                addressLabel
-                shareId
                 unitOfIssue
                 quantity
-                requestId
-                requesterName
                 details
                 statusDisplay
                 status
