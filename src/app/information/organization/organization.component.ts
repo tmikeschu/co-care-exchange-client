@@ -5,6 +5,8 @@ import { first } from 'rxjs/operators';
 import { UserProfileInformation } from '../models/info-create.model';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
+import { MatDialog } from '@angular/material';
+import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 
 @Component({
   selector: 'app-organization',
@@ -27,7 +29,8 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
     ) {}
 
   @Input()
@@ -67,6 +70,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
+      sendEmailMatchNotifications: [true],
     });
 
     this.organizationForm.get('orgName').setValue(this.organizationName);
@@ -81,6 +85,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
       this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
       this.organizationForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+      this.organizationForm.get('sendEmailMatchNotifications').setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
     }
 
   }
@@ -100,7 +105,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
-      sendEmailMatchNotifications: true
+      sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
     };
 
     if (!this._isRegistering && this.userProfile){
@@ -111,5 +116,12 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
 
+  }  
+
+  onOrgInfoClick(){
+    const ref = this.dialog.open(OrgInfoModalComponent, {
+      width: '300px',
+      data: {}
+    });
   }
 }
