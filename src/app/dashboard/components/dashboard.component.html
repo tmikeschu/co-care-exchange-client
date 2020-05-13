@@ -1,7 +1,7 @@
 <app-site-header></app-site-header>
 <section class="section tight">
   <div *ngIf="vm$ | async as vm; else inprogress">
-    <h2>My Requests</h2>
+    <h2>My Current Requests</h2>
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.needs && vm.needs.length > 0; else noneeds">
         <div *ngFor="let request of vm.needs">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <h2>My Shares</h2>
+    <h2>My Current Shares</h2>
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.shares && vm.shares.length > 0; else noshares">
         <div *ngFor="let request of vm.shares">
