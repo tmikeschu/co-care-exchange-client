@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
 import { Status } from 'src/app/core/constants/enums';
 import { Agreement } from './models/agreement';
+import { FormControl } from '@angular/forms';
+import { skip, distinctUntilChanged, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +20,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardState>;
   isAlive: boolean;
 
+  filter = new FormControl('');
+  filter$: Observable<string>;
+
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
@@ -27,6 +32,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dashboardService.startPolling();
     this.vm$ = this.dashboardService.state$;
+    this.filter$ = this.filter.valueChanges.pipe(
+      filter(val => val),
+      distinctUntilChanged(),
+    );
   }
 
   formatItemDetails(agreement: Agreement) {

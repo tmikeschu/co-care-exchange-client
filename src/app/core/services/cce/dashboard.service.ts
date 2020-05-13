@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
+import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip } from 'rxjs';
 import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
@@ -17,6 +17,7 @@ import { AuthenticationService } from './authentication.service';
 export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
+  orgId?: string;
   loading: boolean;
 }
 
@@ -24,10 +25,10 @@ export interface IDashboardState {
   providedIn: 'root',
 })
 export class DashboardService {
-  private state = {
+  private state: IDashboardState = {
     needs: [],
     shares: [],
-    loading: true
+    loading: true,
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
@@ -40,6 +41,25 @@ export class DashboardService {
     , map(authState => authState.user.userProfile)
   );
 
+  private orgId$: Observable<string> = this.userProfile$
+    .pipe(
+      filter(userProfile => {
+        return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
+      }),
+      map(userProfile => {
+        return userProfile.organization.id;
+      }),
+    );
+
+  private filter$ = new BehaviorSubject<string|null>(null);
+
+  private dashboardInputs$ = zip(
+    this.doPoll$,
+    this.isOnline$,
+    this.userProfile$,
+    this.filter$
+  );
+
   constructor(
     private http: HttpClient,
     public userService: UserService,
@@ -50,28 +70,45 @@ export class DashboardService {
     // alive and if the client has internet connectivity
     timer(0, 5000)
       .pipe(
-        withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
-        switchMap(([_tick, isOnline, doPoll, userProfile]) => {
+        withLatestFrom(this.dashboardInputs$),
+        switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
+          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
         })
       )
       .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
+    // timer(0, 5000)
+    //   .pipe(
+    //     withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
+    //     switchMap(([_tick, isOnline, doPoll, userProfile]) => {
+    //       const empty$ = empty();
+    //       empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
+    //       return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
+    //     })
+    //   )
+    //   .subscribe(dashboardData => {
+    //     const { requested, shared } = dashboardData;
+    //     this.updateDashboard({ needs: requested, shares: shared });
+    //   });
+
+    this.orgId$.subscribe(orgId => this.updateDashboard({ orgId }));
   }
 
-  dashboardHandler(userProfileId: string) {
-    return this.getDashboard(userProfileId)
+  dashboardHandler(userProfileId: string, filterCriteria: string) {
+    return this.getDashboard(userProfileId, filterCriteria)
       .pipe(
         map((data: any) => {
           if (data && data.errors) {
             const messages = data.errors.map((e) => e.message).join(', ');
             throw new Error(messages);
           }
-          return data.data.dashboard;
+          const dashboard = data.data.dashboard;
+          return dashboard;
+          // return data.data.dashboard;
         }),
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
@@ -88,10 +125,14 @@ export class DashboardService {
     this.doPoll$.next(false);
   }
 
-  getDashboard(userId: string): Observable<Result> {
+  changeFilterCriteria(criteria: string) {
+    this.filter$.next(criteria);
+  }
+
+  getDashboard(userId: string, filterOption: string): Observable<Result> {
     const query = {
-      query: `query View($userId: ID!) {
-        dashboard(userId: $userId) {
+      query: `query View($userId: ID!, $filterOption: String) {
+        dashboard(userId: $userId, filterOption: $filterOption) {
             requested {
                 itemId
                 name
@@ -100,6 +141,7 @@ export class DashboardService {
                 details
                 statusDisplay
                 status
+                userDisplayName
             }, shared {
                 itemId
                 name
@@ -108,11 +150,13 @@ export class DashboardService {
                 details
                 statusDisplay
                 status
+                userDisplayName
             }
         }
     }`,
       variables: {
         userId: userId,
+        filterOption
       },
     };
     return this.http.post<any>(`${environment.serverUrl}`, query);
