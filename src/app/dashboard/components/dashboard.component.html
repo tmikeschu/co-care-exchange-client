@@ -4,7 +4,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <h2>Requests</h2>
       <mat-form-field *ngIf="vm.orgId">
-        <mat-label>Filter Criteria</mat-label>
+        <mat-label>Filter</mat-label>
         <mat-select [formControl]="filter">
           <mat-option value="myItems">View Mine Only</mat-option>
           <mat-option value="showAllOrganization">View All Organization</mat-option>
@@ -13,16 +13,21 @@
     </div>
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.needs && vm.needs.length > 0; else noneeds">
-        <div *ngFor="let request of vm.needs">
-          <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]" class="contentborder dashboard-list-item">
-            <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }}<br>
-                <span class="content-multiplier">x</span><span
-                  class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
-              <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
-              </mat-label>
-            </div>
-          </mat-list-item>
+        <div *ngFor="let group of vm.needs">
+          <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{group.createdBy}}</p>
+          <div *ngFor="let request of group.items">
+            <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]"
+              class="contentborder dashboard-list-item">
+              <div class="dashboardlistitem">
+                <mat-label class="contentlabel">{{ request.name }}<br>
+                  <span class="content-multiplier">x</span><span
+                    class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
+                <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
+                  {{ request.statusDisplay }}
+                </mat-label>
+              </div>
+            </mat-list-item>
+          </div>
         </div>
       </div>
     </div>
@@ -30,16 +35,21 @@
     <h2>Shares</h2>
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.shares && vm.shares.length > 0; else noshares">
-        <div *ngFor="let request of vm.shares">
-          <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]" class="contentborder dashboard-list-item">
-            <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }}<br>
-                <span class="content-multiplier">x</span><span
-                  class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
-              <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">{{ request.statusDisplay }}
-              </mat-label>
-            </div>
-          </mat-list-item>
+        <div *ngFor="let group of vm.shares">
+          <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{ group.createdBy }}</p>
+          <div *ngFor="let request of group.items">
+            <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]"
+              class="contentborder dashboard-list-item">
+              <div class="dashboardlistitem">
+                <mat-label class="contentlabel">{{ request.name }}<br>
+                  <span class="content-multiplier">x</span><span
+                    class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
+                <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
+                  {{ request.statusDisplay }}
+                </mat-label>
+              </div>
+            </mat-list-item>
+          </div>
         </div>
       </div>
     </div>

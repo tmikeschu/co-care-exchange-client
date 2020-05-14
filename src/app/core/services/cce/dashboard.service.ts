@@ -18,6 +18,7 @@ export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
   orgId?: string;
+  filterState: string;
   loading: boolean;
 }
 
@@ -29,6 +30,7 @@ export class DashboardService {
     needs: [],
     shares: [],
     loading: true,
+    filterState: 'myItems'
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
@@ -51,7 +53,7 @@ export class DashboardService {
       }),
     );
 
-  private filter$ = new BehaviorSubject<string|null>(null);
+  private filter$ = new BehaviorSubject<string>(this.state.filterState);
 
   private dashboardInputs$ = combineLatest([
     this.doPoll$,
@@ -81,34 +83,20 @@ export class DashboardService {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
-    // timer(0, 5000)
-    //   .pipe(
-    //     withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
-    //     switchMap(([_tick, isOnline, doPoll, userProfile]) => {
-    //       const empty$ = empty();
-    //       empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-    //       return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
-    //     })
-    //   )
-    //   .subscribe(dashboardData => {
-    //     const { requested, shared } = dashboardData;
-    //     this.updateDashboard({ needs: requested, shares: shared });
-    //   });
 
     this.orgId$.subscribe(orgId => this.updateDashboard({ orgId }));
   }
 
   dashboardHandler(userProfileId: string, filterCriteria: string) {
-    return this.getDashboard(userProfileId, filterCriteria)
+    const formattedFilter = filterCriteria === 'showAllOrganization' ? filterCriteria : null;
+    return this.getDashboard(userProfileId, formattedFilter)
       .pipe(
         map((data: any) => {
           if (data && data.errors) {
             const messages = data.errors.map((e) => e.message).join(', ');
             throw new Error(messages);
           }
-          const dashboard = data.data.dashboard;
-          return dashboard;
-          // return data.data.dashboard;
+          return data.data.dashboard;
         }),
         catchError((error: any) => {
           console.error('an error occurred querying the dashboard: ', error.message);
@@ -126,6 +114,7 @@ export class DashboardService {
   }
 
   changeFilterCriteria(criteria: string) {
+    this.updateDashboard({ filterState: criteria, loading: true });
     this.filter$.next(criteria);
   }
 
