@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip } from 'rxjs';
+import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip, combineLatest } from 'rxjs';
 import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
@@ -53,12 +53,12 @@ export class DashboardService {
 
   private filter$ = new BehaviorSubject<string|null>(null);
 
-  private dashboardInputs$ = zip(
+  private dashboardInputs$ = combineLatest([
     this.doPoll$,
     this.isOnline$,
     this.userProfile$,
     this.filter$
-  );
+  ]);
 
   constructor(
     private http: HttpClient,
