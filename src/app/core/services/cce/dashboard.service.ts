@@ -27,7 +27,7 @@ export class DashboardService {
   private state = {
     needs: [],
     shares: [],
-    loading: true
+    loading: true,
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
@@ -36,8 +36,8 @@ export class DashboardService {
   private doPoll$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
-    filter(authState => authState.user && authState.user.userProfile)
-    , map(authState => authState.user.userProfile)
+    filter((authState) => authState.user && authState.user.userProfile),
+    map((authState) => authState.user.userProfile)
   );
 
   constructor(
@@ -54,30 +54,29 @@ export class DashboardService {
         switchMap(([_tick, isOnline, doPoll, userProfile]) => {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
+          return isOnline && doPoll && userProfile ? this.dashboardHandler(userProfile.id) : empty$;
         })
       )
-      .subscribe(dashboardData => {
+      .subscribe((dashboardData) => {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
   }
 
   dashboardHandler(userProfileId: string) {
-    return this.getDashboard(userProfileId)
-      .pipe(
-        map((data: any) => {
-          if (data && data.errors) {
-            const messages = data.errors.map((e) => e.message).join(', ');
-            throw new Error(messages);
-          }
-          return data.data.dashboard;
-        }),
-        catchError((error: any) => {
-          console.error('an error occurred querying the dashboard: ', error.message);
-          return of(this._state); // serve a cached version on error
-        })
-      );
+    return this.getDashboard(userProfileId).pipe(
+      map((data: any) => {
+        if (data && data.errors) {
+          const messages = data.errors.map((e) => e.message).join(', ');
+          throw new Error(messages);
+        }
+        return data.data.dashboard;
+      }),
+      catchError((error: any) => {
+        console.error('an error occurred querying the dashboard: ', error.message);
+        return of(this._state); // serve a cached version on error
+      })
+    );
   }
 
   startPolling() {
@@ -124,12 +123,10 @@ export class DashboardService {
       .mutate({
         mutation: UpdateOrder,
         variables: {
-          input: updates
-        }
+          input: updates,
+        },
       })
-      .pipe(
-        map(handleGQLErrors)
-      );
+      .pipe(map(handleGQLErrors));
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {

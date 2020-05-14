@@ -76,14 +76,14 @@ export const confirmSignIn = async (user: unknown, code: string) => {};
 
 export const completeNewPassword = async (newPassword: string) => {};
 
-export const getCurrentUserInfo = async() => {
+export const getCurrentUserInfo = async () => {
   return await Auth.currentUserInfo();
 };
 
-export const currentAuthenticatedUser = async() => {
+export const currentAuthenticatedUser = async () => {
   return await Auth.currentAuthenticatedUser();
 };
 
-export const signOut = async() => {
+export const signOut = async () => {
   return await Auth.signOut();
 };
