@@ -109,7 +109,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       orderUpdate: agreement,
       updates: {
         shareId: agreement.shareId,
-        status: Status.OrderFulfilled,
+        status: agreement.status === "Matched" ? Status.DeliveryPending : Status.OrderFulfilled,
         reason: 'Sharer confirmed the delivery of the items',
       },
     });
