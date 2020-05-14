@@ -39,8 +39,8 @@ export class DashboardService {
   private doPoll$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
-    filter(authState => authState.user && authState.user.userProfile)
-    , map(authState => authState.user.userProfile)
+    filter((authState) => authState.user && authState.user.userProfile),
+    map((authState) => authState.user.userProfile)
   );
 
   private orgId$: Observable<string> = this.userProfile$
@@ -79,7 +79,7 @@ export class DashboardService {
           return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
         })
       )
-      .subscribe(dashboardData => {
+      .subscribe((dashboardData) => {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
@@ -157,12 +157,10 @@ export class DashboardService {
       .mutate({
         mutation: UpdateOrder,
         variables: {
-          input: updates
-        }
+          input: updates,
+        },
       })
-      .pipe(
-        map(handleGQLErrors)
-      );
+      .pipe(map(handleGQLErrors));
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {
