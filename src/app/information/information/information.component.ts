@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import {filter, finalize, first} from 'rxjs/operators';
+import { filter, finalize, first } from 'rxjs/operators';
 import { AuthenticationService } from '../../core/services/cce/authentication.service';
 import { UserService } from '../../core/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -68,26 +68,31 @@ export class InformationComponent implements OnInit {
     this.isRegistering = true;
     const profile = payload.userInput;
     console.log('DEBUG profile to save ', profile);
-    this.userService.saveUser(profile).pipe(finalize(() => this.isRegistering = false)).subscribe(
-      (savedProfile) => {
-        if (savedProfile) {
-          console.log('save user success ', savedProfile);
-          // this checks for existing profile, if so, it has a user id
-          if (profile.userId) {
-            this.router.navigate(['/account']);
+    this.userService
+      .saveUser(profile)
+      .pipe(finalize(() => (this.isRegistering = false)))
+      .subscribe(
+        (savedProfile) => {
+          if (savedProfile) {
+            console.log('save user success ', savedProfile);
+            // this checks for existing profile, if so, it has a user id
+            if (profile.userId) {
+              this.router.navigate(['/account']);
+            } else {
+              // first time profile submit, prompt for questions
+              this.router.navigate(['/prompt']);
+            }
           } else {
-            // first time profile submit, prompt for questions
-            this.router.navigate(['/prompt']);
+            console.error('Error processing saved user ', savedProfile);
+            this.toastrService.error('Unable to retrieve saved profile. Please try again later', null, {
+              positionClass: 'toast-top-center',
+            });
           }
-        } else {
-          console.error('Error processing saved user ', savedProfile);
-          this.toastrService.error('Unable to retrieve saved profile. Please try again later', null, { positionClass: "toast-top-center" });
+        },
+        (error) => {
+          console.error('Save user error ', error);
+          this.toastrService.error('Unable to save profile. Please try again later', null, { positionClass: 'toast-top-center' });
         }
-      },
-      (error) => {
-        console.error('Save user error ', error);
-        this.toastrService.error('Unable to save profile. Please try again later', null, { positionClass: "toast-top-center" });
-      }
-    );
+      );
   }
 }
