@@ -4,4 +4,5 @@ export interface AnswerModel {
   numberValue: number;
   unitOfIssue: string;
   clientMutationId: string;
+  note: string;
 }

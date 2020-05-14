@@ -41,10 +41,10 @@ export class PromptService {
       'query': `mutation PromptAnswerMutations($input: CreateAnswerInput!) {
         createAnswer(input: $input) {
           answer {
-            id,
-            promptId,
-            numberValue,
-            requesterNotes,
+            id
+            promptId
+            numberValue
+            requesterNotes
             sharerNotes
           },
           clientMutationId
@@ -58,8 +58,7 @@ export class PromptService {
           'unitOfIssue': prompt.unit,
           'clientMutationId': '123474',
           'size': prompt.size,
-          'requesterNotes': prompt.requesterNotes || null,
-          'sharerNotes': prompt.sharerNotes || null,
+          'note': (prompt.sharing > 0) ? (prompt.sharerNotes || null) : (prompt.requesterNotes || null),
         }
       }
     };
