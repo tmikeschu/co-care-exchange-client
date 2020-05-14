@@ -1,5 +1,14 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
-import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input } from '@angular/core';
+import { Storage } from 'aws-amplify';
+import { Agreement } from '../models/agreement';
+import { UserProfile } from 'src/app/models/UserProfile';
+import { UserService } from 'src/app/core/services/user.service';
+
+const customPrefix = {      
+    public: 'private/userid/shareid',      
+    protected: '{{USER_ID}}/',      
+    private: '{{USER_ID}}/'    
+}; 
 
 @Component({
     selector: 'app-item-picture',
@@ -7,6 +16,8 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
     styleUrls: ['./item-picture.component.scss']
   })
   export class ItemPictureComponent implements OnInit {
+    @Input() agreement: Agreement;
+
     private videoElement: ElementRef;
     @ViewChild('video', { static: false }) set content1(content: ElementRef) {
         if(content) { // initially setter gets called with undefined
@@ -19,10 +30,7 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
         if(content) { // initially setter gets called with undefined
             this.canvasElement = content;
         }
-    }
-
-    //@ViewChild('video', { static: true }) videoElement: ElementRef;
-    //@ViewChild('canvas', { static: true }) canvas: ElementRef;
+    }    
     
     videoWidth = 0;
     videoHeight = 0;
@@ -38,11 +46,17 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
     hidePic: boolean = true;
     showCaptureBtn: boolean = true;
     showRetakeBtn: boolean = false;
+    userProfile: UserProfile;
     
-    constructor(private renderer: Renderer2, private dashboardService: DashboardService,) { }
+    
+    constructor(private renderer: Renderer2, private userService: UserService) { 
+        
+    }
 
     ngOnInit(){
         this.startCamera();
+        this.userProfile = this.userService.getCurrentUserProfile();
+        customPrefix.public = 'private/' + this.userProfile.id + '/' + this.agreement.shareId + '/' ;
     }    
     
     captureimage(){
@@ -54,7 +68,9 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
             this.renderer.setProperty(this.canvasElement.nativeElement, 'width', this.videoWidth);
             this.renderer.setProperty(this.canvasElement.nativeElement, 'height', this.videoHeight);
             this.canvasElement.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
-        }, 500);        
+        }, 500);      
+        
+        console.log('agreement', this.agreement);
     }
 
     retakepicture(){
@@ -66,7 +82,20 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
     }
 
     acceptimage(){
-        //console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));
+        console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));
+        
+        
+        Storage.put(`testfilename7`, this.canvasElement.nativeElement.toDataURL("image/svg"),{      
+            progressCallback(progress) {        
+                 console.log('Uploaded : ', progress);      
+            },      
+            contentType: 'image/png',      
+            customPrefix: customPrefix // For Customize path    
+        }).then((result: any) => {      
+                console.log('Success =>', result);      
+        }).catch((err) => {      
+                console.log('error =>', err); 
+        });
     }
 
     startCamera() {
@@ -87,5 +116,14 @@ import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 
     handleError(error) {
         console.log('Error: ', error);
+    }
+
+    getImage(){
+        Storage.get('{{testfilename7}}', { level: 'private' })      
+        .then((res) => {        
+            console.log('success => ', res);       
+        }).catch((err) => {    
+            console.log('error => ', err);      
+        });
     }
 }

@@ -34,8 +34,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
-
-  
+ 
 
   constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2) { }
 
@@ -119,6 +118,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   takepicture(){
+    
+    console.log('vm', this.vm);
     this.showImageArea = true;
   }  
 }

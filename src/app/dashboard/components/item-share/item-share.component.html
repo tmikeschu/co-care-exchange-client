@@ -70,7 +70,7 @@
         <div>
             XXXXX
             <button (click)="takepicture()">Take Picture</button>
-            <app-item-picture *ngIf="showImageArea"></app-item-picture>
+            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails"></app-item-picture>
         </div>
     </div>
 
