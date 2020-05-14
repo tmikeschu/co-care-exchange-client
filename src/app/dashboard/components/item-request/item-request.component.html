@@ -53,16 +53,23 @@
                 </textarea>
             </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled">
-            <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()">
+        <div fxLayout="row" fxLayoutAlign="end center"
+            *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled">
+            <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''"
+                (click)="onSubmitEdit()">
                 <mat-icon>send</mat-icon>
             </button>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
             <button
-                *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
-                mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
+                *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status === status.FindingMatch"
+                mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Request</button>
+            <button
+                *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.Fulfilled"
+                mat-button mat-flat-button color="warn"
+                (click)="onCancelMatch(vm.itemDetails)">{{ vm.itemDetails.status === status.NewMatchFound ? 'Cancel Match' : 'Cancel Delivery' }}
+            </button>
         </div>
 
     </div>
