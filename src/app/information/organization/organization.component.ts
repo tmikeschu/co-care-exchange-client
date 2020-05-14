@@ -26,12 +26,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   private _isRegistering = false;
   userProfile;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private userService: UserService,
-    private dialog: MatDialog,
-    ) {}
+  constructor(private formBuilder: FormBuilder, private router: Router, private userService: UserService, private dialog: MatDialog) {}
 
   @Input()
   set isRegistering(state: boolean) {
@@ -51,12 +46,9 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     return this._isRegistering;
   }
 
-  async ngOnInit() {
-
-  }
+  async ngOnInit() {}
 
   async ngAfterContentInit() {
-
     this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
     this.organizationForm = this.formBuilder.group({
@@ -85,13 +77,13 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
       this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
       this.organizationForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
-      this.organizationForm.get('sendEmailMatchNotifications').setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
+      this.organizationForm
+        .get('sendEmailMatchNotifications')
+        .setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
     }
-
   }
 
   onRegisterSubmit() {
-
     let profile: SaveUserInput = {
       address: this.organizationForm.get('address').value,
       city: this.organizationForm.get('city').value,
@@ -108,20 +100,19 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
     };
 
-    if (!this._isRegistering && this.userProfile){
-      profile.userId = this.userProfile.id
+    if (!this._isRegistering && this.userProfile) {
+      profile.userId = this.userProfile.id;
     }
 
     console.log(profile);
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
+  }
 
-  }  
-
-  onOrgInfoClick(){
+  onOrgInfoClick() {
     const ref = this.dialog.open(OrgInfoModalComponent, {
       width: '300px',
-      data: {}
+      data: {},
     });
   }
 }
