@@ -58,7 +58,12 @@
             <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()" >
                 <mat-icon>send</mat-icon>
             </button>
-            <mat-icon>camera_alt</mat-icon>
+            <mat-icon class="cameraicon" (click)="takepicture()" *ngIf="!showImageArea">camera_alt</mat-icon>
+            <mat-icon class="cameraicon" (click)="hidepicture()" *ngIf="showImageArea">keyboard_arrow_up</mat-icon>
+        </div>
+
+        <div>           
+            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails"></app-item-picture>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
@@ -68,12 +73,7 @@
                 mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Drop-Off</button>
         </div>
 
-        <div>
-            XXXXX
-            
-            <button (click)="takepicture()">Take Picture</button>
-            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails"></app-item-picture>
-        </div>
+        
     </div>
 
     

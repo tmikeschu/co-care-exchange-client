@@ -3,5 +3,5 @@ export interface ICreateOrderNoteInput {
     noteBody: string;
     itemId: string;
     userId: string;
-    imageURL: string;
+    imageUrl: string;
 }

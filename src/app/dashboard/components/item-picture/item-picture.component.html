@@ -1,16 +1,15 @@
 <div>        
-    
-    <button (click)="captureimage()" *ngIf="showCaptureBtn">Capture</button>
-    <button (click)="retakepicture()" *ngIf="showRetakeBtn">Retake Picture</button>
+    <mat-icon (click)="retakepicture()" *ngIf="showRetakeBtn">flip_camera_ios</mat-icon>
+    <mat-icon (click)="captureimage()" *ngIf="showCaptureBtn">add_a_photo</mat-icon>
+    <mat-icon (click)="acceptimage()" *ngIf="showRetakeBtn">save_alt</mat-icon>
+    <!-- <button (click)="captureimage()" *ngIf="showCaptureBtn">Capture</button> -->
+    <!-- <button (click)="retakepicture()" *ngIf="showRetakeBtn">Retake Picture</button> -->
     
     <video #video autoplay *ngIf="!hideVid"></video>
     
     <canvas #canvas *ngIf="!hidePic"></canvas>
 
-    <button (click)="acceptimage()" *ngIf="showRetakeBtn">Accept</button>
+    <!-- <button (click)="acceptimage()" *ngIf="showRetakeBtn">Accept</button> -->
 
-    <button (click)="getImage()">get image</button>
-
-    <canvas id="c"></canvas>
-    
+    <button (click)="getImage()">get image</button>    
 </div>

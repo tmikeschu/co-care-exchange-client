@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class ItemShareComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageURL'>>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>();
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
   showImageArea:boolean = false;
@@ -34,7 +34,6 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
- 
 
   constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2) { }
 
@@ -100,7 +99,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageURL:'' });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl:'' });
     this.orderNoteFC.patchValue('');
   }
 
@@ -122,4 +121,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     console.log('vm', this.vm);
     this.showImageArea = true;
   }  
+
+  hidepicture(){
+    this.showImageArea = false;
+  }
 }
