@@ -1,14 +1,14 @@
 <div fxLayout="row" fxLayoutAlign="center center">
   <form *ngIf="organizationForm" [formGroup]="organizationForm" novalidate>
     <div fxLayout="column">
-      <mat-form-field class="login-full-width">
+      <!-- <mat-form-field class="login-full-width">
         <label>
           <input matInput placeholder="Organization Name" formControlName="orgName" type="text" readonly />
         </label>
         <mat-error [hidden]="!organizationForm.get('orgName').hasError('required')">
           Organization name is a required field
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field class="login-full-width">
         <label>
@@ -36,6 +36,16 @@
           Email is a required field
         </mat-error>
       </mat-form-field>
+      
+      <div  class="orgtext">  
+        <label class="orglabel" (click)="onOrgInfoClick()">
+          Organization:<mat-icon class="helpicon">help</mat-icon>
+        </label>
+        <br>        
+        <label>
+          {{organizationForm.get('orgName').value}}
+        </label>
+      </div>  
 
       <mat-form-field class="login-full-width">
         <label>
@@ -95,6 +105,9 @@
           Delivery or pickup radius (in miles, 1 to 50, whole number only) is required
         </mat-error>
       </mat-form-field>
+
+      <mat-checkbox class="check-box-mb-20" color="primary" formControlName="sendEmailMatchNotifications">Send me email notifications when I match
+      </mat-checkbox>
 
     </div>
 

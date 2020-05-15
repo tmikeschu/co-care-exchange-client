@@ -12,7 +12,7 @@ import { UserService } from '../../../core/services/user.service';
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
-  encapsulation: ViewEncapsulation.None // override mat tab classes in component stylesheet
+  encapsulation: ViewEncapsulation.None, // override mat tab classes in component stylesheet
 })
 export class SignInComponent implements OnInit {
   INDIVIDUAL = { name: 'Individual', id: null };
@@ -20,7 +20,6 @@ export class SignInComponent implements OnInit {
   errorMessage: string;
   error = false;
   signingIn = false;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,12 +29,12 @@ export class SignInComponent implements OnInit {
     private userService: UserService,
     private navbarService: NavbarService,
     private toastrService: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
     this.route.queryParams.subscribe((val) => {
       console.log('DEBUG signin email ', val);
@@ -44,7 +43,6 @@ export class SignInComponent implements OnInit {
         this.loginForm.get('username').setValue(email);
       }
     });
-
   }
 
   async onLoginSubmit() {
@@ -54,10 +52,7 @@ export class SignInComponent implements OnInit {
 
     try {
       const username = this.loginForm.get('username').value;
-      const result: SignInResult = await this.authenticationService.signIn(
-        username,
-        this.loginForm.get('password').value
-      );
+      const result: SignInResult = await this.authenticationService.signIn(username, this.loginForm.get('password').value);
 
       // console.log('DEBUG: signin result ', result);
       this.signingIn = false;
@@ -98,7 +93,7 @@ export class SignInComponent implements OnInit {
   }
 
   handleForgotPW() {
-    this.router.navigate(['/' , 'passwordforgot']);
+    this.router.navigate(['/', 'passwordforgot']);
   }
 
   handleRegistration() {

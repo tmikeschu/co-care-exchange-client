@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../core/services/user.service'
+import { UserService } from '../../core/services/user.service';
 import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserProfileInformation } from '../models/info-create.model';
 import { first } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     private userService: UserService,
     private dialog: MatDialog,
     private router: ActivatedRoute
-  ) { }
+  ) {}
 
   @Input()
   set isRegistering(state: boolean) {
@@ -52,7 +52,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.router.queryParams.subscribe(params => {
+    this.router.queryParams.subscribe((params) => {
       if (params && params.newUser) {
         this.newUser = params.newUser.toLowerCase() == 'true';
       }
@@ -60,7 +60,6 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   async ngAfterContentInit() {
-
     this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
     this.individualRegisterForm = this.formBuilder.group({
@@ -75,6 +74,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       postalCode: ['', Validators.required],
       deliveryOrPickupRadius: ['', Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
       password: [''],
+      sendEmailMatchNotifications: [true],
     });
 
     this.individualRegisterForm.get('firstName').setValue(this.firstName);
@@ -89,11 +89,13 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       this.individualRegisterForm.get('postalCode').setValue(this.userProfile.postalCode || '');
       this.individualRegisterForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
       this.individualRegisterForm.get('householdSize').setValue(this.userProfile.householdSize || 0);
+      this.individualRegisterForm
+        .get('sendEmailMatchNotifications')
+        .setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
     }
   }
 
   async onRegisterSubmit() {
-
     const profile: SaveUserInput = {
       address: this.individualRegisterForm.get('address').value,
       city: this.individualRegisterForm.get('city').value,
@@ -107,24 +109,17 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
-      sendEmailMatchNotifications: true
+      sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
     if (!this._isRegistering && this.userProfile) {
-      profile.userId = this.userProfile.id
+      profile.userId = this.userProfile.id;
     }
 
     console.log(profile);
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
-  }
-
-  onOrgInfoClick(){
-    const ref = this.dialog.open(OrgInfoModalComponent, {
-      width: '300px',
-      data: {}
-    });
   }
 }

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { SwUpdate } from '@angular/service-worker';
-import { Plugins } from '@capacitor/core';
-const { Modals } = Plugins;
+import { ServiceWorkerUpdateService } from './core/services/sw-update.service';
 
 @Component({
   selector: 'app',
@@ -11,22 +9,11 @@ const { Modals } = Plugins;
 
 export class AppComponent implements OnInit {
 
-  constructor(private titleService: Title, private swUpdate: SwUpdate) {
+  constructor(private titleService: Title, private swUpdateService: ServiceWorkerUpdateService) {
     this.titleService.setTitle('ColoradoCareExchange');
   }
 
   ngOnInit() {
-    if (this.swUpdate.isEnabled) {
-
-      this.swUpdate.available.subscribe(async () => {
-        const confirmReload = await Modals.confirm({
-          title: 'A new version of the app is available.',
-          message: 'A new version of the app is available. Would you like to load it now?'
-        });
-        if (confirmReload) {
-          window.location.reload();
-        }
-      });
-    }
+    this.swUpdateService.checkForUpdates();
   }
 }

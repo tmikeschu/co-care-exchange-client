@@ -13,12 +13,12 @@ import { Status } from 'src/app/core/constants/enums';
   selector: 'app-item-request',
   templateUrl: './item-request.component.html',
   styleUrls: ['../item-share/item-share.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
   @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
-  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
+  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
 
@@ -28,17 +28,19 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
-    this.orderNoteFC$.pipe(
-      debounceTime(400)
-      , distinctUntilChanged()
-      , filter(val => val && val !== '')
-      , takeUntil(this.stop$)
-    ).subscribe(val => this.currentNoteVal = val);
+    this.orderNoteFC$
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        filter((val) => val && val !== ''),
+        takeUntil(this.stop$)
+      )
+      .subscribe((val) => (this.currentNoteVal = val));
   }
 
   ngOnDestroy() {
@@ -48,16 +50,23 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
 
   onCancelMatch(agreement: Agreement) {
     this.updateItem.emit({
-      orderUpdate: agreement, updates: {
-        requestId: agreement.requestId
-        , status: Status.OrderCancelled
-        , reason: 'User cancelled the match in agreement detail view'
-      }
+      orderUpdate: agreement,
+      updates: {
+        requestId: agreement.requestId,
+        status: Status.OrderCancelled,
+        reason: 'User cancelled the match in agreement detail view',
+      },
     });
   }
 
   onSubmitEdit() {
     this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
     this.orderNoteFC.patchValue('');
+  }
+
+  formatItemDetails(agreement: Agreement) {
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${
+      agreement.details ? ', ' + agreement.details : ''
+    }`;
   }
 }

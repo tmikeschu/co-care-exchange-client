@@ -32,6 +32,7 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ServiceWorkerUpdateService } from './core/services/sw-update.service';
 
 @NgModule({
   imports: [
@@ -57,12 +58,13 @@ import { environment } from '../environments/environment';
     AwsCognitoModule,
     ToastrModule.forRoot(),
     LayoutModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
   ],
   declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent],
   providers: [
     AmplifyService,
     NavbarService,
+    ServiceWorkerUpdateService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
