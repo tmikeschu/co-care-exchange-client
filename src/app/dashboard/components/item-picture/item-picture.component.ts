@@ -56,7 +56,7 @@ const customPrefix = {
     ngOnInit(){
         this.startCamera();
         this.userProfile = this.userService.getCurrentUserProfile();
-        customPrefix.public = 'private/' + this.userProfile.id + '/' + this.agreement.shareId + '/' ;
+        customPrefix.public = 'public/' + this.userProfile.id + '/' + this.agreement.shareId + '/' ;
     }    
     
     captureimage(){
@@ -85,7 +85,7 @@ const customPrefix = {
         console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));
         
         
-        Storage.put(`testfilename7`, this.canvasElement.nativeElement.toDataURL("image/svg"),{      
+        Storage.put(`testfilename10`, this.canvasElement.nativeElement.toDataURL("image/svg"),{      
             progressCallback(progress) {        
                  console.log('Uploaded : ', progress);      
             },      
@@ -119,9 +119,24 @@ const customPrefix = {
     }
 
     getImage(){
-        Storage.get('{{testfilename7}}', { level: 'private' })      
+        let self = this;
+        
+        Storage.get('a2eeb5d69d004a78ad5f8d6530db156e/ab37d796eb384a76b93e0e1c7ff652b7/testfilename10', {  download: true, level: 'public' })             
         .then((res) => {        
-            console.log('success => ', res);       
+            console.log('success => ', res);  
+            
+            console.log('image body', JSON.parse(JSON.stringify(res))['Body']);
+
+            var canvas2 = <HTMLCanvasElement> document.getElementById('c');
+            var ctx = canvas2.getContext("2d");
+            var image = new Image();
+            image.onload = function() {
+                self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
+            };   
+            image.src = JSON.parse(JSON.stringify(res))['Body'];
+            
+            
+            //this.canvasElement.nativeElement.getContext('2d').drawImage(JSON.parse(JSON.stringify(res))['Body'], 0, 0);
         }).catch((err) => {    
             console.log('error => ', err);      
         });
