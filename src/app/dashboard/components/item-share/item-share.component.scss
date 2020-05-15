@@ -43,7 +43,8 @@
 
   .send-btn {
     position: relative;
-    bottom: 64px;
+    bottom: 40px;
+    left: 40px;
   }
 
   .status-text {
@@ -174,4 +175,8 @@
   color: #696969;
   font-weight: 600;
   font-size: .7em;
+}
+
+::ng-deep .mat-form-field-wrapper{
+  padding-bottom: 0px;
 }

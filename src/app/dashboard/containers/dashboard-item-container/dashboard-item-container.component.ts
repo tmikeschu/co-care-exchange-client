@@ -69,7 +69,7 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
       ).subscribe();
   }
 
-  handleNewNote(newNote: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>) {
+  handleNewNote(newNote: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageURL'>) {
     this.itemDetailsService.createOrderNote(newNote)
       .pipe(
         takeUntil(this.stop$)

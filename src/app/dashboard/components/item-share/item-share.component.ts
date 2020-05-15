@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class ItemShareComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageURL'>>();
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
   showImageArea:boolean = false;
@@ -100,7 +100,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageURL:'' });
     this.orderNoteFC.patchValue('');
   }
 

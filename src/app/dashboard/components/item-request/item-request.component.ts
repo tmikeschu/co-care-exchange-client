@@ -17,7 +17,7 @@ import { Status } from 'src/app/core/constants/enums';
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageURL'>>();
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
@@ -57,7 +57,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageURL: '' });
     this.orderNoteFC.patchValue('');
   }
 
