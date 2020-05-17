@@ -1,11 +1,6 @@
 <section class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
     
     <div>
-        <button (click)="takepicture()">Take Picture</button>
-        <app-item-picture *ngIf="showImageArea"></app-item-picture>
-    </div>
-
-    <div>
         <h2> {{ vm.itemDetails.name }}</h2>
         <span class="quantity-prefix">x</span><span>{{ formatItemDetails(vm.itemDetails) }}</span>
         <h3 class="sub-title status-text" [ngClass]="{
@@ -34,6 +29,9 @@
                 <p class="author">{{ note.createdBy }}</p>
                 <div class="chat-body">
                     <div>{{ note.noteBody }}</div>
+                    <div *ngIf="note.imageUrl != null">{{getImage()}}
+                        <canvas class="imagebox" #canvas ></canvas>  
+                    </div>
                     <div>
                         <small><i>{{ note.createdOn | date:'short' }}</i></small>
                     </div>
@@ -51,7 +49,7 @@
         </div>
 
         <!-- Chat Input -->
-        <div class="input-area" fxLayout="row" fxLayoutAlign="start center"
+        <div class="input-area" fxLayout="row" fxLayoutAlign="start center" 
             *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled">
             <mat-form-field appearance="outline">
                 <textarea matInput [formControl]="orderNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
@@ -65,6 +63,12 @@
                 (click)="onSubmitEdit()">
                 <mat-icon>send</mat-icon>
             </button>
+            <mat-icon class="cameraicon" (click)="takepicture()" *ngIf="!showImageArea">camera_alt</mat-icon>
+            <mat-icon class="cameraicon" (click)="hidepicture()" *ngIf="showImageArea">keyboard_arrow_up</mat-icon>
+        </div>
+
+        <div>           
+            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails" [imagename]="imagename" [showImageArea]="showImageArea" (picturetakenEvent)="pictureTaken()"></app-item-picture>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">

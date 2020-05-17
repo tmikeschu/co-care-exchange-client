@@ -32,4 +32,5 @@ interface IOrderNote {
     id: string;
     noteBody: string;
     userId: string;
+    imageUrl: string;
 }
