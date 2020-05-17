@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Storage } from 'aws-amplify';
 import { Agreement } from '../models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
@@ -17,6 +17,10 @@ const customPrefix = {
   })
   export class ItemPictureComponent implements OnInit {
     @Input() agreement: Agreement;
+    @Input() imagename: string;
+    @Input() showImageArea: boolean;
+    
+    @Output() picturetakenEvent = new EventEmitter();
 
     private videoElement: ElementRef;
     @ViewChild('video', { static: false }) set content1(content: ElementRef) {
@@ -47,8 +51,7 @@ const customPrefix = {
     showCaptureBtn: boolean = true;
     showRetakeBtn: boolean = false;
     userProfile: UserProfile;
-    
-    
+        
     constructor(private renderer: Renderer2, private userService: UserService) { 
         
     }
@@ -82,17 +85,18 @@ const customPrefix = {
     }
 
     acceptimage(){
-        console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));
+        console.log('the image', this.canvasElement.nativeElement.toDataURL("image/svg"));        
         
-        
-        Storage.put(`testfilename10`, this.canvasElement.nativeElement.toDataURL("image/svg"),{      
+        Storage.put(this.imagename, this.canvasElement.nativeElement.toDataURL("image/svg"),{      
             progressCallback(progress) {        
                  console.log('Uploaded : ', progress);      
             },      
             contentType: 'image/png',      
             customPrefix: customPrefix // For Customize path    
         }).then((result: any) => {      
-                console.log('Success =>', result);      
+                console.log('Success =>', result);   
+                this.showImageArea = false;
+                this.picturetakenEvent.emit(this.showImageArea);   
         }).catch((err) => {      
                 console.log('error =>', err); 
         });
@@ -118,17 +122,18 @@ const customPrefix = {
         console.log('Error: ', error);
     }
 
+    //NOTE: JUST A TEST
     getImage(){
         let self = this;
         
-        Storage.get('a2eeb5d69d004a78ad5f8d6530db156e/ab37d796eb384a76b93e0e1c7ff652b7/testfilename10', {  download: true, level: 'public' })             
+        Storage.get('a2eeb5d69d004a78ad5f8d6530db156e/ab37d796eb384a76b93e0e1c7ff652b7/1589740928755', {  download: true, level: 'public' })             
         .then((res) => {        
             console.log('success => ', res);  
             
             console.log('image body', JSON.parse(JSON.stringify(res))['Body']);
 
-            var canvas2 = <HTMLCanvasElement> document.getElementById('c');
-            var ctx = canvas2.getContext("2d");
+            //var canvas2 = <HTMLCanvasElement> document.getElementById('c');
+            //var ctx = canvas2.getContext("2d");
             var image = new Image();
             image.onload = function() {
                 self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);

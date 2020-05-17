@@ -11,6 +11,9 @@ import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Agreement } from '../models/agreement';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
 import { Router } from '@angular/router';
+import { UserProfile } from 'src/app/models/UserProfile';
+import { UserService } from 'src/app/core/services/user.service';
+import { Storage } from 'aws-amplify';
 
 @Component({
   selector: 'app-item-share',
@@ -24,7 +27,14 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
   showImageArea:boolean = false;
-
+  imagename: string = '';
+  private canvasElement: ElementRef;
+  @ViewChild('canvas', { static: false }) set content2(content: ElementRef) {
+      if(content) { // initially setter gets called with undefined
+          this.canvasElement = content;
+      }
+  }
+  userProfile: UserProfile;
   status = Status; // enum binding to use in view template
 
   modalVisible = false;
@@ -35,9 +45,11 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2) { }
+  constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2, private userService: UserService) { }
 
   ngOnInit() {
+    this.userProfile = this.userService.getCurrentUserProfile();
+
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
     this.orderNoteFC$.pipe(
@@ -71,10 +83,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
           }});
         }
       });
-    }
-
-
-    
+    }    
   }
 
   ngOnDestroy() {
@@ -98,8 +107,9 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     }});
   }
 
-  onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl:'' });
+  onSubmitEdit() {    
+    console.log('onSubmitEdit', { noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
     this.orderNoteFC.patchValue('');
   }
 
@@ -116,13 +126,39 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
-  takepicture(){
-    
+  takepicture(){    
     console.log('vm', this.vm);
+    this.imagename = Date.now().toString();
     this.showImageArea = true;
   }  
 
   hidepicture(){
     this.showImageArea = false;
+  }
+
+  pictureTaken(){
+    this.showImageArea = false;
+    this.currentNoteVal = 'image';
+    this.onSubmitEdit();
+  }
+
+  getImage(){
+    let self = this;
+    
+    Storage.get('a2eeb5d69d004a78ad5f8d6530db156e/ab37d796eb384a76b93e0e1c7ff652b7/1589740928755', {  download: true, level: 'public' })             
+    .then((res) => {        
+        //console.log('success => ', res);          
+        //console.log('image body', JSON.parse(JSON.stringify(res))['Body']);
+
+        var image = new Image();
+
+        image.onload = function() {
+            self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
+        };   
+
+        image.src = JSON.parse(JSON.stringify(res))['Body'];        
+    }).catch((err) => {    
+        console.log('error => ', err);      
+    });
   }
 }

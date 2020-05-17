@@ -29,6 +29,9 @@
                 <p class="author">{{ note.createdBy }}</p>
                 <div class="chat-body">
                     <div>{{ note.noteBody }}</div>
+                    <div *ngIf="note.imageUrl != null">{{getImage()}}
+                        <canvas class="imagebox" #canvas ></canvas>  
+                    </div>
                     <div>
                         <small><i>{{ note.createdOn | date:'short' }}</i></small>
                     </div>
@@ -63,7 +66,7 @@
         </div>
 
         <div>           
-            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails"></app-item-picture>
+            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails" [imagename]="imagename" [showImageArea]="showImageArea" (picturetakenEvent)="pictureTaken()"></app-item-picture>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
@@ -71,12 +74,8 @@
                 mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
             <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled" 
                 mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Drop-Off</button>
-        </div>
-
-        
+        </div>      
     </div>
-
-    
 </section>
 
 <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
