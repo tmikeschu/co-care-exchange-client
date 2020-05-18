@@ -8,6 +8,8 @@ import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-
 import { Agreement } from '../models/agreement';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Status } from 'src/app/core/constants/enums';
+import { UserProfile } from 'src/app/models/UserProfile';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-item-request',
@@ -21,16 +23,19 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
-
+  userProfile: UserProfile;
   stop$ = new Subject();
-
+  showImageArea:boolean = false;
+  imagename: string = '';
   currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.userProfile = this.userService.getCurrentUserProfile();
+
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
     this.orderNoteFC$.pipe(
@@ -63,5 +68,21 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
 
   formatItemDetails(agreement: Agreement) {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+  }
+
+  takepicture(){    
+    console.log('vm', this.vm);
+    this.imagename = Date.now().toString();
+    this.showImageArea = true;
+  }  
+
+  hidepicture(){
+    this.showImageArea = false;
+  }
+
+  pictureTaken(){
+    this.showImageArea = false;    
+    this.createNote.emit({ noteBody: 'image', itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
+    this.orderNoteFC.patchValue('');
   }
 }
