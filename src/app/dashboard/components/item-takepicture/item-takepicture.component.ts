@@ -11,11 +11,11 @@ const customPrefix = {
 }; 
 
 @Component({
-    selector: 'app-item-picture',
-    templateUrl: './item-picture.component.html',
-    styleUrls: ['./item-picture.component.scss']
+    selector: 'app-item-takepicture',
+    templateUrl: './item-takepicture.component.html',
+    styleUrls: ['./item-takepicture.component.scss']
   })
-  export class ItemPictureComponent implements OnInit {
+  export class ItemTakePictureComponent implements OnInit {
     @Input() agreement: Agreement;
     @Input() imagename: string;
     @Input() showImageArea: boolean;

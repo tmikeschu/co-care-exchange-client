@@ -12,7 +12,8 @@ import { ConfirmMatchDialogComponent } from './components/confirm-new-match/conf
 import { DashboardItemContainerComponent } from './containers/dashboard-item-container/dashboard-item-container.component';
 import { ItemRequestComponent } from './components/item-request/item-request.component';
 import { ItemShareComponent } from './components/item-share/item-share.component';
-import { ItemPictureComponent } from './components/item-picture/item-picture.component';
+import { ItemTakePictureComponent } from './components/item-takepicture/item-takepicture.component';
+import { ItemImageCanvassComponent } from './components/item-image-canvass/item-image-canvass.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ItemPictureComponent } from './components/item-picture/item-picture.com
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
-    ItemPictureComponent
+    ItemTakePictureComponent,
+    ItemImageCanvassComponent
   ],
   imports: [
     CommonModule,
