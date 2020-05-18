@@ -96,7 +96,8 @@ const customPrefix = {
         }).then((result: any) => {      
                 console.log('Success =>', result);   
                 this.showImageArea = false;
-                this.picturetakenEvent.emit(this.showImageArea);   
+                this.picturetakenEvent.emit(this.showImageArea);  
+                this.stopCamera(); 
         }).catch((err) => {      
                 console.log('error =>', err); 
         });
@@ -145,5 +146,15 @@ const customPrefix = {
         }).catch((err) => {    
             console.log('error => ', err);      
         });
+    }
+
+    stopCamera(){
+        let videoElem = this.videoElement.nativeElement.srcObject;
+        let tracks = videoElem.getTracks();
+        tracks.forEach(function(track) {
+            track.stop();
+          });
+        
+          videoElem.srcObject = null;
     }
 }
