@@ -1,12 +1,26 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { groupBy } from 'lodash';
 
-import { DashboardService, IDashboardState } from 'src/app/core/services/cce/dashboard.service';
+import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Status } from 'src/app/core/constants/enums';
 import { Agreement } from './models/agreement';
+import { FormControl } from '@angular/forms';
+import { distinctUntilChanged, takeUntil, tap, map } from 'rxjs/operators';
 
+interface IDashboardGrouping {
+  createdBy: string;
+  items: Agreement[];
+}
+interface IDashboardViewModel {
+  needs: IDashboardGrouping[];
+  shares: IDashboardGrouping[];
+  orgId?: string;
+  filterState: string;
+  loading: boolean;
+}
 
 @Component({
   selector: 'app-cce-home',
@@ -15,8 +29,13 @@ import { Agreement } from './models/agreement';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  vm$: Observable<IDashboardState>;
+  vm$: Observable<IDashboardViewModel>;
   isAlive: boolean;
+
+  filter = new FormControl('');
+  filter$: Observable<string>;
+
+  destroy$ = new Subject();
 
   constructor(
     public dialog: MatDialog,
@@ -26,7 +45,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dashboardService.startPolling();
-    this.vm$ = this.dashboardService.state$;
+    this.vm$ = this.dashboardService.state$.pipe(
+      tap(state => {
+        this.filter.patchValue(state.filterState);
+      }),
+      map(state => {
+        return {
+          ...state,
+          shares: this.createGroupedEntries(state.shares),
+          needs: this.createGroupedEntries(state.needs)
+        };
+      })
+    );
+    this.filter$ = this.filter.valueChanges.pipe(
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    );
+
+    this.filter$.subscribe(filterValue => {
+      this.dashboardService.changeFilterCriteria(filterValue);
+    });
+  }
+
+  createGroupedEntries(agreements: Agreement[]) {
+    const grouped: {[key: string]: Agreement[]} = groupBy(agreements, 'userDisplayName');
+    return Object.entries(grouped).map(([name, items]) => {
+      return {
+        createdBy: name,
+        items
+      };
+    });
   }
 
   formatItemDetails(agreement: Agreement) {
@@ -63,5 +111,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dashboardService.stopPolling();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
