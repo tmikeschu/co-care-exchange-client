@@ -19,7 +19,7 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>();
   @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
@@ -65,7 +65,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: '' });
     this.orderNoteFC.patchValue('');
   }
 
