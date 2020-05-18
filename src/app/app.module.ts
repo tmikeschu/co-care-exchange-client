@@ -58,7 +58,7 @@ import { ServiceWorkerUpdateService } from './core/services/sw-update.service';
     AwsCognitoModule,
     ToastrModule.forRoot(),
     LayoutModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: true, registrationStrategy: 'registerImmediately' }),
   ],
   declarations: [AppComponent, ContactUsComponent, AccountComponent, ResourcesComponent, PopupDialogComponent, ContributorsComponent],
   providers: [
