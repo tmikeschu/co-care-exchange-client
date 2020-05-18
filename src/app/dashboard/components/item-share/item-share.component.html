@@ -28,9 +28,9 @@
             }">
                 <p class="author">{{ note.createdBy }}</p>
                 <div class="chat-body">
-                    <div>{{ note.noteBody }}</div>
-                    <div *ngIf="note.imageUrl != null">{{getImage()}}
-                        <canvas class="imagebox" #canvas ></canvas>  
+                    <div *ngIf="note.imageUrl == null">{{ note.noteBody }}</div>
+                    <div *ngIf="note.imageUrl != null">                       
+                        <app-item-image-canvass [imageUrl]="note.imageUrl"></app-item-image-canvass>
                     </div>
                     <div>
                         <small><i>{{ note.createdOn | date:'short' }}</i></small>
@@ -66,7 +66,7 @@
         </div>
 
         <div>           
-            <app-item-picture *ngIf="showImageArea" [agreement]="vm.itemDetails" [imagename]="imagename" [showImageArea]="showImageArea" (picturetakenEvent)="pictureTaken()"></app-item-picture>
+            <app-item-takepicture *ngIf="showImageArea" [agreement]="vm.itemDetails" [imagename]="imagename" [showImageArea]="showImageArea" (picturetakenEvent)="pictureTaken()"></app-item-takepicture>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
