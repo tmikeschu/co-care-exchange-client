@@ -22,7 +22,7 @@ export class ServiceWorkerUpdateService {
         if (this.updates.isEnabled) {
             // check for updates
             const appStable$ = this.appRef.isStable.pipe(first(isStable => isStable === true));
-            const everyFiveMinutes$ = interval(1 * 60 * 1000);
+            const everyFiveMinutes$ = interval(5 * 60 * 1000);
             const everyFiveMinutesOnceStable$ = concat(appStable$, everyFiveMinutes$);
             everyFiveMinutesOnceStable$.subscribe(() => {
                 console.log('checking for updates...');
@@ -46,6 +46,7 @@ export class ServiceWorkerUpdateService {
                 window.location.reload();
                 return;
             } catch (e) {
+                // see logs at /ngsw/state
                 console.error('an error occurred with the pwa update: ', e);
             }
         } else {
