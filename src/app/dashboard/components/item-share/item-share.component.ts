@@ -38,7 +38,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2, private userService: UserService) { }
+  constructor(private dialog: MatDialog, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
     this.userProfile = this.userService.getCurrentUserProfile();
