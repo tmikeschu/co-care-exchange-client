@@ -69,6 +69,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
             },
             "dev": {
@@ -87,6 +88,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": false,
+              "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
             },
             "test": {
