@@ -11,6 +11,12 @@ mat-icon {
   }
 }
 
+.prompt {
+  .mat-radio-button {
+    padding: 0 1em;
+  }
+}
+
 .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
   color: #fafafa;
 }
