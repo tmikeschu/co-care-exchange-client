@@ -1,12 +1,11 @@
 // this is for shared components
 @import './theme.scss';
 .hero {
-  //height: 50vh;
-  overflow: hidden;
+  height: 400px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   .content {
@@ -44,6 +43,11 @@
     left: 0;
     background: mat-color(map-get($colorado-care-exchange-theme, primary));
   }
+}
+
+.tab-container {
+  position: relative;
+  bottom: 145px;
 }
 
 .section {
