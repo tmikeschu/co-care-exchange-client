@@ -33,9 +33,10 @@ export class PromptsComponent implements OnInit {
   showSpecificQuestions = false;
   showGroupTypeQuestions = true;
   showMultipleSelect = false;
+  showMultipleSelectBtn = true;
   groupTypeList: {}[] = [];
   showConfirmBtn = false;
-  showGoToQuestionsBtn = true;
+  showGoToQuestionsBtn = false;//true;
   showGoBackToGroupTypesBtn = false;
   showSubmitAnswersBtn = false;
   showChangeAnswersBtn = false;
@@ -168,6 +169,7 @@ export class PromptsComponent implements OnInit {
       }
     }
 
+    
     this.showSpecificQuestions = false;
     this.showConfirm = true;
     this.showGoBackToGroupTypesBtn = false;
@@ -217,14 +219,74 @@ export class PromptsComponent implements OnInit {
   }
 
   onGoToQuestions() {
-    // console.log('onGoToQuestions prompts', this.prompts);
-    // console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+    //  console.log('onGoToQuestions prompts', this.prompts);
+    //  console.log('onGoToQuestions selectedPrompts', this.selectedPrompts);
+
+     //let addedprompt = false;
+
+    // for (let y = 0; y < this.selectedPrompts.length; y++) {
+    //   this.selectedPrompts[y]['prompts'] = [];
+    // }
+
+    // for (let x = 0; x < this.prompts.length; x++) {
+    //   this.prompts[x].unitsOfIssueChoices = [];
+    //   this.prompts[x].sizeChoices = [];
+    //   this.prompts[x].unit = null;
+    //   this.prompts[x].size = null;
+
+    //   for (let y = 0; y < this.selectedPrompts.length; y++) {
+    //     if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {
+    //       if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
+    //         this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
+    //         this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
+    //       }
+
+    //       if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
+    //         this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
+    //         this.prompts[x].size = this.prompts[x].sizeChoices[0];
+    //       }
+
+    //       this.selectedPrompts[y]['prompts'].push(this.prompts[x]);
+    //       addedprompt = true;
+    //     }
+    //   }
+
+    //   this.prompts[x].sharing = 0;
+    //   this.prompts[x].requesting = 0;
+    // }
+
+    //if (addedprompt) {
+      this.showSpecificQuestions = true;
+      this.showGroupTypeQuestions = false;
+      this.showGoBackToGroupTypesBtn = true;
+      this.showGoToQuestionsBtn = false;
+      this.showSubmitAnswersBtn = true;
+    //}
+  }
+
+  onGoBackToGroupTypes() {
+    this.showSpecificQuestions = false;
+    this.showGroupTypeQuestions = true;
+    this.showGoBackToGroupTypesBtn = false;
+    this.showGoToQuestionsBtn = true;
+    this.showSubmitAnswersBtn = false;
+  }
+
+  nextvals(){
+    this.selectedPrompts = [];
+    for(let x = 0; x < this.multiselectPrompts.length; x++){
+      for(let y = 0; y < this.multiselectPrompts[x].prompts.length; y++){
+        if(this.multiselectPrompts[x].prompts[y].multiselect){
+          for(let z = 0; z < this.multiselectPrompts[x].prompts[y].multiselect.length; z++){
+            this.selectedPrompts.push(this.multiselectPrompts[x].prompts[y]);
+          }
+        }
+      }
+    }
+
+    console.log('this.selectedPrompts', this.selectedPrompts);
 
     let addedprompt = false;
-
-    for (let y = 0; y < this.selectedPrompts.length; y++) {
-      this.selectedPrompts[y]['prompts'] = [];
-    }
 
     for (let x = 0; x < this.prompts.length; x++) {
       this.prompts[x].unitsOfIssueChoices = [];
@@ -233,7 +295,7 @@ export class PromptsComponent implements OnInit {
       this.prompts[x].size = null;
 
       for (let y = 0; y < this.selectedPrompts.length; y++) {
-        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {
+        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] ) {
           if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
             this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
             this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
@@ -244,7 +306,6 @@ export class PromptsComponent implements OnInit {
             this.prompts[x].size = this.prompts[x].sizeChoices[0];
           }
 
-          this.selectedPrompts[y]['prompts'].push(this.prompts[x]);
           addedprompt = true;
         }
       }
@@ -260,17 +321,10 @@ export class PromptsComponent implements OnInit {
       this.showGoToQuestionsBtn = false;
       this.showSubmitAnswersBtn = true;
     }
+
   }
 
-  onGoBackToGroupTypes() {
-    this.showSpecificQuestions = false;
-    this.showGroupTypeQuestions = true;
-    this.showGoBackToGroupTypesBtn = false;
-    this.showGoToQuestionsBtn = true;
-    this.showSubmitAnswersBtn = false;
-  }
-
-  testval(){
+  onGoToMultipleSelect(){
     console.log('multiitem', this.multiitem);
 
     this.multiselectPrompts = [];
@@ -301,11 +355,24 @@ export class PromptsComponent implements OnInit {
             
             if(this.multiselectPrompts.filter(e => e.groupName === this.selectedPrompts[y]['groupName']).length > 0){
               let item = this.multiselectPrompts.filter(e => e.groupName == this.selectedPrompts[y]['groupName'])[0];
-              item['prompts'].push(this.prompts[x]);
+              item['multiprompts'].push(this.prompts[x]);
             }else{
                 this.multiselectPrompts.push({
-                'groupName':this.selectedPrompts[y]['groupName'],
-                'prompts':[this.prompts[x]]});  
+                  'groupName':this.selectedPrompts[y]['groupName'],
+                  'multiprompts':[this.prompts[x]],
+                  'singleprompts':[]                 
+                });                 
+            }
+          }else{
+            if(this.multiselectPrompts.filter(e => e.groupName === this.selectedPrompts[y]['groupName']).length > 0){
+              let item = this.multiselectPrompts.filter(e => e.groupName == this.selectedPrompts[y]['groupName'])[0];
+              item['singleprompts'].push(this.prompts[x]);
+            }else{
+                this.multiselectPrompts.push({
+                  'groupName':this.selectedPrompts[y]['groupName'],
+                  'multiprompts':[],
+                  'singleprompts':[this.prompts[x]]                  
+                });                 
             }
           }
         }
@@ -313,65 +380,35 @@ export class PromptsComponent implements OnInit {
     }
 
     console.log('multiselectPrompts', this.multiselectPrompts);
-
     
+    
+    this.showMultipleSelectBtn = false;
+    this.showMultipleSelect = true;
+    this.showSpecificQuestions = false;
+    this.showGroupTypeQuestions = false;
+    this.showGoBackToGroupTypesBtn = true;
+    this.showGoToQuestionsBtn = true;
+    this.showSubmitAnswersBtn = false;
   }
 
-  nextvals(){
-    this.selectedPrompts = [];
-    for(let x = 0; x < this.multiselectPrompts.length; x++){
-      for(let y = 0; y < this.multiselectPrompts[x].prompts.length; y++){
-        if(this.multiselectPrompts[x].prompts[y].multiselect){
-          for(let z = 0; z < this.multiselectPrompts[x].prompts[y].multiselect.length; z++){
-            this.selectedPrompts.push(this.multiselectPrompts[x].prompts[y]);
-          }
-        }
+  removeMultiItem(item){
+    console.log('removeMultiItem - item', item);
+    console.log('removeMultiItem - multiselectPrompts' ,this.multiselectPrompts);
+    if(item.removedQuestion === true){
+    item.removedQuestion = false;
+    }else{
+      item.removedQuestion = true;
+    }
+  }
+
+  removeSingleItem(item){
+    console.log('removeSingleItem - item', item);
+    console.log('removeSingleItem - multiselectPrompts' ,this.multiselectPrompts);
+    if(item.removedQuestion === true){
+      item.removedQuestion = false;
+      }else{
+        item.removedQuestion = true;
       }
-    }
-
-    console.log('this.selectedPrompts', this.selectedPrompts);
-
-    let addedprompt = false;
-
-    for (let y = 0; y < this.selectedPrompts.length; y++) {
-      this.selectedPrompts[y]['prompts'] = [];
-    }
-
-    for (let x = 0; x < this.prompts.length; x++) {
-      this.prompts[x].unitsOfIssueChoices = [];
-      this.prompts[x].sizeChoices = [];
-      this.prompts[x].unit = null;
-      this.prompts[x].size = null;
-
-      for (let y = 0; y < this.selectedPrompts.length; y++) {
-        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] ) {
-          if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
-            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
-            this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
-          }
-
-          if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
-            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
-            this.prompts[x].size = this.prompts[x].sizeChoices[0];
-          }
-
-          this.selectedPrompts[y]['prompts'].push(this.prompts[x]);
-          addedprompt = true;
-        }
-      }
-
-      this.prompts[x].sharing = 0;
-      this.prompts[x].requesting = 0;
-    }
-
-    if (addedprompt) {
-      this.showSpecificQuestions = true;
-      this.showGroupTypeQuestions = false;
-      this.showGoBackToGroupTypesBtn = true;
-      this.showGoToQuestionsBtn = false;
-      this.showSubmitAnswersBtn = true;
-    }
-
   }
 
 }

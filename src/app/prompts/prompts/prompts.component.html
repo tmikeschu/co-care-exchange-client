@@ -13,30 +13,39 @@
         </div>
     </div>
 
-    <!-- <div *ngIf="showMultipleSelect"> -->
-    <div >
+    <div *ngIf="showMultipleSelect">
+    
         <div *ngFor="let group of multiselectPrompts">
             <hr>
             <h2 class="category-head text-center">{{group.groupName}}</h2>
-            <div *ngFor="let prompt of group.prompts">
-                {{prompt.item}}
-                <mat-select [(value)]="prompt.multiselect" multiple>
-                    <mat-option *ngFor="let filters of prompt.sizeChoices" [value]="filters" >
+            <div *ngFor="let multiprompt of group.multiprompts">
+                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" (click)="removeMultiItem(multiprompt)">highlight_off</mat-icon>
+                {{multiprompt.item}}
+                <mat-select [(value)]="multiprompt.multiselect" multiple>
+                    <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters" >
                         {{filters}}
                     </mat-option>                    
                 </mat-select>
             </div>
+
+            <div *ngFor="let singleprompt of group.singleprompts">
+                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" (click)="removeSingleItem(singleprompt)">highlight_off</mat-icon>
+                {{singleprompt.item}} 
+            </div>
         </div>
+
+       
+        <button (click)="nextvals()">whopper</button>
     </div>
 
     
-    <button (click)="testval()">test</button>
-    <button (click)="nextvals()">whopper</button>
+    
 
     <div *ngIf="showSpecificQuestions">
 
         <div *ngFor="let selectedPrompt of selectedPrompts">
-            <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'">
+            <!-- <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'"> -->
+            <ng-container >
                 <hr>
                 <h2 class="category-head text-center">For {{selectedPrompt.groupName}}</h2>
                 <div *ngFor="let question of selectedPrompt.prompts" class="prompt">
@@ -165,6 +174,10 @@
 
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showGoToQuestionsBtn" (click)="onGoToQuestions()">
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
+        </button>
+
+        <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showMultipleSelectBtn" (click)="onGoToMultipleSelect()">
             <mat-icon class="cce-white">arrow_forward</mat-icon>
         </button>
     </div>
