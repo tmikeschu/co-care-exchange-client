@@ -16,12 +16,12 @@ import { Router } from '@angular/router';
   selector: 'app-item-share',
   templateUrl: './item-share.component.html',
   styleUrls: ['./item-share.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemShareComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
   @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
-  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
+  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
 
@@ -33,42 +33,53 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   ngOnInit() {
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
-    this.orderNoteFC$.pipe(
-      debounceTime(400)
-      , distinctUntilChanged()
-      , filter(val => val && val !== '')
-      , takeUntil(this.stop$)
-    ).subscribe(val => this.currentNoteVal = val);
+    this.orderNoteFC$
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        filter((val) => val && val !== ''),
+        takeUntil(this.stop$)
+      )
+      .subscribe((val) => (this.currentNoteVal = val));
 
     // confirm match
     if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
       this.modalVisible = true;
       const ref = this.dialog.open(ConfirmMatchDialogComponent, {
-        width: '300px'
-        , data: this.vm.itemDetails
+        width: '300px',
+        data: this.vm.itemDetails,
       });
 
-      ref.afterClosed().pipe(take(1)).subscribe(results => {
-        this.modalVisible = false;
-        if (results === 'Cancel') {
-          // update order to cancel status Status.OrderCancelled
-          this.updateItem.emit({ orderUpdate: this.vm.itemDetails, updates: {
-            status: Status.OrderCancelled
-            , reason: 'Sharer refused the drop off terms'
-          }});
-        } else if (results === 'Confirm') {
-          // update order to delivery pending Status.DeliveryPending
-          this.updateItem.emit({ orderUpdate: this.vm.itemDetails, updates: {
-            status: Status.DeliveryPending
-            , reason: 'Sharer confirmed ability to drop off the items.'
-          }});
-        }
-      });
+      ref
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((results) => {
+          this.modalVisible = false;
+          if (results === 'Cancel') {
+            // update order to cancel status Status.OrderCancelled
+            this.updateItem.emit({
+              orderUpdate: this.vm.itemDetails,
+              updates: {
+                status: Status.OrderCancelled,
+                reason: 'Sharer refused the drop off terms',
+              },
+            });
+          } else if (results === 'Confirm') {
+            // update order to delivery pending Status.DeliveryPending
+            this.updateItem.emit({
+              orderUpdate: this.vm.itemDetails,
+              updates: {
+                status: Status.DeliveryPending,
+                reason: 'Sharer confirmed ability to drop off the items.',
+              },
+            });
+          }
+        });
     }
   }
 
@@ -78,11 +89,25 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   onCancelMatch(agreement: Agreement) {
-    this.updateItem.emit({ orderUpdate: agreement, updates: {
-      shareId: agreement.shareId
-      , status: Status.OrderCancelled
-      , reason: 'User cancelled the match in agreement detail view'
-    }});
+    this.updateItem.emit({
+      orderUpdate: agreement,
+      updates: {
+        shareId: agreement.shareId,
+        status: Status.OrderCancelled,
+        reason: 'User cancelled the match in agreement detail view',
+      },
+    });
+  }
+
+  onConfirmDropOff(agreement: Agreement) {
+    this.updateItem.emit({
+      orderUpdate: agreement,
+      updates: {
+        shareId: agreement.shareId,
+        status: Status.OrderFulfilled,
+        reason: 'Sharer confirmed the delivery of the items',
+      },
+    });
   }
 
   onSubmitEdit() {
@@ -100,6 +125,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
 
   formatItemDetails(agreement: Agreement) {
-    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${
+      agreement.details ? ', ' + agreement.details : ''
+    }`;
   }
 }

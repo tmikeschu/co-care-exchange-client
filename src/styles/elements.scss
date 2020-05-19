@@ -1,10 +1,15 @@
 // bare element styles only. No classes here.
 @import './theme.scss';
 
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   font-size: 16px;
   line-height: 1.45;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   zoom: 1;
 }
 

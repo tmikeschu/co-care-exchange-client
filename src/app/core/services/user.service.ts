@@ -26,6 +26,7 @@ const UserForEmail = gql`
         name
       }
       householdSize
+      sendEmailMatchNotifications
     }
   }
 `;
