@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Storage } from 'aws-amplify';
 import { Agreement } from '../models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
@@ -15,7 +15,7 @@ const customPrefix = {
     templateUrl: './item-takepicture.component.html',
     styleUrls: ['./item-takepicture.component.scss']
   })
-  export class ItemTakePictureComponent implements OnInit {
+  export class ItemTakePictureComponent implements OnInit, OnDestroy {
     @Input() agreement: Agreement;
     @Input() imagename: string;
     @Input() showImageArea: boolean;
@@ -61,6 +61,10 @@ const customPrefix = {
         this.userProfile = this.userService.getCurrentUserProfile();
         customPrefix.public = 'public/' + this.userProfile.id + '/' + this.agreement.shareId + '/' ;
     }    
+
+    ngOnDestroy(){
+        this.stopCamera();
+    }
     
     captureimage(){
         this.hideVid = true;
@@ -121,32 +125,7 @@ const customPrefix = {
 
     handleError(error) {
         console.log('Error: ', error);
-    }
-
-    //NOTE: JUST A TEST
-    getImage(){
-        let self = this;
-        
-        Storage.get('a2eeb5d69d004a78ad5f8d6530db156e/ab37d796eb384a76b93e0e1c7ff652b7/1589740928755', {  download: true, level: 'public' })             
-        .then((res) => {        
-            console.log('success => ', res);  
-            
-            console.log('image body', JSON.parse(JSON.stringify(res))['Body']);
-
-            //var canvas2 = <HTMLCanvasElement> document.getElementById('c');
-            //var ctx = canvas2.getContext("2d");
-            var image = new Image();
-            image.onload = function() {
-                self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
-            };   
-            image.src = JSON.parse(JSON.stringify(res))['Body'];
-            
-            
-            //this.canvasElement.nativeElement.getContext('2d').drawImage(JSON.parse(JSON.stringify(res))['Body'], 0, 0);
-        }).catch((err) => {    
-            console.log('error => ', err);      
-        });
-    }
+    }  
 
     stopCamera(){
         let videoElem = this.videoElement.nativeElement.srcObject;
