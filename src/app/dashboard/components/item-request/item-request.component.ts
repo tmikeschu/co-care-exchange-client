@@ -62,7 +62,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: '' });
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: null });
     this.orderNoteFC.patchValue('');
   }
 
