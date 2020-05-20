@@ -26,8 +26,7 @@ import { Storage } from 'aws-amplify';
         Storage.get(this.imageUrl, {  download: true, level: 'public' })             
         .then((res) => {        
             //console.log('success => ', res);          
-            //console.log('image body', JSON.parse(JSON.stringify(res))['Body']);
-
+           
             var image = new Image();
 
             image.onload = function() {
