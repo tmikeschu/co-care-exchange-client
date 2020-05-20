@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -30,6 +30,15 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Router } from '@angular/router';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
+import * as Hammer from 'hammerjs';
+
+class HammerConfig extends HammerGestureConfig {
+  overrides = {
+    'swipe': {
+      direction: Hammer.DIRECTION_HORIZONTAL
+    }
+  };
+}
 
 @NgModule({
   imports: [
@@ -62,6 +71,7 @@ import { ContributorsComponent } from './contributors/contributors.component';
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: HammerConfig },
   ],
   exports: [],
   bootstrap: [AppComponent],
