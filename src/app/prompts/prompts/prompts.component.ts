@@ -95,7 +95,7 @@ export class PromptsComponent implements OnInit {
       this.prompts = prompts.data.prompts;
 
       for (let x = 0; x < prompts.data.prompts.length; x++) {
-        if (!this.selectedPrompts.find((element) => element['groupName'] == this.prompts[x].groupName)) {
+        if (!this.selectedPrompts.find((element) => element['groupName'] === this.prompts[x].groupName)) {
           this.selectedPrompts.push({ groupName: this.prompts[x].groupName, showQuestions: 'No', prompts: [] });
         }
       }
@@ -137,13 +137,13 @@ export class PromptsComponent implements OnInit {
 
     for (let x = 0; x < this.prompts.length; x++) {
       if (this.prompts[x].sharing > 0) {
-        if (!this.shares.find((element) => element == this.prompts[x].groupName)) {
+        if (!this.shares.find((element) => element === this.prompts[x].groupName)) {
           this.shares.push(this.prompts[x]);
         }
       }
 
       if (this.prompts[x].requesting > 0) {
-        if (!this.requests.find((element) => element == this.prompts[x].groupName)) {
+        if (!this.requests.find((element) => element === this.prompts[x].groupName)) {
           this.requests.push(this.prompts[x]);
         }
       }
@@ -169,10 +169,10 @@ export class PromptsComponent implements OnInit {
   onConfirm() {
     // console.log('onConfirm selectedPrompts', this.selectedPrompts);
     for (let x = 0; x < this.selectedPrompts.length; x++) {
-      if (this.selectedPrompts[x].showQuestions == 'Yes') {
+      if (this.selectedPrompts[x].showQuestions === 'Yes') {
         // console.log('onConfirm prompts', this.selectedPrompts[x].prompts);
         for (let y = 0; y < this.selectedPrompts[x].prompts.length; y++) {
-          if (this.selectedPrompts[x].prompts[y].sharing != 0 || this.selectedPrompts[x].prompts[y].requesting != 0) {
+          if (this.selectedPrompts[x].prompts[y].sharing !== 0 || this.selectedPrompts[x].prompts[y].requesting !== 0) {
             console.log('onConfirm item', this.selectedPrompts[x].prompts[y]);
             this.promptService.savePrompts(this.selectedPrompts[x].prompts[y]).subscribe((val) => {
               console.log('savePrompts return', val);
@@ -187,7 +187,7 @@ export class PromptsComponent implements OnInit {
   onCancelBackToDashboard(){
     this.router.navigate(['/dashboard']);
   }
-  
+
   onChangeAnswers() {
     this.showConfirm = false;
     this.showConfirmBtn = false;
@@ -214,13 +214,13 @@ export class PromptsComponent implements OnInit {
       this.prompts[x].size = null;
 
       for (let y = 0; y < this.selectedPrompts.length; y++) {
-        if (this.prompts[x].groupName == this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] == 'Yes') {
-          if (typeof this.prompts[x].unitsOfIssue != 'undefined' && this.prompts[x].unitsOfIssue) {
+        if (this.prompts[x].groupName === this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] === 'Yes') {
+          if (typeof this.prompts[x].unitsOfIssue !== 'undefined' && this.prompts[x].unitsOfIssue) {
             this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
             this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
           }
 
-          if (typeof this.prompts[x].sizes != 'undefined' && this.prompts[x].sizes) {
+          if (typeof this.prompts[x].sizes !== 'undefined' && this.prompts[x].sizes) {
             this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
             this.prompts[x].size = this.prompts[x].sizeChoices[0];
           }

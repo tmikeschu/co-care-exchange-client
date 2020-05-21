@@ -96,7 +96,7 @@ export class ItemDetailsService {
         this.getItem(itemId);
     }
 
-    public createOrderNote(note: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>): Observable<any> {
+    public createOrderNote(note: Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>): Observable<any> {
         // get the userprofileid, then issue the note create, then issue a side effect to reload the details view
         // catch error and handle subs in calling code
         return this.userProfileId$.pipe(

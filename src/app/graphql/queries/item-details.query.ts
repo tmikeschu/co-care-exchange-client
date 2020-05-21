@@ -24,6 +24,7 @@ export const ItemDetails = gql`
                 id
                 noteBody
                 userId
+                imageUrl
             }
         }
     }
