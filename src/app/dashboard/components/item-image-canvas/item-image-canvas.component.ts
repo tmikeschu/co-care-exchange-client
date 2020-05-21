@@ -27,7 +27,7 @@ import { Storage } from 'aws-amplify';
         .then((res) => {        
             //console.log('success => ', res);          
            
-            var image = new Image();
+            let image = new Image();
 
             image.onload = function() {
                 self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
