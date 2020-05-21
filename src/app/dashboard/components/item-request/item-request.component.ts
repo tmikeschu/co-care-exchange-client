@@ -15,7 +15,7 @@ import { UserService } from 'src/app/core/services/user.service';
   selector: 'app-item-request',
   templateUrl: './item-request.component.html',
   styleUrls: ['../item-share/item-share.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
@@ -38,12 +38,14 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
 
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
-    this.orderNoteFC$.pipe(
-      debounceTime(400)
-      , distinctUntilChanged()
-      , filter(val => val && val !== '')
-      , takeUntil(this.stop$)
-    ).subscribe(val => this.currentNoteVal = val);
+    this.orderNoteFC$
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        filter((val) => val && val !== ''),
+        takeUntil(this.stop$)
+      )
+      .subscribe((val) => (this.currentNoteVal = val));
   }
 
   ngOnDestroy() {
@@ -53,11 +55,12 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
 
   onCancelMatch(agreement: Agreement) {
     this.updateItem.emit({
-      orderUpdate: agreement, updates: {
-        requestId: agreement.requestId
-        , status: Status.OrderCancelled
-        , reason: 'User cancelled the match in agreement detail view'
-      }
+      orderUpdate: agreement,
+      updates: {
+        requestId: agreement.requestId,
+        status: Status.OrderCancelled,
+        reason: 'User cancelled the match in agreement detail view',
+      },
     });
   }
 
@@ -67,7 +70,9 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   }
 
   formatItemDetails(agreement: Agreement) {
-    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${
+      agreement.details ? ', ' + agreement.details : ''
+    }`;
   }
 
   takepicture(){    

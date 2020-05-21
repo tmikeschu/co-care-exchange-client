@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty } from 'rxjs';
+import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip, combineLatest } from 'rxjs';
 import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
@@ -17,6 +17,8 @@ import { AuthenticationService } from './authentication.service';
 export interface IDashboardState {
   needs: Agreement[];
   shares: Agreement[];
+  orgId?: string;
+  filterState: string;
   loading: boolean;
 }
 
@@ -24,10 +26,11 @@ export interface IDashboardState {
   providedIn: 'root',
 })
 export class DashboardService {
-  private state = {
+  private state: IDashboardState = {
     needs: [],
     shares: [],
-    loading: true
+    loading: true,
+    filterState: 'myItems'
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
@@ -36,9 +39,28 @@ export class DashboardService {
   private doPoll$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
-    filter(authState => authState.user && authState.user.userProfile)
-    , map(authState => authState.user.userProfile)
+    filter((authState) => authState.user && authState.user.userProfile),
+    map((authState) => authState.user.userProfile)
   );
+
+  private orgId$: Observable<string> = this.userProfile$
+    .pipe(
+      filter(userProfile => {
+        return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
+      }),
+      map(userProfile => {
+        return userProfile.organization.id;
+      }),
+    );
+
+  private filter$ = new BehaviorSubject<string>(this.state.filterState);
+
+  private dashboardInputs$ = combineLatest([
+    this.doPoll$,
+    this.isOnline$,
+    this.userProfile$,
+    this.filter$
+  ]);
 
   constructor(
     private http: HttpClient,
@@ -50,21 +72,24 @@ export class DashboardService {
     // alive and if the client has internet connectivity
     timer(0, 5000)
       .pipe(
-        withLatestFrom(this.isOnline$, this.doPoll$, this.userProfile$),
-        switchMap(([_tick, isOnline, doPoll, userProfile]) => {
+        withLatestFrom(this.dashboardInputs$),
+        switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id) : empty$;
+          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
         })
       )
-      .subscribe(dashboardData => {
+      .subscribe((dashboardData) => {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
+
+    this.orgId$.subscribe(orgId => this.updateDashboard({ orgId }));
   }
 
-  dashboardHandler(userProfileId: string) {
-    return this.getDashboard(userProfileId)
+  dashboardHandler(userProfileId: string, filterCriteria: string) {
+    const formattedFilter = filterCriteria === 'showAllOrganization' ? filterCriteria : null;
+    return this.getDashboard(userProfileId, formattedFilter)
       .pipe(
         map((data: any) => {
           if (data && data.errors) {
@@ -88,10 +113,15 @@ export class DashboardService {
     this.doPoll$.next(false);
   }
 
-  getDashboard(userId: string): Observable<Result> {
+  changeFilterCriteria(criteria: string) {
+    this.updateDashboard({ filterState: criteria, loading: true });
+    this.filter$.next(criteria);
+  }
+
+  getDashboard(userId: string, filterOption: string): Observable<Result> {
     const query = {
-      query: `query View($userId: ID!) {
-        dashboard(userId: $userId) {
+      query: `query View($userId: ID!, $filterOption: String) {
+        dashboard(userId: $userId, filterOption: $filterOption) {
             requested {
                 itemId
                 name
@@ -100,6 +130,7 @@ export class DashboardService {
                 details
                 statusDisplay
                 status
+                userDisplayName
             }, shared {
                 itemId
                 name
@@ -108,11 +139,13 @@ export class DashboardService {
                 details
                 statusDisplay
                 status
+                userDisplayName
             }
         }
     }`,
       variables: {
         userId: userId,
+        filterOption
       },
     };
     return this.http.post<any>(`${environment.serverUrl}`, query);
@@ -124,12 +157,10 @@ export class DashboardService {
       .mutate({
         mutation: UpdateOrder,
         variables: {
-          input: updates
-        }
+          input: updates,
+        },
       })
-      .pipe(
-        map(handleGQLErrors)
-      );
+      .pipe(map(handleGQLErrors));
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {

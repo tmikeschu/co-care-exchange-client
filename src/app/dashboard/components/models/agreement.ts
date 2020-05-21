@@ -23,6 +23,7 @@ export class Agreement {
     sharerName: string;
     quantity: number;
     orderNotes: IOrderNote[];
+    userDisplayName: string;
 }
 
 interface IOrderNote {
