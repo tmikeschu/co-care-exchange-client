@@ -24,7 +24,7 @@ export const configureAws = (name: string) => {
       // Required only if it's different from Amazon Cognito Region
       // identityPoolRegion: 'XX-XXXX-X',
 
-      identityPoolId: 'us-west-2:812966e4-290a-4acb-98b6-b525023537ad',
+      identityPoolId: config.identityPoolId,
 
       // OPTIONAL - Amazon Cognito User Pool ID
       userPoolId: config.userPoolId,
