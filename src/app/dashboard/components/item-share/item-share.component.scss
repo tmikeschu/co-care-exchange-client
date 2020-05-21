@@ -2,6 +2,7 @@
 
 .agreement-detail-card {
   color: #919191;
+  margin-bottom: 100px;
 
   h2 {
     font-size: 1.5em;
@@ -42,7 +43,8 @@
 
   .send-btn {
     position: relative;
-    bottom: 64px;
+    bottom: 40px;
+    left: 40px;
   }
 
   .status-text {
@@ -173,4 +175,12 @@
   color: #696969;
   font-weight: 600;
   font-size: .7em;
+}
+
+::ng-deep .mat-form-field-wrapper{
+  padding-bottom: 0px;
+}
+
+.cameraicon{
+  color:lightgrey;
 }

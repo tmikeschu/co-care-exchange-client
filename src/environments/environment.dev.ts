@@ -6,6 +6,6 @@ export const environment = {
   ...awsEnv,
   // TODO -- verify this is the dev instance
   serverUrl: 'https://dev-api.cocareexchange.org/graphql?',
-  apiKey: 'zPrRE3Fjmz5mZ1sFQxoRY1qtGRxTM5f41Wu4GdiU',
+  apiKey: 'GRWeLOBUoL9dY6OnduCiU14WXReuYo9E9I9EKfTt',
   production: false,
 };
