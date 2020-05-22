@@ -29,13 +29,10 @@
             </div>
 
             <div *ngFor="let singleprompt of group.singleprompts">
-                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" (click)="removeSingleItem(singleprompt)">highlight_off</mat-icon>
-                {{singleprompt.item}} 
+                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" >highlight_off</mat-icon></div>
+                <div [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}} </div>
             </div>
         </div>
-
-       
-        <!-- <button (click)="nextvals()">whopper</button> -->
     </div>
 
     
@@ -43,13 +40,13 @@
 
     <div *ngIf="showSpecificQuestions">
 
-        <!-- <div *ngFor="let selectedPrompt of selectedPrompts"> -->
-            <!-- <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'"> -->
-            <ng-container >
+        <div *ngFor="let group of selectedPrompts">
+            
+            <ng-container *ngIf="group.prompts.length > 0">
                 <hr>
-                <!-- TODO: Setup loop to show this.....<h2 class="category-head text-center">For {{selectedPrompt.groupName}}</h2> -->
-                <!-- <div *ngFor="let question of selectedPrompt.prompts" class="prompt"> -->
-                <div *ngFor="let question of selectedPrompts" class="prompt">
+                <h2 class="category-head text-center">For {{group.groupName}}</h2>
+                
+                <div *ngFor="let question of group.prompts" class="prompt">
                     
                     <h3 class="text-center">{{question.display}}</h3>
                     <h3 class="text-center">{{question.size}}</h3>
@@ -112,16 +109,9 @@
                         </mat-radio-group>
                     </div>
                     
-                    <!-- <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center" class="itemborder selectpad">
-                        <mat-select [(value)]="question.size" >                    
-                            <mat-option *ngFor="let size of question.sizeChoices" [value]="size">
-                            {{size}}
-                            </mat-option>
-                        </mat-select>
-                    </div> -->
                 </div>
             </ng-container>
-        <!-- </div> -->
+        </div>
     </div>
 
     <div *ngIf="showConfirm" >
