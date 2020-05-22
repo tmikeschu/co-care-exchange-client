@@ -16,10 +16,10 @@
         <div *ngFor="let group of vm.needs">
           <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{group.createdBy}}</p>
           <div *ngFor="let request of group.items">
-            <mat-list-item (swipeleft)="onSwipeLeft()" [routerLink]="['/dashboard-item', 'request', request.itemId]"
+            <mat-list-item (swipeleft)="toggleRowState('rowOpen')" (swiperight)="toggleRowState('rowClosed')" [routerLink]="['/dashboard-item', 'request', request.itemId]"
               class="contentborder dashboard-list-item">
               <div class="swipe-container">
-                <div class="dashboardlistitem">
+                <div class="dashboardlistitem" [@rowAnimate]="rowState" (@rowAnimate.done)="toggleRowState('')">
                   <mat-label class="contentlabel">{{ request.name }}<br>
                     <span class="content-multiplier">x</span><span
                       class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
@@ -28,7 +28,7 @@
                   </mat-label>
                 </div>
                 <div class="swipe-action">
-                  <button mat-flat-button color="primary" mat-fab color="primary">
+                  <button>
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>

@@ -9,6 +9,7 @@ import { Status } from 'src/app/core/constants/enums';
 import { Agreement } from './models/agreement';
 import { FormControl } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, tap, map } from 'rxjs/operators';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface IDashboardGrouping {
   createdBy: string;
@@ -26,11 +27,24 @@ interface IDashboardViewModel {
   selector: 'app-cce-home',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('rowAnimate', [
+      state('rowClosed', style({
+        transform: 'translateX(0)'
+      })),
+      state('rowOpen', style({
+        transform: 'translateX(-75px)'
+      })),
+      transition('* => rowClosed', animate('0.25s')),
+      transition('* => rowOpen', animate('0.25s')),
+    ])
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardViewModel>;
   isAlive: boolean;
+  rowState: 'rowOpen'|'rowClosed'|'';
 
   filter = new FormControl('');
   filter$: Observable<string>;
@@ -46,14 +60,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dashboardService.startPolling();
     this.vm$ = this.dashboardService.state$.pipe(
-      tap(state => {
-        this.filter.patchValue(state.filterState);
+      tap(dashboardState => {
+        this.filter.patchValue(dashboardState.filterState);
       }),
-      map(state => {
+      map(dashboardState => {
         return {
-          ...state,
-          shares: this.createGroupedEntries(state.shares),
-          needs: this.createGroupedEntries(state.needs)
+          ...dashboardState,
+          shares: this.createGroupedEntries(dashboardState.shares),
+          needs: this.createGroupedEntries(dashboardState.needs)
         };
       })
     );
@@ -65,6 +79,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filter$.subscribe(filterValue => {
       this.dashboardService.changeFilterCriteria(filterValue);
     });
+  }
+
+  toggleRowState(rowState: 'rowOpen'|'rowClosed'|'') {
+    this.rowState = rowState;
   }
 
   createGroupedEntries(agreements: Agreement[]) {
@@ -109,8 +127,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSwipeLeft() {
-    console.log('swipe works!!');
+  onSwipeLeft($event) {
+    console.log('event: ', $event);
   }
 
   ngOnDestroy() {

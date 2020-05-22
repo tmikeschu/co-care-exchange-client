@@ -7,7 +7,7 @@
 }
 
 .contentborder {
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid #ccc !important;
 }
 
@@ -65,10 +65,21 @@
   position: absolute;
   top: 0;
   right: 0;
-  z-index: -1;
-  padding-right: 16px;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 0;
   color: #fafafa;
   background-color: mat-color(map-get($colorado-care-exchange-theme, warn));
+
+  button {
+    padding: 16px;
+  }
+
+  mat-icon {
+    color: #fafafa;
+  }
 }
 
 .dashboard-list-item {
@@ -83,13 +94,10 @@
 .dashboardlistitem {
   // transform this element
   background-color: #fafafa;
-  margin-top: 13px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  box-sizing: border-box;
-  padding: 0 16px;
+  padding: 13px 16px 10px 16px;
   position: relative;
-  height: inherit;
-  margin-bottom: 10px;
+  z-index: 1;
 }
