@@ -24,6 +24,8 @@ export const configureAws = (name: string) => {
       // Required only if it's different from Amazon Cognito Region
       // identityPoolRegion: 'XX-XXXX-X',
 
+      identityPoolId: config.identityPoolId,
+
       // OPTIONAL - Amazon Cognito User Pool ID
       userPoolId: config.userPoolId,
 
@@ -65,6 +67,12 @@ export const configureAws = (name: string) => {
       //   responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
       // }
     },
+    Storage: {
+      AWSS3: {
+        bucket: 'care-exchange-images', //REQUIRED -  Amazon S3 bucket
+        region: 'us-west-2', //OPTIONAL -  Amazon service region
+      }
+    }
   });
   Amplify.Logger.LOG_LEVEL = 'DEBUG';
 };

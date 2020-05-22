@@ -6,5 +6,5 @@ export class Result {
             requested: [Agreement],
             shared: [Agreement]
         }
-    }
+    };
 }
