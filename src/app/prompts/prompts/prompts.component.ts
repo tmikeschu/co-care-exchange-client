@@ -6,6 +6,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { filter } from 'rxjs/operators';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-prompts',
@@ -214,7 +215,7 @@ export class PromptsComponent implements OnInit {
     this.showConfirmBtn = false;
     this.showSubmitAnswersBtn = true;
     this.showChangeAnswersBtn = false;
-    this.showSpecificQuestions = true;
+    this.showSpecificQuestions = false;
     this.showGoBackToGroupTypesBtn = true;
   }
 
@@ -256,7 +257,7 @@ export class PromptsComponent implements OnInit {
     // }
 
     //if (addedprompt) {
-      this.showSpecificQuestions = true;
+      this.showSpecificQuestions = false;
       this.showGroupTypeQuestions = false;
       this.showGoBackToGroupTypesBtn = true;
       this.showGoToQuestionsBtn = false;
@@ -273,55 +274,25 @@ export class PromptsComponent implements OnInit {
   }
 
   nextvals(){
+    
     this.selectedPrompts = [];
+    console.log('nextvals - this.multiselectPrompts', this.multiselectPrompts);
     for(let x = 0; x < this.multiselectPrompts.length; x++){
-      for(let y = 0; y < this.multiselectPrompts[x].prompts.length; y++){
-        if(this.multiselectPrompts[x].prompts[y].multiselect){
-          for(let z = 0; z < this.multiselectPrompts[x].prompts[y].multiselect.length; z++){
-            this.selectedPrompts.push(this.multiselectPrompts[x].prompts[y]);
+      for(let y = 0; y < this.multiselectPrompts[x].multiprompts.length; y++){
+        if(typeof this.multiselectPrompts[x].multiprompts[y].multiselect != 'undefined' && this.multiselectPrompts[x].multiprompts[y].multiselect.length > 0){
+          console.log('selected item', this.multiselectPrompts[x].multiprompts[y]);
+          for(let z = 0; z < this.multiselectPrompts[x].multiprompts[y].multiselect.length; z++){
+            this.multiselectPrompts[x].multiprompts[y].size = this.multiselectPrompts[x].multiprompts[y].multiselect[z];
+            let item = Object.assign({}, this.multiselectPrompts[x].multiprompts[y]);
+            this.selectedPrompts.push(item);
           }
+          
         }
       }
     }
 
     console.log('this.selectedPrompts', this.selectedPrompts);
-
-    let addedprompt = false;
-
-    for (let x = 0; x < this.prompts.length; x++) {
-      this.prompts[x].unitsOfIssueChoices = [];
-      this.prompts[x].sizeChoices = [];
-      this.prompts[x].unit = null;
-      this.prompts[x].size = null;
-
-      for (let y = 0; y < this.selectedPrompts.length; y++) {
-        if (this.prompts[x].groupName === this.selectedPrompts[y]['groupName'] && this.selectedPrompts[y]['showQuestions'] === 'Yes') {
-          if (typeof this.prompts[x].unitsOfIssue !== 'undefined' && this.prompts[x].unitsOfIssue) {
-            this.prompts[x].unitsOfIssueChoices = this.prompts[x].unitsOfIssue.split(',');
-            this.prompts[x].unit = this.prompts[x].unitsOfIssueChoices[0];
-          }
-
-          if (typeof this.prompts[x].sizes !== 'undefined' && this.prompts[x].sizes) {
-            this.prompts[x].sizeChoices = this.prompts[x].sizes.split(',');
-            this.prompts[x].size = this.prompts[x].sizeChoices[0];
-          }
-
-          addedprompt = true;
-        }
-      }
-
-      this.prompts[x].sharing = 0;
-      this.prompts[x].requesting = 0;
-    }
-
-    if (addedprompt) {
-      this.showSpecificQuestions = true;
-      this.showGroupTypeQuestions = false;
-      this.showGoBackToGroupTypesBtn = true;
-      this.showGoToQuestionsBtn = false;
-      this.showSubmitAnswersBtn = true;
-    }
-
+    this.showSpecificQuestions = true;
   }
 
   onGoToMultipleSelect(){

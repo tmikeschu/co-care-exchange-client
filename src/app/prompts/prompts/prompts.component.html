@@ -43,14 +43,16 @@
 
     <div *ngIf="showSpecificQuestions">
 
-        <div *ngFor="let selectedPrompt of selectedPrompts">
+        <!-- <div *ngFor="let selectedPrompt of selectedPrompts"> -->
             <!-- <ng-container *ngIf="selectedPrompt.showQuestions == 'Yes'"> -->
             <ng-container >
                 <hr>
-                <h2 class="category-head text-center">For {{selectedPrompt.groupName}}</h2>
-                <div *ngFor="let question of selectedPrompt.prompts" class="prompt">
+                <!-- TODO: Setup loop to show this.....<h2 class="category-head text-center">For {{selectedPrompt.groupName}}</h2> -->
+                <!-- <div *ngFor="let question of selectedPrompt.prompts" class="prompt"> -->
+                <div *ngFor="let question of selectedPrompts" class="prompt">
                     
                     <h3 class="text-center">{{question.display}}</h3>
+                    <h3 class="text-center">{{question.size}}</h3>
 
                     <div fxLayout="row" fxLayoutAlign="space-around center">
                         <div fxLayout="column">
@@ -110,16 +112,16 @@
                         </mat-radio-group>
                     </div>
                     
-                    <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center" class="itemborder selectpad">
+                    <!-- <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center" class="itemborder selectpad">
                         <mat-select [(value)]="question.size" >                    
                             <mat-option *ngFor="let size of question.sizeChoices" [value]="size">
                             {{size}}
                             </mat-option>
                         </mat-select>
-                    </div>
+                    </div> -->
                 </div>
             </ng-container>
-        </div>
+        <!-- </div> -->
     </div>
 
     <div *ngIf="showConfirm" >
@@ -155,30 +157,30 @@
 
     <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
         <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showChangeAnswersBtn" (click)="onChangeAnswers()">
-            <mat-icon class="cce-white">arrow_back</mat-icon>
+            <mat-icon class="cce-white">arrow_back</mat-icon>AAA
         </button>
         
         <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showGoBackToGroupTypesBtn" (click)="onGoBackToGroupTypes()">
-            <mat-icon class="cce-white">arrow_back</mat-icon>
+            <mat-icon class="cce-white">arrow_back</mat-icon>BBB
         </button>
 
         
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showSubmitAnswersBtn" (click)="onSubmit()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>
+            <mat-icon class="cce-white">arrow_forward</mat-icon>CCC
         </button>
         
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showConfirmBtn" (click)="onConfirm()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>
+            <mat-icon class="cce-white">arrow_forward</mat-icon>DDD
         </button>
 
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showGoToQuestionsBtn" (click)="onGoToQuestions()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>
+            <mat-icon class="cce-white">arrow_forward</mat-icon>EEE
         </button>
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showMultipleSelectBtn" (click)="onGoToMultipleSelect()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>
+            <mat-icon class="cce-white">arrow_forward</mat-icon>FFF
         </button>
     </div>
 
