@@ -70,7 +70,7 @@ export class DashboardService {
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
     // alive and if the client has internet connectivity
-    timer(0, 5000)
+    timer(0, 1000000)
       .pipe(
         withLatestFrom(this.dashboardInputs$),
         switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {

@@ -109,6 +109,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSwipeLeft() {
+    console.log('swipe works!!');
+  }
+
   ngOnDestroy() {
     this.dashboardService.stopPolling();
     this.destroy$.next();

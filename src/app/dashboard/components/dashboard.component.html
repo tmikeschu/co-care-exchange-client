@@ -16,15 +16,22 @@
         <div *ngFor="let group of vm.needs">
           <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{group.createdBy}}</p>
           <div *ngFor="let request of group.items">
-            <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]"
+            <mat-list-item (swipeleft)="onSwipeLeft()" [routerLink]="['/dashboard-item', 'request', request.itemId]"
               class="contentborder dashboard-list-item">
-              <div class="dashboardlistitem">
-                <mat-label class="contentlabel">{{ request.name }}<br>
-                  <span class="content-multiplier">x</span><span
-                    class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
-                <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
-                  {{ request.statusDisplay }}
-                </mat-label>
+              <div class="swipe-container">
+                <div class="dashboardlistitem">
+                  <mat-label class="contentlabel">{{ request.name }}<br>
+                    <span class="content-multiplier">x</span><span
+                      class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
+                  <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
+                    {{ request.statusDisplay }}
+                  </mat-label>
+                </div>
+                <div class="swipe-action">
+                  <button mat-flat-button color="primary" mat-fab color="primary">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
               </div>
             </mat-list-item>
           </div>
