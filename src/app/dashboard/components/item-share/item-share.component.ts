@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ChangeDetectionStrategy, EventEmitter, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, filter, distinctUntilChanged, takeUntil, take, tap, finalize } from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Agreement } from '../models/agreement';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
 import { Router } from '@angular/router';
+import { UserProfile } from 'src/app/models/UserProfile';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-item-share',
@@ -20,9 +22,12 @@ import { Router } from '@angular/router';
 })
 export class ItemShareComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId'>>();
-  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>();
+  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
 
+  showImageArea:boolean = false;
+  imagename: string = '';
+  userProfile: UserProfile;
   status = Status; // enum binding to use in view template
 
   modalVisible = false;
@@ -33,9 +38,11 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router) {}
+  constructor(private dialog: MatDialog, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
+    this.userProfile = this.userService.getCurrentUserProfile();
+
     // form input
     this.orderNoteFC$ = this.orderNoteFC.valueChanges;
     this.orderNoteFC$
@@ -110,8 +117,8 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmitEdit() {
-    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId });
+  onSubmitEdit() {   
+    this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: null });
     this.orderNoteFC.patchValue('');
   }
 
@@ -129,4 +136,22 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       agreement.details ? ', ' + agreement.details : ''
     }`;
   }
+
+  takepicture(){    
+    console.log('vm', this.vm);
+    this.imagename = Date.now().toString();
+    this.showImageArea = true;
+  }  
+
+  hidepicture(){
+    this.showImageArea = false;
+  }
+
+  pictureTaken(){
+    this.showImageArea = false;    
+    this.createNote.emit({ noteBody: 'image', itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
+    this.orderNoteFC.patchValue('');
+  }
+
+  
 }

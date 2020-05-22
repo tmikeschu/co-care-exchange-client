@@ -1,4 +1,5 @@
 <section class="section agreement-detail-card" fxLayout="column" fxLayoutAlign="center center">
+    
     <div>
         <h2> {{ vm.itemDetails.name }}</h2>
         <span class="quantity-prefix">x</span><span>{{ formatItemDetails(vm.itemDetails) }}</span>
@@ -27,7 +28,10 @@
             }">
                 <p class="author">{{ note.createdBy }}</p>
                 <div class="chat-body">
-                    <div>{{ note.noteBody }}</div>
+                    <div *ngIf="note.imageUrl == null">{{ note.noteBody }}</div>
+                    <div *ngIf="note.imageUrl != null">                       
+                        <app-item-image-canvas [imageUrl]="note.imageUrl"></app-item-image-canvas>
+                    </div>
                     <div>
                         <small><i>{{ note.createdOn | date:'short' }}</i></small>
                     </div>
@@ -45,7 +49,7 @@
         </div>
 
         <!-- Chat Input -->
-        <div class="input-area" fxLayout="row" fxLayoutAlign="start center"
+        <div class="input-area" fxLayout="row" fxLayoutAlign="start center" 
             *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled">
             <mat-form-field appearance="outline">
                 <textarea matInput [formControl]="orderNoteFC" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
@@ -53,10 +57,16 @@
                 </textarea>
             </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end center" *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled">
-            <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()">
+        <div fxLayout="row" fxLayoutAlign="end center" *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled" >
+            <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()" >
                 <mat-icon>send</mat-icon>
             </button>
+            <mat-icon class="cameraicon" (click)="takepicture()" *ngIf="!showImageArea">camera_alt</mat-icon>
+            <mat-icon class="cameraicon" (click)="hidepicture()" *ngIf="showImageArea">keyboard_arrow_up</mat-icon>
+        </div>
+
+        <div>           
+            <app-item-takepicture *ngIf="showImageArea" [agreement]="vm.itemDetails" [imagename]="imagename" [showImageArea]="showImageArea" (picturetakenEvent)="pictureTaken()"></app-item-takepicture>
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
@@ -64,8 +74,7 @@
                 mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
             <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled" 
                 mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Drop-Off</button>
-        </div>
-
+        </div>      
     </div>
 </section>
 
