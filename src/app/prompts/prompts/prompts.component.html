@@ -3,7 +3,7 @@
     <mat-icon (click)="onCancelBackToDashboard()" class="leavequestionspage">highlight_off</mat-icon>
 
     <div *ngIf="showGroupTypeQuestions">
-        <div *ngFor="let grouptype of selectedPrompts" class="prompt">
+        <div *ngFor="let grouptype of promptGroups" class="prompt">
             <h3 class="category-head text-center">Are you requesting or sharing any {{grouptype.groupName}}?</h3>
             <div class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
                 <mat-radio-group aria-label="Select an option" [(ngModel)]="grouptype.showQuestions">
@@ -19,10 +19,10 @@
             <hr>
             <h2 class="category-head text-center">{{group.groupName}}</h2>
             <div *ngFor="let multiprompt of group.multiprompts">
-                <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" (click)="removeMultiItem(multiprompt)">highlight_off</mat-icon>
-                {{multiprompt.item}}
-                <mat-select [(value)]="multiprompt.multiselect" multiple>
-                    <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters" >
+                <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
+                <div [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</div>
+                <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false">
+                    <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
                         {{filters}}
                     </mat-option>                    
                 </mat-select>
@@ -35,7 +35,7 @@
         </div>
 
        
-        <button (click)="nextvals()">whopper</button>
+        <!-- <button (click)="nextvals()">whopper</button> -->
     </div>
 
     
@@ -105,7 +105,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div *ngIf="question.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
+                    <div *ngIf="question.unitsOfIssueChoices != null && question.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
                         <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unit">
                             <mat-radio-button class="btn radio-group" *ngFor="let unit of question.unitsOfIssueChoices"
                                 [value]="unit">{{unit}}</mat-radio-button>
@@ -162,6 +162,10 @@
         
         <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showGoBackToGroupTypesBtn" (click)="onGoBackToGroupTypes()">
             <mat-icon class="cce-white">arrow_back</mat-icon>BBB
+        </button>
+
+        <button class="nav-action btn cce" mat-fab color="primary"  *ngIf="showGoBackMultipleSelectBtn" (click)="onGoBackMultipleSelect()">
+            <mat-icon class="cce-white">arrow_back</mat-icon>ZZZ
         </button>
 
         

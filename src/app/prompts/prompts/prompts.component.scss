@@ -143,3 +143,27 @@ h2 {
 .cardsizeright{
   width:30%;
 }
+
+.itemremovedicon{
+  display:inline-block;  
+  color: red;
+}
+
+.itemnotremovedicon{
+  display:inline-block;
+  color: #525252;
+}
+
+.removeicon{
+  vertical-align: bottom;
+}
+
+.itemremoved{
+  display:inline-block;
+  color: lightgrey;
+}
+
+.itemnotremoved{
+  display:inline-block;
+  color: #525252;
+}
