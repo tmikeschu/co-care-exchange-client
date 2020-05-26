@@ -88,9 +88,6 @@ export class ItemShareComponent implements OnInit, OnDestroy {
           }
         });
     }
-
-
-    
   }
 
   ngOnDestroy() {

@@ -6,5 +6,6 @@ export const individualsAWSInfo: CUPMap = {
     region: environment.aws.region,
     userPoolId: environment.aws.userPoolId,
     userPoolWebClientId: environment.aws.userPoolWebClientId,
+    identityPoolId: environment.aws.identityPoolId
   },
 };

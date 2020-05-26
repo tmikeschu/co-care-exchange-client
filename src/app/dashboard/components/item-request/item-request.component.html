@@ -29,7 +29,7 @@
                 <div class="chat-body">
                     <div *ngIf="note.imageUrl == null">{{ note.noteBody }}</div>
                     <div *ngIf="note.imageUrl != null">                       
-                        <app-item-image-canvass [imageUrl]="note.imageUrl"></app-item-image-canvass>
+                        <app-item-image-canvas [imageUrl]="note.imageUrl"></app-item-image-canvas>
                     </div>
                     <div>
                         <small><i>{{ note.createdOn | date:'short' }}</i></small>

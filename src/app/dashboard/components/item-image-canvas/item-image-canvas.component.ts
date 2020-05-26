@@ -2,11 +2,11 @@ import { OnInit, Renderer2, Component, ElementRef, ViewChild, Input } from '@ang
 import { Storage } from 'aws-amplify';
 
 @Component({
-    selector: 'app-item-image-canvass',
-    templateUrl: './item-image-canvass.component.html',
-    styleUrls: ['./item-image-canvass.component.scss']
+    selector: 'app-item-image-canvas',
+    templateUrl: './item-image-canvas.component.html',
+    styleUrls: ['./item-image-canvas.component.scss']
   })
-  export class ItemImageCanvassComponent implements OnInit {
+  export class ItemImageCanvasComponent implements OnInit {
     @Input() imageUrl: string;
     private canvasElement: ElementRef;
     @ViewChild('canvas', { static: false }) set content(content: ElementRef) {
@@ -27,7 +27,7 @@ import { Storage } from 'aws-amplify';
         .then((res) => {        
             //console.log('success => ', res);          
            
-            var image = new Image();
+            let image = new Image();
 
             image.onload = function() {
                 self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
