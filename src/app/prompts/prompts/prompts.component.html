@@ -18,9 +18,9 @@
         <div *ngFor="let group of multiselectPrompts">
             <hr>
             <h2 class="category-head text-center">{{group.groupName}}</h2>
-            <div *ngFor="let multiprompt of group.multiprompts">
+            <div *ngFor="let multiprompt of group.multiprompts" class="multiselectitem">
                 <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
-                <div [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</div>
+                <div [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'" class="singleitemtext">{{multiprompt.item}}</div>
                 <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false">
                     <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
                         {{filters}}
@@ -28,9 +28,9 @@
                 </mat-select>
             </div>
 
-            <div *ngFor="let singleprompt of group.singleprompts">
-                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" >highlight_off</mat-icon></div>
-                <div [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}} </div>
+            <div *ngFor="let singleprompt of group.singleprompts" class="multiselectitem">
+                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
+                <div [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'" class="singleitemtext">{{singleprompt.item}} </div>
             </div>
         </div>
     </div>
@@ -147,34 +147,34 @@
 
     <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
         <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showChangeAnswersBtn" (click)="onChangeAnswers()">
-            <mat-icon class="cce-white">arrow_back</mat-icon>AAA
+            <mat-icon class="cce-white">arrow_back</mat-icon>
         </button>
         
         <button class="nav-action btn cce" mat-fab color="primary" *ngIf="showGoBackToGroupTypesBtn" (click)="onGoBackToGroupTypes()">
-            <mat-icon class="cce-white">arrow_back</mat-icon>BBB
+            <mat-icon class="cce-white">arrow_back</mat-icon>
         </button>
 
         <button class="nav-action btn cce" mat-fab color="primary"  *ngIf="showGoBackMultipleSelectBtn" (click)="onGoBackMultipleSelect()">
-            <mat-icon class="cce-white">arrow_back</mat-icon>ZZZ
+            <mat-icon class="cce-white">arrow_back</mat-icon>
         </button>
 
         
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showSubmitAnswersBtn" (click)="onSubmit()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>CCC
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
         </button>
         
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showConfirmBtn" (click)="onConfirm()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>DDD
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
         </button>
 
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showGoToQuestionsBtn" (click)="onGoToQuestions()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>EEE
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
         </button>
 
         <button class="nav-action btn cce" mat-fab  color="primary" *ngIf="showMultipleSelectBtn" (click)="onGoToMultipleSelect()">
-            <mat-icon class="cce-white">arrow_forward</mat-icon>FFF
+            <mat-icon class="cce-white">arrow_forward</mat-icon>
         </button>
     </div>
 
