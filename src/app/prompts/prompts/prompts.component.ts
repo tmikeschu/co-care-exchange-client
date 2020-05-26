@@ -260,17 +260,6 @@ export class PromptsComponent implements OnInit {
         }
       }
     }
-
-
-    // for (let y = 0; y < this.selectedPrompts.length; y++) {
-    //   if (this.selectedPrompts[y].sharing !== 0 || this.selectedPrompts[y].requesting !== 0) {
-    //     console.log('onConfirm item', this.selectedPrompts[y]);
-    //     this.promptService.savePrompts(this.selectedPrompts[y]).subscribe((val) => {
-    //       console.log('savePrompts return', val);
-    //       this.router.navigate(['/dashboard']);
-    //     });
-    //   }
-    // }
   }
 
   onGoBackToGroupTypes() {
