@@ -21,19 +21,20 @@
             <div *ngFor="let multiprompt of group.multiprompts" class="groupareamulti">
                 
                 <div  class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
-                <div class="multiselectitem">
-                    <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeiconmulti" >highlight_off</mat-icon></div>
+                <div >                    
                     <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder">
                         <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
                             {{filters}}
                         </mat-option>                    
-                    </mat-select>
+                    </mat-select>  
+                    <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons removeiconmulti" >clear</mat-icon></div>                  
                 </div>
+                
             </div>
 
-            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea">
-                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
+            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea">               
                 <div class="singleitemtext"><h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4></div>
+                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >clear</mat-icon></div>
             </div>
         </div>
     </div>
