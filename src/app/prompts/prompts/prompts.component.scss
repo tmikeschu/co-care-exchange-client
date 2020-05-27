@@ -121,13 +121,6 @@ h2 {
   color: #666;
 }
 
-// ::ng-deep .mat-select-panel {
-//   position: fixed;
-//   bottom: 0;
-//   left: 0;
-//   width: 100%; 
-// }
-
 .numinput{
   color: #29b6f6;
   font-size: 2rem;
@@ -162,8 +155,8 @@ h2 {
 
 .removeiconmulti{
   vertical-align: bottom;
-  //float:right;
-  margin-left: 5px;
+  float:right;
+  margin-right: 30px;
 }
 
 .itemremoved{
@@ -195,9 +188,11 @@ h2 {
 .grouparea{
   margin-bottom: 20px;
   text-align: center;
+  width:300px;
 }
 
 .groupareamulti{
   margin-bottom: 20px;
   text-align: center;
+  width:300px;
 }
