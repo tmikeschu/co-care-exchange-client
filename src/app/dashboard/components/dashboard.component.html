@@ -31,14 +31,14 @@
                     </mat-label>
                   </div>
                   <div class="swipe-action">
-                    <button (click)="deleteItem(request)">
+                    <button (click)="deleteItem($event, request)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
                 </div>
               </mat-list-item>
               <div class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
-                <mat-icon (click)="deleteItem(request)">delete</mat-icon>
+                <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@
               </mat-list-item>
   
               <div class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
-                <mat-icon (click)="deleteItem(request)">delete</mat-icon>
+                <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
               </div>
             </div>
           </div>
