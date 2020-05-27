@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -27,18 +27,8 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { Router } from '@angular/router';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
-import * as Hammer from 'hammerjs';
-
-class HammerConfig extends HammerGestureConfig {
-  overrides = {
-    'swipe': {
-      direction: Hammer.DIRECTION_HORIZONTAL
-    }
-  };
-}
 
 @NgModule({
   imports: [
@@ -70,8 +60,7 @@ class HammerConfig extends HammerGestureConfig {
     AmplifyService,
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: HammerConfig },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   exports: [],
   bootstrap: [AppComponent],
