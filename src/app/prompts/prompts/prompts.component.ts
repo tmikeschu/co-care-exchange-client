@@ -4,6 +4,7 @@ import { PromptService } from 'src/app/core/services/cce/prompt.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { SaveUserInput } from 'src/app/graphql/models/save-user-input.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-prompts',
@@ -68,7 +69,7 @@ export class PromptsComponent implements OnInit {
     }
   ];
 
-  constructor(private promptService: PromptService, private router: Router, private userService: UserService) {}
+  constructor(private promptService: PromptService, private router: Router, private userService: UserService, private toastrService: ToastrService) {}
 
   ngOnInit() {
     this.configure();
@@ -206,7 +207,12 @@ export class PromptsComponent implements OnInit {
       }
     }
 
-    if(!itemadded){return;}
+    if(!itemadded){
+      this.toastrService.warning("Please select items you are sharing or requsting.", null, {
+        positionClass: 'toast-top-center',
+      });
+      return;
+    }
     console.log('onGoToQuestions - this.selectedPrompts', this.selectedPrompts);
     this.showSpecificQuestions = true;
     this.showMultipleSelect = false;
@@ -329,6 +335,11 @@ export class PromptsComponent implements OnInit {
     }
 
     console.log('multiselectPrompts', this.multiselectPrompts);    
+    if(this.multiselectPrompts.length == 0){
+      this.toastrService.warning("Please select items you are sharing or requsting.", null, {
+        positionClass: 'toast-top-center',
+      });
+      return;}
     
     this.showMultipleSelectBtn = false;
     this.showMultipleSelect = true;
