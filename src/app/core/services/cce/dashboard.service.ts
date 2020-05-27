@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip, combineLatest } from 'rxjs';
-import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, filter, exhaustMap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
 import { Result } from 'src/app/dashboard/components/models/dasboard';
@@ -13,6 +13,7 @@ import { UserProfile } from 'src/app/models/UserProfile';
 import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 import { AuthenticationService } from './authentication.service';
+import { ArchiveItem } from 'src/app/graphql/mutations';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -161,6 +162,21 @@ export class DashboardService {
         },
       })
       .pipe(map(handleGQLErrors));
+  }
+
+  archiveItem(itemId: string) {
+    return this.userProfile$.pipe(
+      exhaustMap(profile => this.apollo.mutate({
+        mutation: ArchiveItem,
+        variables: {
+          input: {
+            itemId,
+            userId: profile.id,
+            clientMutationId: '3455555'
+          }
+        }
+      }).pipe(map(handleGQLErrors)))
+    );
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {
