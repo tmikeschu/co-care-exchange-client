@@ -15,22 +15,25 @@
 
     <div *ngIf="showMultipleSelect">
     
-        <div *ngFor="let group of multiselectPrompts">
+        <div *ngFor="let group of multiselectPrompts" class="multiarea">
             <hr>
             <h2 class="category-head text-center">{{group.groupName}}</h2>
-            <div *ngFor="let multiprompt of group.multiprompts" class="multiselectitem">
-                <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
-                <div [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'" class="singleitemtext">{{multiprompt.item}}</div>
-                <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false">
-                    <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
-                        {{filters}}
-                    </mat-option>                    
-                </mat-select>
+            <div *ngFor="let multiprompt of group.multiprompts" class="groupareamulti">
+                
+                <div  class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
+                <div class="multiselectitem">
+                    <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeiconmulti" >highlight_off</mat-icon></div>
+                    <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder">
+                        <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
+                            {{filters}}
+                        </mat-option>                    
+                    </mat-select>
+                </div>
             </div>
 
-            <div *ngFor="let singleprompt of group.singleprompts" class="multiselectitem">
+            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea">
                 <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >highlight_off</mat-icon></div>
-                <div [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'" class="singleitemtext">{{singleprompt.item}} </div>
+                <div class="singleitemtext"><h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4></div>
             </div>
         </div>
     </div>

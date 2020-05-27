@@ -91,7 +91,7 @@ mat-form-field {
 }
 
 h4 {
-  color: #919191!important; 
+  color: #919191; 
   margin:0px;  
 }
 
@@ -104,13 +104,13 @@ h4 {
 }
 
 h3 {
-  color: #919191!important; 
+  color: #919191 !important; 
   margin:0px;
   font-size: 1.1em;
 }
 
 h2 {
-  color: #919191!important; 
+  color: #29b6f6 !important; 
   margin:0px;
 }
 
@@ -131,7 +131,7 @@ h2 {
 .numinput{
   color: #29b6f6;
   font-size: 2rem;
-  background-color: #fafafa!important;
+  background-color: #fafafa !important;
   width:80px;
   text-align:center;
 }
@@ -150,30 +150,50 @@ h2 {
 }
 
 .itemnotremovedicon{
-  display:inline-block;
+  display:inline;
   color: #525252;
 }
 
 .removeicon{
   vertical-align: bottom;
+  margin-left: 20px;
+}
+
+.removeiconmulti{
+  vertical-align: bottom;
+  float:left;
+  margin-left: 20px;
 }
 
 .itemremoved{
-  display:inline-block;
+  display:inline;
   color: lightgrey;
 }
 
 .itemnotremoved{
   display:inline-block;
-  color: #525252;
+  color: #919191;
 }
 
-.multiselectitem{
-  border-radius: 8px;
-    border: 1px solid #ccc!important;
-    margin-bottom: 10px;
+.selectborder{border-radius: 8px;
+  border: 1px solid #ccc!important;  
+  width: 200px;
 }
+
+.multiitemtext{
+  display: inline;
+  padding-left: 30px;}
 
 .singleitemtext{
-  padding-left: 10px;
+  display: inline;
+  padding-left: 20px;
+}
+
+.grouparea{
+  margin-bottom: 20px;
+}
+
+.groupareamulti{
+  margin-bottom: 20px;
+  text-align: center;
 }
