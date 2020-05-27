@@ -29,7 +29,6 @@
   color: #696969;
   font-weight: 600;
   font-size: 0.7em;
-  // width: 60%;
 }
 
 .contentstatusred {
@@ -83,16 +82,18 @@
 }
 
 .dashboard-list-item {
+  cursor: pointer;
   display: block;
   -webkit-tap-highlight-color: transparent;
   width: 100%;
   padding: 10 0 0 0;
-  //font-size: 16px;
-  margin-bottom: 4px;
+}
+
+.row-item {
+  margin: 4px 0;
 }
 
 .dashboardlistitem {
-  // transform this element
   background-color: #fafafa;
   display: flex;
   flex-direction: row;
@@ -100,4 +101,12 @@
   padding: 13px 16px 10px 16px;
   position: relative;
   z-index: 1;
+}
+
+.desktop-delete {
+  cursor: pointer;
+  padding: 13px 0 10px 13px;
+  mat-icon {
+    color: mat-color(map-get($colorado-care-exchange-theme, warn));
+  }
 }

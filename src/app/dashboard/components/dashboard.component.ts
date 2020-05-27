@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil, tap, map, catchError, take } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { groupBy } from 'lodash';
 
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Status } from 'src/app/core/constants/enums';
 import { Agreement } from './models/agreement';
-import { FormControl } from '@angular/forms';
-import { distinctUntilChanged, takeUntil, tap, map } from 'rxjs/operators';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ConfirmDeleteRequestComponent } from './confirm-delete-request/confirm-delete-request.component';
 
 interface IDashboardGrouping {
   createdBy: string;
@@ -38,8 +40,7 @@ interface IDashboardViewModel {
       transition('* => rowClosed', animate('0.25s')),
       transition('* => rowOpen', animate('0.25s')),
     ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardViewModel>;
@@ -49,13 +50,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   filter = new FormControl('');
   filter$: Observable<string>;
 
+  status = Status;
+
   destroy$ = new Subject();
+
+  isWeb: boolean;
 
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private router: Router
-  ) { }
+    private toastrService: ToastrService,
+    private breakpointObserver: BreakpointObserver,
+  ) {
+    this.breakpointObserver.observe([Breakpoints.Web])
+      .subscribe(({ matches: isWeb}) => {
+        this.isWeb = isWeb;
+      });
+  }
 
   ngOnInit() {
     this.dashboardService.startPolling();
@@ -81,10 +92,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleRowState(rowState: 'rowOpen'|'rowClosed'|'') {
-    this.rowState = rowState;
-  }
-
   createGroupedEntries(agreements: Agreement[]) {
     const grouped: {[key: string]: Agreement[]} = groupBy(agreements, 'userDisplayName');
     return Object.entries(grouped).map(([name, items]) => {
@@ -97,6 +104,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   formatItemDetails(agreement: Agreement) {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+  }
+
+  deleteItem(event, item: Agreement) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const ref = this.dialog.open(ConfirmDeleteRequestComponent, {
+        width: '300px',
+        data: item,
+      });
+
+      ref
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((results) => {
+          if (results === 'yep') {
+            this.dashboardService.archiveItem(item.itemId)
+              .pipe(
+                takeUntil(this.destroy$),
+                catchError(this.handleError)
+              ).subscribe();
+          } else {
+            return;
+          }
+        });
   }
 
   getStyle(status: Status): string {
@@ -127,8 +159,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSwipeLeft($event) {
-    console.log('event: ', $event);
+  private handleError(err) {
+    console.error('an error occurred deleting the dashboard item: ', err);
+    this.toastrService.error('An unexpected error has occurred deleting the request. Please try again later.', null, {
+      positionClass: 'toast-top-center'
+    });
+    return of(null);
   }
 
   ngOnDestroy() {
