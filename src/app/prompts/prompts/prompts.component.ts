@@ -169,7 +169,8 @@ export class PromptsComponent implements OnInit {
   }
 
   onGoToQuestions() {
-    this.selectedPrompts = [];    
+    this.selectedPrompts = [];   
+    let itemadded = false; 
 
     for(let x = 0; x < this.multiselectPrompts.length; x++){
 
@@ -187,6 +188,7 @@ export class PromptsComponent implements OnInit {
               this.multiselectPrompts[x].multiprompts[y].sharing = 0;
               let item = Object.assign({}, this.multiselectPrompts[x].multiprompts[y]);                           
               this.selectedPrompts[x]['prompts'].push(item);
+              itemadded = true;
             }
           }          
         }
@@ -199,9 +201,12 @@ export class PromptsComponent implements OnInit {
           this.multiselectPrompts[x].singleprompts[y].sharing = 0;
           let item = Object.assign({}, this.multiselectPrompts[x].singleprompts[y]);                           
           this.selectedPrompts[x]['prompts'].push(item);
+          itemadded = true;
         }
       }
     }
+
+    if(!itemadded){return;}
     console.log('onGoToQuestions - this.selectedPrompts', this.selectedPrompts);
     this.showSpecificQuestions = true;
     this.showMultipleSelect = false;
