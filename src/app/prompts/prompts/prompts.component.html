@@ -22,8 +22,8 @@
                 
                 <div  class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
                 <div >                    
-                    <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder">
-                        <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">
+                    <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder" placeholder="none selected">
+                        <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">                            
                             {{filters}}
                         </mat-option>                    
                     </mat-select>  
