@@ -17,12 +17,13 @@
           <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{group.createdBy}}</p>
           <div *ngFor="let request of group.items" class="row-item">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <mat-list-item (swipeleft)="request.rowState = 'rowOpen'" (swiperight)="request.rowState = 'rowClosed'"
+              <mat-list-item (swipeleft)="toggleRowState(request, 'rowOpen')"
+                (swiperight)="toggleRowState(request, 'rowClosed')"
                 [routerLink]="['/dashboard-item', 'request', request.itemId]" class="contentborder dashboard-list-item">
                 <div class="swipe-container"
                   [@.disabled]="request.status !== status.OrderCancelled && request.status !== status.OrderFulfilled">
                   <div class="dashboardlistitem" [@rowAnimate]="request.rowState"
-                    (@rowAnimate.done)="request.rowState = ''">
+                    >
                     <mat-label class="contentlabel">{{ request.name }}<br>
                       <span class="content-multiplier">x</span><span
                         class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
@@ -38,7 +39,8 @@
                 </div>
               </mat-list-item>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
+            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete"
+              *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
               <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
             </div>
           </div>
@@ -53,12 +55,13 @@
           <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{ group.createdBy }}</p>
           <div *ngFor="let request of group.items" class="row-item">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <mat-list-item (swipeleft)="request.rowState = 'rowOpen'" (swiperight)="request.rowState = 'rowClosed'"
+              <mat-list-item (swipeleft)="toggleRowState(request, 'rowOpen')"
+                (swiperight)="toggleRowState(request, 'rowClosed')"
                 [routerLink]="['/dashboard-item', 'share', request.itemId]" class="contentborder dashboard-list-item">
                 <div class="swipe-container"
                   [@.disabled]="request.status !== status.OrderCancelled && request.status !== status.OrderFulfilled">
                   <div class="dashboardlistitem" [@rowAnimate]="request.rowState"
-                    (@rowAnimate.done)="request.rowState = ''">
+                    >
                     <mat-label class="contentlabel">{{ request.name }}<br>
                       <span class="content-multiplier">x</span><span
                         class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
@@ -74,7 +77,8 @@
                 </div>
               </mat-list-item>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
+            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete"
+              *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
               <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
             </div>
           </div>

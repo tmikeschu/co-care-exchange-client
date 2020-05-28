@@ -131,6 +131,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
   }
 
+  toggleRowState(row: Agreement, animationState: 'rowOpen'|'rowClosed'|'') {
+    row.rowState = animationState;
+    /**
+     * dashboard service polling should probably be refactored, but this works around an issue
+     * where the polling will close the row if it is open. This pauses polling while the row 
+     * is open. polling refactor could entail ability to pause polling and also override it.
+     * A request should be able to be made on an event outside of the timer function emitting
+     */
+    if (animationState === 'rowOpen') {
+      this.dashboardService.stopPolling();
+    } else if (animationState === 'rowClosed') {
+      this.dashboardService.startPolling();
+    }
+  }
+
   getStyle(status: Status): string {
     switch (status) {
       case Status.FindingMatch: {
