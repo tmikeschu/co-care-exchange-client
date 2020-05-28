@@ -6,9 +6,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { CustomMaterialModule } from '../../../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
+import { RegisterOrgInfoDialogComponent } from './components/register-org-info-dialog/register-org-info-dialog.component';
 
 @NgModule({
-  declarations: [RegisterComponent],
+  declarations: [RegisterComponent, RegisterOrgInfoDialogComponent],
   imports: [
     CommonModule,
     CustomMaterialModule,
@@ -18,6 +19,7 @@ import { SharedModule } from '../../../shared/shared.module';
     FlexLayoutModule,
     RouterModule
   ],
-  exports:[RegisterComponent]
+  exports:[RegisterComponent, RegisterOrgInfoDialogComponent],
+  entryComponents: [RegisterOrgInfoDialogComponent]
 })
 export class RegistrationModule {}
