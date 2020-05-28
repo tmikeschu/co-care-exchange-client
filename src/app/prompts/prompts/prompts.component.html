@@ -13,28 +13,28 @@
         </div>
     </div>
 
-    <div *ngIf="showMultipleSelect">
-    
-        <div *ngFor="let group of multiselectPrompts" class="multiarea">
+    <div *ngIf="showMultipleSelect">    
+        <div *ngFor="let group of multiselectPrompts" class="multiarea" >
             <hr>
-            <h2 class="category-head text-center">{{group.groupName}}</h2>
+            <div fxLayout="row" fxLayoutAlign="center center"><h2 class="category-head text-center">{{group.groupName}}</h2></div>
             <div *ngFor="let multiprompt of group.multiprompts" class="groupareamulti">
                 
-                <div  class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
-                <div >                    
-                    <mat-select [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder" placeholder="none selected">
+                <div fxLayout="row" fxLayoutAlign="center center" class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
+                <div fxLayout="row" fxLayoutAlign="center center">                    
+                    <mat-select fxLayout="column" [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder" placeholder="&nbsp;&nbsp;&nbsp;None Selected">
                         <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">                            
                             {{filters}}
                         </mat-option>                    
                     </mat-select>  
-                    <div (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons removeiconmulti" >clear</mat-icon></div>                  
+                    <div fxLayout="column" (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons removeiconmulti" >clear</mat-icon></div>                  
                 </div>
                 
             </div>
 
-            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea">               
-                <div class="singleitemtext"><h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4></div>
-                <div (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >clear</mat-icon></div>
+            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea" fxLayout="row" >
+                <div fxFlex="15"></div>               
+                <div fxFlex="60" fxLayoutAlign="center center" class="singleitemtext"><h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4></div>
+                <div fxFlex="10" (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'" ><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >clear</mat-icon></div>
             </div>
         </div>
     </div>
