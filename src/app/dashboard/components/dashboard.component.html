@@ -37,9 +37,9 @@
                   </div>
                 </div>
               </mat-list-item>
-              <div class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
-                <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
-              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
+              <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
             </div>
           </div>
         </div>
@@ -73,10 +73,9 @@
                   </div>
                 </div>
               </mat-list-item>
-  
-              <div class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
-                <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
-              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete" *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
+              <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
             </div>
           </div>
         </div>
