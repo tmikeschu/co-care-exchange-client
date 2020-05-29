@@ -13,30 +13,58 @@
         </div>
     </div>
 
-    <div *ngIf="showMultipleSelect">    
-        <div *ngFor="let group of multiselectPrompts" class="multiarea" >
-            <hr>
-            <div fxLayout="row" fxLayoutAlign="center center"><h2 class="category-head text-center">{{group.groupName}}</h2></div>
-            <div *ngFor="let multiprompt of group.multiprompts" class="groupareamulti">
-                
-                <div fxLayout="row" fxLayoutAlign="center center" class="multiitemtext"><h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4></div>
-                <div fxLayout="row" fxLayoutAlign="center center">                    
-                    <mat-select fxLayout="column" [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder" placeholder="&nbsp;&nbsp;&nbsp;None Selected">
-                        <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">                            
-                            {{filters}}
-                        </mat-option>                    
-                    </mat-select>  
-                    <div fxLayout="column" (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'"><mat-icon class="mat-icon notranslate material-icons removeiconmulti" >clear</mat-icon></div>                  
-                </div>
-                
-            </div>
+    <div *ngIf="showMultipleSelect">   
+        <table class="tablestyle" *ngFor="let group of multiselectPrompts" >
+            <section>
+                <hr>
+                <tr>                    
+                    <td class="tableheader" colspan="2">
+                        <h2 class="category-head text-center">{{group.groupName}}</h2>
+                    </td>                    
+                </tr>
+            </section>
 
-            <div *ngFor="let singleprompt of group.singleprompts" class="grouparea" fxLayout="row" >
-                <div fxFlex="15"></div>               
-                <div fxFlex="60" fxLayoutAlign="center center" class="singleitemtext"><h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4></div>
-                <div fxFlex="10" (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'" ><mat-icon class="mat-icon notranslate material-icons mat-icon-no-color removeicon" >clear</mat-icon></div>
-            </div>
-        </div>
+            <section *ngFor="let multiprompt of group.multiprompts">
+                <tr>
+                    <td class="tablesidecolumns">
+                        &nbsp;
+                     </td>
+                     <td class="tabledropdownarea">
+                        <h4 [ngClass]="multiprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{multiprompt.item}}</h4>
+                     </td>
+                     <td class="tablesidecolumns">
+                        &nbsp;
+                     </td>
+                </tr>
+                <tr>
+                    <td class="tablesidecolumns">
+                       &nbsp;
+                    </td>
+                    <td class="tabledropdownarea">
+                        <mat-select fxLayout="column" [(value)]="multiprompt.multiselect" multiple [disabled]="multiprompt.removedQuestion ? true : false" class="selectborder" placeholder="&nbsp;&nbsp;&nbsp;None Selected">
+                            <mat-option *ngFor="let filters of multiprompt.sizeChoices" [value]="filters">                            
+                                {{filters}}
+                            </mat-option>                    
+                        </mat-select>  
+                    </td>
+                    <td class="tablesidecolumns">
+                        <mat-icon (click)="removeMultiItem(multiprompt)" [ngClass]="multiprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'" class="mat-icon notranslate material-icons " >clear</mat-icon>
+                    </td>
+                </tr>
+            </section>
+
+            <section *ngFor="let singleprompt of group.singleprompts" class="singleprompttable">
+                <td class="tablesidecolumns">
+                    &nbsp;
+                 </td>
+                 <td class="tabledropdownarea">
+                    <h4 [ngClass]="singleprompt.removedQuestion ? 'itemremoved' : 'itemnotremoved'">{{singleprompt.item}}</h4>
+                 </td>
+                 <td class="tablesidecolumns">
+                    <mat-icon (click)="removeSingleItem(singleprompt)" [ngClass]="singleprompt.removedQuestion ? 'itemremovedicon' : 'itemnotremovedicon'" class="mat-icon notranslate material-icons mat-icon-no-color " >clear</mat-icon>
+                 </td>
+            </section>
+        </table>
     </div>
 
     
