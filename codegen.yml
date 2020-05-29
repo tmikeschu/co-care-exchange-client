@@ -1,0 +1,15 @@
+schema:
+    - https://dev-api.cocareexchange.org/graphql:
+        headers:
+            x-api-key: GRWeLOBUoL9dY6OnduCiU14WXReuYo9E9I9EKfTt
+documents: src/**/*.graphql
+config:
+    serviceName: "CceSDK"
+    sdkClass: true
+    serviceProvidedInRoot: true
+generates:
+    ./src/app/graphql/generatedSDK.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-apollo-angular
