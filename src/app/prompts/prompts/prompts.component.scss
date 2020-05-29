@@ -147,18 +147,7 @@ h2 {
   color: #29b6f6;
 }
 
-.removeicon{
-  vertical-align: bottom;
-  //margin-right: 30px;
-  //float:right;
-}
-
-.removeiconmulti{
-  vertical-align: bottom;
-  float:right;
-  //margin-right: 30px;
-}
-
+/********  Multi Select Items  *******************/
 .itemremoved{
   display:inline;
   color: lightgrey;
@@ -171,28 +160,32 @@ h2 {
 
 .selectborder{border-radius: 8px;
   border: 1px solid #ccc!important;  
-  width: 200px;
-  //margin-left: 40px;
+  width: 190px;
+  margin: 0 auto;
 }
 
-.multiitemtext{
-  display: inline;
-  
+.tablestyle{
+  width:250;
+  border: 0; 
+  padding: 0;
+  margin: 0 auto;
 }
 
-.singleitemtext{
-  display: inline;
-  //padding-left: 20px;
+.tableheader{
+  width: 250px; 
+  text-align: center;
 }
 
-.grouparea{
-  margin-bottom: 20px;
-  //text-align: center;
-  //width:300px;
+.tabledropdownarea{
+  width: 200px; 
+  text-align: center;
 }
 
-.groupareamulti{
-  margin-bottom: 20px;
-  //text-align: center;
-  //width:300px;
+.tablesidecolumns{
+  width: 25px; 
+  vertical-align: middle;
+}
+
+.singleprompttable{
+  margin-top: 10px;
 }
