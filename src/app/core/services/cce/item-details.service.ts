@@ -6,12 +6,11 @@ import { Apollo } from 'apollo-angular';
 import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
-import { ItemDetails } from 'src/app/graphql/queries/item-details.query';
 import { AuthenticationService } from './authentication.service';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
-import { CreateOrderNote, UpdateOrder } from 'src/app/graphql/mutations';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Router } from '@angular/router';
+import { ItemDetailsGQL, CreateOrderNoteGQL, UpdateOrderGQL } from 'src/app/graphql/generatedSDK';
 
 export interface IItemDetailState {
     itemDetails: Agreement;
@@ -47,16 +46,18 @@ export class ItemDetailsService {
         public userService: UserService,
         public authService: AuthenticationService,
         private apollo: Apollo,
-        private router: Router
+        private router: Router,
+        private itemDetailsGQL: ItemDetailsGQL,
+        private createOrderNoteGQL: CreateOrderNoteGQL,
+        private updateOrderGQL: UpdateOrderGQL
     ) {
         combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
                 switchMap(([userId, itemId]) => {
-                    return this.apollo
-                        .query({
-                            query: ItemDetails
-                            , variables: { userId, itemId }
-                        }).pipe(map(handleGQLErrors));
+                    return this.itemDetailsGQL
+                        .watch({ userId, itemId })
+                        .valueChanges
+                        .pipe(map(handleGQLErrors));
                 })
                 , catchError((err: any) => {
                     console.error('an error occured querying item details: ', err);
@@ -109,19 +110,11 @@ export class ItemDetailsService {
             })
             , tap(payload => console.log('payload for createOrderNote: ', payload))
             , switchMap(payload => {
-                return this.apollo
-                    .mutate({
-                        mutation: CreateOrderNote
-                        , variables: {
-                            input: payload
-                        }
-                    }).pipe(
-                        map(handleGQLErrors)
-                        , tap(() => {
-                            /**
-                             * Need to requery for item details due to that call returning
-                             * different data based on whether it is a share, request, or order
-                             */
+                return this.createOrderNoteGQL
+                    .mutate({ input: payload })
+                    .pipe(
+                        map(handleGQLErrors),
+                        tap(() => {
                             this.handleNewNoteSuccess(note.itemId);
                         })
                     );
@@ -145,13 +138,8 @@ export class ItemDetailsService {
             })
             , tap(payload => console.log('update order payload: ', payload))
             , switchMap(payload => {
-                return this.apollo
-                    .mutate({
-                        mutation: UpdateOrder
-                        , variables: {
-                            input: payload
-                        }
-                    })
+                return this.updateOrderGQL
+                    .mutate({ input: payload })
                     .pipe(
                         map(handleGQLErrors)
                         , tap(data => {
