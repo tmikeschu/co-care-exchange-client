@@ -115,7 +115,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   //       reason: 'Sharer confirmed the delivery of the items',
   //     },
   //   });
-  // }
+  // } 
 
   onConfirmFulfillemnt(agreement: Agreement) {
     this.updateItem.emit({

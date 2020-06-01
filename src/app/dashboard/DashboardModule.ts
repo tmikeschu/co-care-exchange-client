@@ -8,7 +8,6 @@ import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
-
 import { DashboardItemContainerComponent } from './containers/dashboard-item-container/dashboard-item-container.component';
 import { ItemRequestComponent } from './components/item-request/item-request.component';
 import { ItemShareComponent } from './components/item-share/item-share.component';
@@ -16,10 +15,11 @@ import { ItemTakePictureComponent } from './components/item-takepicture/item-tak
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
 
 
+
 @NgModule({
   declarations: [
     DashboardComponent,
-    MetricsComponent,    
+    MetricsComponent,
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
