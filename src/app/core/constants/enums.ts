@@ -1,7 +1,7 @@
 export enum Status {
     FindingMatch = 'Matching'
     , NewMatchFound = 'Matched'
-    , DeliveryPending = 'Confirmed'
+    , OrderConfirmed = 'Confirmed'
     , OrderFulfilled = 'Fulfilled'
     , OrderCancelled = 'Cancelled'
 }

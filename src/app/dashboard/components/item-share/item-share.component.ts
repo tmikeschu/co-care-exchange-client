@@ -6,7 +6,7 @@ import { debounceTime, filter, distinctUntilChanged, takeUntil, take, tap, final
 import { IItemDetailState } from 'src/app/core/services/cce/item-details.service';
 import { Status } from 'src/app/core/constants/enums';
 import { MatDialog } from '@angular/material';
-import { ConfirmMatchDialogComponent } from '../confirm-new-match/confirm-new-match.component';
+
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Agreement } from '../models/agreement';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
@@ -54,40 +54,40 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       )
       .subscribe((val) => (this.currentNoteVal = val));
 
-    // confirm match
-    if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
-      this.modalVisible = true;
-      const ref = this.dialog.open(ConfirmMatchDialogComponent, {
-        width: '300px',
-        data: this.vm.itemDetails,
-      });
+    // // confirm match
+    // if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
+    //   this.modalVisible = true;
+    //   const ref = this.dialog.open(ConfirmMatchDialogComponent, {
+    //     width: '300px',
+    //     data: this.vm.itemDetails,
+    //   });
 
-      ref
-        .afterClosed()
-        .pipe(take(1))
-        .subscribe((results) => {
-          this.modalVisible = false;
-          if (results === 'Cancel') {
-            // update order to cancel status Status.OrderCancelled
-            this.updateItem.emit({
-              orderUpdate: this.vm.itemDetails,
-              updates: {
-                status: Status.OrderCancelled,
-                reason: 'Sharer refused the drop off terms',
-              },
-            });
-          } else if (results === 'Confirm') {
-            // update order to delivery pending Status.DeliveryPending
-            this.updateItem.emit({
-              orderUpdate: this.vm.itemDetails,
-              updates: {
-                status: Status.DeliveryPending,
-                reason: 'Sharer confirmed ability to drop off the items.',
-              },
-            });
-          }
-        });
-    }
+    //   ref
+    //     .afterClosed()
+    //     .pipe(take(1))
+    //     .subscribe((results) => {
+    //       this.modalVisible = false;
+    //       if (results === 'Cancel') {
+    //         // update order to cancel status Status.OrderCancelled
+    //         this.updateItem.emit({
+    //           orderUpdate: this.vm.itemDetails,
+    //           updates: {
+    //             status: Status.OrderCancelled,
+    //             reason: 'Sharer refused the drop off terms',
+    //           },
+    //         });
+    //       } else if (results === 'Confirm') {
+    //         // update order to delivery pending Status.OrderConfirmed
+    //         this.updateItem.emit({
+    //           orderUpdate: this.vm.itemDetails,
+    //           updates: {
+    //             status: Status.OrderConfirmed,
+    //             reason: 'Sharer confirmed ability to drop off the items.',
+    //           },
+    //         });
+    //       }
+    //     });
+    // }
   }
 
   ngOnDestroy() {
@@ -101,18 +101,39 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       updates: {
         shareId: agreement.shareId,
         status: Status.OrderCancelled,
-        reason: 'User cancelled the match in agreement detail view',
+        reason: 'Sharer cancelled the match',
       },
     });
   }
 
-  onConfirmDropOff(agreement: Agreement) {
+  // onConfirmDropOff(agreement: Agreement) {
+  //   this.updateItem.emit({
+  //     orderUpdate: agreement,
+  //     updates: {
+  //       shareId: agreement.shareId,
+  //       status: Status.OrderFulfilled,
+  //       reason: 'Sharer confirmed the delivery of the items',
+  //     },
+  //   });
+  // }
+
+  onConfirmFulfillemnt(agreement: Agreement) {
     this.updateItem.emit({
       orderUpdate: agreement,
       updates: {
         shareId: agreement.shareId,
-        status: agreement.status === "Matched" ? Status.DeliveryPending : Status.OrderFulfilled,
-        reason: 'Sharer confirmed the delivery of the items',
+        status: Status.OrderFulfilled,
+        reason: 'Sharer confirmed the fulfillment of the match',
+      },
+    });
+  }
+
+  onConfirmMatch(){    
+    this.updateItem.emit({
+      orderUpdate: this.vm.itemDetails,
+      updates: {
+        status: Status.OrderConfirmed,
+        reason: 'Sharer confirmed matching of the items.',
       },
     });
   }
@@ -124,11 +145,11 @@ export class ItemShareComponent implements OnInit, OnDestroy {
 
   // TODO: this should be a routerLink in the view. Temp work around to move this story forward due to inability to toggle disabled state
   navigateBackToDashboard() {
-    if (!this.modalVisible) {
+    //if (!this.modalVisible) {
       this.router.navigate(['/dashboard']);
-    } else {
-      return false;
-    }
+    //} else {
+    //  return false;
+    //}
   }
 
   formatItemDetails(agreement: Agreement) {

@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
-import { ConfirmMatchDialogComponent } from './components/confirm-new-match/confirm-new-match.component';
+
 import { DashboardItemContainerComponent } from './containers/dashboard-item-container/dashboard-item-container.component';
 import { ItemRequestComponent } from './components/item-request/item-request.component';
 import { ItemShareComponent } from './components/item-share/item-share.component';

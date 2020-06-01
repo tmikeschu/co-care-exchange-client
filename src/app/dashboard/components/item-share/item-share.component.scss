@@ -80,6 +80,10 @@
     }
   }
 
+  .actionbuttons{
+    justify-content: space-between;
+  }
+
   .report-issue {
     > button {
       padding-left: 0;
