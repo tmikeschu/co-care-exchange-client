@@ -5,7 +5,7 @@
         <h3 class="sub-title status-text" [ngClass]="{
             'is-pending': vm.itemDetails.status === status.FindingMatch,
             'is-matched': vm.itemDetails.status === status.NewMatchFound,
-            'is-confirmed': vm.itemDetails.status === status.DeliveryPending,
+            'is-confirmed': vm.itemDetails.status === status.OrderConfirmed,
             'is-fulfilled': vm.itemDetails.status === status.OrderFulfilled,
             'is-cancelled': vm.itemDetails.status === status.OrderCancelled
         }"><strong>{{ vm.itemDetails.statusDisplay }}</strong></h3>
@@ -14,9 +14,9 @@
             {{ vm.itemDetails.sharerName }}!</p>
 
         <p class="body-copy">{{ vm.itemDetails.dialogMessage }}</p>
-
+<!-- 
         <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
-        <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p>
+        <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p> -->
 
         <!-- Chat Log -->
         <h3>Messages</h3>
