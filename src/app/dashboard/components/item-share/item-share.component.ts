@@ -13,6 +13,7 @@ import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-
 import { Router } from '@angular/router';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { UserService } from 'src/app/core/services/user.service';
+import { UpdateItemDetailsComponent } from '../update-item-details/update-item-details.component';
 
 @Component({
   selector: 'app-item-share',
@@ -151,6 +152,14 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     this.showImageArea = false;    
     this.createNote.emit({ noteBody: 'image', itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
     this.orderNoteFC.patchValue('');
+  }
+
+  clickUpdateDetails(){
+    console.log('clickUpdateDetails', this.vm.itemDetails);
+    const ref = this.dialog.open(UpdateItemDetailsComponent, {
+      width: '300px',
+      data: this.vm.itemDetails,
+    });
   }
 
   

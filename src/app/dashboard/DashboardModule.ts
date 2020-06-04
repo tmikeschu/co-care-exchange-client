@@ -14,6 +14,7 @@ import { ItemRequestComponent } from './components/item-request/item-request.com
 import { ItemShareComponent } from './components/item-share/item-share.component';
 import { ItemTakePictureComponent } from './components/item-takepicture/item-takepicture.component';
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
+import { UpdateItemDetailsComponent } from './components/update-item-details/update-item-details.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     ItemRequestComponent,
     ItemShareComponent,
     ItemTakePictureComponent,
-    ItemImageCanvasComponent
+    ItemImageCanvasComponent,
+    UpdateItemDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,6 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ConfirmMatchDialogComponent],
+  entryComponents: [ConfirmMatchDialogComponent, UpdateItemDetailsComponent],
 })
 export class DashboardModule {}

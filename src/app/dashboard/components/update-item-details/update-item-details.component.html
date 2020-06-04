@@ -1,0 +1,39 @@
+<div>
+    <h3>Edit Item</h3>
+    <h3>{{ data.quantity }}</h3>
+    <h3>{{ data.unitOfIssue }}</h3>
+    <h3>{{ data.details }}</h3>
+
+    <!-- <div *ngIf="data.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unit">
+            <mat-radio-button class="btn radio-group" *ngFor="let unit of question.unitsOfIssueChoices"
+                [value]="unit">{{unit}}</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    
+    <div *ngIf="(question.sizeChoices && question.sizeChoices.length > 1)" fxLayout="row" fxLayoutAlign="center" class="itemborder selectpad">
+        <mat-select [(value)]="question.size" >                    
+            <mat-option *ngFor="let size of question.sizeChoices" [value]="size">
+            {{size}}
+            </mat-option>
+        </mat-select>
+    </div> -->
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <input class="itemborder numinput"  [(ngModel)]="data.quantity" type="number">
+        <div>
+            <div>
+                <mat-icon (click)="handleQuantity('up')" class="cce-blue">expand_less</mat-icon>
+            </div>
+            <div>
+                <mat-icon (click)="handleQuantity('down')" class="cce-blue">expand_more</mat-icon>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <button mat-button mat-flat-button color="warn" (click)="onCancelEdit()">Cancel</button>
+        <button mat-button mat-flat-button color="primary" class="btn cce-btn" (click)="onSaveEdit()">Save</button>
+    </div>
+</div>

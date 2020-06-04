@@ -2,7 +2,8 @@
     
     <div>
         <h2> {{ vm.itemDetails.name }}</h2>
-        <span class="quantity-prefix">x</span><span>{{ formatItemDetails(vm.itemDetails) }}</span>
+        <span class="quantity-prefix">x</span><span>{{vm.itemDetails.quantity}}, {{vm.itemDetails.unitOfIssue}}, {{vm.itemDetails.details}}</span><mat-icon (click)="clickUpdateDetails()"class="cce-blue">edit</mat-icon>
+        <!-- <span>{{ formatItemDetails(vm.itemDetails) }}</span> -->
         <h3 class="sub-title status-text" [ngClass]="{
             'is-pending': vm.itemDetails.status === status.FindingMatch,
             'is-matched': vm.itemDetails.status === status.NewMatchFound,

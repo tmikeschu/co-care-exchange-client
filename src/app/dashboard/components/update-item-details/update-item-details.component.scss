@@ -1,0 +1,23 @@
+::ng-deep .mat-form-field-wrapper{
+    padding-bottom: 0px;
+  }
+  
+  .cameraicon{
+    color:lightgrey;
+  }
+
+  .itemborder{
+    border-radius: 8px;
+    border: 1px solid #ccc!important;
+    padding: 5px;
+    width: 200px;
+    margin: auto;
+  }
+
+  .numinput{
+    color: #29b6f6;
+    font-size: 2rem;
+    background-color: #fafafa!important;
+    width:80px;
+    text-align:center;
+  }
