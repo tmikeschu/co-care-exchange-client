@@ -8,9 +8,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { OrganizationComponent } from './organization/organization.component';
 import { InformationRoutingModule } from './information-routing.module';
 import { OrgInfoModalComponent } from './orginfomodal/orginfomodal.component';
+import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule],
+  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule, SharedModule],
   declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],
   entryComponents: [OrgInfoModalComponent]
 })
