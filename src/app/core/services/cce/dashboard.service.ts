@@ -13,7 +13,7 @@ import { UserProfile } from 'src/app/models/UserProfile';
 import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 import { AuthenticationService } from './authentication.service';
-import { ArchiveItem } from 'src/app/graphql/mutations';
+import { ArchiveItem } from 'src/app/graphql/mutations/archive-item.mutation';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -171,7 +171,9 @@ export class DashboardService {
             clientMutationId: '3455555'
           }
         }
-      }).pipe(map(handleGQLErrors)))
+      }).pipe(map((response: any) => {
+        console.log('archiveItem', response);
+      })))
     );
   }
 
