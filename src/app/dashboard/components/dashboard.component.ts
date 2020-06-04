@@ -82,6 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         };
       })
     );
+
     this.filter$ = this.filter.valueChanges.pipe(
       distinctUntilChanged(),
       takeUntil(this.destroy$)
@@ -123,7 +124,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.dashboardService.archiveItem(item.itemId)
               .pipe(
                 takeUntil(this.destroy$),
-                catchError(this.handleError)
+                catchError(this.handleError), 
+                map((response: any) => {
+                  console.log('deleteItem', response);
+                  this.dashboardService.startPolling();
+                })
               ).subscribe();
           } else {
             return;
