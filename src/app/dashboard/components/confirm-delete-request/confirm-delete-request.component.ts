@@ -5,7 +5,7 @@ import { Agreement } from '../models/agreement';
 @Component({
     selector: 'app-confirm-delete-request',
     templateUrl: './confirm-delete-request.component.html',
-    styleUrls: ['../confirm-new-match/confirm-new-match.component.scss']
+    styleUrls: ['./confirm-delete-request.component.scss']
 })
 export class ConfirmDeleteRequestComponent {
 
