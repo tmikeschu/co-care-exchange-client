@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 import { ActivatedRoute } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-individual',
@@ -110,8 +111,9 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       phoneNumber: this.individualRegisterForm.get('phone').value,
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
       sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
+      matchRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      sendEmailMessageNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value
     };
-    // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
     if (!this._isRegistering && this.userProfile) {
       profile.userId = this.userProfile.id;
