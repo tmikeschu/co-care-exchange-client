@@ -119,3 +119,42 @@
     color: mat-color(map-get($colorado-care-exchange-theme, warn));
   }
 }
+
+.itemborder{
+  border-radius: 8px;
+  border: 1px solid #ccc!important;
+  padding: 5px;
+  font-size: .7em;  
+  margin: auto;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {  
+  padding-bottom: 0px;
+}
+
+.editbutton{
+  line-height: 17px;
+    padding: 4px 5px 4px 5px;
+    min-width: 32px;
+    margin-top: 13px;
+    color: #ffffff !important;
+    font-size: .8em;
+}
+
+.donebutton{
+  line-height: 17px;
+    padding: 4px 5px 4px 5px;
+    min-width: 32px;
+    margin-top: 13px;
+    color: #ffffff !important;
+    font-size: .8em;
+    background-color: #19b08b;
+}
+
+.orgselectwidth{
+  width:150px;
+}

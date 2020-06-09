@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
 
   isWeb: boolean;
+  showTrash: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -191,5 +192,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.dashboardService.stopPolling();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  showTrashClick(show: boolean){
+    this.showTrash = show
   }
 }
