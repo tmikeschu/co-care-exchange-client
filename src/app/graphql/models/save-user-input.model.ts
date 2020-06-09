@@ -1,17 +1,20 @@
 export interface SaveUserInput {
-  userId?: string;
   address: string;
-  emailAddress: string;
+  city: string;
   currentUserEmail: string;
-  lastName: string;
+  emailAddress: string;
   firstName: string;
-  dropOffRadius: number;
-  pickupRadius: number;
+  householdSize?: number;
+  lastName: string;
+  matchRadius: number;
+  organizationId?: unknown;
   phoneNumber: string;
   postalCode?: string;
-  city: string;
-  state: string;
-  organizationId?: unknown;
-  householdSize?: number;
   sendEmailMatchNotifications: boolean;
+  sendEmailMessageNotifications: boolean;
+  state: string;
+  userId?: string;
+  // TODO deprecate
+  pickupRadius: number;
+  dropOffRadius: number;
 }

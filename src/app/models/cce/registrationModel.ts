@@ -7,6 +7,6 @@ export interface RegistrationModel {
   houseHoldSize?: number;
   cityState: string;
   address: string;
-  deliveryOrPickupRadius: number;
+  matchRadius: number;
   password?: string;
 }

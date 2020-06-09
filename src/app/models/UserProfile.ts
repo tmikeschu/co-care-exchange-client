@@ -10,7 +10,8 @@ export interface UserProfile {
   city: string;
   state: string;
   postalCode: string;
-  dropOffRadius: string;
-  pickupRadius: string;
+  matchRadius: number;
+  dropOffRadius: number;
+  pickupRadius: number;
   organization: Organization;
 }

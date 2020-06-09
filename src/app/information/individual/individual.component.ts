@@ -75,7 +75,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       city: ['', Validators.required],
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
-      deliveryOrPickupRadius: ['', Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
+      matchRadius: ['', Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
       password: [''],
       sendEmailMatchNotifications: [true],
     });
@@ -90,7 +90,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       this.individualRegisterForm.get('city').setValue(this.userProfile.city || '');
       this.individualRegisterForm.get('state').setValue(this.userProfile.state || '');
       this.individualRegisterForm.get('postalCode').setValue(this.userProfile.postalCode || '');
-      this.individualRegisterForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+      this.individualRegisterForm.get('matchRadius').setValue(this.userProfile.dropOffRadius || 50);
       this.individualRegisterForm.get('householdSize').setValue(this.userProfile.householdSize || 0);
       this.individualRegisterForm
         .get('sendEmailMatchNotifications')
@@ -102,17 +102,19 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     const profile: SaveUserInput = {
       address: this.individualRegisterForm.get('address').value,
       city: this.individualRegisterForm.get('city').value,
-      dropOffRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      matchRadius: this.individualRegisterForm.get('matchRadius').value,
+      pickupRadius: this.individualRegisterForm.get('matchRadius').value,
+      dropOffRadius: this.individualRegisterForm.get('matchRadius').value,
       emailAddress: this.email,
       currentUserEmail: this.email,
       firstName: this.individualRegisterForm.get('firstName').value,
       lastName: this.individualRegisterForm.get('lastName').value,
-      pickupRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
       state: this.individualRegisterForm.get('state').value,
       postalCode: this.individualRegisterForm.get('postalCode').value,
       phoneNumber: this.individualRegisterForm.get('phone').value,
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
       sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
+      sendEmailMessageNotifications: false,
     };
     // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
