@@ -13,8 +13,8 @@
             <mat-option value="showAllOrganization">View All Organization</mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-button mat-flat-button color="primary" class="btn cce-btn editbutton" (click)="showTrashClick(true)" *ngIf="!showTrash">Edit</button>
-        <button mat-button mat-flat-button  class="btn cce-btn donebutton" (click)="showTrashClick(false)" *ngIf="showTrash">Done</button>
+        <button mat-button mat-flat-button color="primary" class="btn cce-btn editbutton" (click)="showTrashClick(true)" *ngIf="!showTrash && isWeb">Edit</button>
+        <button mat-button mat-flat-button  class="btn cce-btn donebutton" (click)="showTrashClick(false)" *ngIf="showTrash && isWeb">Done</button>
       </div>
     </div>
 
@@ -88,7 +88,7 @@
               </mat-list-item>
             </div>
             <div fxLayout="row" fxLayoutAlign="center center" class="desktop-delete"
-              *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && isWeb">
+              *ngIf="(request.status === status.OrderCancelled || request.status === status.OrderFulfilled) && showTrash">
               <mat-icon (click)="deleteItem($event, request)">delete</mat-icon>
             </div>
           </div>
