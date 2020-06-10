@@ -14,6 +14,7 @@ import { ItemRequestComponent } from './components/item-request/item-request.com
 import { ItemShareComponent } from './components/item-share/item-share.component';
 import { ItemTakePictureComponent } from './components/item-takepicture/item-takepicture.component';
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
+import { ConfirmDeleteRequestComponent } from './components/confirm-delete-request/confirm-delete-request.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     DashboardComponent,
     MetricsComponent,
     ConfirmMatchDialogComponent,
+    ConfirmDeleteRequestComponent,
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
@@ -37,6 +39,6 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ConfirmMatchDialogComponent],
+  entryComponents: [ConfirmMatchDialogComponent, ConfirmDeleteRequestComponent],
 })
 export class DashboardModule {}

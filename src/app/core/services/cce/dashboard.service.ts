@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, zip, combineLatest } from 'rxjs';
-import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, merge, fromEvent, timer, combineLatest, EMPTY } from 'rxjs';
+import { map, switchMap, catchError, filter, exhaustMap, finalize } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 
 import { Result } from 'src/app/dashboard/components/models/dasboard';
@@ -13,6 +13,7 @@ import { UserProfile } from 'src/app/models/UserProfile';
 import { UpdateOrder } from 'src/app/graphql/mutations/update-order.mutation';
 import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
 import { AuthenticationService } from './authentication.service';
+import { ArchiveItem } from 'src/app/graphql/mutations/archive-item.mutation';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -45,12 +46,8 @@ export class DashboardService {
 
   private orgId$: Observable<string> = this.userProfile$
     .pipe(
-      filter(userProfile => {
-        return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
-      }),
-      map(userProfile => {
-        return userProfile.organization.id;
-      }),
+      filter(userProfile => !!userProfile && !!userProfile.organization && !!userProfile.organization.id),
+      map(userProfile => userProfile.organization.id),
     );
 
   private filter$ = new BehaviorSubject<string>(this.state.filterState);
@@ -70,21 +67,21 @@ export class DashboardService {
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
     // alive and if the client has internet connectivity
-    timer(0, 5000)
-      .pipe(
-        withLatestFrom(this.dashboardInputs$),
-        switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {
-          const empty$ = empty();
-          empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
-        })
-      )
+    this.dashboardInputs$.pipe(
+      switchMap(([doPoll, isOnline, userProfile, filterCriteria]) => {
+        return (isOnline && doPoll && userProfile) ? this.pollDashboard(userProfile.id, filterCriteria) : EMPTY.pipe(finalize(() => this.updateDashboard({ loading: false })));
+      })
+    )
       .subscribe((dashboardData) => {
         const { requested, shared } = dashboardData;
-        this.updateDashboard({ needs: requested, shares: shared });
+        this.updateDashboard({ needs: requested, shares: shared, loading: false });
       });
 
     this.orgId$.subscribe(orgId => this.updateDashboard({ orgId }));
+  }
+
+  private pollDashboard(userProfileId: string, filterCriteria: string) {
+    return timer(0, 5000).pipe(switchMap(() => this.dashboardHandler(userProfileId, filterCriteria)));
   }
 
   dashboardHandler(userProfileId: string, filterCriteria: string) {
@@ -161,6 +158,23 @@ export class DashboardService {
         },
       })
       .pipe(map(handleGQLErrors));
+  }
+
+  archiveItem(itemId: string) {
+    return this.userProfile$.pipe(
+      exhaustMap(profile => this.apollo.mutate({
+        mutation: ArchiveItem,
+        variables: {
+          input: {
+            itemId,
+            userId: profile.id,
+            clientMutationId: '3455555'
+          }
+        }
+      }).pipe(map((response: any) => {
+        console.log('archiveItem', response);
+      })))
+    );
   }
 
   private updateDashboard(updates: Partial<IDashboardState>) {

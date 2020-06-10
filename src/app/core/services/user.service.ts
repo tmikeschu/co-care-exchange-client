@@ -57,7 +57,9 @@ const SaveUser = gql`
 export class UserService {
   currentUserProfile = null;
 
-  constructor(private apollo: Apollo, private authService: AuthenticationService) {}
+  constructor(private apollo: Apollo, private authService: AuthenticationService) {
+    
+  }
 
   getCurrentUser(): any {
     return this.authService.getUser();
