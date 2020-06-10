@@ -141,6 +141,7 @@
     padding: 4px 5px 4px 5px;
     min-width: 32px;
     margin-top: 13px;
+    margin-left: 5px;
     color: #ffffff !important;
     font-size: .8em;
 }
@@ -150,6 +151,7 @@
     padding: 4px 5px 4px 5px;
     min-width: 32px;
     margin-top: 13px;
+    margin-left: 5px;
     color: #ffffff !important;
     font-size: .8em;
     background-color: #19b08b;
@@ -157,4 +159,12 @@
 
 .orgselectwidth{
   width:150px;
+}
+
+.not-empty-select.mat-selected {
+  color: #696969 !important;
+}
+
+::ng-deep .mat-select-value-text {
+  color: #696969 !important;
 }
