@@ -27,7 +27,7 @@
     <div *ngIf="vm.itemDetails.orderNotes && vm.itemDetails.orderNotes.length; else nonotes">
       <div
         class="chat-entry"
-        *ngFor="let note of vm.itemDetails.orderNotes"
+        *ngFor="let note of vm.itemDetails.orderNotes; trackBy: trackByNotes"
         [ngClass]="{
           'is-user-message': note.userId === vm.userId,
           'is-guest-message': note.userId !== vm.userId

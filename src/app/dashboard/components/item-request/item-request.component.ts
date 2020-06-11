@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil, filter, tap, finalize } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Subject, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, filter } from 'rxjs/operators';
 
 import { IItemDetailState } from 'src/app/core/services/cce/item-details.service';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
-import { Agreement } from '../models/agreement';
+import { Agreement, IOrderNote } from '../models/agreement';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Status } from 'src/app/core/constants/enums';
 import { UserProfile } from 'src/app/models/UserProfile';
@@ -42,10 +42,10 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        filter(val => val && val !== ''),
+        filter((val) => val && val !== ''),
         takeUntil(this.stop$)
       )
-      .subscribe(val => (this.currentNoteVal = val));
+      .subscribe((val) => (this.currentNoteVal = val));
   }
 
   ngOnDestroy() {
@@ -93,5 +93,9 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
       imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename,
     });
     this.orderNoteFC.patchValue('');
+  }
+
+  trackByNotes(_index: number, note: IOrderNote) {
+    return note ? note.id : undefined;
   }
 }
