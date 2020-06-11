@@ -1,2 +1,6 @@
 <img *ngIf="imgSrc" [src]="imgSrc" width="100" height="100" [alt]="viewState === 'error' ? '(unable to load photo)' : 'photo'" />
-<span>{{ viewState === 'error' ? '(Error loading photo)' : viewState === 'loading' ? 'Loading...' : '' }}</span>
+
+<span [ngSwitch]="viewState">
+  <mat-progress-bar mode="indeterminate" *ngSwitchCase="'loading'"></mat-progress-bar>
+  <span *ngSwitchCase="'error'">(Error loading photo)</span>
+</span>
