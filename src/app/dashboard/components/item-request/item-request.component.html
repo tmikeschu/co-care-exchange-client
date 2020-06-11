@@ -35,10 +35,13 @@
       >
         <p class="author">{{ note.createdBy }}</p>
         <div class="chat-body">
-          <div *ngIf="note.imageUrl == null">{{ note.noteBody }}</div>
-          <div *ngIf="note.imageUrl != null">
-            <app-item-image-canvas [imageUrl]="note.imageUrl"></app-item-image-canvas>
-          </div>
+          <div *ngIf="note.imageUrl == null; else imageNote">{{ note.noteBody }}</div>
+          <ng-template #imageNote>
+            <div>
+              <app-item-image-canvas [imageUrl]="note.imageUrl"></app-item-image-canvas>
+            </div>
+          </ng-template>
+
           <div>
             <small
               ><i>{{ note.createdOn | date: 'short' }}</i></small
