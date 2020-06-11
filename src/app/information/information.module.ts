@@ -12,6 +12,6 @@ import { OrgInfoModalComponent } from './orginfomodal/orginfomodal.component';
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule],
   declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],
-  entryComponents: [OrgInfoModalComponent]
+  entryComponents: [OrgInfoModalComponent],
 })
 export class InformationModule {}

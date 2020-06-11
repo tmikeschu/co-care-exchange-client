@@ -30,7 +30,7 @@ export class DashboardService {
     needs: [],
     shares: [],
     loading: true,
-    filterState: 'myItems'
+    filterState: 'myItems',
   };
 
   private _state = new BehaviorSubject<IDashboardState>(this.state);
@@ -39,28 +39,22 @@ export class DashboardService {
   private doPoll$ = new BehaviorSubject<boolean>(false);
   private isOnline$ = merge(of(null), fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(map(() => navigator.onLine));
   private userProfile$: Observable<UserProfile> = this.authService.auth$.pipe(
-    filter((authState) => authState.user && authState.user.userProfile),
-    map((authState) => authState.user.userProfile)
+    filter(authState => authState.user && authState.user.userProfile),
+    map(authState => authState.user.userProfile)
   );
 
-  private orgId$: Observable<string> = this.userProfile$
-    .pipe(
-      filter(userProfile => {
-        return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
-      }),
-      map(userProfile => {
-        return userProfile.organization.id;
-      }),
-    );
+  private orgId$: Observable<string> = this.userProfile$.pipe(
+    filter(userProfile => {
+      return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
+    }),
+    map(userProfile => {
+      return userProfile.organization.id;
+    })
+  );
 
   private filter$ = new BehaviorSubject<string>(this.state.filterState);
 
-  private dashboardInputs$ = combineLatest([
-    this.doPoll$,
-    this.isOnline$,
-    this.userProfile$,
-    this.filter$
-  ]);
+  private dashboardInputs$ = combineLatest([this.doPoll$, this.isOnline$, this.userProfile$, this.filter$]);
 
   constructor(
     private http: HttpClient,
@@ -76,10 +70,10 @@ export class DashboardService {
         switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {
           const empty$ = empty();
           empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
+          return isOnline && doPoll && userProfile ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
         })
       )
-      .subscribe((dashboardData) => {
+      .subscribe(dashboardData => {
         const { requested, shared } = dashboardData;
         this.updateDashboard({ needs: requested, shares: shared });
       });
@@ -89,20 +83,19 @@ export class DashboardService {
 
   dashboardHandler(userProfileId: string, filterCriteria: string) {
     const formattedFilter = filterCriteria === 'showAllOrganization' ? filterCriteria : null;
-    return this.getDashboard(userProfileId, formattedFilter)
-      .pipe(
-        map((data: any) => {
-          if (data && data.errors) {
-            const messages = data.errors.map((e) => e.message).join(', ');
-            throw new Error(messages);
-          }
-          return data.data.dashboard;
-        }),
-        catchError((error: any) => {
-          console.error('an error occurred querying the dashboard: ', error.message);
-          return of(this._state); // serve a cached version on error
-        })
-      );
+    return this.getDashboard(userProfileId, formattedFilter).pipe(
+      map((data: any) => {
+        if (data && data.errors) {
+          const messages = data.errors.map(e => e.message).join(', ');
+          throw new Error(messages);
+        }
+        return data.data.dashboard;
+      }),
+      catchError((error: any) => {
+        console.error('an error occurred querying the dashboard: ', error.message);
+        return of(this._state); // serve a cached version on error
+      })
+    );
   }
 
   startPolling() {
@@ -145,7 +138,7 @@ export class DashboardService {
     }`,
       variables: {
         userId: userId,
-        filterOption
+        filterOption,
       },
     };
     return this.http.post<any>(`${environment.serverUrl}`, query);

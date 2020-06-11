@@ -49,7 +49,10 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   async ngOnInit() {}
 
   async ngAfterContentInit() {
-    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+    this.userProfile = await this.userService
+      .getUser(this.email)
+      .pipe(first())
+      .toPromise();
 
     this.organizationForm = this.formBuilder.group({
       orgName: ['', Validators.required],

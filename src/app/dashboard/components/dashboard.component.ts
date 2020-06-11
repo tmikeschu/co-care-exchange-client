@@ -26,7 +26,7 @@ interface IDashboardViewModel {
   selector: 'app-cce-home',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardViewModel>;
@@ -37,11 +37,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   destroy$ = new Subject();
 
-  constructor(
-    public dialog: MatDialog,
-    private dashboardService: DashboardService,
-    private router: Router
-  ) { }
+  constructor(public dialog: MatDialog, private dashboardService: DashboardService, private router: Router) {}
 
   ngOnInit() {
     this.dashboardService.startPolling();
@@ -53,14 +49,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return {
           ...state,
           shares: this.createGroupedEntries(state.shares),
-          needs: this.createGroupedEntries(state.needs)
+          needs: this.createGroupedEntries(state.needs),
         };
       })
     );
-    this.filter$ = this.filter.valueChanges.pipe(
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    );
+    this.filter$ = this.filter.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$));
 
     this.filter$.subscribe(filterValue => {
       this.dashboardService.changeFilterCriteria(filterValue);
@@ -68,17 +61,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createGroupedEntries(agreements: Agreement[]) {
-    const grouped: {[key: string]: Agreement[]} = groupBy(agreements, 'userDisplayName');
+    const grouped: { [key: string]: Agreement[] } = groupBy(agreements, 'userDisplayName');
     return Object.entries(grouped).map(([name, items]) => {
       return {
         createdBy: name,
-        items
+        items,
       };
     });
   }
 
   formatItemDetails(agreement: Agreement) {
-    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
+    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${
+      agreement.details ? ', ' + agreement.details : ''
+    }`;
   }
 
   getStyle(status: Status): string {

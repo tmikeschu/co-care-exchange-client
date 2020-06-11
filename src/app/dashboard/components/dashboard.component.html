@@ -14,14 +14,15 @@
     <div *ngIf="!vm.loading; else inprogress">
       <div *ngIf="vm.needs && vm.needs.length > 0; else noneeds">
         <div *ngFor="let group of vm.needs">
-          <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{group.createdBy}}</p>
+          <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{ group.createdBy }}</p>
           <div *ngFor="let request of group.items">
-            <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]"
-              class="contentborder dashboard-list-item">
+            <mat-list-item [routerLink]="['/dashboard-item', 'request', request.itemId]" class="contentborder dashboard-list-item">
               <div class="dashboardlistitem">
-                <mat-label class="contentlabel">{{ request.name }}<br>
-                  <span class="content-multiplier">x</span><span
-                    class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
+                <mat-label class="contentlabel"
+                  >{{ request.name }}<br />
+                  <span class="content-multiplier">x</span
+                  ><span class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label
+                >
                 <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
                   {{ request.statusDisplay }}
                 </mat-label>
@@ -38,12 +39,13 @@
         <div *ngFor="let group of vm.shares">
           <p class="group-header" *ngIf="vm.filterState === 'showAllOrganization'">{{ group.createdBy }}</p>
           <div *ngFor="let request of group.items">
-            <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]"
-              class="contentborder dashboard-list-item">
+            <mat-list-item [routerLink]="['/dashboard-item', 'share', request.itemId]" class="contentborder dashboard-list-item">
               <div class="dashboardlistitem">
-                <mat-label class="contentlabel">{{ request.name }}<br>
-                  <span class="content-multiplier">x</span><span
-                    class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label>
+                <mat-label class="contentlabel"
+                  >{{ request.name }}<br />
+                  <span class="content-multiplier">x</span
+                  ><span class="contentlabel-detail">{{ formatItemDetails(request) }}</span></mat-label
+                >
                 <mat-label [className]="getStyle(request.status)" style="margin-left: auto;">
                   {{ request.statusDisplay }}
                 </mat-label>
@@ -53,7 +55,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </section>
 

@@ -4,72 +4,72 @@
   }
 }
 
-.contentborder{
-    border-radius: 8px;
-    border: 1px solid #ccc!important;
+.contentborder {
+  border-radius: 8px;
+  border: 1px solid #ccc !important;
 }
 
-.contentlabel{
-    color: #696969;
-    font-weight: 600;
-    font-size: 1em;
-    width: 60%;
+.contentlabel {
+  color: #696969;
+  font-weight: 600;
+  font-size: 1em;
+  width: 60%;
 }
 
-.contentlabel-detail{
-    color: #696969;
-    font-weight: 600;
-    font-size: .8em;
-    width: 60%;
+.contentlabel-detail {
+  color: #696969;
+  font-weight: 600;
+  font-size: 0.8em;
+  width: 60%;
 }
 
 .content-multiplier {
-    color: #696969;
-    font-weight: 600;
-    font-size: .7em;
-    // width: 60%;
+  color: #696969;
+  font-weight: 600;
+  font-size: 0.7em;
+  // width: 60%;
 }
 
-.contentstatusred{
-    color: #FF5F57;
-    font-weight: 600;
-    font-size: 1em;
+.contentstatusred {
+  color: #ff5f57;
+  font-weight: 600;
+  font-size: 1em;
 }
 
-.contentstatusgreen{
-    color: #19B08B;
-    font-weight: 600;
-    font-size: 1em;
+.contentstatusgreen {
+  color: #19b08b;
+  font-weight: 600;
+  font-size: 1em;
 }
 
-.contentstatusyellow{
-    color: #FA9915;
-    font-weight: 600;
-    font-size: 1em;
+.contentstatusyellow {
+  color: #fa9915;
+  font-weight: 600;
+  font-size: 1em;
 }
 
 .group-header {
   color: #696969;
-  font-size: .95em;
+  font-size: 0.95em;
 }
 
 .dashboard-list-item {
-    display: block;
-    -webkit-tap-highlight-color: transparent;
-    width: 100%;
-    padding: 10 0 0 0;
-    //font-size: 16px;
-    margin-bottom: 4px;
+  display: block;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  padding: 10 0 0 0;
+  //font-size: 16px;
+  margin-bottom: 4px;
 }
 
-.dashboardlistitem{    
-    margin-top: 13px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 16px;
-    position: relative;
-    height: inherit;
-    margin-bottom: 10px;
+.dashboardlistitem {
+  margin-top: 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  position: relative;
+  height: inherit;
+  margin-bottom: 10px;
 }

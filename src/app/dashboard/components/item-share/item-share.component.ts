@@ -1,4 +1,15 @@
-import { Component, OnInit, OnDestroy, Input, Output, ChangeDetectionStrategy, EventEmitter, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+  EventEmitter,
+  Renderer2,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, filter, distinctUntilChanged, takeUntil, take, tap, finalize } from 'rxjs/operators';
@@ -23,9 +34,9 @@ import { UserService } from 'src/app/core/services/user.service';
 export class ItemShareComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
   @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>();
-  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
+  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
 
-  showImageArea:boolean = false;
+  showImageArea: boolean = false;
   imagename: string = '';
   userProfile: UserProfile;
   status = Status; // enum binding to use in view template
@@ -38,7 +49,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private dialog: MatDialog, private router: Router, private userService: UserService) { }
+  constructor(private dialog: MatDialog, private router: Router, private userService: UserService) {}
 
   ngOnInit() {
     this.userProfile = this.userService.getCurrentUserProfile();
@@ -49,10 +60,10 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        filter((val) => val && val !== ''),
+        filter(val => val && val !== ''),
         takeUntil(this.stop$)
       )
-      .subscribe((val) => (this.currentNoteVal = val));
+      .subscribe(val => (this.currentNoteVal = val));
 
     // confirm match
     if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
@@ -65,7 +76,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       ref
         .afterClosed()
         .pipe(take(1))
-        .subscribe((results) => {
+        .subscribe(results => {
           this.modalVisible = false;
           if (results === 'Cancel') {
             // update order to cancel status Status.OrderCancelled
@@ -117,7 +128,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmitEdit() {   
+  onSubmitEdit() {
     this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: null });
     this.orderNoteFC.patchValue('');
   }
@@ -137,21 +148,23 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     }`;
   }
 
-  takepicture(){    
+  takepicture() {
     console.log('vm', this.vm);
     this.imagename = Date.now().toString();
     this.showImageArea = true;
-  }  
+  }
 
-  hidepicture(){
+  hidepicture() {
     this.showImageArea = false;
   }
 
-  pictureTaken(){
-    this.showImageArea = false;    
-    this.createNote.emit({ noteBody: 'image', itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
+  pictureTaken() {
+    this.showImageArea = false;
+    this.createNote.emit({
+      noteBody: 'image',
+      itemId: this.vm.itemDetails.itemId,
+      imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename,
+    });
     this.orderNoteFC.patchValue('');
   }
-
-  
 }

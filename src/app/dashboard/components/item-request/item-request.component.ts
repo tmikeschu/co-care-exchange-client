@@ -19,19 +19,19 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
   @Input() vm: IItemDetailState;
-  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>(); 
-  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement, updates: Partial<OrderChangeInput> }>();
+  @Output() createNote = new EventEmitter<Pick<ICreateOrderNoteInput, 'noteBody' | 'itemId' | 'imageUrl'>>();
+  @Output() updateItem = new EventEmitter<{ orderUpdate: Agreement; updates: Partial<OrderChangeInput> }>();
 
   status = Status; // enum binding to use in view template
   userProfile: UserProfile;
   stop$ = new Subject();
-  showImageArea:boolean = false;
+  showImageArea: boolean = false;
   imagename: string = '';
   currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userProfile = this.userService.getCurrentUserProfile();
@@ -42,10 +42,10 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        filter((val) => val && val !== ''),
+        filter(val => val && val !== ''),
         takeUntil(this.stop$)
       )
-      .subscribe((val) => (this.currentNoteVal = val));
+      .subscribe(val => (this.currentNoteVal = val));
   }
 
   ngOnDestroy() {
@@ -75,19 +75,23 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
     }`;
   }
 
-  takepicture(){    
+  takepicture() {
     console.log('vm', this.vm);
     this.imagename = Date.now().toString();
     this.showImageArea = true;
-  }  
+  }
 
-  hidepicture(){
+  hidepicture() {
     this.showImageArea = false;
   }
 
-  pictureTaken(){
-    this.showImageArea = false;    
-    this.createNote.emit({ noteBody: 'image', itemId: this.vm.itemDetails.itemId, imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename });
+  pictureTaken() {
+    this.showImageArea = false;
+    this.createNote.emit({
+      noteBody: 'image',
+      itemId: this.vm.itemDetails.itemId,
+      imageUrl: this.userProfile.id + '/' + this.vm.itemDetails.shareId + '/' + this.imagename,
+    });
     this.orderNoteFC.patchValue('');
   }
 }
