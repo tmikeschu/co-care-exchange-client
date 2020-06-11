@@ -67,7 +67,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     },
   };
 
-  viewState: 'init' | 'capture' | 'capturePreview' | 'uploadPreview' = 'init';
+  viewState: 'init' | 'capture' | 'capturePreview' | 'uploadPreview' | 'posting' = 'init';
   userProfile: UserProfile;
   imgSrc = '';
 
@@ -85,6 +85,10 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
   }
 
   get showUpload() {
+    switch (this.viewState) {
+      case 'posting':
+        return false;
+    }
     return true;
   }
 
@@ -94,7 +98,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     this.viewState = 'uploadPreview';
 
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = (e) => {
       this.imgSrc = (<FileReader>e.target).result as string;
       this.viewState = 'uploadPreview';
       this.cd.detectChanges();
@@ -117,7 +121,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     switch (this.viewState) {
       case 'init':
       case 'capture':
-        return true;
+        return this.canUseCamera;
     }
     return false;
   }
@@ -134,7 +138,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     switch (this.viewState) {
       case 'uploadPreview':
       case 'capturePreview':
-        return true;
+        return this.canUseCamera;
     }
     return false;
   }
@@ -153,6 +157,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     return false;
   }
   acceptimage() {
+    this.viewState = 'posting';
     console.log(`the image (${this.imagename}):`, this.imgSrc);
 
     Storage.put(this.imagename, this.imgSrc, {
@@ -169,17 +174,18 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
         this.picturetakenEvent.emit(this.showImageArea);
         this.stopCamera();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('error =>', err);
+        this.viewState = 'capture';
       });
   }
 
+  get canUseCamera() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  }
   startCamera() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia(this.constraints)
-        .then(this.attachVideo.bind(this))
-        .catch(this.handleError);
+    if (this.canUseCamera) {
+      navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError);
     } else {
       alert('Sorry, camera not available.');
     }
@@ -187,7 +193,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
 
   attachVideo(stream) {
     this.renderer.setProperty(this.videoElement.nativeElement, 'srcObject', stream);
-    this.renderer.listen(this.videoElement.nativeElement, 'play', event => {
+    this.renderer.listen(this.videoElement.nativeElement, 'play', (event) => {
       this.videoHeight = this.videoElement.nativeElement.videoHeight;
       this.videoWidth = this.videoElement.nativeElement.videoWidth;
     });
@@ -200,7 +206,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
   stopCamera() {
     const videoElem = this.videoElement.nativeElement.srcObject;
     const tracks = videoElem.getTracks();
-    tracks.forEach(function(track) {
+    tracks.forEach(function (track) {
       track.stop();
     });
 
