@@ -59,7 +59,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
       updates: {
         requestId: agreement.requestId,
         status: Status.OrderCancelled,
-        reason: 'User cancelled the match in agreement detail view',
+        reason: 'Requester ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' cancelled the match in agreement detail view',
       },
     });
   }

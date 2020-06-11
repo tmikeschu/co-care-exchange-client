@@ -7,7 +7,7 @@
       [ngClass]="{
         'is-pending': vm.itemDetails.status === status.FindingMatch,
         'is-matched': vm.itemDetails.status === status.NewMatchFound,
-        'is-confirmed': vm.itemDetails.status === status.DeliveryPending,
+        'is-confirmed': vm.itemDetails.status === status.OrderConfirmed,
         'is-fulfilled': vm.itemDetails.status === status.OrderFulfilled,
         'is-cancelled': vm.itemDetails.status === status.OrderCancelled
       }"
@@ -19,8 +19,8 @@
 
     <p class="body-copy">{{ vm.itemDetails.dialogMessage }}</p>
 
-    <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
-    <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p>
+    <!-- <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
+        <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}</p> -->
 
     <!-- Chat Log -->
     <h3>Messages</h3>
@@ -104,7 +104,7 @@
       ></app-item-takepicture>
     </div>
 
-    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+    <div class="actions actionbuttons" fxLayout="row">
       <button
         *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
         mat-button
@@ -115,14 +115,24 @@
         Cancel Match
       </button>
       <button
-        *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
+        *ngIf="vm.itemDetails.status == status.NewMatchFound"
         mat-button
         mat-flat-button
         color="primary"
-        (click)="onConfirmDropOff(vm.itemDetails)"
+        (click)="onConfirmMatch(vm.itemDetails)"
       >
-        Confirm Drop-Off
+        Confirm Match
       </button>
+      <button
+        *ngIf="vm.itemDetails.status == status.OrderConfirmed"
+        mat-button
+        mat-flat-button
+        color="primary"
+        (click)="onConfirmFulfillemnt(vm.itemDetails)"
+      >
+        Confirm Fulfilled
+      </button>
+      <!-- <button *ngIf="vm.itemDetails.status == status.OrderPending" mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Drop-Off</button> -->
     </div>
   </div>
 </section>

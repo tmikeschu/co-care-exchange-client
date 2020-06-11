@@ -24,6 +24,7 @@ export class Agreement {
   quantity: number;
   orderNotes: IOrderNote[];
   userDisplayName: string;
+  rowState: 'rowOpen' | 'rowClosed' | '';
 }
 
 export interface IOrderNote {

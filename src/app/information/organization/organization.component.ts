@@ -7,6 +7,7 @@ import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-organization',
@@ -90,7 +91,6 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     const profile: SaveUserInput = {
       address: this.organizationForm.get('address').value,
       city: this.organizationForm.get('city').value,
-      matchRadius: this.organizationForm.get('matchRadius').value,
       pickupRadius: this.organizationForm.get('matchRadius').value,
       dropOffRadius: this.organizationForm.get('matchRadius').value,
       emailAddress: this.email, // read-only, not allowed to change
@@ -102,7 +102,8 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
       sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
-      sendEmailMessageNotifications: false,
+      matchRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      sendEmailMessageNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
     };
 
     if (!this._isRegistering && this.userProfile) {

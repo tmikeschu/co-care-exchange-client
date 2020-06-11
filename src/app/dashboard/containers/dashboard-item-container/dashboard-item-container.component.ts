@@ -65,7 +65,7 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
     this.itemDetailsService.updateOrder(payload.orderUpdate, payload.updates)
       .pipe(
         takeUntil(this.stop$)
-        , catchError(this.handleError)
+        , catchError(this.handleError.bind(this))
       ).subscribe();
   }
 
@@ -73,11 +73,11 @@ export class DashboardItemContainerComponent implements OnInit, OnDestroy {
     this.itemDetailsService.createOrderNote(newNote)
       .pipe(
         takeUntil(this.stop$)
-        , catchError(this.handleError)
+        , catchError(this.handleError.bind(this))
       ).subscribe();
   }
 
-  private handleError(err) {
+handleError(err) {
     console.error('an error occurred updating the order: ', err);
     this.toastrService.error('An unexpected error has occurred updating the item. Please try again later.', null, {
       positionClass: 'toast-top-center'

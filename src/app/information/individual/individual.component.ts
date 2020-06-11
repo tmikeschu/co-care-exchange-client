@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 import { ActivatedRoute } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-individual',
@@ -52,7 +53,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.router.queryParams.subscribe(params => {
+    this.router.queryParams.subscribe((params) => {
       if (params && params.newUser) {
         this.newUser = params.newUser.toLowerCase() === 'true';
       }
@@ -60,10 +61,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   async ngAfterContentInit() {
-    this.userProfile = await this.userService
-      .getUser(this.email)
-      .pipe(first())
-      .toPromise();
+    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
 
     this.individualRegisterForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -114,9 +112,9 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       phoneNumber: this.individualRegisterForm.get('phone').value,
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
       sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
-      sendEmailMessageNotifications: false,
+      matchRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
+      sendEmailMessageNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
     };
-    // this.userService.saveUser(profile).subscribe(x => console.log(x));
 
     if (!this._isRegistering && this.userProfile) {
       profile.userId = this.userProfile.id;
@@ -126,5 +124,12 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
+  }
+
+  onOrgInfoClick() {
+    const ref = this.dialog.open(OrgInfoModalComponent, {
+      width: '300px',
+      data: {},
+    });
   }
 }
