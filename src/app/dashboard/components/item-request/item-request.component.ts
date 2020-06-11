@@ -14,7 +14,7 @@ import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-item-request',
   templateUrl: './item-request.component.html',
-  styleUrls: ['../item-share/item-share.component.scss', './item-request.component.scss'],
+  styleUrls: ['../item-share/item-share.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
