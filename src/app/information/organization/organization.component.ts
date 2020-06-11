@@ -50,7 +50,10 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   async ngOnInit() {}
 
   async ngAfterContentInit() {
-    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+    this.userProfile = await this.userService
+      .getUser(this.email)
+      .pipe(first())
+      .toPromise();
 
     this.organizationForm = this.formBuilder.group({
       orgName: ['', Validators.required],
@@ -62,7 +65,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       city: ['', Validators.required],
       state: ['', [Validators.required, Validators.minLength(2)]],
       postalCode: ['', Validators.required],
-      deliveryOrPickupRadius: [0, Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
+      matchRadius: [0, Validators.compose([Validators.min(1), Validators.max(50), Validators.pattern('^[1-9][0-9]?$')])],
       sendEmailMatchNotifications: [true],
     });
 
@@ -77,7 +80,7 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       this.organizationForm.get('city').setValue(this.userProfile.city || '');
       this.organizationForm.get('state').setValue(this.userProfile.state || '');
       this.organizationForm.get('postalCode').setValue(this.userProfile.postalCode || '');
-      this.organizationForm.get('deliveryOrPickupRadius').setValue(this.userProfile.dropOffRadius || 50);
+      this.organizationForm.get('matchRadius').setValue(this.userProfile.matchRadius || 50);
       this.organizationForm
         .get('sendEmailMatchNotifications')
         .setValue(this.userProfile.sendEmailMatchNotifications != null ? this.userProfile.sendEmailMatchNotifications : true);
@@ -85,22 +88,22 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
   }
 
   onRegisterSubmit() {
-    let profile: SaveUserInput = {
+    const profile: SaveUserInput = {
       address: this.organizationForm.get('address').value,
       city: this.organizationForm.get('city').value,
-      dropOffRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      pickupRadius: this.organizationForm.get('matchRadius').value,
+      dropOffRadius: this.organizationForm.get('matchRadius').value,
       emailAddress: this.email, // read-only, not allowed to change
       currentUserEmail: this.email,
       firstName: this.organizationForm.get('firstName').value,
       lastName: this.organizationForm.get('lastName').value,
-      pickupRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
       state: this.organizationForm.get('state').value,
       postalCode: this.organizationForm.get('postalCode').value,
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
       sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
       matchRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
-      sendEmailMessageNotifications: this.organizationForm.get('sendEmailMatchNotifications').value
+      sendEmailMessageNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
     };
 
     if (!this._isRegistering && this.userProfile) {
