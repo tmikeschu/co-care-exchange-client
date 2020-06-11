@@ -1,4 +1,4 @@
-import { OnInit, Renderer2, Component, ElementRef, ViewChild, Input } from '@angular/core';
+import { OnInit, Renderer2, Component, ElementRef, ViewChild, Input, ApplicationRef, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Storage } from 'aws-amplify';
 
 @Component({
@@ -8,34 +8,34 @@ import { Storage } from 'aws-amplify';
 })
 export class ItemImageCanvasComponent implements OnInit {
   @Input() imageUrl: string;
-  private canvasElement: ElementRef;
-  @ViewChild('canvas', { static: false }) set content(content: ElementRef) {
-    if (content) {
-      // initially setter gets called with undefined
-      this.canvasElement = content;
-    }
-  }
 
-  constructor(private renderer: Renderer2) {}
+  imgSrc = '';
+  viewState: 'init' | 'loading' | 'loaded' | 'error' = 'init';
+
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    let self = this;
+    this.viewState = 'loading';
     console.log('getImage', this.imageUrl);
 
+    this.loadPhoto();
+  }
+
+  loadPhoto() {
     Storage.get(this.imageUrl, { download: true, level: 'public' })
       .then(res => {
-        //console.log('success => ', res);
-
-        let image = new Image();
-
-        image.onload = function() {
-          self.canvasElement.nativeElement.getContext('2d').drawImage(image, 0, 0);
-        };
-
-        image.src = JSON.parse(JSON.stringify(res))['Body'];
+        const image = JSON.parse(JSON.stringify(res))['Body'];
+        this.imgSrc = image;
+        this.viewState = 'loaded';
       })
       .catch(err => {
-        console.log('error => ', err);
+        console.log('image canvas error => ', err);
+        this.viewState = 'error';
+      })
+      .finally(() => {
+        // for some reason these state updates are outside the "angular zone",
+        // so we use the change detector to signify updates
+        this.cd.detectChanges();
       });
   }
 }

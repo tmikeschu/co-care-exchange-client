@@ -59,6 +59,7 @@
 
     <!-- Chat Input -->
     <div
+      data-chat-input
       class="input-area"
       fxLayout="row"
       fxLayoutAlign="start center"
@@ -75,17 +76,22 @@
         >
         </textarea>
       </mat-form-field>
+
+      <div data-send-btn>
+        <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
     </div>
     <div
       fxLayout="row"
       fxLayoutAlign="end center"
       *ngIf="vm.itemDetails.status !== status.OrderFulfilled && vm.itemDetails.status !== status.OrderCancelled"
     >
-      <button class="primary send-btn" mat-button color="primary" [disabled]="orderNoteFC.value === ''" (click)="onSubmitEdit()">
-        <mat-icon>send</mat-icon>
-      </button>
-      <mat-icon class="cameraicon" (click)="takepicture()" *ngIf="!showImageArea">camera_alt</mat-icon>
-      <mat-icon class="cameraicon" (click)="hidepicture()" *ngIf="showImageArea">keyboard_arrow_up</mat-icon>
+      <div class="item-request__photo-actions">
+        <mat-icon class="cameraicon" (click)="addpicture()" *ngIf="!showImageArea">camera_alt</mat-icon>
+        <mat-icon class="cameraicon" (click)="hidepicture()" *ngIf="showImageArea">close</mat-icon>
+      </div>
     </div>
 
     <div>

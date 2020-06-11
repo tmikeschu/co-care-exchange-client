@@ -1,1 +1,2 @@
-<canvas class="imagebox" #canvas height="200px" width="200px"></canvas>
+<img *ngIf="imgSrc" [src]="imgSrc" width="100" height="100" [alt]="viewState === 'error' ? '(unable to load photo)' : 'photo'" />
+<span>{{ viewState === 'error' ? '(Error loading photo)' : viewState === 'loading' ? 'Loading...' : '' }}</span>

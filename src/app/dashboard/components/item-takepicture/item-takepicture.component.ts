@@ -1,4 +1,15 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Storage } from 'aws-amplify';
 import { Agreement } from '../models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
@@ -38,6 +49,14 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     }
   }
 
+  private fileInput: HTMLInputElement;
+  @ViewChild('fileInput', { static: false }) set content3(content: HTMLInputElement) {
+    if (content) {
+      // initially setter gets called with undefined
+      this.fileInput = content;
+    }
+  }
+
   videoWidth = 0;
   videoHeight = 0;
   constraints = {
@@ -48,51 +67,95 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
     },
   };
 
-  hideVid: boolean = false;
-  hidePic: boolean = true;
-  showCaptureBtn: boolean = true;
-  showRetakeBtn: boolean = false;
+  viewState: 'init' | 'capture' | 'capturePreview' | 'uploadPreview' = 'init';
   userProfile: UserProfile;
+  imgSrc = '';
 
-  constructor(private renderer: Renderer2, private userService: UserService) {}
+  constructor(private renderer: Renderer2, private userService: UserService, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.startCamera();
     this.userProfile = this.userService.getCurrentUserProfile();
     customPrefix.public = 'public/' + this.userProfile.id + '/' + this.agreement.shareId + '/';
+    this.startCamera();
+    this.viewState = 'capture';
   }
 
   ngOnDestroy() {
     this.stopCamera();
   }
 
-  captureimage() {
-    this.hideVid = true;
-    this.hidePic = false;
-    this.showCaptureBtn = false;
-    this.showRetakeBtn = true;
-    setTimeout(() => {
-      //NOTE: this just needs a moment to show the div
-      this.renderer.setProperty(this.canvasElement.nativeElement, 'width', this.videoWidth);
-      this.renderer.setProperty(this.canvasElement.nativeElement, 'height', this.videoHeight);
-      this.canvasElement.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
-    }, 500);
+  get showUpload() {
+    return true;
+  }
 
+  loadpicture({ target }: Event & { target: HTMLInputElement }) {
+    this.imgSrc = '';
+    const file = target.files[0];
+    this.viewState = 'uploadPreview';
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      this.imgSrc = (<FileReader>e.target).result as string;
+      this.viewState = 'uploadPreview';
+      this.cd.detectChanges();
+    };
+    reader.readAsDataURL(file); // convert to base64 string
+  }
+
+  clearFile() {
+    // this covers a tricky edge case where a user:
+    // 1. selects a file
+    // 2. selects the capture button, clearing the loaded file img src
+    // 3. selects the _same_ file
+    //
+    // in that event, the `onchange` event doesn't fire,
+    // so we clear the image file on click
+    this.fileInput.value = '';
+  }
+
+  get showCapture() {
+    switch (this.viewState) {
+      case 'init':
+      case 'capture':
+        return true;
+    }
+    return false;
+  }
+  captureimage() {
+    this.renderer.setProperty(this.canvasElement.nativeElement, 'width', this.videoWidth);
+    this.renderer.setProperty(this.canvasElement.nativeElement, 'height', this.videoHeight);
+    this.canvasElement.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
+    this.imgSrc = this.canvasElement.nativeElement.toDataURL('image/svg');
+    this.viewState = 'capturePreview';
     console.log('agreement', this.agreement);
   }
 
+  get showRetake() {
+    switch (this.viewState) {
+      case 'uploadPreview':
+      case 'capturePreview':
+        return true;
+    }
+    return false;
+  }
   retakepicture() {
+    this.viewState = 'capture';
+    this.imgSrc = '';
     this.startCamera();
-    this.hideVid = false;
-    this.hidePic = true;
-    this.showCaptureBtn = true;
-    this.showRetakeBtn = false;
   }
 
+  get showAccept() {
+    switch (this.viewState) {
+      case 'capturePreview':
+      case 'uploadPreview':
+        return true;
+    }
+    return false;
+  }
   acceptimage() {
-    console.log('the image', this.canvasElement.nativeElement.toDataURL('image/svg'));
+    console.log(`the image (${this.imagename}):`, this.imgSrc);
 
-    Storage.put(this.imagename, this.canvasElement.nativeElement.toDataURL('image/svg'), {
+    Storage.put(this.imagename, this.imgSrc, {
       progressCallback(progress) {
         console.log('Uploaded : ', progress);
       },
@@ -102,6 +165,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
       .then((result: any) => {
         console.log('Success =>', result);
         this.showImageArea = false;
+        this.viewState = 'init';
         this.picturetakenEvent.emit(this.showImageArea);
         this.stopCamera();
       })
@@ -111,7 +175,7 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
   }
 
   startCamera() {
-    if (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia(this.constraints)
         .then(this.attachVideo.bind(this))
@@ -134,12 +198,12 @@ export class ItemTakePictureComponent implements OnInit, OnDestroy {
   }
 
   stopCamera() {
-    let videoElem = this.videoElement.nativeElement.srcObject;
-    let tracks = videoElem.getTracks();
+    const videoElem = this.videoElement.nativeElement.srcObject;
+    const tracks = videoElem.getTracks();
     tracks.forEach(function(track) {
       track.stop();
     });
 
-    videoElem.srcObject = null;
+    videoElem.srcObject = '';
   }
 }

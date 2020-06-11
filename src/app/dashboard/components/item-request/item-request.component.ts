@@ -14,7 +14,7 @@ import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-item-request',
   templateUrl: './item-request.component.html',
-  styleUrls: ['../item-share/item-share.component.scss'],
+  styleUrls: ['../item-share/item-share.component.scss', './item-request.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemRequestComponent implements OnInit, OnDestroy {
@@ -25,8 +25,8 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
   status = Status; // enum binding to use in view template
   userProfile: UserProfile;
   stop$ = new Subject();
-  showImageArea: boolean = false;
-  imagename: string = '';
+  showImageArea = false;
+  imagename = '';
   currentNoteVal: string;
   orderNoteFC: FormControl = new FormControl('');
   orderNoteFC$: Observable<string>;
@@ -75,7 +75,7 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
     }`;
   }
 
-  takepicture() {
+  addpicture() {
     console.log('vm', this.vm);
     this.imagename = Date.now().toString();
     this.showImageArea = true;
