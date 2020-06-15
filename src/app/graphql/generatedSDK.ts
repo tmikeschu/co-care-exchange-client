@@ -1531,9 +1531,6 @@ export type NearbyRequestsQuery = (
     & { requested?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
       & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
-    )>>>, shared?: Maybe<Array<Maybe<(
-      { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
     )>>> }
   )> }
 );
@@ -1687,19 +1684,6 @@ export const NearbyRequestsDocument = gql`
     query NearbyRequests($userId: ID!) {
   nearbyRequests(userId: $userId) {
     requested {
-      itemId
-      name
-      unitOfIssue
-      quantity
-      details
-      statusDisplay
-      status
-      name
-      details
-      itemId
-      userDisplayName
-    }
-    shared {
       itemId
       name
       unitOfIssue
