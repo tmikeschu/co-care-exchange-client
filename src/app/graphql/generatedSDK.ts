@@ -650,6 +650,8 @@ export type OrderNote = {
 
 export type OrderSummary = {
   __typename?: 'OrderSummary';
+  cancellationReason?: Maybe<Scalars['String']>;
+  cancelledOn?: Maybe<Scalars['DateTime']>;
   createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   modifiedOn?: Maybe<Scalars['DateTime']>;
@@ -1010,6 +1012,8 @@ export type Query = {
   geoDistance?: Maybe<DistanceInMiles>;
   geolocation?: Maybe<GeoLocationResponsePayload>;
   itemDetails?: Maybe<DashboardItemDetails>;
+  nearbyRequests?: Maybe<Dashboard>;
+  nearbyShares?: Maybe<Dashboard>;
   orders?: Maybe<Array<Maybe<Order>>>;
   organizations?: Maybe<Array<Maybe<Organization>>>;
   prompts?: Maybe<Array<Maybe<Prompt>>>;
@@ -1045,6 +1049,16 @@ export type QueryGeolocationArgs = {
 
 export type QueryItemDetailsArgs = {
   itemId: Scalars['ID'];
+  userId: Scalars['ID'];
+};
+
+
+export type QueryNearbyRequestsArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type QueryNearbySharesArgs = {
   userId: Scalars['ID'];
 };
 
@@ -1093,6 +1107,7 @@ export type SaveUserInput = {
   firstName?: Maybe<Scalars['String']>;
   householdSize?: Maybe<Scalars['Short']>;
   lastName?: Maybe<Scalars['String']>;
+  matchRadius: Scalars['Short'];
   organizationId?: Maybe<Scalars['ID']>;
   phoneNumber?: Maybe<Scalars['String']>;
   pickupRadius: Scalars['Short'];
@@ -1128,6 +1143,7 @@ export type User = {
   createdBy?: Maybe<Scalars['String']>;
   createdOn: Scalars['DateTime'];
   displayName?: Maybe<Scalars['String']>;
+  /** @deprecated Field no longer supported */
   dropOffRadius: Scalars['Short'];
   emailAddress?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
@@ -1136,6 +1152,7 @@ export type User = {
   lastName?: Maybe<Scalars['String']>;
   latitude?: Maybe<Scalars['Float']>;
   longitude?: Maybe<Scalars['Float']>;
+  matchRadius: Scalars['Short'];
   modifiedBy?: Maybe<Scalars['String']>;
   modifiedOn?: Maybe<Scalars['DateTime']>;
   orderSummaries?: Maybe<Array<Maybe<OrderSummary>>>;
@@ -1143,6 +1160,7 @@ export type User = {
   pendingRequests?: Maybe<Array<Maybe<PendingItemRequestSummary>>>;
   pendingShares?: Maybe<Array<Maybe<PendingItemShareSummary>>>;
   phoneNumber?: Maybe<Scalars['String']>;
+  /** @deprecated Field no longer supported */
   pickupRadius: Scalars['Short'];
   postalCode?: Maybe<Scalars['String']>;
   requestOrders?: Maybe<Array<Maybe<Order>>>;
@@ -1331,6 +1349,18 @@ export type UserFilter = {
   longitude_not_in?: Maybe<Array<Maybe<Scalars['Float']>>>;
   longitude_not_lt?: Maybe<Scalars['Float']>;
   longitude_not_lte?: Maybe<Scalars['Float']>;
+  matchRadius?: Maybe<Scalars['Short']>;
+  matchRadius_gt?: Maybe<Scalars['Short']>;
+  matchRadius_gte?: Maybe<Scalars['Short']>;
+  matchRadius_in?: Maybe<Array<Scalars['Short']>>;
+  matchRadius_lt?: Maybe<Scalars['Short']>;
+  matchRadius_lte?: Maybe<Scalars['Short']>;
+  matchRadius_not?: Maybe<Scalars['Short']>;
+  matchRadius_not_gt?: Maybe<Scalars['Short']>;
+  matchRadius_not_gte?: Maybe<Scalars['Short']>;
+  matchRadius_not_in?: Maybe<Array<Scalars['Short']>>;
+  matchRadius_not_lt?: Maybe<Scalars['Short']>;
+  matchRadius_not_lte?: Maybe<Scalars['Short']>;
   modifiedBy?: Maybe<Scalars['String']>;
   modifiedBy_contains?: Maybe<Scalars['String']>;
   modifiedBy_ends_with?: Maybe<Scalars['String']>;

@@ -1,0 +1,13 @@
+<div *ngFor="let request of requests | async">
+    <mat-list-item class="contentborder dashboard-list-item">
+        <div class="dashboardlistitem">
+          <mat-label class="contentlabel">{{ request.name }}<br>
+            <span class="content-multiplier">x</span>
+            <span class="contentlabel-detail">{{ formatItemDetails(request) }}</span>
+          </mat-label>
+          <mat-label [className]="contentstatusyellow" style="margin-left: auto;">
+            {{ request.statusDisplay }}
+          </mat-label>
+        </div>
+      </mat-list-item>
+  </div>
