@@ -1,0 +1,30 @@
+query NearbyRequests($userId: ID!) {
+  nearbyRequests(userId: $userId) {
+    requested {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+    shared {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+  }
+}

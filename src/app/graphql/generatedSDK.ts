@@ -650,8 +650,6 @@ export type OrderNote = {
 
 export type OrderSummary = {
   __typename?: 'OrderSummary';
-  cancellationReason?: Maybe<Scalars['String']>;
-  cancelledOn?: Maybe<Scalars['DateTime']>;
   createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   modifiedOn?: Maybe<Scalars['DateTime']>;
@@ -1521,6 +1519,44 @@ export type ItemDetailsQuery = (
   )> }
 );
 
+export type NearbyRequestsQueryVariables = {
+  userId: Scalars['ID'];
+};
+
+
+export type NearbyRequestsQuery = (
+  { __typename?: 'Query' }
+  & { nearbyRequests?: Maybe<(
+    { __typename?: 'Dashboard' }
+    & { requested?: Maybe<Array<Maybe<(
+      { __typename?: 'DashboardItem' }
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+    )>>>, shared?: Maybe<Array<Maybe<(
+      { __typename?: 'DashboardItem' }
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+    )>>> }
+  )> }
+);
+
+export type NearbySharesQueryVariables = {
+  userId: Scalars['ID'];
+};
+
+
+export type NearbySharesQuery = (
+  { __typename?: 'Query' }
+  & { nearbyShares?: Maybe<(
+    { __typename?: 'Dashboard' }
+    & { requested?: Maybe<Array<Maybe<(
+      { __typename?: 'DashboardItem' }
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+    )>>>, shared?: Maybe<Array<Maybe<(
+      { __typename?: 'DashboardItem' }
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+    )>>> }
+  )> }
+);
+
 export const CreateOrderNoteDocument = gql`
     mutation CreateOrderNote($input: CreateOrderNoteInput!) {
   createOrderNote(input: $input) {
@@ -1647,6 +1683,86 @@ export const ItemDetailsDocument = gql`
     document = ItemDetailsDocument;
     
   }
+export const NearbyRequestsDocument = gql`
+    query NearbyRequests($userId: ID!) {
+  nearbyRequests(userId: $userId) {
+    requested {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+    shared {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NearbyRequestsGQL extends Apollo.Query<NearbyRequestsQuery, NearbyRequestsQueryVariables> {
+    document = NearbyRequestsDocument;
+    
+  }
+export const NearbySharesDocument = gql`
+    query NearbyShares($userId: ID!) {
+  nearbyShares(userId: $userId) {
+    requested {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+    shared {
+      itemId
+      name
+      unitOfIssue
+      quantity
+      details
+      statusDisplay
+      status
+      name
+      details
+      itemId
+      userDisplayName
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NearbySharesGQL extends Apollo.Query<NearbySharesQuery, NearbySharesQueryVariables> {
+    document = NearbySharesDocument;
+    
+  }
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -1668,7 +1784,9 @@ export const ItemDetailsDocument = gql`
       private createOrderNoteGql: CreateOrderNoteGQL,
       private updateOrderGql: UpdateOrderGQL,
       private dashboardGql: DashboardGQL,
-      private itemDetailsGql: ItemDetailsGQL
+      private itemDetailsGql: ItemDetailsGQL,
+      private nearbyRequestsGql: NearbyRequestsGQL,
+      private nearbySharesGql: NearbySharesGQL
     ) {}
       
     createOrderNote(variables: CreateOrderNoteMutationVariables, options?: MutationOptionsAlone<CreateOrderNoteMutation, CreateOrderNoteMutationVariables>) {
@@ -1693,5 +1811,21 @@ export const ItemDetailsDocument = gql`
     
     itemDetailsWatch(variables: ItemDetailsQueryVariables, options?: WatchQueryOptionsAlone<ItemDetailsQueryVariables>) {
       return this.itemDetailsGql.watch(variables, options)
+    }
+    
+    nearbyRequests(variables: NearbyRequestsQueryVariables, options?: QueryOptionsAlone<NearbyRequestsQueryVariables>) {
+      return this.nearbyRequestsGql.fetch(variables, options)
+    }
+    
+    nearbyRequestsWatch(variables: NearbyRequestsQueryVariables, options?: WatchQueryOptionsAlone<NearbyRequestsQueryVariables>) {
+      return this.nearbyRequestsGql.watch(variables, options)
+    }
+    
+    nearbyShares(variables: NearbySharesQueryVariables, options?: QueryOptionsAlone<NearbySharesQueryVariables>) {
+      return this.nearbySharesGql.fetch(variables, options)
+    }
+    
+    nearbySharesWatch(variables: NearbySharesQueryVariables, options?: WatchQueryOptionsAlone<NearbySharesQueryVariables>) {
+      return this.nearbySharesGql.watch(variables, options)
     }
   }
