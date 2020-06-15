@@ -134,7 +134,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div *ngIf="question.unitsOfIssueChoices != null && question.unitsOfIssueChoices.length > 1" class="radio-group-container" fxLayout="row" fxLayoutAlign="center center">
+                    <div *ngIf="question.unitsOfIssueChoices != null && question.unitsOfIssueChoices.length > 1" class="radiogroup" fxLayout="row" fxLayoutAlign="center center">
                         <mat-radio-group aria-label="Select an option" [(ngModel)]="question.unit">
                             <mat-radio-button class="btn radio-group" *ngFor="let unit of question.unitsOfIssueChoices"
                                 [value]="unit">{{unit}}</mat-radio-button>

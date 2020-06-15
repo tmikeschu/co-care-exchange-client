@@ -11,7 +11,7 @@ mat-form-field {
 
 .questionsection{
   margin-bottom: 100px;
-  max-width: 400px;
+  max-width: 450px;
   overflow-y: scroll;
 }
 
@@ -35,9 +35,9 @@ mat-form-field {
   font-size: 1.35rem;
 }
 
-// .radio-group-container {
-//   padding: 2em 0 0 0;
-// }
+.radiogroup{
+  text-align: center;
+}
 
 .page-footer {
   background-color: #fafafa;
