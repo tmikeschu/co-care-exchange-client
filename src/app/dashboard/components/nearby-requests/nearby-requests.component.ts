@@ -1,57 +1,51 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil, tap, map } from 'rxjs/operators';
-import { NearbyItemsService } from 'src/app/core/services/cce/nearby-items.service';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, switchMap, startWith } from 'rxjs/operators';
 import { Agreement } from '../models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { UserService } from 'src/app/core/services/user.service';
-import { DashboardGQL } from 'src/app/graphql/generatedSDK';
-
-interface IRequestsViewModel {
-  items: Agreement[];
-  orgId?: string;
-  filterState: string;
-  loading: boolean;
-}
+import { NearbyRequestsGQL } from 'src/app/graphql/generatedSDK';
 
 @Component({
   selector: 'app-nearby-requests',
   templateUrl: './nearby-requests.component.html',
   styleUrls: ['./nearby-requests.component.scss']
 })
-export class NearbyRequestsComponent implements OnInit, OnDestroy {
-  public requests: Observable<any[]>;
-  public userProfile: UserProfile;
-  isAlive: boolean;
+export class NearbyRequestsComponent implements OnInit {
+  vm$: Observable<{ state: 'loading' | 'done', requests: Array<Agreement> }>;
+  initialState = {
+    state: 'loading',
+    requests: []
+  };
 
   constructor(
-    private itemsService: NearbyItemsService,
     private userService: UserService,
-  private dashboardGQL: DashboardGQL) { }
+    private nearbyRequestsQuery: NearbyRequestsGQL) { }
 
   ngOnInit() {
-    this.userProfile = this.userService.getCurrentUserProfile();
+    this.vm$ = this.userService.getCurrentUser$().pipe(
+      map((user: any) => user.userProfile.id),
+      switchMap((userId: string) => this.getNearbyRequests(userId)),
+      startWith(this.initialState)
+    );
+  }
 
-    this.requests = this.dashboardGQL
-      .watch({
-        userId: '9B4E922B-E194-4DB0-9D7F-72A08ED1BF44'
-      })
+  getNearbyRequests(userId: string) {
+    return this.nearbyRequestsQuery.watch({ userId })
       .valueChanges
-      .pipe(map(result => {
-        console.log(result);
-        return result.data.dashboard.requested;
-      }));
-    
-    
-    //this.requests = this.itemsService.requests;
-    //this.itemsService.loadRequests(this.userProfile.id);
+      .pipe(
+        map((results: any) => {
+          return {
+            state: 'done',
+            requests: results.data && results.data.nearbyRequests && results.data.nearbyRequests.requested.length ?
+              results.data.nearbyRequests.requested :
+              []
+          };
+        })
+      );
   }
 
   formatItemDetails(agreement: Agreement) {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
-  }
-
-  ngOnDestroy(): void {
-    
   }
 }

@@ -1,13 +1,27 @@
-<div *ngFor="let request of requests | async">
-    <mat-list-item class="contentborder dashboard-list-item">
-        <div class="dashboardlistitem">
-          <mat-label class="contentlabel">{{ request.name }}<br>
-            <span class="content-multiplier">x</span>
-            <span class="contentlabel-detail">{{ formatItemDetails(request) }}</span>
-          </mat-label>
-          <mat-label [className]="contentstatusyellow" style="margin-left: auto;">
-            {{ request.statusDisplay }}
-          </mat-label>
+<div *ngIf="vm$ | async as vm">
+  <div [ngSwitch]="vm.state">
+    <!-- loader -->
+    <div *ngSwitchCase="'loading'">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <!-- loaded -->
+    <div *ngSwitchCase="'done'">
+      <div *ngIf="vm.requests && vm.requests.length; else empty">
+        <div *ngFor="let request of vm.requests">
+          <mat-list-item class="contentborder dashboard-list-item">
+            <div class="dashboardlistitem">
+              <mat-label class="contentlabel">{{ request.name }}<br>
+                <span class="content-multiplier">x</span>
+                <span class="contentlabel-detail">{{ formatItemDetails(request) }}</span>
+              </mat-label>
+              <mat-label [className]="contentstatusyellow" style="margin-left: auto;">
+                {{ request.statusDisplay }}
+              </mat-label>
+            </div>
+          </mat-list-item>
         </div>
-      </mat-list-item>
+      </div>
+      <ng-template #empty>No nearby requests at this time...</ng-template>
+    </div>
   </div>
+</div>
