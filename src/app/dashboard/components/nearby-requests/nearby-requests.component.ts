@@ -15,7 +15,7 @@ interface IRequestsViewModel {
 }
 
 @Component({
-  selector: 'nearby-requests',
+  selector: 'app-nearby-requests',
   templateUrl: './nearby-requests.component.html',
   styleUrls: ['./nearby-requests.component.scss']
 })
