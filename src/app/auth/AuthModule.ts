@@ -21,5 +21,6 @@ import { RegistrationModule } from './components/registration/registration.modul
     WelcomePageComponent
   ],
   imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule, RegistrationModule],
+  exports: [PasswordResetComponent]
 })
 export class AuthModule {}
