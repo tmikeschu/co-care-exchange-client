@@ -1544,10 +1544,7 @@ export type NearbySharesQuery = (
   { __typename?: 'Query' }
   & { nearbyShares?: Maybe<(
     { __typename?: 'Dashboard' }
-    & { requested?: Maybe<Array<Maybe<(
-      { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
-    )>>>, shared?: Maybe<Array<Maybe<(
+    & { shared?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
       & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
     )>>> }
@@ -1710,19 +1707,6 @@ export const NearbyRequestsDocument = gql`
 export const NearbySharesDocument = gql`
     query NearbyShares($userId: ID!) {
   nearbyShares(userId: $userId) {
-    requested {
-      itemId
-      name
-      unitOfIssue
-      quantity
-      details
-      statusDisplay
-      status
-      name
-      details
-      itemId
-      userDisplayName
-    }
     shared {
       itemId
       name
