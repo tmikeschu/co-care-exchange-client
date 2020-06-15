@@ -73,7 +73,7 @@
             <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
                 mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
             <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled" 
-                mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Drop-Off</button>
+                mat-button mat-flat-button color="primary" (click)="onConfirmDropOff(vm.itemDetails)">Confirm Fulfillment</button>
         </div>      
     </div>
 </section>
