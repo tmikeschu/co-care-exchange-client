@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap, startWith } from 'rxjs/operators';
 import { Agreement } from '../models/agreement';
-import { UserProfile } from 'src/app/models/UserProfile';
 import { UserService } from 'src/app/core/services/user.service';
 import { NearbyRequestsGQL } from 'src/app/graphql/generatedSDK';
 
