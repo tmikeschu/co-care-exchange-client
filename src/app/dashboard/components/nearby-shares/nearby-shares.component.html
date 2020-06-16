@@ -1,1 +1,22 @@
-<p>nearby-shares works!</p>
+<div *ngIf="vm$ | async as vm">
+    <div [ngSwitch]="vm.state">
+      <!-- loader -->
+      <div *ngSwitchCase="'loading'">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <!-- loaded -->
+      <div *ngSwitchCase="'done'">
+        <div *ngIf="vm.shares && vm.shares.length; else empty">
+          <div *ngFor="let share of vm.shares" class="nearby-list-item" fxLayout="row" fxLayoutAlign="space-between center">
+  
+            <div fxLayout="row">
+              <div class="name">{{ share.name }} </div>
+              <div class="multiplier"><span>x</span><span>{{ share.quantity }}</span></div>
+            </div>
+            <!-- <div><i>Created On</i></div> -->
+          </div>
+        </div>
+        <ng-template #empty>No nearby shares at this time...</ng-template>
+      </div>
+    </div>
+  </div>
