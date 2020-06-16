@@ -1,31 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { map, switchMap, startWith, filter } from 'rxjs/operators';
 import { Agreement } from '../models/agreement';
-import { UserService } from 'src/app/core/services/user.service';
 import { NearbyRequestsGQL } from 'src/app/graphql/generatedSDK';
+import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 
 @Component({
   selector: 'app-nearby-requests',
   templateUrl: './nearby-requests.component.html',
-  styleUrls: ['./nearby-requests.component.scss']
+  styleUrls: ['./nearby-requests.component.scss', '../dashboard.component.scss', '../nearby-items/nearby-items.component.scss']
 })
 export class NearbyRequestsComponent implements OnInit {
-  vm$: Observable<{ state: 'loading' | 'done', requests: Array<Agreement> }>;
-  initialState = {
-    state: 'loading',
-    requests: []
-  };
+  vm$: Observable<{ state: string, requests: Array<Agreement> }>;
+  user$: Observable<any>;
 
   constructor(
-    private userService: UserService,
-    private nearbyRequestsQuery: NearbyRequestsGQL) { }
+    private authSvc: AuthenticationService,
+    private nearbyRequestsQuery: NearbyRequestsGQL) {
+    this.user$ = this.authSvc.auth$.pipe(
+      filter((authState) => authState.user && authState.user.userProfile),
+      map((authState) => authState.user.userProfile)
+    );
+  }
 
   ngOnInit() {
-    this.vm$ = this.userService.getCurrentUser$().pipe(
-      map((user: any) => user.userProfile.id),
-      switchMap((userId: string) => this.getNearbyRequests(userId)),
-      startWith(this.initialState)
+    this.vm$ = this.user$.pipe(
+      switchMap((user: any) => this.getNearbyRequests(user.id)),
+      startWith({ state: 'loading', requests: [] })
     );
   }
 
@@ -42,9 +43,5 @@ export class NearbyRequestsComponent implements OnInit {
           };
         })
       );
-  }
-
-  formatItemDetails(agreement: Agreement) {
-    return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 }

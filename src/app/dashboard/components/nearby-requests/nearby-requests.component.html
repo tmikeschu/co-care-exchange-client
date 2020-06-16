@@ -7,18 +7,13 @@
     <!-- loaded -->
     <div *ngSwitchCase="'done'">
       <div *ngIf="vm.requests && vm.requests.length; else empty">
-        <div *ngFor="let request of vm.requests">
-          <mat-list-item class="contentborder dashboard-list-item">
-            <div class="dashboardlistitem">
-              <mat-label class="contentlabel">{{ request.name }}<br>
-                <span class="content-multiplier">x</span>
-                <span class="contentlabel-detail">{{ formatItemDetails(request) }}</span>
-              </mat-label>
-              <mat-label [className]="contentstatusyellow" style="margin-left: auto;">
-                {{ request.statusDisplay }}
-              </mat-label>
-            </div>
-          </mat-list-item>
+        <div *ngFor="let request of vm.requests" class="nearby-list-item" fxLayout="row" fxLayoutAlign="space-between center">
+
+          <div fxLayout="row">
+            <div class="name">{{ request.name }} </div>
+            <div class="multiplier"><span>x</span><span>{{ request.quantity }}</span></div>
+          </div>
+          <!-- <div><i>Created On</i></div> -->
         </div>
       </div>
       <ng-template #empty>No nearby requests at this time...</ng-template>
