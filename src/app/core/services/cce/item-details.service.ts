@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, switchMap, filter, catchError, tap, skip } from 'rxjs/operators';
-import { Apollo } from 'apollo-angular';
 
 import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
@@ -10,7 +9,7 @@ import { AuthenticationService } from './authentication.service';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Router } from '@angular/router';
-import { ItemDetailsGQL, CreateOrderNoteGQL, UpdateOrderGQL } from 'src/app/graphql/generatedSDK';
+import { CceSDK } from 'src/app/graphql/generatedSDK';
 
 export interface IItemDetailState {
     itemDetails: Agreement;
@@ -45,17 +44,13 @@ export class ItemDetailsService {
     constructor(
         public userService: UserService,
         public authService: AuthenticationService,
-        private apollo: Apollo,
         private router: Router,
-        private itemDetailsGQL: ItemDetailsGQL,
-        private createOrderNoteGQL: CreateOrderNoteGQL,
-        private updateOrderGQL: UpdateOrderGQL
+        private api: CceSDK,
     ) {
         combineLatest([this.userProfileId$, this.itemId$])
             .pipe(
                 switchMap(([userId, itemId]) => {
-                    return this.itemDetailsGQL
-                        .watch({ userId, itemId })
+                    return this.api.itemDetailsWatch({ userId, itemId })
                         .valueChanges
                         .pipe(map(handleGQLErrors));
                 })
@@ -110,8 +105,7 @@ export class ItemDetailsService {
             })
             , tap(payload => console.log('payload for createOrderNote: ', payload))
             , switchMap(payload => {
-                return this.createOrderNoteGQL
-                    .mutate({ input: payload })
+                return this.api.createOrderNote({ input: payload })
                     .pipe(
                         map(handleGQLErrors),
                         tap(() => {
@@ -138,8 +132,7 @@ export class ItemDetailsService {
             })
             , tap(payload => console.log('update order payload: ', payload))
             , switchMap(payload => {
-                return this.updateOrderGQL
-                    .mutate({ input: payload })
+                return this.api.updateOrder({ input: payload })
                     .pipe(
                         map(handleGQLErrors)
                         , tap(data => {

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject, combineLatest, of, concat } from 'rxjs';
 import { map, switchMap, startWith, filter } from 'rxjs/operators';
-import { NearbyRequestsGQL, DashboardItem } from 'src/app/graphql/generatedSDK';
+import { DashboardItem, CceSDK } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { FormControl } from '@angular/forms';
 import { UIState } from 'src/app/core/constants/enums';
@@ -21,7 +21,8 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
 
   constructor(
     private authSvc: AuthenticationService,
-    private nearbyRequestsQuery: NearbyRequestsGQL) {
+    private api: CceSDK,
+  ) {
   }
 
   ngOnInit() {
@@ -40,7 +41,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
 
   getNearbyRequests(userId: string, filterVal: string) {
     // TODO: pass filter val once API support is there.
-    return this.nearbyRequestsQuery.watch({ userId })
+    return this.api.nearbyRequestsWatch({ userId })
       .valueChanges
       .pipe(
         map((results: any) => {

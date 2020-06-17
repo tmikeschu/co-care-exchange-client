@@ -6,7 +6,7 @@ import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { AuthenticationService } from './authentication.service';
-import { DashboardGQL, UpdateOrderGQL } from 'src/app/graphql/generatedSDK';
+import { CceSDK } from 'src/app/graphql/generatedSDK';
 
 export interface IDashboardState {
   needs: Agreement[];
@@ -59,8 +59,7 @@ export class DashboardService {
   constructor(
     public userService: UserService,
     private authService: AuthenticationService,
-    private dashboardGQL: DashboardGQL,
-    private updateOrderGQL: UpdateOrderGQL,
+    private api: CceSDK,
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
     // alive and if the client has internet connectivity
@@ -83,7 +82,7 @@ export class DashboardService {
 
   dashboardHandler(userProfileId: string, filterCriteria: string) {
     const formattedFilter = filterCriteria === 'showAllOrganization' ? filterCriteria : null;
-    return this.dashboardGQL.watch({ userId: userProfileId, filterOption: filterCriteria })
+    return this.api.dashboardWatch({ userId: userProfileId, filterOption: filterCriteria })
       .valueChanges
       .pipe(
         map((data: any) => {

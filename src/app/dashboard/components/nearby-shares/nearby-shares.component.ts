@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap, startWith, filter } from 'rxjs/operators';
 
-import { NearbySharesGQL, DashboardItem } from 'src/app/graphql/generatedSDK';
+import { DashboardItem, CceSDK } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { UIState } from 'src/app/core/constants/enums';
 
@@ -20,7 +20,8 @@ export class NearbySharesComponent implements OnInit {
 
   constructor(
     private authSvc: AuthenticationService,
-    private nearbySharesQuery: NearbySharesGQL) { }
+    private api: CceSDK,
+  ) { }
 
   ngOnInit() {
     this.vm$ = this.user$.pipe(
@@ -30,7 +31,7 @@ export class NearbySharesComponent implements OnInit {
   }
 
   getNearbyShares(userId: string): Observable<{ state: UIState, shares: Array<DashboardItem> }> {
-    return this.nearbySharesQuery.watch({ userId })
+    return this.api.nearbyRequestsWatch({ userId })
       .valueChanges
       .pipe(
         map((results: any) => {
