@@ -10,10 +10,11 @@ import { InformationRoutingModule } from './information-routing.module';
 import { OrgInfoModalComponent } from './orginfomodal/orginfomodal.component';
 import { PasswordResetComponent } from '../auth/components/password-reset/password-reset.component';
 import { AuthModule } from '../auth/AuthModule';
+import { PasswordChangeComponent } from '../auth/components/password-change/password-change.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule, AuthModule],
   declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],
-  entryComponents: [OrgInfoModalComponent]
+  entryComponents: [OrgInfoModalComponent, PasswordChangeComponent]
 })
 export class InformationModule {}

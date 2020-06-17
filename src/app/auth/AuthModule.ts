@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../material/material.module';
 import { WelcomePageComponent } from './components/welcome-page/welcome.component';
 import { RegistrationModule } from './components/registration/registration.module';
+import { PasswordChangeComponent } from './components/password-change/password-change.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +19,10 @@ import { RegistrationModule } from './components/registration/registration.modul
     PasswordResetComponent,
     SignInComponent,    
     ValidateEmailComponent,
-    WelcomePageComponent
+    WelcomePageComponent, 
+    PasswordChangeComponent
   ],
   imports: [CommonModule, AuthRoutingModule, SharedModule, CustomMaterialModule, ReactiveFormsModule, FormsModule, FlexLayoutModule, RegistrationModule],
-  exports: [PasswordResetComponent]
+  exports: [PasswordResetComponent, PasswordChangeComponent]
 })
 export class AuthModule {}
