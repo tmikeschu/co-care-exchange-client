@@ -1497,10 +1497,10 @@ export type DashboardQuery = (
     { __typename?: 'Dashboard' }
     & { requested?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName' | 'createdOn'>
     )>>>, shared?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName' | 'createdOn'>
     )>>> }
   )> }
 );
@@ -1619,6 +1619,7 @@ export const DashboardDocument = gql`
       details
       itemId
       userDisplayName
+      createdOn
     }
     shared {
       itemId
@@ -1632,6 +1633,7 @@ export const DashboardDocument = gql`
       details
       itemId
       userDisplayName
+      createdOn
     }
   }
 }
