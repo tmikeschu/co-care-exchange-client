@@ -7,6 +7,8 @@ import { AuthenticationService } from '../../../../../core/services/cce/authenti
 import { BasicRegistrationModel } from '../../../../../models/cce/basic-registration.model';
 import { environment } from '../../../../../../environments/environment';
 import { CustomValidators } from 'src/app/shared/custom-validators';
+import { MatDialog } from '@angular/material';
+import { RegisterOrgInfoDialogComponent } from '../register-org-info-dialog/register-org-info-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +25,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -108,5 +111,12 @@ export class RegisterComponent implements OnInit {
       this.registerForm.enable();
       this.isRegistering = false;
     }
+  }
+
+  onRegisterOrgInfoClick(){
+    const ref = this.dialog.open(RegisterOrgInfoDialogComponent, {
+      width: '300px',
+      data: {},
+    });
   }
 }
