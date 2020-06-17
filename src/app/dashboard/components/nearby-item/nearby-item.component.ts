@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemDetailsGQL } from 'src/app/graphql/generatedSDK';
+import { ItemDetailsGQL, DashboardItemDetails } from 'src/app/graphql/generatedSDK';
 import { UserService } from 'src/app/core/services/user.service';
 import { UserProfile } from 'src/app/models/UserProfile';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import { switchMap, map, startWith } from 'rxjs/operators';
     styleUrls: ['./nearby-item.component.scss', '../item-share/item-share.component.scss']
 })
 export class NearbyItemComponent implements OnInit {
-    vm$: Observable<{ state: string, itemDetails?: any }>;
+    vm$: Observable<{ state: string, itemDetails?: DashboardItemDetails }>;
     userProfile: UserProfile;
 
     constructor(
