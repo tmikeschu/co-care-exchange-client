@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject, combineLatest, of, concat } from 'rxjs';
 import { map, switchMap, startWith, filter } from 'rxjs/operators';
-import { Agreement } from '../models/agreement';
-import { NearbyRequestsGQL } from 'src/app/graphql/generatedSDK';
+import { NearbyRequestsGQL, DashboardItem } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { FormControl } from '@angular/forms';
 import { UIState } from 'src/app/core/constants/enums';
@@ -13,7 +12,7 @@ import { UIState } from 'src/app/core/constants/enums';
   styleUrls: ['./nearby-requests.component.scss', '../dashboard.component.scss', '../nearby-items/nearby-items.component.scss']
 })
 export class NearbyRequestsComponent implements OnInit, OnDestroy {
-  vm$: Observable<{ state: UIState, requests: Array<Agreement> }>;
+  vm$: Observable<{ state: UIState, requests?: Array<DashboardItem> }>;
   user$: Observable<any>;
   filter = new FormControl('organization');
   filter$: Observable<string>;
@@ -55,7 +54,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
       );
   }
 
-  formatItemDetails(agreement: Agreement) {
+  formatItemDetails(agreement: DashboardItem) {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 

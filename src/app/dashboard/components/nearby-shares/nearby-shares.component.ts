@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap, startWith, filter } from 'rxjs/operators';
-import { Agreement } from '../models/agreement';
 
-import { NearbySharesGQL } from 'src/app/graphql/generatedSDK';
+import { NearbySharesGQL, DashboardItem } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { UIState } from 'src/app/core/constants/enums';
 
@@ -13,7 +12,7 @@ import { UIState } from 'src/app/core/constants/enums';
   styleUrls: ['./nearby-shares.component.scss', '../dashboard.component.scss', '../nearby-items/nearby-items.component.scss']
 })
 export class NearbySharesComponent implements OnInit {
-  vm$: Observable<{ state: UIState, shares: Array<Agreement> }>;
+  vm$: Observable<{ state: UIState, shares?: Array<DashboardItem> }>;
   user$ = this.authSvc.auth$.pipe(
     filter((authState) => authState.user && authState.user.userProfile),
     map((authState) => authState.user.userProfile)
@@ -30,7 +29,7 @@ export class NearbySharesComponent implements OnInit {
     );
   }
 
-  getNearbyShares(userId: string): Observable<{ state: UIState, shares: Array<Agreement> }> {
+  getNearbyShares(userId: string): Observable<{ state: UIState, shares: Array<DashboardItem> }> {
     return this.nearbySharesQuery.watch({ userId })
       .valueChanges
       .pipe(
