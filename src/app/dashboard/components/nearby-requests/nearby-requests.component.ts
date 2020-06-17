@@ -5,6 +5,7 @@ import { Agreement } from '../models/agreement';
 import { NearbyRequestsGQL } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { FormControl } from '@angular/forms';
+import { UIState } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-nearby-requests',
@@ -12,7 +13,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./nearby-requests.component.scss', '../dashboard.component.scss', '../nearby-items/nearby-items.component.scss']
 })
 export class NearbyRequestsComponent implements OnInit, OnDestroy {
-  vm$: Observable<{ state: string, requests: Array<Agreement> }>;
+  vm$: Observable<{ state: UIState, requests: Array<Agreement> }>;
   user$: Observable<any>;
   filter = new FormControl('organization');
   filter$: Observable<string>;
@@ -34,7 +35,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
     this.inputs$ = combineLatest([this.filter$, this.user$]);
     this.vm$ = this.inputs$.pipe(
       switchMap(([filterVal, user]) => this.getNearbyRequests(user.id, filterVal)),
-      startWith({ state: 'loading', requests: [] })
+      startWith({ state: UIState.Loading, requests: [] })
     );
   }
 
@@ -45,7 +46,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
       .pipe(
         map((results: any) => {
           return {
-            state: 'done',
+            state: UIState.Done,
             requests: results.data && results.data.nearbyRequests && results.data.nearbyRequests.requested.length ?
               results.data.nearbyRequests.requested :
               []

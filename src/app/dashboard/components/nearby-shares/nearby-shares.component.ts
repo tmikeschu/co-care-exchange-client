@@ -5,6 +5,7 @@ import { Agreement } from '../models/agreement';
 
 import { NearbySharesGQL } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
+import { UIState } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-nearby-shares',
@@ -12,7 +13,7 @@ import { AuthenticationService } from 'src/app/core/services/cce/authentication.
   styleUrls: ['./nearby-shares.component.scss', '../dashboard.component.scss', '../nearby-items/nearby-items.component.scss']
 })
 export class NearbySharesComponent implements OnInit {
-  vm$: Observable<{ state: string, shares: Array<Agreement> }>;
+  vm$: Observable<{ state: UIState, shares: Array<Agreement> }>;
   user$ = this.authSvc.auth$.pipe(
     filter((authState) => authState.user && authState.user.userProfile),
     map((authState) => authState.user.userProfile)
@@ -25,17 +26,17 @@ export class NearbySharesComponent implements OnInit {
   ngOnInit() {
     this.vm$ = this.user$.pipe(
       switchMap((user: any) => this.getNearbyShares(user.id)),
-      startWith({ state: 'loading', shares: [] }),
+      startWith({ state: UIState.Loading, shares: [] }),
     );
   }
 
-  getNearbyShares(userId: string): Observable<{ state: string, shares: Array<Agreement> }> {
+  getNearbyShares(userId: string): Observable<{ state: UIState, shares: Array<Agreement> }> {
     return this.nearbySharesQuery.watch({ userId })
       .valueChanges
       .pipe(
         map((results: any) => {
           return {
-            state: 'done',
+            state: UIState.Done,
             shares: results.data && results.data.nearbyShares && results.data.nearbyShares.shared.length ?
               results.data.nearbyShares.shared :
               []
