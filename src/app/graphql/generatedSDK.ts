@@ -1515,7 +1515,7 @@ export type ItemDetailsQuery = (
   { __typename?: 'Query' }
   & { itemDetails?: Maybe<(
     { __typename?: 'DashboardItemDetails' }
-    & Pick<DashboardItemDetails, 'addressLabel' | 'deliveryAddress' | 'details' | 'dialogMessage' | 'itemId' | 'name' | 'orderId' | 'quantity' | 'requesterName' | 'requestId' | 'shareId' | 'sharerName' | 'status' | 'statusDisplay' | 'unitOfIssue'>
+    & Pick<DashboardItemDetails, 'addressLabel' | 'deliveryAddress' | 'details' | 'dialogMessage' | 'itemId' | 'name' | 'orderId' | 'quantity' | 'requesterName' | 'requestId' | 'shareId' | 'sharerName' | 'status' | 'statusDisplay' | 'unitOfIssue' | 'createdOn'>
     & { orderNotes?: Maybe<Array<Maybe<(
       { __typename?: 'OrderNote' }
       & Pick<OrderNote, 'createdBy' | 'createdOn' | 'id' | 'noteBody' | 'userId' | 'imageUrl'>
@@ -1662,6 +1662,7 @@ export const ItemDetailsDocument = gql`
     status
     statusDisplay
     unitOfIssue
+    createdOn
     orderNotes {
       createdBy
       createdOn

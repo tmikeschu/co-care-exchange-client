@@ -15,6 +15,7 @@ query ItemDetails($itemId: ID!, $userId: ID!) {
     status
     statusDisplay
     unitOfIssue
+    createdOn
     orderNotes {
       createdBy
       createdOn
