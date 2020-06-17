@@ -69,9 +69,9 @@
         </div>
 
         <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-            <button
-                *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled"
-                mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
+            <button *ngIf="vm.itemDetails.status !== status.OrderCancelled && vm.itemDetails.status !== status.OrderFulfilled" mat-button mat-flat-button color="warn" (click)="onCancelMatch(vm.itemDetails)">Cancel Match</button>
+
+            <button *ngIf="vm.itemDetails.status == status.OrderConfirmed" mat-button mat-flat-button color="primary" (click)="onConfirmFulfillemnt(vm.itemDetails)" >Confirm Fulfillment</button>
         </div>
 
     </div>
