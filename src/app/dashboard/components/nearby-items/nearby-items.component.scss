@@ -1,11 +1,15 @@
 .section {
   .mat-tab-group {
     margin-bottom: 80px;
+
+    .mat-form-field.mat-form-field-type-mat-select {
+      width: 100%;
+    }
   }
-  // TODO: need this spacing override
-  // .mat-tab-body {
-  //   margin-top: 32px;
-  // }
+}
+
+.cce-select-wrapper {
+  margin-top: 2em;
 }
 
 .nearby-list-item {
@@ -15,7 +19,7 @@
   font-weight: 600;
   font-size: 1em;
   margin: 4px 0;
-  padding: 8px 16px;
+  padding: 10px 16px 8px 16px;
 
   i {
     font-weight: lighter;
@@ -23,5 +27,12 @@
 
   .multiplier {
     margin-left: 4px;
+    font-size: 0.85em;
   }
+}
+
+.empty {
+  color: #696969;
+  font-size: 1em;
+  margin-top: 1em;
 }

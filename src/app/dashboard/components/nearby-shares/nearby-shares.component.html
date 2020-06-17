@@ -9,14 +9,18 @@
         <div *ngIf="vm.shares && vm.shares.length; else empty">
           <div *ngFor="let share of vm.shares" class="nearby-list-item" fxLayout="row" fxLayoutAlign="space-between center">
   
-            <div fxLayout="row">
+            <div fxLayout="row" fxLayoutAlign="center baseline">
               <div class="name">{{ share.name }} </div>
-              <div class="multiplier"><span>x</span><span>{{ share.quantity }}</span></div>
+              <div class="multiplier" fxLayout="row" fxLayoutAlign="center center"><span>x</span><span>{{ share.quantity }}</span></div>
             </div>
-            <!-- <div><i>Created On</i></div> -->
+            <div><i>{{ share.createdOn | date }}</i></div>
           </div>
         </div>
-        <ng-template #empty>No nearby shares at this time...</ng-template>
+        <ng-template #empty>
+          <div class="empty">
+            No nearby shares at this time...
+          </div>
+        </ng-template>            
       </div>
     </div>
   </div>
