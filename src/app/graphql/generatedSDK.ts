@@ -101,6 +101,7 @@ export type Dashboard = {
 
 export type DashboardItem = {
   __typename?: 'DashboardItem';
+  createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   itemId: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
@@ -114,6 +115,7 @@ export type DashboardItem = {
 export type DashboardItemDetails = {
   __typename?: 'DashboardItemDetails';
   addressLabel?: Maybe<Scalars['String']>;
+  createdOn: Scalars['DateTime'];
   deliveryAddress?: Maybe<Scalars['String']>;
   deliveryCoordinates?: Maybe<Coordinates>;
   details?: Maybe<Scalars['String']>;
@@ -650,6 +652,8 @@ export type OrderNote = {
 
 export type OrderSummary = {
   __typename?: 'OrderSummary';
+  cancellationReason?: Maybe<Scalars['String']>;
+  cancelledOn?: Maybe<Scalars['DateTime']>;
   createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   modifiedOn?: Maybe<Scalars['DateTime']>;
@@ -1530,7 +1534,7 @@ export type NearbyRequestsQuery = (
     { __typename?: 'Dashboard' }
     & { requested?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName' | 'createdOn'>
     )>>> }
   )> }
 );
@@ -1546,7 +1550,7 @@ export type NearbySharesQuery = (
     { __typename?: 'Dashboard' }
     & { shared?: Maybe<Array<Maybe<(
       { __typename?: 'DashboardItem' }
-      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName'>
+      & Pick<DashboardItem, 'itemId' | 'name' | 'unitOfIssue' | 'quantity' | 'details' | 'statusDisplay' | 'status' | 'userDisplayName' | 'createdOn'>
     )>>> }
   )> }
 );
@@ -1692,6 +1696,7 @@ export const NearbyRequestsDocument = gql`
       details
       itemId
       userDisplayName
+      createdOn
     }
   }
 }
@@ -1719,6 +1724,7 @@ export const NearbySharesDocument = gql`
       details
       itemId
       userDisplayName
+      createdOn
     }
   }
 }

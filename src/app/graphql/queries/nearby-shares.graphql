@@ -12,6 +12,7 @@ query NearbyShares($userId: ID!) {
       details
       itemId
       userDisplayName
+      createdOn
     }
   }
 }
