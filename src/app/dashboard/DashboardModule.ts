@@ -14,6 +14,7 @@ import { ItemRequestComponent } from './components/item-request/item-request.com
 import { ItemShareComponent } from './components/item-share/item-share.component';
 import { ItemTakePictureComponent } from './components/item-takepicture/item-takepicture.component';
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
+import { NearbyItemComponent } from './components/nearby-item/nearby-item.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
+    NearbyItemComponent,
     ItemTakePictureComponent,
     ItemImageCanvasComponent
   ],
