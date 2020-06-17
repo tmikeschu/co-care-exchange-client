@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Agreement } from '../models/agreement';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, startWith } from 'rxjs/operators';
+import { UIState } from 'src/app/core/constants/enums';
+
 
 @Component({
     selector: 'app-nearby-item',
@@ -13,7 +15,7 @@ import { switchMap, map, startWith } from 'rxjs/operators';
     styleUrls: ['./nearby-item.component.scss', '../item-share/item-share.component.scss']
 })
 export class NearbyItemComponent implements OnInit {
-    vm$: Observable<{ state: string, itemDetails?: DashboardItemDetails }>;
+    vm$: Observable<{ state: UIState, itemDetails?: DashboardItemDetails }>;
     userProfile: UserProfile;
 
     constructor(
@@ -32,7 +34,7 @@ export class NearbyItemComponent implements OnInit {
                         .pipe(
                             map(results => {
                                 return {
-                                    state: 'done',
+                                    state: UIState.Done,
                                     itemDetails: results.data && results.data.itemDetails ?
                                         results.data.itemDetails :
                                         null
@@ -40,7 +42,7 @@ export class NearbyItemComponent implements OnInit {
                             })
                         );
                 }),
-                startWith({ state: 'loading', itemDetails: null })
+                startWith({ state: UIState.Loading, itemDetails: null })
             );
     }
 
