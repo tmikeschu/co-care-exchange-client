@@ -77,11 +77,11 @@ export class ItemShareComponent implements OnInit, OnDestroy {
               },
             });
           } else if (results === 'Confirm') {
-            // update order to delivery pending Status.DeliveryPending
+            // update order to delivery pending Status.OrderConfirmed
             this.updateItem.emit({
               orderUpdate: this.vm.itemDetails,
               updates: {
-                status: Status.DeliveryPending,
+                status: Status.OrderConfirmed,
                 reason: 'Sharer confirmed ability to drop off the items.',
               },
             });

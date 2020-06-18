@@ -5,7 +5,7 @@
         <h3 class="sub-title status-text" [ngClass]="{
             'is-pending': vm.itemDetails.status === status.FindingMatch,
             'is-matched': vm.itemDetails.status === status.NewMatchFound,
-            'is-confirmed': vm.itemDetails.status === status.DeliveryPending,
+            'is-confirmed': vm.itemDetails.status === status.OrderConfirmed,
             'is-fulfilled': vm.itemDetails.status === status.OrderFulfilled,
             'is-cancelled': vm.itemDetails.status === status.OrderCancelled
         }"><strong>{{ vm.itemDetails.statusDisplay }}</strong></h3>
