@@ -66,7 +66,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       updates: {
         shareId: agreement.shareId,
         status: Status.OrderCancelled,
-        reason: 'User cancelled the match in agreement detail view',
+        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + '  cancelled the match in agreement detail view',
       },
     });
   }
@@ -77,7 +77,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
       updates: {
         shareId: agreement.shareId,
         status: Status.OrderFulfilled,
-        reason: 'Sharer confirmed the delivery of the items',
+        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' confirmed the delivery of the items',
       },
     });
   }
