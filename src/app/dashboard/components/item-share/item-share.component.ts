@@ -52,42 +52,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
         filter((val) => val && val !== ''),
         takeUntil(this.stop$)
       )
-      .subscribe((val) => (this.currentNoteVal = val));
-
-    // // confirm match
-    // if (this.vm.itemDetails && this.vm.itemDetails.status === Status.NewMatchFound) {
-    //   this.modalVisible = true;
-    //   const ref = this.dialog.open(ConfirmMatchDialogComponent, {
-    //     width: '300px',
-    //     data: this.vm.itemDetails,
-    //   });
-
-    //   ref
-    //     .afterClosed()
-    //     .pipe(take(1))
-    //     .subscribe((results) => {
-    //       this.modalVisible = false;
-    //       if (results === 'Cancel') {
-    //         // update order to cancel status Status.OrderCancelled
-    //         this.updateItem.emit({
-    //           orderUpdate: this.vm.itemDetails,
-    //           updates: {
-    //             status: Status.OrderCancelled,
-    //             reason: 'Sharer refused the drop off terms',
-    //           },
-    //         });
-    //       } else if (results === 'Confirm') {
-    //         // update order to delivery pending Status.OrderConfirmed
-    //         this.updateItem.emit({
-    //           orderUpdate: this.vm.itemDetails,
-    //           updates: {
-    //             status: Status.OrderConfirmed,
-    //             reason: 'Sharer confirmed ability to drop off the items.',
-    //           },
-    //         });
-    //       }
-    //     });
-    // }
+      .subscribe((val) => (this.currentNoteVal = val));    
   }
 
   ngOnDestroy() {
