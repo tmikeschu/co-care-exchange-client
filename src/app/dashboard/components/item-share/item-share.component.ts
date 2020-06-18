@@ -86,8 +86,7 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     this.createNote.emit({ noteBody: this.currentNoteVal, itemId: this.vm.itemDetails.itemId, imageUrl: null });
     this.orderNoteFC.patchValue('');
   }
-
-  // TODO: this should be a routerLink in the view. Temp work around to move this story forward due to inability to toggle disabled state
+  
   navigateBackToDashboard() {
     if (!this.modalVisible) {
       this.router.navigate(['/dashboard']);
