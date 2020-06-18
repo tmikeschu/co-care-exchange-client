@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // Matched
         return 'contentstatusgreen';
       }
-      case Status.DeliveryPending: {
+      case Status.OrderConfirmed: {
         // Confirmed
         return 'contentstatusyellow';
       }
