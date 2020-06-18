@@ -26,8 +26,8 @@ export class PantryLocatorComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.foodBanks[this.selectedIndex].mapUrl);
   }
 
-  async back() {
-    await this.router.navigate(['/', , 'welcome']);
+  back() {
+    this.router.navigate(['/', 'welcome']);
   }
 }
 
