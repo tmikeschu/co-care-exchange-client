@@ -7,6 +7,7 @@ import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
+import { PasswordChangeComponent } from 'src/app/auth/components/password-change/password-change.component';
 
 @Component({
   selector: 'app-organization',
@@ -113,6 +114,14 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
     const ref = this.dialog.open(OrgInfoModalComponent, {
       width: '300px',
       data: {},
+    });
+  }
+
+  onChangePasswordClick(){
+    const ref = this.dialog.open(PasswordChangeComponent, {
+      width: '300px',
+      data: {},
+      disableClose: true
     });
   }
 }
