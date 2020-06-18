@@ -27,7 +27,6 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { PopupDialogComponent } from './resources/popup-dialog/popup-dialog.component';
 import { PromptModule } from './prompts/prompt.module';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { Router } from '@angular/router';
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { ContributorsComponent } from './contributors/contributors.component';
 
@@ -61,7 +60,7 @@ import { ContributorsComponent } from './contributors/contributors.component';
     AmplifyService,
     NavbarService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   exports: [],
   bootstrap: [AppComponent],
