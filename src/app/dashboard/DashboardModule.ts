@@ -20,8 +20,7 @@ import { ConfirmDeleteRequestComponent } from './components/confirm-delete-reque
 @NgModule({
   declarations: [
     DashboardComponent,
-    MetricsComponent,
-    ConfirmMatchDialogComponent,
+    MetricsComponent,    
     ConfirmDeleteRequestComponent,
     DashboardItemContainerComponent,
     ItemRequestComponent,
@@ -39,6 +38,6 @@ import { ConfirmDeleteRequestComponent } from './components/confirm-delete-reque
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ConfirmMatchDialogComponent, ConfirmDeleteRequestComponent],
+  entryComponents: [ConfirmDeleteRequestComponent],
 })
 export class DashboardModule {}
