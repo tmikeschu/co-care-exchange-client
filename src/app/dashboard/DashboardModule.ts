@@ -8,7 +8,6 @@ import { SharedModule } from '../shared/shared.module';
 import { MetricsComponent } from './components/metrics/metrics.component';
 import { DashboardRoutingModule } from './routes/dashboard-routing.module';
 import { PromptsRoutingModule } from '../prompts/prompts-routing.module';
-import { ConfirmMatchDialogComponent } from './components/confirm-new-match/confirm-new-match.component';
 import { DashboardItemContainerComponent } from './containers/dashboard-item-container/dashboard-item-container.component';
 import { ItemRequestComponent } from './components/item-request/item-request.component';
 import { ItemShareComponent } from './components/item-share/item-share.component';
@@ -17,12 +16,11 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
 import { ConfirmDeleteRequestComponent } from './components/confirm-delete-request/confirm-delete-request.component';
 
 
+
 @NgModule({
   declarations: [
     DashboardComponent,
     MetricsComponent,
-    ConfirmMatchDialogComponent,
-    ConfirmDeleteRequestComponent,
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
@@ -39,6 +37,6 @@ import { ConfirmDeleteRequestComponent } from './components/confirm-delete-reque
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ConfirmMatchDialogComponent, ConfirmDeleteRequestComponent],
+  entryComponents: [],
 })
 export class DashboardModule {}
