@@ -15,7 +15,6 @@ import { ItemShareComponent } from './components/item-share/item-share.component
 import { ItemTakePictureComponent } from './components/item-takepicture/item-takepicture.component';
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
 
-
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -37,6 +36,6 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ConfirmMatchDialogComponent],
+  entryComponents: [ConfirmMatchDialogComponent]
 })
 export class DashboardModule {}

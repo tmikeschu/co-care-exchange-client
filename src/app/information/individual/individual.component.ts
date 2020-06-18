@@ -128,6 +128,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
     const ref = this.dialog.open(PasswordChangeComponent, {
       width: '300px',
       data: {},
+      disableClose: true
     });
   }
 }

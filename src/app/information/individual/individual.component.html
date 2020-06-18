@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutAlign="center center" class="formpadding">
   <form *ngIf="individualRegisterForm" [formGroup]="individualRegisterForm" novalidate>
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
@@ -116,8 +116,10 @@
     <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!individualRegisterForm.valid">
-        <mat-icon>arrow_forward</mat-icon>
+        Save
       </button>
     </div>
   </form>
 </div>
+
+<app-site-footer></app-site-footer>
