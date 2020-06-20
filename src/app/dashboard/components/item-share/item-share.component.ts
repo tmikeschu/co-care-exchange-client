@@ -6,6 +6,7 @@ import { debounceTime, filter, distinctUntilChanged, takeUntil, take, tap, final
 import { IItemDetailState } from 'src/app/core/services/cce/item-details.service';
 import { Status } from 'src/app/core/constants/enums';
 import { MatDialog } from '@angular/material';
+
 import { OrderChangeInput } from 'src/app/models/cce/order-model';
 import { Agreement } from '../models/agreement';
 import { ICreateOrderNoteInput } from 'src/app/graphql/models/create-order-note-input';
@@ -70,13 +71,34 @@ export class ItemShareComponent implements OnInit, OnDestroy {
     });
   }
 
-  onConfirmDropOff(agreement: Agreement) {
+  // onConfirmDropOff(agreement: Agreement) {
+  //   this.updateItem.emit({
+  //     orderUpdate: agreement,
+  //     updates: {
+  //       shareId: agreement.shareId,
+  //       status: Status.OrderFulfilled,
+  //       reason: 'Sharer confirmed the delivery of the items',
+  //     },
+  //   });
+  // } 
+
+  onConfirmFulfillemnt(agreement: Agreement) {
     this.updateItem.emit({
       orderUpdate: agreement,
       updates: {
         shareId: agreement.shareId,
         status: Status.OrderFulfilled,
-        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' confirmed the delivery of the items',
+        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' confirmed the fulfillment of the match',
+      },
+    });
+  }
+
+  onConfirmMatch(){    
+    this.updateItem.emit({
+      orderUpdate: this.vm.itemDetails,
+      updates: {
+        status: Status.OrderConfirmed,
+        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' confirmed matching of the items.',
       },
     });
   }
@@ -87,11 +109,11 @@ export class ItemShareComponent implements OnInit, OnDestroy {
   }
   
   navigateBackToDashboard() {
-    if (!this.modalVisible) {
+    //if (!this.modalVisible) {
       this.router.navigate(['/dashboard']);
-    } else {
-      return false;
-    }
+    //} else {
+    //  return false;
+    //}
   }
 
   formatItemDetails(agreement: Agreement) {
