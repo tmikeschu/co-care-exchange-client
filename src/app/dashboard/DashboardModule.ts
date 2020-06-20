@@ -15,16 +15,18 @@ import { ItemTakePictureComponent } from './components/item-takepicture/item-tak
 import { ItemImageCanvasComponent } from './components/item-image-canvas/item-image-canvas.component';
 import { ConfirmDeleteRequestComponent } from './components/confirm-delete-request/confirm-delete-request.component';
 
+
+
 @NgModule({
   declarations: [
     DashboardComponent,
-    MetricsComponent,
+    MetricsComponent,    
     ConfirmDeleteRequestComponent,
     DashboardItemContainerComponent,
     ItemRequestComponent,
     ItemShareComponent,
     ItemTakePictureComponent,
-    ItemImageCanvasComponent,
+    ItemImageCanvasComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,7 @@ import { ConfirmDeleteRequestComponent } from './components/confirm-delete-reque
     SharedModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   entryComponents: [ConfirmDeleteRequestComponent],
 })
