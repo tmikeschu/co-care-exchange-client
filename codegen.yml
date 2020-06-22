@@ -1,7 +1,7 @@
 schema:
-    - https://dev-api.cocareexchange.org/graphql:
+    - ${GRAPHQL_API_URI}:
         headers:
-            x-api-key: GRWeLOBUoL9dY6OnduCiU14WXReuYo9E9I9EKfTt
+            x-api-key: ${GRAPHQL_API_KEY}
 documents: src/**/*.graphql
 config:
     serviceName: "CceSDK"
