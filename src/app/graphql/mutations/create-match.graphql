@@ -1,0 +1,6 @@
+mutation CreateMatch($input: CreateMatchInput){
+  createMatch(input: $input){
+    clientMutationId
+    # Payload also supports order if needed
+  }
+}

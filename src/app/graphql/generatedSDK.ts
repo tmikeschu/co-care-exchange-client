@@ -77,6 +77,19 @@ export type CreateAnswerPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
+export type CreateMatchInput = {
+  clientMutationId?: Maybe<Scalars['String']>;
+  itemId?: Maybe<Scalars['ID']>;
+  quantity: Scalars['Int'];
+  userId: Scalars['ID'];
+};
+
+export type CreateMatchPayload = {
+  __typename?: 'CreateMatchPayload';
+  clientMutationId?: Maybe<Scalars['String']>;
+  order?: Maybe<Order>;
+};
+
 export type CreateNotePayload = {
   __typename?: 'CreateNotePayload';
   clientMutationId?: Maybe<Scalars['String']>;
@@ -236,6 +249,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   archiveItem?: Maybe<ItemArchivePayload>;
   createAnswer?: Maybe<CreateAnswerPayload>;
+  createMatch?: Maybe<CreateMatchPayload>;
   createOrderNote?: Maybe<CreateNotePayload>;
   saveUser?: Maybe<UserMutationPayload>;
   updateOrder?: Maybe<OrderChangePayload>;
@@ -249,6 +263,11 @@ export type MutationArchiveItemArgs = {
 
 export type MutationCreateAnswerArgs = {
   input?: Maybe<CreateAnswerInput>;
+};
+
+
+export type MutationCreateMatchArgs = {
+  input?: Maybe<CreateMatchInput>;
 };
 
 
@@ -783,6 +802,7 @@ export type OrganizationFilter = {
 
 export type PendingItemRequestSummary = {
   __typename?: 'PendingItemRequestSummary';
+  createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   quantity: Scalars['Long'];
@@ -1452,6 +1472,19 @@ export type UserMutationPayload = {
   user?: Maybe<User>;
 };
 
+export type CreateMatchMutationVariables = {
+  input?: Maybe<CreateMatchInput>;
+};
+
+
+export type CreateMatchMutation = (
+  { __typename?: 'Mutation' }
+  & { createMatch?: Maybe<(
+    { __typename?: 'CreateMatchPayload' }
+    & Pick<CreateMatchPayload, 'clientMutationId'>
+  )> }
+);
+
 export type CreateOrderNoteMutationVariables = {
   input: CreateOrderNoteInput;
 };
@@ -1555,6 +1588,21 @@ export type NearbySharesQuery = (
   )> }
 );
 
+export const CreateMatchDocument = gql`
+    mutation CreateMatch($input: CreateMatchInput) {
+  createMatch(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateMatchGQL extends Apollo.Mutation<CreateMatchMutation, CreateMatchMutationVariables> {
+    document = CreateMatchDocument;
+    
+  }
 export const CreateOrderNoteDocument = gql`
     mutation CreateOrderNote($input: CreateOrderNoteInput!) {
   createOrderNote(input: $input) {
@@ -1758,6 +1806,7 @@ export const NearbySharesDocument = gql`
   @Injectable({ providedIn: 'root' })
   export class CceSDK {
     constructor(
+      private createMatchGql: CreateMatchGQL,
       private createOrderNoteGql: CreateOrderNoteGQL,
       private updateOrderGql: UpdateOrderGQL,
       private dashboardGql: DashboardGQL,
@@ -1766,6 +1815,10 @@ export const NearbySharesDocument = gql`
       private nearbySharesGql: NearbySharesGQL
     ) {}
       
+    createMatch(variables?: CreateMatchMutationVariables, options?: MutationOptionsAlone<CreateMatchMutation, CreateMatchMutationVariables>) {
+      return this.createMatchGql.mutate(variables, options)
+    }
+    
     createOrderNote(variables: CreateOrderNoteMutationVariables, options?: MutationOptionsAlone<CreateOrderNoteMutation, CreateOrderNoteMutationVariables>) {
       return this.createOrderNoteGql.mutate(variables, options)
     }
