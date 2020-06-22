@@ -24,6 +24,7 @@ export class ItemImageCanvasComponent implements OnInit {
 
     Storage.get(this.imageUrl, { download: true, level: 'public' })
       .then((res) => {
+
         //console.log('success => ', res);
 
         let image = new Image();
