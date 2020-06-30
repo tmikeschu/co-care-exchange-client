@@ -1,14 +1,19 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil, tap, map, catchError, take } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { groupBy } from 'lodash';
 
 import { DashboardService } from 'src/app/core/services/cce/dashboard.service';
 import { Status } from 'src/app/core/constants/enums';
 import { Agreement } from './models/agreement';
-import { FormControl } from '@angular/forms';
-import { distinctUntilChanged, takeUntil, tap, map } from 'rxjs/operators';
+import { ConfirmDeleteRequestComponent } from './confirm-delete-request/confirm-delete-request.component';
+import { CceSDK } from 'src/app/graphql/generatedSDK';
+import { UserService } from 'src/app/core/services/user.service';
 
 interface IDashboardGrouping {
   createdBy: string;
@@ -26,37 +31,63 @@ interface IDashboardViewModel {
   selector: 'app-cce-home',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  animations: [
+    trigger('rowAnimate', [
+      state('rowClosed', style({
+        transform: 'translateX(0)'
+      })),
+      state('rowOpen', style({
+        transform: 'translateX(-75px)'
+      })),
+      transition('* => rowClosed', animate('0.25s')),
+      transition('* => rowOpen', animate('0.25s')),
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   vm$: Observable<IDashboardViewModel>;
   isAlive: boolean;
+  rowState: 'rowOpen' | 'rowClosed' | '';
 
   filter = new FormControl('');
   filter$: Observable<string>;
 
+  status = Status;
+
   destroy$ = new Subject();
+
+  isWeb: boolean;
+  showTrash: boolean = false;
 
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private router: Router
-  ) { }
+    private toastrService: ToastrService,
+    private breakpointObserver: BreakpointObserver,
+    private userSvc: UserService,
+    private api: CceSDK,
+  ) {
+    this.breakpointObserver.observe([Breakpoints.Web])
+      .subscribe(({ matches: isWeb }) => {
+        this.isWeb = isWeb;
+      });
+  }
 
   ngOnInit() {
     this.dashboardService.startPolling();
     this.vm$ = this.dashboardService.state$.pipe(
-      tap(state => {
-        this.filter.patchValue(state.filterState);
+      tap(dashboardState => {
+        this.filter.patchValue(dashboardState.filterState);
       }),
-      map(state => {
+      map(dashboardState => {
         return {
-          ...state,
-          shares: this.createGroupedEntries(state.shares),
-          needs: this.createGroupedEntries(state.needs)
+          ...dashboardState,
+          shares: this.createGroupedEntries(dashboardState.shares),
+          needs: this.createGroupedEntries(dashboardState.needs)
         };
       })
     );
+
     this.filter$ = this.filter.valueChanges.pipe(
       distinctUntilChanged(),
       takeUntil(this.destroy$)
@@ -68,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createGroupedEntries(agreements: Agreement[]) {
-    const grouped: {[key: string]: Agreement[]} = groupBy(agreements, 'userDisplayName');
+    const grouped: { [key: string]: Agreement[] } = groupBy(agreements, 'userDisplayName');
     return Object.entries(grouped).map(([name, items]) => {
       return {
         createdBy: name,
@@ -81,6 +112,58 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return `${agreement.quantity}${agreement.unitOfIssue ? ', ' + agreement.unitOfIssue : ''}${agreement.details ? ', ' + agreement.details : ''}`
   }
 
+  deleteItem(event, item: Agreement) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const ref = this.dialog.open(ConfirmDeleteRequestComponent, {
+      width: '300px',
+      data: item,
+    });
+
+    ref
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((results) => {
+        const userProfile = this.userSvc.getCurrentUserProfile();
+        if (results === 'yep') {
+          this.api.archiveItem({
+            input: {
+              itemId: item.itemId,
+              userId: userProfile.id,
+              clientMutationId: '3455555'
+            }
+          })
+            // this.dashboardService.archiveItem(item.itemId)
+            .pipe(
+              takeUntil(this.destroy$),
+              catchError(this.handleError),
+              map((response: any) => {
+                console.log('deleteItem', response);
+                this.dashboardService.startPolling();
+              })
+            ).subscribe();
+        } else {
+          return;
+        }
+      });
+  }
+
+  toggleRowState(row: Agreement, animationState: 'rowOpen' | 'rowClosed' | '') {
+    row.rowState = animationState;
+    /**
+     * dashboard service polling should probably be refactored, but this works around an issue
+     * where the polling will close the row if it is open. This pauses polling while the row 
+     * is open. polling refactor could entail ability to pause polling and also override it.
+     * A request should be able to be made on an event outside of the timer function emitting
+     */
+    if (animationState === 'rowOpen') {
+      this.dashboardService.stopPolling();
+    } else if (animationState === 'rowClosed') {
+      this.dashboardService.startPolling();
+    }
+  }
+
   getStyle(status: Status): string {
     switch (status) {
       case Status.FindingMatch: {
@@ -91,7 +174,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // Matched
         return 'contentstatusgreen';
       }
-      case Status.DeliveryPending: {
+      case Status.OrderConfirmed: {
         // Confirmed
         return 'contentstatusyellow';
       }
@@ -109,9 +192,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  private handleError(err) {
+    console.error('an error occurred deleting the dashboard item: ', err);
+    this.toastrService.error('An unexpected error has occurred deleting the request. Please try again later.', null, {
+      positionClass: 'toast-top-center'
+    });
+    return of(null);
+  }
+
   ngOnDestroy() {
     this.dashboardService.stopPolling();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  showTrashClick(show: boolean) {
+    this.showTrash = show
   }
 }

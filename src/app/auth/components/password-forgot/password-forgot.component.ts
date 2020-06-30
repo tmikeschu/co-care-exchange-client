@@ -31,10 +31,10 @@ export class PasswordForgotComponent implements OnInit {
     try {
       const email = this.forgotPwFormGroup.get('email').value;
       const result = await this.authenticationService.forgetPassword(email);
-      console.log('DEBUG forget passwd result ', result);
-      // todo --notify user that an email has been sent
+      //console.log('DEBUG forget passwd result ', result);
+      
       this.passwordResponse = result;
-      await this.router.navigate(['/', RESET_PASSWORD_ROUTE], { queryParams: { email: email } });
+      this.router.navigate(['/', RESET_PASSWORD_ROUTE], { queryParams: { email: email } });
     } catch (err) {
       console.log('Forget Password error ', err);
       this.error = true;

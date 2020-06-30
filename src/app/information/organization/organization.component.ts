@@ -7,6 +7,7 @@ import { SaveUserInput } from '../../graphql/models/save-user-input.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-organization',
@@ -98,6 +99,8 @@ export class OrganizationComponent implements OnInit, AfterContentInit {
       phoneNumber: this.organizationForm.get('phone').value,
       organizationId: this.organizationId,
       sendEmailMatchNotifications: this.organizationForm.get('sendEmailMatchNotifications').value,
+      matchRadius: this.organizationForm.get('deliveryOrPickupRadius').value,
+      sendEmailMessageNotifications: this.organizationForm.get('sendEmailMatchNotifications').value
     };
 
     if (!this._isRegistering && this.userProfile) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, combineLatest } from 'rxjs';
-import { map, switchMap, withLatestFrom, catchError, filter } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, merge, fromEvent, timer, empty, combineLatest, EMPTY } from 'rxjs';
+import { map, switchMap, withLatestFrom, catchError, filter, finalize } from 'rxjs/operators';
 
 import { UserService } from '../user.service';
 import { Agreement } from 'src/app/dashboard/components/models/agreement';
@@ -39,12 +39,8 @@ export class DashboardService {
 
   private orgId$: Observable<string> = this.userProfile$
     .pipe(
-      filter(userProfile => {
-        return !!userProfile && !!userProfile.organization && !!userProfile.organization.id;
-      }),
-      map(userProfile => {
-        return userProfile.organization.id;
-      }),
+      filter(userProfile => !!userProfile && !!userProfile.organization && !!userProfile.organization.id),
+      map(userProfile => userProfile.organization.id),
     );
 
   private filter$ = new BehaviorSubject<string>(this.state.filterState);
@@ -63,21 +59,21 @@ export class DashboardService {
   ) {
     // query the dashboard every 5 seconds if the dashboard component is
     // alive and if the client has internet connectivity
-    timer(0, 5000)
-      .pipe(
-        withLatestFrom(this.dashboardInputs$),
-        switchMap(([_tick, [doPoll, isOnline, userProfile, filterCriteria]]) => {
-          const empty$ = empty();
-          empty$.subscribe({ complete: () => this.updateDashboard({ loading: false }) });
-          return (isOnline && doPoll && userProfile) ? this.dashboardHandler(userProfile.id, filterCriteria) : empty$;
-        })
-      )
+    this.dashboardInputs$.pipe(
+      switchMap(([doPoll, isOnline, userProfile, filterCriteria]) => {
+        return (isOnline && doPoll && userProfile) ? this.pollDashboard(userProfile.id, filterCriteria) : EMPTY.pipe(finalize(() => this.updateDashboard({ loading: false })));
+      })
+    )
       .subscribe((dashboardData) => {
         const { requested, shared } = dashboardData;
-        this.updateDashboard({ needs: requested, shares: shared });
+        this.updateDashboard({ needs: requested, shares: shared, loading: false });
       });
 
     this.orgId$.subscribe(orgId => this.updateDashboard({ orgId }));
+  }
+
+  private pollDashboard(userProfileId: string, filterCriteria: string) {
+    return timer(0, 5000).pipe(switchMap(() => this.dashboardHandler(userProfileId, filterCriteria)));
   }
 
   dashboardHandler(userProfileId: string, filterCriteria: string) {

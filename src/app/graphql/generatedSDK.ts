@@ -1474,6 +1474,19 @@ export type UserMutationPayload = {
   user?: Maybe<User>;
 };
 
+export type ArchiveItemMutationVariables = {
+  input: ArchiveItemInput;
+};
+
+
+export type ArchiveItemMutation = (
+  { __typename?: 'Mutation' }
+  & { archiveItem?: Maybe<(
+    { __typename?: 'ItemArchivePayload' }
+    & Pick<ItemArchivePayload, 'clientMutationId' | 'itemId'>
+  )> }
+);
+
 export type CreateMatchMutationVariables = {
   input?: Maybe<CreateMatchInput>;
 };
@@ -1592,6 +1605,22 @@ export type NearbySharesQuery = (
   )> }
 );
 
+export const ArchiveItemDocument = gql`
+    mutation ArchiveItem($input: ArchiveItemInput!) {
+  archiveItem(input: $input) {
+    clientMutationId
+    itemId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ArchiveItemGQL extends Apollo.Mutation<ArchiveItemMutation, ArchiveItemMutationVariables> {
+    document = ArchiveItemDocument;
+    
+  }
 export const CreateMatchDocument = gql`
     mutation CreateMatch($input: CreateMatchInput) {
   createMatch(input: $input) {
@@ -1810,6 +1839,7 @@ export const NearbySharesDocument = gql`
   @Injectable({ providedIn: 'root' })
   export class CceSDK {
     constructor(
+      private archiveItemGql: ArchiveItemGQL,
       private createMatchGql: CreateMatchGQL,
       private createOrderNoteGql: CreateOrderNoteGQL,
       private updateOrderGql: UpdateOrderGQL,
@@ -1819,6 +1849,10 @@ export const NearbySharesDocument = gql`
       private nearbySharesGql: NearbySharesGQL
     ) {}
       
+    archiveItem(variables: ArchiveItemMutationVariables, options?: MutationOptionsAlone<ArchiveItemMutation, ArchiveItemMutationVariables>) {
+      return this.archiveItemGql.mutate(variables, options)
+    }
+    
     createMatch(variables?: CreateMatchMutationVariables, options?: MutationOptionsAlone<CreateMatchMutation, CreateMatchMutationVariables>) {
       return this.createMatchGql.mutate(variables, options)
     }
