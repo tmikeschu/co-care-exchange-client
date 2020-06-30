@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject, combineLatest, of, concat } from 'rxjs';
-import { map, switchMap, startWith, filter } from 'rxjs/operators';
+import { map, switchMap, startWith, filter, tap } from 'rxjs/operators';
 import { DashboardItem, CceSDK } from 'src/app/graphql/generatedSDK';
 import { AuthenticationService } from 'src/app/core/services/cce/authentication.service';
 import { FormControl } from '@angular/forms';
@@ -14,7 +14,7 @@ import { UIState } from 'src/app/core/constants/enums';
 export class NearbyRequestsComponent implements OnInit, OnDestroy {
   vm$: Observable<{ state: UIState, requests?: Array<DashboardItem> }>;
   user$: Observable<any>;
-  filter = new FormControl('organization');
+  filter = new FormControl('');
   filter$: Observable<string>;
   inputs$: Observable<any>;
   destroy$ = new Subject();
@@ -31,7 +31,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
       map((authState) => authState.user.userProfile)
     );
 
-    this.filter$ = concat(of('organization'), this.filter.valueChanges);
+    this.filter$ = concat(this.getOrSetDefaultFilter(), this.filter.valueChanges).pipe(tap(filterVal => this.setFilter(filterVal)));
     this.inputs$ = combineLatest([this.filter$, this.user$]);
     this.vm$ = this.inputs$.pipe(
       switchMap(([filterVal, user]) => this.getNearbyRequests(user.id, filterVal)),
@@ -40,8 +40,7 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
   }
 
   getNearbyRequests(userId: string, filterVal: string) {
-    // TODO: pass filter val once API support is there.
-    return this.api.nearbyRequestsWatch({ userId })
+    return this.api.nearbyRequestsWatch({ userId, filterOption: filterVal })
       .valueChanges
       .pipe(
         map((results: any) => {
@@ -53,6 +52,27 @@ export class NearbyRequestsComponent implements OnInit, OnDestroy {
           };
         })
       );
+  }
+
+  setFilter(filterVal: string) {
+    localStorage.setItem('nearbyRequestFilter', filterVal);
+  }
+
+  getOrSetDefaultFilter() {
+    try {
+      const filterVal = localStorage.getItem('nearbyRequestFilter');
+      if (filterVal) {
+        this.filter.patchValue(filterVal);
+        return of(filterVal);
+      } else {
+        // tslint:disable-next-line: no-string-throw
+        throw 'filter value not present in local storage or falsey';
+      }
+    } catch (e) {
+      console.log('error occurred getting filter state..defaulting to organization filter: ', e);
+      this.filter.patchValue('showAllOrganization');
+      return of('showAllOrganization');
+    }
   }
 
   formatItemDetails(agreement: DashboardItem) {
