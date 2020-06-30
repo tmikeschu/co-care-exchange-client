@@ -1,5 +1,5 @@
-query NearbyRequests($userId: ID!) {
-  nearbyRequests(userId: $userId) {
+query NearbyRequests($filterOption: String, $userId: ID!) {
+  nearbyRequests(filterOption: $filterOption, userId: $userId) {
     requested {
       itemId
       name

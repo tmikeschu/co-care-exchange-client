@@ -1,5 +1,5 @@
-query NearbyShares($userId: ID!) {
-  nearbyShares(userId: $userId) {
+query NearbyShares($filterOption: String, $userId: ID!) {
+  nearbyShares(filterOption: $filterOption, userId: $userId) {
     shared {
       itemId
       name

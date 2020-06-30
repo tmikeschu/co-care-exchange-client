@@ -1076,11 +1076,13 @@ export type QueryItemDetailsArgs = {
 
 
 export type QueryNearbyRequestsArgs = {
+  filterOption?: Maybe<Scalars['String']>;
   userId: Scalars['ID'];
 };
 
 
 export type QueryNearbySharesArgs = {
+  filterOption?: Maybe<Scalars['String']>;
   userId: Scalars['ID'];
 };
 
@@ -1557,6 +1559,7 @@ export type ItemDetailsQuery = (
 );
 
 export type NearbyRequestsQueryVariables = {
+  filterOption?: Maybe<Scalars['String']>;
   userId: Scalars['ID'];
 };
 
@@ -1573,6 +1576,7 @@ export type NearbyRequestsQuery = (
 );
 
 export type NearbySharesQueryVariables = {
+  filterOption?: Maybe<Scalars['String']>;
   userId: Scalars['ID'];
 };
 
@@ -1733,8 +1737,8 @@ export const ItemDetailsDocument = gql`
     
   }
 export const NearbyRequestsDocument = gql`
-    query NearbyRequests($userId: ID!) {
-  nearbyRequests(userId: $userId) {
+    query NearbyRequests($filterOption: String, $userId: ID!) {
+  nearbyRequests(filterOption: $filterOption, userId: $userId) {
     requested {
       itemId
       name
@@ -1761,8 +1765,8 @@ export const NearbyRequestsDocument = gql`
     
   }
 export const NearbySharesDocument = gql`
-    query NearbyShares($userId: ID!) {
-  nearbyShares(userId: $userId) {
+    query NearbyShares($filterOption: String, $userId: ID!) {
+  nearbyShares(filterOption: $filterOption, userId: $userId) {
     shared {
       itemId
       name
