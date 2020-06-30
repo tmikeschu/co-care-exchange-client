@@ -18,7 +18,7 @@
         </div>
 
         <div *ngFor="let share of vm.shares" class="nearby-list-item" fxLayout="row"
-          fxLayoutAlign="space-between center">
+          fxLayoutAlign="space-between center" [routerLink]="['/nearby-items', share.itemId]">
 
           <div fxLayout="row" fxLayoutAlign="center baseline">
             <div class="name">{{ share.name }} </div>
