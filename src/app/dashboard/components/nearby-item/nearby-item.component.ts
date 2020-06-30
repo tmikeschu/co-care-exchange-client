@@ -7,8 +7,7 @@ import { Agreement } from '../models/agreement';
 import { Observable, combineLatest, of, Subscription } from 'rxjs';
 import { switchMap, map, startWith, catchError, finalize, tap } from 'rxjs/operators';
 import { UIState } from 'src/app/core/constants/enums';
-import { FormControl } from '@angular/forms';
-import { handleGQLErrors } from 'src/app/graphql/utils/error-handler';
+import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -39,6 +38,11 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
                     return this.api.itemDetailsWatch({ userId: profile.id, itemId: params.id })
                         .valueChanges
                         .pipe(
+                            tap(results => {
+                                if (results && results.data.itemDetails) {
+                                    this.matchQty.setValidators([Validators.required, Validators.min(1), Validators.max(results.data.itemDetails.quantity)]);
+                                }
+                            }),
                             map(results => {
                                 return {
                                     state: UIState.Done,
@@ -63,7 +67,6 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
                 itemId: item.itemId
             }
         }).pipe(
-            tap(d => console.log('data from create match: ', d)),
             catchError(e => {
                 console.log('error: ', e);
                 this.toastrSvc.error('An unexpected error has occurred creating the match. Please try again later.', null, {
@@ -82,6 +85,8 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.matchSub.unsubscribe();
+        if (this.matchSub) {
+            this.matchSub.unsubscribe();
+        }
     }
 }

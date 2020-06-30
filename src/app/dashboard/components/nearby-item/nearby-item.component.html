@@ -25,12 +25,13 @@
                     <div fxLayout="row">
                         <mat-form-field fxFlex="25%">
                             <mat-label>Quantity</mat-label>
-                            <input matInput [formControl]="matchQty" type="number" />
+                            <input matInput [formControl]="matchQty" type="number"/>
                         </mat-form-field>
                     </div>
+                    <mat-error *ngIf="matchQty.invalid && matchQty.dirty">Please enter quantity between 1 and {{ vm.itemDetails.quantity }}</mat-error>
                     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                         <button mat-button mat-flat-button color="primary"
-                            (click)="onConfirmMatch(vm.itemDetails, vm.userId, matchQty.value)" [disabled]="!(matchQty.value > 0)">Confirm
+                            (click)="onConfirmMatch(vm.itemDetails, vm.userId, matchQty.value)" [disabled]="matchQty.invalid">Confirm
                             Match</button>
                     </div>
                 </div>
@@ -45,7 +46,7 @@
 </section>
 
 <div class="page-footer mat-elevation-z5" fxLayout="row" fxLayoutAlign="center center">
-    <a mat-button class="nav-action btn cce" mat-fab color="primary" routerLink="/nearby-items">
+    <a mat-button class="nav-action btn cce" mat-fab color="primary" [routerLink]="['/nearby-items']">
         <mat-icon class="cce-white">arrow_back</mat-icon>
     </a>
 </div>
