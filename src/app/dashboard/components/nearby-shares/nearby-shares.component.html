@@ -8,9 +8,9 @@
     <div *ngSwitchCase="'done'">
       <div *ngIf="vm.shares && vm.shares.length; else empty">
         <div class="cce-select-wrapper">
-          <mat-form-field appearance="outline">
+          <mat-form-field class="orgselectwidth">
             <mat-label>Filter</mat-label>
-            <mat-select [formControl]="filter" panelClass="cce-select-panel">
+            <mat-select [formControl]="filter" class="itemborder" panelClass="cce-select-panel">
               <mat-option value="individual">Individuals Only</mat-option>
               <mat-option value="showAllOrganization">Organizations Only</mat-option>
             </mat-select>
@@ -20,7 +20,7 @@
         <div *ngFor="let share of vm.shares" class="nearby-list-item" fxLayout="row"
           fxLayoutAlign="space-between center" [routerLink]="['/nearby-items', share.itemId]">
 
-          <div fxLayout="row" fxLayoutAlign="center baseline">
+          <div fxLayout="column" fxLayoutAlign="center flex-start">
             <div class="name">{{ share.name }} </div>
             <div class="multiplier" fxLayout="row" fxLayoutAlign="center center">
               <span>x</span><span>{{ share.quantity }}</span></div>
@@ -34,9 +34,9 @@
 
       <ng-template #empty>
         <div class="cce-select-wrapper">
-          <mat-form-field appearance="outline">
+          <mat-form-field class="orgselectwidth">
             <mat-label>Filter</mat-label>
-            <mat-select [formControl]="filter" panelClass="cce-select-panel">
+            <mat-select [formControl]="filter" class="itemborder" panelClass="cce-select-panel">
               <mat-option value="individual">Individuals Only</mat-option>
               <mat-option value="showAllOrganization">Organizations Only</mat-option>
             </mat-select>
