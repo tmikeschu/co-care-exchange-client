@@ -817,6 +817,7 @@ export type PendingItemRequestSummary = {
 
 export type PendingItemShareSummary = {
   __typename?: 'PendingItemShareSummary';
+  createdOn: Scalars['DateTime'];
   details?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   quantity: Scalars['Long'];
@@ -1497,6 +1498,10 @@ export type CreateMatchMutation = (
   & { createMatch?: Maybe<(
     { __typename?: 'CreateMatchPayload' }
     & Pick<CreateMatchPayload, 'clientMutationId'>
+    & { order?: Maybe<(
+      { __typename?: 'Order' }
+      & Pick<Order, 'id'>
+    )> }
   )> }
 );
 
@@ -1625,6 +1630,9 @@ export const CreateMatchDocument = gql`
     mutation CreateMatch($input: CreateMatchInput) {
   createMatch(input: $input) {
     clientMutationId
+    order {
+      id
+    }
   }
 }
     `;
