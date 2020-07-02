@@ -13,25 +13,25 @@
                     <h3 class="sub-title status-text" class="is-pending">
                         <strong>{{ vm.itemDetails.statusDisplay }}</strong></h3>
 
-                    <p *ngIf="vm.itemDetails.sharerName" class="name body-copy">You matched with
-                        {{ vm.itemDetails.sharerName }}!</p>
-
                     <p class="body-copy">{{ vm.itemDetails.dialogMessage }}</p>
 
                     <h3 class="sub-title">{{ vm.itemDetails.addressLabel }}</h3>
-                    <p class="body-copy">{{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}
+                    <p class="body-copy">
+                        {{ vm.itemDetails.deliveryAddress ? vm.itemDetails.deliveryAddress : '--' }}
                     </p>
-
+                    <h3 class="subtitle">{{ vm.itemDetails.requestId ? 'How much can you share?' : 'How much are you requesting?' }}</h3>
                     <div fxLayout="row">
-                        <mat-form-field fxFlex="25%">
+                        <mat-form-field appearance="outline">
                             <mat-label>Quantity</mat-label>
-                            <input matInput [formControl]="matchQty" type="number"/>
+                            <input matInput [formControl]="matchQty" type="number" />
                         </mat-form-field>
                     </div>
-                    <mat-error *ngIf="matchQty.invalid && matchQty.dirty">Please enter quantity between 1 and {{ vm.itemDetails.quantity }}</mat-error>
+                    <mat-error *ngIf="matchQty.invalid && matchQty.dirty">Please enter a quantity between 1 and
+                        {{ vm.itemDetails.quantity }}</mat-error>
                     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
                         <button mat-button mat-flat-button color="primary"
-                            (click)="onConfirmMatch(vm.itemDetails, vm.userId, matchQty.value)" [disabled]="matchQty.invalid">Confirm
+                            (click)="onConfirmMatch(vm.itemDetails, vm.userId, matchQty.value)"
+                            [disabled]="matchQty.invalid">Confirm
                             Match</button>
                     </div>
                 </div>
