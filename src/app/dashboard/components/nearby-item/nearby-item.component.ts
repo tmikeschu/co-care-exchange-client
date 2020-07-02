@@ -5,7 +5,7 @@ import { UserProfile } from 'src/app/models/UserProfile';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Agreement } from '../models/agreement';
 import { Observable, combineLatest, of, Subscription } from 'rxjs';
-import { switchMap, map, startWith, catchError, finalize, tap } from 'rxjs/operators';
+import { switchMap, map, startWith, catchError, tap } from 'rxjs/operators';
 import { UIState } from 'src/app/core/constants/enums';
 import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -40,6 +40,7 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
                         .pipe(
                             tap(results => {
                                 if (results && results.data.itemDetails) {
+                                    this.matchQty.patchValue(results.data.itemDetails.quantity);
                                     this.matchQty.setValidators([Validators.required, Validators.min(1), Validators.max(results.data.itemDetails.quantity)]);
                                 }
                             }),
@@ -58,7 +59,7 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
             );
     }
 
-    onConfirmMatch(item, userId, quantity) {
+    onConfirmMatch(item: DashboardItemDetails, userId, quantity) {
         this.matchSub = this.api.createMatch({
             input: {
                 quantity,
@@ -67,15 +68,19 @@ export class NearbyItemComponent implements OnInit, OnDestroy {
                 itemId: item.itemId
             }
         }).pipe(
+            tap(results => {
+                if (results && results.data && results.data.createMatch && results.data.createMatch.order) {
+                    const type = item.shareId ? 'share' : 'request';
+                    const match = results.data.createMatch.order;
+                    this.router.navigate(['/dashboard-item', type, match.id]);
+                }
+            }),
             catchError(e => {
                 console.log('error: ', e);
                 this.toastrSvc.error('An unexpected error has occurred creating the match. Please try again later.', null, {
                     positionClass: 'toast-top-center',
                 });
                 return of(null);
-            }),
-            finalize(() => {
-                this.router.navigate(['/nearby-items']);
             })
         ).subscribe();
     }
