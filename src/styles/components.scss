@@ -129,6 +129,13 @@ h2 {
       opacity: 1;
     }
   }
+
+  .mat-tab-header-pagination-controls-enabled {
+    .mat-tab-header-pagination {
+      display: none;
+    }
+  }
+
 }
 
 .empty {
