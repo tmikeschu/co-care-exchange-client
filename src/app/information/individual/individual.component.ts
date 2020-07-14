@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 import { ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { PasswordChangeComponent } from 'src/app/auth/components/password-change/password-change.component';
 
 @Component({
   selector: 'app-individual',
@@ -123,5 +124,13 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
+  }
+
+  onChangePasswordClick(){
+    const ref = this.dialog.open(PasswordChangeComponent, {
+      width: '300px',
+      data: {},
+      disableClose: true
+    });
   }
 }
