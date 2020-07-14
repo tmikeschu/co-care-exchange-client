@@ -13,6 +13,7 @@ import { AuthModule } from '../auth/AuthModule';
 import { PasswordChangeComponent } from '../auth/components/password-change/password-change.component';
 import { SharedModule } from '../shared/shared.module';
 
+
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule, AuthModule, SharedModule],
   declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],

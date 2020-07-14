@@ -53,13 +53,24 @@ export class ItemRequestComponent implements OnInit, OnDestroy {
     this.stop$.complete();
   }
 
+  onConfirmFulfillemnt(agreement: Agreement) {
+    this.updateItem.emit({
+      orderUpdate: agreement,
+      updates: {
+        shareId: agreement.shareId,
+        status: Status.OrderFulfilled,
+        reason: 'Sharer ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' confirmed the fulfillment of the match',
+      },
+    });
+  }
+
   onCancelMatch(agreement: Agreement) {
     this.updateItem.emit({
       orderUpdate: agreement,
       updates: {
         requestId: agreement.requestId,
         status: Status.OrderCancelled,
-        reason: 'User cancelled the match in agreement detail view',
+        reason: 'Requester ' + this.userProfile.firstName + ' ' + this.userProfile.lastName + ' cancelled the match in agreement detail view',
       },
     });
   }
