@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { OrgInfoModalComponent } from '../orginfomodal/orginfomodal.component';
 import { ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { PasswordChangeComponent } from 'src/app/auth/components/password-change/password-change.component';
 
 @Component({
   selector: 'app-individual',
@@ -53,7 +54,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.router.queryParams.subscribe((params) => {
+    this.router.queryParams.subscribe(params => {
       if (params && params.newUser) {
         this.newUser = params.newUser.toLowerCase() === 'true';
       }
@@ -61,7 +62,10 @@ export class IndividualComponent implements OnInit, AfterContentInit {
   }
 
   async ngAfterContentInit() {
-    this.userProfile = await this.userService.getUser(this.email).pipe(first()).toPromise();
+    this.userProfile = await this.userService
+      .getUser(this.email)
+      .pipe(first())
+      .toPromise();
 
     this.individualRegisterForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -112,7 +116,7 @@ export class IndividualComponent implements OnInit, AfterContentInit {
       householdSize: +this.individualRegisterForm.get('householdSize').value || null,
       sendEmailMatchNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
       matchRadius: this.individualRegisterForm.get('deliveryOrPickupRadius').value,
-      sendEmailMessageNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value
+      sendEmailMessageNotifications: this.individualRegisterForm.get('sendEmailMatchNotifications').value,
     };
 
     if (!this._isRegistering && this.userProfile) {
@@ -123,5 +127,13 @@ export class IndividualComponent implements OnInit, AfterContentInit {
 
     const payload: UserProfileInformation = { userInput: profile };
     this.infoSubmit.emit(payload);
+  }
+
+  onChangePasswordClick(){
+    const ref = this.dialog.open(PasswordChangeComponent, {
+      width: '300px',
+      data: {},
+      disableClose: true
+    });
   }
 }

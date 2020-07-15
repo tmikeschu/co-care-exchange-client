@@ -8,12 +8,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { OrganizationComponent } from './organization/organization.component';
 import { InformationRoutingModule } from './information-routing.module';
 import { OrgInfoModalComponent } from './orginfomodal/orginfomodal.component';
+import { PasswordResetComponent } from '../auth/components/password-reset/password-reset.component';
+import { AuthModule } from '../auth/AuthModule';
+import { PasswordChangeComponent } from '../auth/components/password-change/password-change.component';
 import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule, SharedModule],
+  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, InformationRoutingModule, AuthModule, SharedModule],
   declarations: [IndividualComponent, InformationComponent, OrganizationComponent, OrgInfoModalComponent],
-  entryComponents: [OrgInfoModalComponent]
+  entryComponents: [OrgInfoModalComponent, PasswordChangeComponent]
 })
 export class InformationModule {}

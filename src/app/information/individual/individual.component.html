@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutAlign="center center" class="formpadding">
   <form *ngIf="individualRegisterForm" [formGroup]="individualRegisterForm" novalidate>
     <div fxLayout="column">
       <mat-form-field class="login-full-width">
@@ -108,14 +108,19 @@
 
       <mat-checkbox class="check-box-mb-20" color="primary" formControlName="sendEmailMatchNotifications">Send me email notifications when I match
       </mat-checkbox>
+      
+      
+      <h2 class="app-blue changepasswordtext" (click)="onChangePasswordClick()">Change Password</h2>
 
     </div>
 
     <mat-progress-bar *ngIf="isRegistering" mode="indeterminate" color="accent"></mat-progress-bar>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-fab color="primary" (click)="onRegisterSubmit()" [disabled]="!individualRegisterForm.valid">
-        <mat-icon>arrow_forward</mat-icon>
+        Save
       </button>
     </div>
   </form>
 </div>
+
+<app-site-footer></app-site-footer>
