@@ -25,4 +25,14 @@ export class CustomValidators {
       control.get('confirmPassword').setErrors({ NoPasswordMatch: true });
     }
   }
+
+  static newPasswordMatchValidator(control: AbstractControl) {
+    const newPassword: string = control.get('newPassword').value; // get password from our password form control
+    const confirmNewPassword: string = control.get('confirmNewPassword').value; // get password from our confirmPassword form control
+    // compare is the password math
+    if (newPassword !== confirmNewPassword) {
+      // if they don't match, set an error in our confirmPassword form control
+      control.get('confirmNewPassword').setErrors({ NoPasswordMatch: true });
+    }
+  }
 }

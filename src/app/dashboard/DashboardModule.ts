@@ -16,7 +16,6 @@ import { ItemImageCanvasComponent } from './components/item-image-canvas/item-im
 import { NearbyItemComponent } from './components/nearby-item/nearby-item.component';
 import { ConfirmDeleteRequestComponent } from './components/confirm-delete-request/confirm-delete-request.component';
 
-
 @NgModule({
   declarations: [
     DashboardComponent,
