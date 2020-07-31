@@ -18,12 +18,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   loading = true;
   userProfile: User;
   subscription: Subscription;
+  isUser = true;
 
   constructor(private router: Router, private api: CceSDK, private userService: UserService) {}
 
   ngOnInit() {
     window.scrollTo(0, 0);
     this.userProfile = this.userService.getCurrentUserProfile();
+    this.isUser = !this.userProfile.organization;
     this.subscription = this.api.userSettingsWatch({ userId: this.userProfile.id }).valueChanges.subscribe((result) => {
       const { receiveAcrossRoleBoundary, sendEmailMatchNotifications, shareAcrossRoleBoundary } = result.data.user;
       this.loading = false;

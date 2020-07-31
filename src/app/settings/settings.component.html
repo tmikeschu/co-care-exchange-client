@@ -16,7 +16,7 @@
 
     <div class="settings__toggle">
       <mat-slide-toggle class="app-blue" color="primary" [checked]="shareAcross" (change)="toggleShareAcross($event)" [disabled]="loading">
-        Share with ...
+        Share with {{ isUser ? 'Organizations' : 'Individuals' }}
       </mat-slide-toggle>
     </div>
 
@@ -28,7 +28,7 @@
         (change)="toggleReceiveFrom($event)"
         [disabled]="loading"
       >
-        Receive from ...
+        Receive from {{ isUser ? 'Organizations' : 'Individuals' }}
       </mat-slide-toggle>
     </div>
   </div>
