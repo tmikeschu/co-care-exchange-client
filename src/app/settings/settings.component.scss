@@ -1,12 +1,23 @@
-mat-icon {
-  color: white;
-}
+@import '../../styles/theme.scss';
 
-.settings-container {
-  text-align: center;
+.settings {
   margin-bottom: 200px;
-}
+  padding: 1rem 2rem;
 
-.contentspacing {
-  margin-top: 60px;
+  mat-icon {
+    color: gray;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &__header {
+    margin-bottom: 2rem;
+  }
+
+  &__toggle {
+    margin-bottom: 1rem;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }
